@@ -54,6 +54,40 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: companies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.companies (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    user_id bigint NOT NULL,
+    title character varying NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.companies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -131,6 +165,13 @@ ALTER SEQUENCE public.users_sessions_id_seq OWNED BY public.users_sessions.id;
 
 
 --
+-- Name: companies id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -150,6 +191,14 @@ ALTER TABLE ONLY public.users_sessions ALTER COLUMN id SET DEFAULT nextval('publ
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
 
 
 --
@@ -174,6 +223,20 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users_sessions
     ADD CONSTRAINT users_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_companies_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_companies_on_user_id ON public.companies USING btree (user_id);
+
+
+--
+-- Name: index_companies_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uuid);
 
 
 --
@@ -215,6 +278,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211101190250'),
 ('20220817183402'),
 ('20221026162239'),
-('20221108144820');
+('20221108144820'),
+('20221229110331');
 
 
