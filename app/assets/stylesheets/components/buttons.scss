@@ -1,0 +1,21 @@
+@import '../general/colors.scss';
+
+.button {
+  display: inline-block;
+  background: $green400;
+  color: $gray800;
+  border: 1px solid $green500;
+  border-radius: .125rem;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background: $green500;
+  }
+
+  &.small {
+    padding: .25rem .5rem;
+  }
+}

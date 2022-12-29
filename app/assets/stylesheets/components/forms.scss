@@ -1,0 +1,26 @@
+@import '../general/colors.scss';
+
+.form-field {
+  position: relative;
+  margin-bottom: 1rem;
+
+  .form-label {
+    display: block;
+    margin-bottom: .25rem;
+    line-height: 1.25rem;
+  }
+
+  .form-value {
+    background: $sky200;
+    border: 1px solid $sky300;
+    border-radius: .125rem;
+    padding: .25rem 1rem;
+    min-height: 2.625rem;
+    font-weight: 300;
+    line-height: 2rem;
+
+    &:focus {
+      border-color: $sky400;
+    }
+  }
+}

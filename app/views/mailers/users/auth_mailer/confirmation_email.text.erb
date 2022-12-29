@@ -1,0 +1,3 @@
+<%= t('mailers.users.auth.confirmation_email.h1') %>
+
+<%= link_to t('mailers.users.auth.confirmation_email.click'), users_complete_url(email: @user.email, confirmation_token: @user.confirmation_token) %>

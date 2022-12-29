@@ -1,0 +1,26 @@
+<%= render PageWrappers::AuthComponent.new do %>
+  <div class="user-form">
+    <%= form_with model: User.new, url: users_login_path, method: :post do |form| %>
+      <h2><%= t('views.users.sessions.new.login') %></h2>
+      <div class="form-field">
+        <%= form.label :email, 'Email', class: 'form-label' %>
+        <%= form.text_field :email, class: 'form-value' %>
+      </div>
+      <div class="form-field">
+        <%= form.label :password, t('views.users.registrations.new.password'), class: 'form-label' %>
+        <%= form.password_field :password, class: 'form-value' %>
+      </div>
+      <div class="sub-actions">
+        <div class="flex items-center">
+          <span><%= t('views.users.sessions.new.no_account') %><span>
+          <%= link_to t('components.page_wrappers.users_component.sign_up'), users_sign_up_path %>
+        </div>
+        <div class="flex items-center">
+          <span><%= t('views.users.sessions.new.forgot') %><span>
+          <%= link_to t('components.page_wrappers.users_component.restore'), users_restore_path %>
+        </div>
+      </div>
+      <%= form.submit t('views.users.sessions.new.sign_in'), class: 'button' %>
+    <% end %>
+  </div>
+<% end %>

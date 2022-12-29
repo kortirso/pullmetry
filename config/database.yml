@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 20 } %>
+  host: localhost
+  port: 5432
+
+development:
+  <<: *default
+  database: pullmetry_development
+
+test:
+  <<: *default
+  database: pullmetry_test
+
+production:
+  <<: *default
+  database: pullmetry_production
+  username: pullmetry
+  password: <%= ENV['PULLMETRY_DATABASE_PASSWORD'] %>

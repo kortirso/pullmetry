@@ -1,0 +1,13 @@
+<header id="page-navigation">
+  <div>
+    <%= link_to t('components.page_wrappers.page_component.home'), root_path %>
+  </div>
+  <div>
+    <% if Current.user %>
+      <%= link_to t('components.page_wrappers.users_component.logout'), users_logout_path %>
+    <% else %>
+      <%= link_to t('components.page_wrappers.users_component.login'), users_login_path %>
+      <%= link_to t('components.page_wrappers.users_component.sign_up'), users_sign_up_path %>
+    <% end %>
+  </div>
+</header>

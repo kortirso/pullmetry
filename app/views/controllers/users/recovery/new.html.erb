@@ -1,0 +1,16 @@
+<%= render PageWrappers::AuthComponent.new do %>
+  <div class="user-form">
+    <%= form_with model: @user, url: users_recovery_path(email: @user.email, restore_token: @user.restore_token), method: :post do |form| %>
+      <h2><%= t('views.users.recovery.new.title') %></h2>
+      <div class="form-field">
+        <%= form.label :password, t('views.users.registrations.new.password'), class: 'form-label' %>
+        <%= form.password_field :password, class: 'form-value' %>
+      </div>
+      <div class="form-field">
+        <%= form.label :password_confirmation, t('views.users.registrations.new.password_confirmation'), class: 'form-label' %>
+        <%= form.password_field :password_confirmation, class: 'form-value' %>
+      </div>
+      <%= form.submit t('views.users.recovery.new.action'), class: 'button' %>
+    <% end %>
+  </div>
+<% end %>

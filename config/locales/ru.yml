@@ -1,0 +1,80 @@
+ru:
+  components:
+    shared:
+      page_not_found_component:
+        title: Страница не найдена
+    page_wrappers:
+      users_component:
+        home: Главная
+        logout: Выход
+        change_locale: Изменить локаль
+        login: Вход
+        sign_up: Регистрация
+        restore: Восстановить пароль
+  controllers:
+    application:
+      page_not_found: Страница не найдена
+    authentication:
+      permission: Необходимо войти
+    users:
+      registrations:
+        success_create: Вы зарегистрированы
+      sessions:
+        success_create: Вы вошли
+        success_destroy: Вы вышли
+        invalid: Неверные данные
+      confirmations:
+        success: Ваш аккаунт верифицирован
+        failure: Ваш аккаунт не может быть верифицирован
+      restore:
+        success: Письмо с ссылкой для восстановления отправлено
+        invalid: Пароль не может быть восстановлен
+      recovery:
+        success: Пароль изменён
+        invalid: Пароль не может быть изменён
+  services:
+    users:
+      create:
+        email_exists: Email уже используется
+        invalid: Данные не верны
+  views:
+    users:
+      registrations:
+        new:
+          sing_up: Регистрация
+          password: Пароль
+          password_confirmation: Подтверждение пароля
+          create: Создать пользователя
+          have_account: Уже есть аккаунт?
+        confirm:
+          title: Спасибо за регистрацию
+          description: Вам необходимо проверить почтовый ящик и подтвердить его для получения доступа к Pullmetry
+      sessions:
+        new:
+          login: Вход
+          sign_in: Войти
+          no_account: Нет аккаунта?
+          forgot: Забыли пароль?
+      restore:
+        new:
+          title: Восстановление пароля
+          description: Мы отправим письмо на ваш email с ссылкой для восстановления
+          action: Восстановить
+      recovery:
+        new:
+          title: Установка нового пароля
+          action: Подтвердить
+      confirmations:
+        failed_complete:
+          title: Email не может быть подтвержден
+          description: Неверные данные при подтверждении email
+  mailers:
+    users:
+      auth:
+        confirmation_email:
+          subject: Подтверждение email от Pullmetry
+          h1: Добро пожаловать на Pullmetry
+          click: Нажмите на ссылку ниже, чтобы подтвердить ваш аккаунт
+        password_restore_email:
+          subject: Восстановление пароля от Pullmetry
+          click: Нажмите на ссылку ниже, чтобы восстановить пароль

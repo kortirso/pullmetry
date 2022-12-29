@@ -1,0 +1,13 @@
+<%= render PageWrappers::AuthComponent.new do %>
+  <div class="user-form">
+    <%= form_with url: users_restore_path, method: :post do |form| %>
+      <h2><%= t('views.users.restore.new.title') %></h2>
+      <p class="description"><%= t('views.users.restore.new.description') %></p>
+      <div class="form-field">
+        <%= form.label :email, 'Email', class: 'form-label' %>
+        <%= form.text_field :email, class: 'form-value' %>
+      </div>
+      <%= form.submit t('views.users.restore.new.action'), class: 'button' %>
+    <% end %>
+  </div>
+<% end %>
