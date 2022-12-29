@@ -3,16 +3,8 @@
 module GithubApi
   module Requests
     module PullRequestComments
-      def pull_request_comments(company_name:, repository_name:, pull_number:, access_token:, params: {})
-        get(
-          path: "repos/#{company_name}/#{repository_name}/pulls/#{pull_number}/comments",
-          params: params,
-          headers: {
-            'Accept' => 'application/vnd.github+json',
-            'Authorization' => "Bearer #{access_token}",
-            'X-GitHub-Api-Version' => '2022-11-28'
-          }
-        )
+      def pull_request_comments(pull_id:, params: {})
+        fetch_data("repos/#{company_name}/#{repository_name}/pulls/#{pull_id}/comments", params)
       end
     end
   end

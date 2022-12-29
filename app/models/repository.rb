@@ -7,4 +7,8 @@ class Repository < ApplicationRecord
   belongs_to :company
 
   has_many :pull_requests, dependent: :destroy
+
+  def fetch_access_token
+    access_token || company.access_token
+  end
 end

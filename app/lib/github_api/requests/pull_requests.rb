@@ -3,16 +3,8 @@
 module GithubApi
   module Requests
     module PullRequests
-      def pull_requests(company_name:, repository_name:, access_token:, params: {})
-        get(
-          path: "repos/#{company_name}/#{repository_name}/pulls",
-          params: params,
-          headers: {
-            'Accept' => 'application/vnd.github+json',
-            'Authorization' => "Bearer #{access_token}",
-            'X-GitHub-Api-Version' => '2022-11-28'
-          }
-        )
+      def pull_requests(params: {})
+        fetch_data("repos/#{company_name}/#{repository_name}/pulls", params)
       end
     end
   end
