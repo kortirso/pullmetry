@@ -9,5 +9,6 @@ describe Repository do
 
   describe 'associations' do
     it { is_expected.to belong_to(:company) }
+    it { is_expected.to have_many(:pull_requests).dependent(:destroy) }
   end
 end

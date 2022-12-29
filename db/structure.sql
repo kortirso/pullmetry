@@ -88,6 +88,38 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
+-- Name: pull_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pull_requests (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    repository_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pull_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
+
+
+--
 -- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -206,6 +238,13 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_id_seq'::regclass);
+
+
+--
 -- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -240,6 +279,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pull_requests pull_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests
+    ADD CONSTRAINT pull_requests_pkey PRIMARY KEY (id);
 
 
 --
@@ -286,6 +333,20 @@ CREATE INDEX index_companies_on_user_id ON public.companies USING btree (user_id
 --
 
 CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uuid);
+
+
+--
+-- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_on_repository_id ON public.pull_requests USING btree (repository_id);
+
+
+--
+-- Name: index_pull_requests_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pull_requests_on_uuid ON public.pull_requests USING btree (uuid);
 
 
 --
@@ -343,6 +404,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221026162239'),
 ('20221108144820'),
 ('20221229110331'),
-('20221229111144');
+('20221229111144'),
+('20221229113504');
 
 
