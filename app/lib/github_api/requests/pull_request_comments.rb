@@ -2,10 +2,10 @@
 
 module GithubApi
   module Requests
-    module PullRequests
-      def pull_requests(company_name:, repository_name:, access_token:, params: {})
+    module PullRequestComments
+      def pull_request_comments(company_name:, repository_name:, pull_number:, access_token:, params: {})
         get(
-          path: "repos/#{company_name}/#{repository_name}/pulls",
+          path: "repos/#{company_name}/#{repository_name}/pulls/#{pull_number}/comments",
           params: params,
           headers: {
             'Accept' => 'application/vnd.github+json',
