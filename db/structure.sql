@@ -42,6 +42,40 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: access_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.access_tokens (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    tokenable_id bigint NOT NULL,
+    tokenable_type character varying NOT NULL,
+    value character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -231,6 +265,13 @@ ALTER SEQUENCE public.users_sessions_id_seq OWNED BY public.users_sessions.id;
 
 
 --
+-- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('public.access_tokens_id_seq'::regclass);
+
+
+--
 -- Name: companies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -263,6 +304,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 ALTER TABLE ONLY public.users_sessions ALTER COLUMN id SET DEFAULT nextval('public.users_sessions_id_seq'::regclass);
+
+
+--
+-- Name: access_tokens access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.access_tokens
+    ADD CONSTRAINT access_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -319,6 +368,20 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users_sessions
     ADD CONSTRAINT users_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_access_tokens_on_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_access_tokens_on_tokenable_id_and_tokenable_type ON public.access_tokens USING btree (tokenable_id, tokenable_type);
+
+
+--
+-- Name: index_access_tokens_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_access_tokens_on_uuid ON public.access_tokens USING btree (uuid);
 
 
 --
@@ -405,6 +468,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221108144820'),
 ('20221229110331'),
 ('20221229111144'),
-('20221229113504');
+('20221229113504'),
+('20221229135528');
 
 

@@ -9,12 +9,8 @@ module HttpService
     option :url
     option :connection, default: proc { build_connection }
 
-    def get(path:, params: {})
-      response = connection.get(path) do |request|
-        params.each do |param, value|
-          request.params[param] = value
-        end
-      end
+    def get(path:, params: nil, headers: nil)
+      response = connection.get(path, params, headers)
       response.body if response.success?
     end
 

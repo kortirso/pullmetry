@@ -2,6 +2,7 @@
 
 class Repository < ApplicationRecord
   include Uuidable
+  include Tokenable
 
   belongs_to :company
 
