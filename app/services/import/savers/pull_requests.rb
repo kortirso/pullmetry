@@ -29,7 +29,11 @@ module Import
 
       def save_author(_payload); end
 
-      def save_reviewer(_payload); end
+      def save_reviewer(payload)
+        entity =
+          ::Entity.find_or_initialize_by(source: payload.delete(:source), external_id: payload.delete(:external_id))
+        entity.update!(payload)
+      end
 
       def save_pull_request(payload)
         pull_request = @repository.pull_requests.find_or_initialize_by(pull_number: payload.delete(:pull_number))

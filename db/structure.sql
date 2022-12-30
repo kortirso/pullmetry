@@ -122,6 +122,41 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
+-- Name: entities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.entities (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    external_id character varying NOT NULL,
+    source integer DEFAULT 0 NOT NULL,
+    login character varying,
+    avatar_url character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: entities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.entities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: entities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.entities_id_seq OWNED BY public.entities.id;
+
+
+--
 -- Name: pull_requests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -284,6 +319,13 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: entities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.entities ALTER COLUMN id SET DEFAULT nextval('public.entities_id_seq'::regclass);
+
+
+--
 -- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -333,6 +375,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: entities entities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.entities
+    ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
 
 
 --
@@ -401,6 +451,20 @@ CREATE INDEX index_companies_on_user_id ON public.companies USING btree (user_id
 --
 
 CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uuid);
+
+
+--
+-- Name: index_entities_on_source_and_external_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_entities_on_source_and_external_id ON public.entities USING btree (source, external_id);
+
+
+--
+-- Name: index_entities_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid);
 
 
 --
@@ -475,6 +539,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221229111144'),
 ('20221229113504'),
 ('20221229135528'),
-('20221230044750');
+('20221230044750'),
+('20221230070121');
 
 

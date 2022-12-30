@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: add tests for parallel request with creating similar entities
 describe Import::Savers::PullRequests, type: :service do
   subject(:service_call) { described_class.call(repository: repository, data: data) }
 
@@ -12,8 +13,20 @@ describe Import::Savers::PullRequests, type: :service do
         pull_closed_at: nil,
         pull_merged_at: nil,
         open: true,
-        author: {},
-        reviewers: []
+        author: {
+          external_id: 1,
+          source: Entity::GITHUB,
+          login: 'octocat',
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+        },
+        reviewers: [
+          {
+            external_id: 1,
+            source: Entity::GITHUB,
+            login: 'octocat',
+            avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+          }
+        ]
       },
       {
         pull_number: 2,
@@ -21,7 +34,12 @@ describe Import::Savers::PullRequests, type: :service do
         pull_closed_at: '2011-04-10T20:09:31Z',
         pull_merged_at: '2011-04-10T20:09:31Z',
         open: false,
-        author: {},
+        author: {
+          external_id: 1,
+          source: Entity::GITHUB,
+          login: 'octocat',
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+        },
         reviewers: []
       }
     ]
@@ -30,6 +48,24 @@ describe Import::Savers::PullRequests, type: :service do
   context 'when there are no pull requests' do
     it 'creates 2 new pull requests' do
       expect { service_call }.to change(repository.pull_requests, :count).by(2)
+    end
+
+    it 'creates new entities' do
+      expect { service_call }.to change(Entity, :count).by(1)
+    end
+
+    context 'when there is existing entity' do
+      let!(:entity) { create :entity, external_id: '1' }
+
+      it 'does not create new entities' do
+        expect { service_call }.not_to change(Entity, :count)
+      end
+
+      it 'updates existing entity' do
+        service_call
+
+        expect(entity.reload.login).to eq 'octocat'
+      end
     end
   end
 
@@ -45,6 +81,10 @@ describe Import::Savers::PullRequests, type: :service do
 
       expect(pull_request.reload.open).to be_falsy
     end
+
+    it 'creates new entities' do
+      expect { service_call }.to change(Entity, :count).by(1)
+    end
   end
 
   context 'when there is 1 old existing pull request' do
@@ -58,6 +98,10 @@ describe Import::Savers::PullRequests, type: :service do
       service_call
 
       expect(repository.pull_requests.find_by(pull_number: pull_request.pull_number)).to be_nil
+    end
+
+    it 'creates new entities' do
+      expect { service_call }.to change(Entity, :count).by(1)
     end
   end
 
