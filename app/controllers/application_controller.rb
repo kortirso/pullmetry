@@ -30,10 +30,4 @@ class ApplicationController < ActionController::Base
   def json_response_with_errors(messages, status=400)
     render json: { errors: messages }, status: status
   end
-
-  def request_fields
-    return if params[:fields].blank?
-
-    params[:fields].split(',')
-  end
 end

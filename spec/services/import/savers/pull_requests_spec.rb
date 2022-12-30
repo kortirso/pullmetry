@@ -56,7 +56,7 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(repository.pull_requests, :count).by(2)
     end
 
-    it 'creates new entities' do
+    it 'creates 2 new entities' do
       expect { service_call }.to change(Entity, :count).by(2)
     end
 
