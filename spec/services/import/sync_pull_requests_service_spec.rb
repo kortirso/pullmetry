@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Import::SyncRepositoryService, type: :service do
+describe Import::SyncPullRequestsService, type: :service do
   subject(:service_call) { described_class.new(fetch_service: fetch_service).call(repository: repository) }
 
   let!(:repository) { create :repository }
