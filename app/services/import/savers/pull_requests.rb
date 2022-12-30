@@ -4,8 +4,7 @@ module Import
   module Savers
     class PullRequests
       prepend ApplicationService
-
-      ENTITY_FIND_ATTRIBUTES = %i[source external_id].freeze
+      include Concerns::FindOrCreateEntity
 
       def call(repository:, data:)
         @repository = repository
@@ -13,8 +12,8 @@ module Import
         ActiveRecord::Base.transaction do
           destroy_old_pull_requests(data)
           data.each do |payload|
-            author_entity = save_entity(payload.delete(:author))
-            reviewer_entities = payload.delete(:reviewers).map { |reviewer| save_entity(reviewer) }
+            author_entity = find_or_create_entity(payload.delete(:author))
+            reviewer_entities = payload.delete(:reviewers).map { |reviewer| find_or_create_entity(reviewer) }
             save_pull_request(payload)
             save_pull_requests_entities(author_entity, reviewer_entities)
           end
@@ -28,12 +27,6 @@ module Import
           .pull_requests
           .where.not(pull_number: data.pluck(:pull_number))
           .destroy_all
-      end
-
-      def save_entity(payload)
-        entity = ::Entity.find_or_initialize_by(payload.slice(*ENTITY_FIND_ATTRIBUTES))
-        entity.update!(payload.except(*ENTITY_FIND_ATTRIBUTES))
-        entity.id
       end
 
       def save_pull_request(payload)

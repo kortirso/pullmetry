@@ -7,4 +7,8 @@ class PullRequest < ApplicationRecord
 
   has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
   has_many :entities, through: :pull_requests_entities
+  has_many :pull_requests_comments,
+           -> { distinct },
+           through: :pull_requests_entities,
+           class_name: 'PullRequests::Comment'
 end

@@ -20,7 +20,13 @@ describe Import::SyncRepositoryService, type: :service do
           'id' => 1,
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         },
-        'requested_reviewers' => []
+        'requested_reviewers' => [
+          {
+            'login' => 'octocat2',
+            'id' => 2,
+            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          }
+        ]
       },
       {
         'number' => 2,
@@ -68,7 +74,9 @@ describe Import::SyncRepositoryService, type: :service do
     let!(:pull_request) { create :pull_request, repository: repository, pull_number: 1 }
 
     it 'creates 2 new pull requests' do
-      expect { service_call }.to change { repository.pull_requests.pluck(:pull_number) }.from([1]).to([3, 2])
+      service_call
+
+      expect(repository.pull_requests.pluck(:pull_number)).to match_array([2, 3])
     end
 
     it 'destroys old pull request' do
