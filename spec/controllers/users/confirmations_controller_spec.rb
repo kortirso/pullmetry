@@ -45,7 +45,7 @@ describe Users::ConfirmationsController do
         end
 
         it 'redirects to dashboard path' do
-          expect(response).to redirect_to root_path
+          expect(response).to redirect_to companies_path
         end
       end
     end

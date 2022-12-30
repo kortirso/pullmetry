@@ -1,0 +1,12 @@
+<%= render PageWrappers::PageComponent.new do %>
+  <h1>Repositories</h1>
+  <section class="list">
+    <% @repositories.each do |repository| %>
+      <div class="list-element">
+        <h2><%= repository.title %></h2>
+        <p>PRs count - <%= link_to repository.pull_requests.size, repository_path(repository.uuid) %></p>
+        <p><%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %></p>
+      </div>
+    <% end %>
+  </section>
+<% end %>

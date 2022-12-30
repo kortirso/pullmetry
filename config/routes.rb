@@ -21,5 +21,7 @@ Rails.application.routes.draw do
     post 'recovery', to: 'recovery#create'
   end
 
+  resources :companies, only: %i[index]
+  resources :repositories, only: %i[index show]
   root 'welcome#index'
 end

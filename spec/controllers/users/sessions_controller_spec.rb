@@ -41,7 +41,7 @@ describe Users::SessionsController do
         it 'redirects to dashboard path' do
           post :create, params: { user: { email: user.email, password: user.password }, locale: 'en' }
 
-          expect(response).to redirect_to root_path
+          expect(response).to redirect_to companies_path
         end
       end
 
@@ -49,7 +49,7 @@ describe Users::SessionsController do
         it 'redirects to dashboard path' do
           post :create, params: { user: { email: user.email.upcase, password: user.password }, locale: 'en' }
 
-          expect(response).to redirect_to root_path
+          expect(response).to redirect_to companies_path
         end
       end
     end

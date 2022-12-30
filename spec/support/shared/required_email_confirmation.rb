@@ -7,7 +7,7 @@ shared_examples_for 'required email confirmation' do
     it 'render shared error' do
       do_request
 
-      expect(response).to redirect_to users_confirm_en_path
+      expect(response).to redirect_to users_confirm_path
     end
   end
 end

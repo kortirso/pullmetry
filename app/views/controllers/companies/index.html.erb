@@ -1,0 +1,14 @@
+<%= render PageWrappers::PageComponent.new do %>
+  <h1>Companies</h1>
+  <section class="list">
+    <% @companies.each do |company| %>
+      <div class="list-element">
+        <h2><%= company.title %></h2>
+        <p>
+          Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
+        </p>
+        <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
+      </div>
+    <% end %>
+  </section>
+<% end %>

@@ -8,7 +8,7 @@ module Users
 
     def complete
       Users::CompleteService.call(user: @user)
-      redirect_to root_path, notice: t('controllers.users.confirmations.success')
+      redirect_to companies_path, notice: t('controllers.users.confirmations.success')
     end
 
     private

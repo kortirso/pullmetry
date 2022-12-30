@@ -1,6 +1,10 @@
 <header id="page-navigation">
   <div>
     <%= link_to t('components.page_wrappers.page_component.home'), root_path %>
+    <% if Current.user %>
+      <%= link_to t('components.page_wrappers.page_component.companies'), companies_path %>
+      <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path %>
+    <% end %>
   </div>
   <div>
     <% if Current.user %>

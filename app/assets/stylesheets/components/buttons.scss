@@ -1,6 +1,8 @@
 @import '../general/colors.scss';
 
 .button {
+  font-family: "Martian Mono", "Helvetica", "Open Sans", sans-serif;
+  font-weight: 300;
   display: inline-block;
   background: $green400;
   color: $gray800;

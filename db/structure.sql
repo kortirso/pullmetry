@@ -98,7 +98,8 @@ CREATE TABLE public.companies (
     title character varying NOT NULL,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    repositories_count integer
 );
 
 
@@ -237,7 +238,8 @@ CREATE TABLE public.repositories (
     title character varying NOT NULL,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pull_requests_count integer
 );
 
 
@@ -596,6 +598,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221229135528'),
 ('20221230044750'),
 ('20221230070121'),
-('20221230075113');
+('20221230075113'),
+('20221230134024');
 
 

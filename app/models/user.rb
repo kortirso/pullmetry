@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :users_session, class_name: 'Users::Session', dependent: :destroy
 
   has_many :companies, dependent: :destroy
+  has_many :repositories, through: :companies
 
   scope :not_confirmed, -> { where(confirmed_at: nil) }
 

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600&display=swap&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;600&display=swap');
+@import './colors.scss';
 
 html, body {
   margin: 0;
@@ -8,14 +9,17 @@ html, body {
 }
 
 html {
-  font-family: "Source Sans Pro", "Helvetica", "Open Sans", sans-serif;
+  font-family: "Martian Mono", "Helvetica", "Open Sans", sans-serif;
   box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 body {
   position: relative;
   display: flex;
   flex-direction: column;
+  background: $gray100;
 }
 
 * {
@@ -32,4 +36,15 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
 }

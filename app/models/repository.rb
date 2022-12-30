@@ -4,7 +4,7 @@ class Repository < ApplicationRecord
   include Uuidable
   include Tokenable
 
-  belongs_to :company
+  belongs_to :company, counter_cache: true
 
   has_many :pull_requests, dependent: :destroy
 
