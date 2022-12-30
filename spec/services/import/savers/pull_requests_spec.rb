@@ -25,6 +25,12 @@ describe Import::Savers::PullRequests, type: :service do
             source: Entity::GITHUB,
             login: 'octocat',
             avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+          },
+          {
+            external_id: 2,
+            source: Entity::GITHUB,
+            login: 'octocat2',
+            avatar_url: 'https://github.com/images/error/octocat_happy.gif'
           }
         ]
       },
@@ -51,22 +57,22 @@ describe Import::Savers::PullRequests, type: :service do
     end
 
     it 'creates new entities' do
-      expect { service_call }.to change(Entity, :count).by(1)
+      expect { service_call }.to change(Entity, :count).by(2)
     end
 
     it 'creates 2 author PR entities' do
       expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
     end
 
-    it 'creates 1 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+    it 'creates 2 reviewer PR entity' do
+      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
     end
 
     context 'when there is existing entity' do
       let!(:entity) { create :entity, external_id: '1' }
 
-      it 'does not create new entities' do
-        expect { service_call }.not_to change(Entity, :count)
+      it 'creates just 1 new entity' do
+        expect { service_call }.to change(Entity, :count).by(1)
       end
 
       it 'updates existing entity' do
@@ -79,8 +85,8 @@ describe Import::Savers::PullRequests, type: :service do
         expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
       end
 
-      it 'creates 1 reviewer PR entity' do
-        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+      it 'creates 2 reviewer PR entity' do
+        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
       end
     end
   end
@@ -98,16 +104,16 @@ describe Import::Savers::PullRequests, type: :service do
       expect(pull_request.reload.open).to be_falsy
     end
 
-    it 'creates new entities' do
-      expect { service_call }.to change(Entity, :count).by(1)
+    it 'creates 2 new entities' do
+      expect { service_call }.to change(Entity, :count).by(2)
     end
 
     it 'creates 2 author PR entities' do
       expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
     end
 
-    it 'creates 1 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+    it 'creates 2 reviewer PR entity' do
+      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
     end
 
     context 'when there is 1 PR entity' do
@@ -119,8 +125,8 @@ describe Import::Savers::PullRequests, type: :service do
         expect { service_call }.to change(PullRequests::Entity.author, :count).by(1)
       end
 
-      it 'creates 1 reviewer PR entity' do
-        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+      it 'creates 2 reviewer PR entity' do
+        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
       end
     end
   end
@@ -138,8 +144,8 @@ describe Import::Savers::PullRequests, type: :service do
       expect(repository.pull_requests.find_by(pull_number: pull_request.pull_number)).to be_nil
     end
 
-    it 'creates new entities' do
-      expect { service_call }.to change(Entity, :count).by(1)
+    it 'creates 2 new entities' do
+      expect { service_call }.to change(Entity, :count).by(2)
     end
   end
 

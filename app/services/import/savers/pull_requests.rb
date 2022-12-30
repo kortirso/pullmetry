@@ -31,9 +31,8 @@ module Import
       end
 
       def save_entity(payload)
-        entity =
-          ::Entity.find_or_initialize_by(payload.slice(ENTITY_FIND_ATTRIBUTES))
-        entity.update!(payload.except(ENTITY_FIND_ATTRIBUTES))
+        entity = ::Entity.find_or_initialize_by(payload.slice(*ENTITY_FIND_ATTRIBUTES))
+        entity.update!(payload.except(*ENTITY_FIND_ATTRIBUTES))
         entity.id
       end
 
