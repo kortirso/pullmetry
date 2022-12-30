@@ -176,6 +176,39 @@ CREATE TABLE public.pull_requests (
 
 
 --
+-- Name: pull_requests_comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pull_requests_comments (
+    id bigint NOT NULL,
+    pull_requests_entity_id bigint NOT NULL,
+    external_id character varying NOT NULL,
+    comment_created_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pull_requests_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pull_requests_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pull_requests_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pull_requests_comments_id_seq OWNED BY public.pull_requests_comments.id;
+
+
+--
 -- Name: pull_requests_entities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -368,6 +401,13 @@ ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: pull_requests_comments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_comments ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_comments_id_seq'::regclass);
+
+
+--
 -- Name: pull_requests_entities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -425,6 +465,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pull_requests_comments pull_requests_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_comments
+    ADD CONSTRAINT pull_requests_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -518,6 +566,20 @@ CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid)
 
 
 --
+-- Name: index_pull_requests_comments_on_external_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_comments_on_external_id ON public.pull_requests_comments USING btree (external_id);
+
+
+--
+-- Name: index_pull_requests_comments_on_pull_requests_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_comments_on_pull_requests_entity_id ON public.pull_requests_comments USING btree (pull_requests_entity_id);
+
+
+--
 -- Name: index_pull_requests_entities_on_pull_request_id_and_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -599,6 +661,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221230044750'),
 ('20221230070121'),
 ('20221230075113'),
-('20221230134024');
+('20221230134024'),
+('20221230154819');
 
 
