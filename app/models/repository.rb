@@ -3,6 +3,7 @@
 class Repository < ApplicationRecord
   include Uuidable
   include Tokenable
+  include Insightable
 
   belongs_to :company, counter_cache: true
 

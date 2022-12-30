@@ -158,6 +158,40 @@ ALTER SEQUENCE public.entities_id_seq OWNED BY public.entities.id;
 
 
 --
+-- Name: insights; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.insights (
+    id bigint NOT NULL,
+    insightable_id bigint NOT NULL,
+    insightable_type character varying NOT NULL,
+    entity_id bigint NOT NULL,
+    comments_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: insights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.insights_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: insights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.insights_id_seq OWNED BY public.insights.id;
+
+
+--
 -- Name: pull_requests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -394,6 +428,13 @@ ALTER TABLE ONLY public.entities ALTER COLUMN id SET DEFAULT nextval('public.ent
 
 
 --
+-- Name: insights id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.insights ALTER COLUMN id SET DEFAULT nextval('public.insights_id_seq'::regclass);
+
+
+--
 -- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -465,6 +506,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: insights insights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.insights
+    ADD CONSTRAINT insights_pkey PRIMARY KEY (id);
 
 
 --
@@ -566,6 +615,20 @@ CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid)
 
 
 --
+-- Name: index_insights_on_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_insights_on_entity_id ON public.insights USING btree (entity_id);
+
+
+--
+-- Name: index_insights_on_insightable_id_and_insightable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_insights_on_insightable_id_and_insightable_type ON public.insights USING btree (insightable_id, insightable_type);
+
+
+--
 -- Name: index_pull_requests_comments_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -662,6 +725,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221230070121'),
 ('20221230075113'),
 ('20221230134024'),
-('20221230154819');
+('20221230154819'),
+('20221230184649');
 
 
