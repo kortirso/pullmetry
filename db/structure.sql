@@ -130,7 +130,12 @@ CREATE TABLE public.pull_requests (
     uuid uuid NOT NULL,
     repository_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pull_number integer NOT NULL,
+    pull_created_at timestamp(6) without time zone NOT NULL,
+    pull_closed_at timestamp(6) without time zone,
+    pull_merged_at timestamp(6) without time zone,
+    open boolean DEFAULT true NOT NULL
 );
 
 
@@ -469,6 +474,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221229110331'),
 ('20221229111144'),
 ('20221229113504'),
-('20221229135528');
+('20221229135528'),
+('20221230044750');
 
 
