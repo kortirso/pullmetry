@@ -175,6 +175,39 @@ CREATE TABLE public.pull_requests (
 
 
 --
+-- Name: pull_requests_entities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pull_requests_entities (
+    id bigint NOT NULL,
+    pull_request_id bigint NOT NULL,
+    entity_id bigint NOT NULL,
+    origin integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pull_requests_entities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pull_requests_entities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pull_requests_entities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pull_requests_entities_id_seq OWNED BY public.pull_requests_entities.id;
+
+
+--
 -- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -333,6 +366,13 @@ ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: pull_requests_entities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_entities ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_entities_id_seq'::regclass);
+
+
+--
 -- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -383,6 +423,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pull_requests_entities pull_requests_entities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_entities
+    ADD CONSTRAINT pull_requests_entities_pkey PRIMARY KEY (id);
 
 
 --
@@ -468,6 +516,13 @@ CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid)
 
 
 --
+-- Name: index_pull_requests_entities_on_pull_request_id_and_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_entities_on_pull_request_id_and_entity_id ON public.pull_requests_entities USING btree (pull_request_id, entity_id);
+
+
+--
 -- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -540,6 +595,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221229113504'),
 ('20221229135528'),
 ('20221230044750'),
-('20221230070121');
+('20221230070121'),
+('20221230075113');
 
 

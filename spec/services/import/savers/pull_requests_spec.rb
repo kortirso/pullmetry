@@ -54,6 +54,14 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(Entity, :count).by(1)
     end
 
+    it 'creates 2 author PR entities' do
+      expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
+    end
+
+    it 'creates 1 reviewer PR entity' do
+      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+    end
+
     context 'when there is existing entity' do
       let!(:entity) { create :entity, external_id: '1' }
 
@@ -65,6 +73,14 @@ describe Import::Savers::PullRequests, type: :service do
         service_call
 
         expect(entity.reload.login).to eq 'octocat'
+      end
+
+      it 'creates 2 author PR entities' do
+        expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
+      end
+
+      it 'creates 1 reviewer PR entity' do
+        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
       end
     end
   end
@@ -84,6 +100,28 @@ describe Import::Savers::PullRequests, type: :service do
 
     it 'creates new entities' do
       expect { service_call }.to change(Entity, :count).by(1)
+    end
+
+    it 'creates 2 author PR entities' do
+      expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
+    end
+
+    it 'creates 1 reviewer PR entity' do
+      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+    end
+
+    context 'when there is 1 PR entity' do
+      let!(:entity) { create :entity, external_id: '1' }
+
+      before { create :pull_requests_entity, entity: entity, pull_request: pull_request }
+
+      it 'creates 1 author PR entities' do
+        expect { service_call }.to change(PullRequests::Entity.author, :count).by(1)
+      end
+
+      it 'creates 1 reviewer PR entity' do
+        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(1)
+      end
     end
   end
 

@@ -5,15 +5,18 @@ module Import
     class PullRequests
       prepend ApplicationService
 
+      ENTITY_FIND_ATTRIBUTES = %i[source external_id].freeze
+
       def call(repository:, data:)
         @repository = repository
 
         ActiveRecord::Base.transaction do
           destroy_old_pull_requests(data)
           data.each do |payload|
-            save_author(payload.delete(:author))
-            payload.delete(:reviewers).each { |reviewer| save_reviewer(reviewer) }
+            author_entity = save_entity(payload.delete(:author))
+            reviewer_entities = payload.delete(:reviewers).map { |reviewer| save_entity(reviewer) }
             save_pull_request(payload)
+            save_pull_requests_entities(author_entity, reviewer_entities)
           end
         end
       end
@@ -27,17 +30,32 @@ module Import
           .destroy_all
       end
 
-      def save_author(_payload); end
-
-      def save_reviewer(payload)
+      def save_entity(payload)
         entity =
-          ::Entity.find_or_initialize_by(source: payload.delete(:source), external_id: payload.delete(:external_id))
-        entity.update!(payload)
+          ::Entity.find_or_initialize_by(payload.slice(ENTITY_FIND_ATTRIBUTES))
+        entity.update!(payload.except(ENTITY_FIND_ATTRIBUTES))
+        entity.id
       end
 
       def save_pull_request(payload)
-        pull_request = @repository.pull_requests.find_or_initialize_by(pull_number: payload.delete(:pull_number))
-        pull_request.update!(payload)
+        @pull_request = @repository.pull_requests.find_or_initialize_by(pull_number: payload.delete(:pull_number))
+        @pull_request.update!(payload)
+      end
+
+      def save_pull_requests_entities(author_entity, reviewer_entities)
+        ::PullRequests::Entity.find_or_create_by!(
+          entity_id: author_entity,
+          pull_request: @pull_request,
+          origin: ::PullRequests::Entity::AUTHOR
+        )
+        # TODO: add destroying removed reviewers
+        reviewer_entities.each do |entity|
+          ::PullRequests::Entity.find_or_create_by!(
+            entity_id: entity,
+            pull_request: @pull_request,
+            origin: ::PullRequests::Entity::REVIEWER
+          )
+        end
       end
     end
   end
