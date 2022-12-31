@@ -12,5 +12,13 @@ describe Repository do
     it { is_expected.to have_many(:pull_requests).dependent(:destroy) }
     it { is_expected.to have_one(:access_token).dependent(:destroy) }
     it { is_expected.to have_many(:insights).dependent(:destroy) }
+
+    it {
+      is_expected.to have_many(:pull_requests_comments).class_name('::PullRequests::Comment').through(:pull_requests)
+    }
+
+    it {
+      is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').through(:pull_requests)
+    }
   end
 end

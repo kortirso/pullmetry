@@ -15,6 +15,11 @@ module PullRequests
              foreign_key: :pull_requests_entity_id,
              dependent: :destroy
 
+    has_many :pull_requests_reviews,
+             class_name: '::PullRequests::Review',
+             foreign_key: :pull_requests_entity_id,
+             dependent: :destroy
+
     enum origin: { AUTHOR => 0, REVIEWER => 1 }
   end
 end

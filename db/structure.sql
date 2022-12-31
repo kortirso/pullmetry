@@ -295,6 +295,39 @@ ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 
 
 --
+-- Name: pull_requests_reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pull_requests_reviews (
+    id bigint NOT NULL,
+    pull_requests_entity_id bigint NOT NULL,
+    external_id character varying NOT NULL,
+    review_created_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pull_requests_reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pull_requests_reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pull_requests_reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pull_requests_reviews_id_seq OWNED BY public.pull_requests_reviews.id;
+
+
+--
 -- Name: repositories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -456,6 +489,13 @@ ALTER TABLE ONLY public.pull_requests_entities ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: pull_requests_reviews id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_reviews ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_reviews_id_seq'::regclass);
+
+
+--
 -- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -538,6 +578,14 @@ ALTER TABLE ONLY public.pull_requests_entities
 
 ALTER TABLE ONLY public.pull_requests
     ADD CONSTRAINT pull_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pull_requests_reviews pull_requests_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pull_requests_reviews
+    ADD CONSTRAINT pull_requests_reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -664,6 +712,20 @@ CREATE UNIQUE INDEX index_pull_requests_on_uuid ON public.pull_requests USING bt
 
 
 --
+-- Name: index_pull_requests_reviews_on_external_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_reviews_on_external_id ON public.pull_requests_reviews USING btree (external_id);
+
+
+--
+-- Name: index_pull_requests_reviews_on_pull_requests_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_reviews_on_pull_requests_entity_id ON public.pull_requests_reviews USING btree (pull_requests_entity_id);
+
+
+--
 -- Name: index_repositories_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -726,6 +788,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221230075113'),
 ('20221230134024'),
 ('20221230154819'),
-('20221230184649');
+('20221230184649'),
+('20221231194301');
 
 

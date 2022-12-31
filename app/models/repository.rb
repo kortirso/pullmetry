@@ -9,6 +9,7 @@ class Repository < ApplicationRecord
 
   has_many :pull_requests, dependent: :destroy
   has_many :pull_requests_comments, -> { distinct }, class_name: '::PullRequests::Comment', through: :pull_requests
+  has_many :pull_requests_reviews, -> { distinct }, class_name: '::PullRequests::Review', through: :pull_requests
   has_many :entities, -> { distinct }, through: :pull_requests
 
   def fetch_access_token
