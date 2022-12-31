@@ -1,17 +1,44 @@
 @import '../../general/colors.scss';
 
 .list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-
   .list-element {
+    display: flex;
     background: $white;
-    padding: 1.5rem 1.5rem 0;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 0.4rem 2rem, rgba(0, 0, 0, 0.18) 0px 0.15rem 0.5rem;
+    padding: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0 0.4rem 2rem, rgba(0, 0, 0, 0.18) 0 0.15rem 0.5rem;
 
-    p {
-      margin-bottom: 1.5rem;
+    .list-element-header {
+      flex: 3;
+
+      p {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .list-element-insights {
+      flex: 7;
+
+      .table {
+        border-collapse: collapse;
+
+        th, td {
+          border: 1px solid $gray300;
+          padding: .5rem 1rem;
+        }
+
+        tr {
+          th {
+            font-weight: 400;
+          }
+        }
+
+        td.image {
+          img {
+            width: 1.4rem;
+            height: 1.4rem;
+          }
+        }
+      }
     }
   }
 }

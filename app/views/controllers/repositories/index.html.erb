@@ -3,9 +3,16 @@
   <section class="list">
     <% @repositories.each do |repository| %>
       <div class="list-element">
-        <h2><%= repository.title %></h2>
-        <p>PRs count - <%= link_to repository.pull_requests.size, repository_path(repository.uuid) %></p>
-        <p><%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %></p>
+        <div class="list-element-header">
+          <h2><%= repository.title %></h2>
+          <p>PRs count - <%= link_to repository.pull_requests.size, repository_path(repository.uuid) %></p>
+          <p>
+            <%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %>
+          </p>
+        </div>
+        <div class="list-element-insights">
+          <%= render Views::Shared::InsightsComponent.new(insightable: repository) %>
+        </div>
       </div>
     <% end %>
   </section>

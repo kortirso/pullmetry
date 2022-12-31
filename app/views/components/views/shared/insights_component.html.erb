@@ -1,0 +1,23 @@
+<h2>Insights</h2>
+<table class="table" cellSpacing="0">
+  <thead>
+    <tr>
+      <th></th>
+      <th>User</th>
+      <th>Total comments</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @insightable.insights.includes(:entity).order(comments_count: :desc).each do |insight| %>
+      <tr>
+        <td class="image">
+          <%= link_to "https://github.com/#{insight.entity.login}" do %>
+            <%= image_tag insight.entity.avatar_url %>
+          <% end %>
+        </td>
+        <td><%= insight.entity.login %></td>
+        <td><%= insight.comments_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
