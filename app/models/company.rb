@@ -3,6 +3,7 @@
 class Company < ApplicationRecord
   include Uuidable
   include Tokenable
+  include Insightable
 
   belongs_to :user
 

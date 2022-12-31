@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Import
-  class SyncRepositoryService
+  class SyncPullRequestsService
     prepend ApplicationService
 
     def initialize(

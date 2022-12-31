@@ -3,11 +3,16 @@
   <section class="list">
     <% @companies.each do |company| %>
       <div class="list-element">
-        <h2><%= company.title %></h2>
-        <p>
-          Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
-        </p>
-        <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
+        <div class="list-element-header">
+          <h2><%= company.title %></h2>
+          <p>
+            Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
+          </p>
+          <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
+        </div>
+        <div class="list-element-insights">
+          <%= render Views::Shared::InsightsComponent.new(insightable: company) %>
+        </div>
       </div>
     <% end %>
   </section>
