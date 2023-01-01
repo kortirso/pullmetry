@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require 'que/web'
+
 Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
+  mount Que::Web => '/que'
 
   namespace :users do
     get 'sign_up', to: 'registrations#new'
