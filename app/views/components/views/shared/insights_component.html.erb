@@ -4,8 +4,11 @@
     <tr>
       <th></th>
       <th>User</th>
+      <th>Open PRs</th>
       <th>Total comments</th>
+      <th>Required reviews</th>
       <th>Total reviews</th>
+      <th>Average review time</th>
     </tr>
   </thead>
   <tbody>
@@ -17,8 +20,11 @@
           <% end %>
         </td>
         <td><%= insight.entity.login %></td>
+        <td><%= insight.open_pull_requests_count %></td>
         <td><%= insight.comments_count %></td>
+        <td><%= insight.required_reviews_count %></td>
         <td><%= insight.reviews_count %></td>
+        <td><%= convert_seconds(insight.average_review_seconds) %></td>
       </tr>
     <% end %>
   </tbody>
