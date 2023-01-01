@@ -67,6 +67,9 @@ group :development, :test do
 end
 
 group :development do
+  # security checks
+  gem 'brakeman'
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem 'rack-mini-profiler', '>= 2.3.3'
 
