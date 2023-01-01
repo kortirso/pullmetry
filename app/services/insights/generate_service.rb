@@ -11,7 +11,8 @@ module Insights
           insight = @insightable.insights.find_or_initialize_by(entity: entity)
           # TODO: need to add settings to company to have list of generated attributes of insights
           insight.update!(
-            comments_count: comments_count[entity.id].to_i
+            comments_count: comments_count[entity.id].to_i,
+            reviews_count: reviews_count[entity.id].to_i
           )
         end
       end
@@ -23,6 +24,12 @@ module Insights
     def comments_count
       @comments_count ||=
         @insightable.pull_requests_comments.joins(:pull_requests_entity).group('pull_requests_entities.entity_id').count
+    end
+
+    # this method returns { entity_id => reviews_count }
+    def reviews_count
+      @reviews_count ||=
+        @insightable.pull_requests_reviews.joins(:pull_requests_entity).group('pull_requests_entities.entity_id').count
     end
   end
 end

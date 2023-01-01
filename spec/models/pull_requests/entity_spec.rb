@@ -11,5 +11,6 @@ describe PullRequests::Entity do
     it { is_expected.to belong_to(:pull_request).class_name('::PullRequest') }
     it { is_expected.to belong_to(:entity).class_name('::Entity') }
     it { is_expected.to have_many(:pull_requests_comments).class_name('::PullRequests::Comment').dependent(:destroy) }
+    it { is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').dependent(:destroy) }
   end
 end

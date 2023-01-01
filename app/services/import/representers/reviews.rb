@@ -2,7 +2,7 @@
 
 module Import
   module Representers
-    class Comments
+    class Reviews
       def initialize(entity_representer: Entity.new)
         @entity_representer = entity_representer
       end
@@ -12,7 +12,7 @@ module Import
           payload = payload.with_indifferent_access
           {
             external_id: payload[:id].to_s,
-            comment_created_at: payload[:created_at],
+            review_created_at: payload[:submitted_at],
             author: @entity_representer.call(data: payload[:user])
           }
         end
