@@ -42,16 +42,3 @@
     }
   }
 }
-
-.table-list {
-  display: flex;
-  flex-direction: column;
-
-  .table-list-element {
-    display: flex;
-    background: $white;
-    padding: .5rem;
-    margin-bottom: .25rem;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 0.4rem 2rem, rgba(0, 0, 0, 0.18) 0px 0.15rem 0.5rem;
-  }
-}

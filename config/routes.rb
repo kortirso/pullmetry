@@ -25,6 +25,6 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: %i[index]
-  resources :repositories, only: %i[index show]
+  resources :repositories, only: %i[index]
   root 'welcome#index'
 end
