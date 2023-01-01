@@ -168,7 +168,8 @@ CREATE TABLE public.insights (
     entity_id bigint NOT NULL,
     comments_count integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    reviews_count integer DEFAULT 0
 );
 
 
@@ -789,6 +790,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221230134024'),
 ('20221230154819'),
 ('20221230184649'),
-('20221231194301');
+('20221231194301'),
+('20230101061815');
 
 
