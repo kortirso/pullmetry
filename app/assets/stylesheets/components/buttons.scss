@@ -20,4 +20,8 @@
   &.small {
     padding: .25rem .5rem;
   }
+
+  &.danger {
+    background: $red400;
+  }
 }

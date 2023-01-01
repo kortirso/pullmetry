@@ -7,11 +7,16 @@
     <% @companies.each do |company| %>
       <div class="list-element">
         <div class="list-element-header">
-          <h2><%= company.title %></h2>
-          <p>
-            Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
-          </p>
-          <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
+          <div>
+            <h2><%= company.title %></h2>
+            <p>
+              Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
+            </p>
+            <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
+          </div>
+          <div>
+            <%= button_to 'Destroy company', company_path(company.uuid), class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete company?')" %>
+          </div>
         </div>
         <div class="list-element-insights">
           <%= render Views::Shared::InsightsComponent.new(insightable: company) %>
