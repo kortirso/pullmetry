@@ -48,6 +48,9 @@ gem 'pghero'
 # http client
 gem 'faraday', '~> 2.0'
 
+# performance metrics
+gem 'skylight'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'master'
   gem 'rubocop', '~> 1.35', require: false
