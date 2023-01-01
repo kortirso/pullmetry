@@ -32,6 +32,8 @@ module Pullmetry
 
     config.active_record.schema_format = :sql
 
+    config.active_job.queue_adapter = :que
+
     config.autoload_paths << Rails.root.join('app/views/components')
     config.view_component.view_component_path = 'app/views/components'
 

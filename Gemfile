@@ -54,6 +54,10 @@ gem 'skylight'
 # bugs tracking
 gem 'bugsnag'
 
+# active jobs adapter
+gem 'que', '~> 2.2.0'
+gem 'que-web'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'master'
   gem 'rubocop', '~> 1.35', require: false
