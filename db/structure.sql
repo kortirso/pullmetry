@@ -340,7 +340,8 @@ CREATE TABLE public.repositories (
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    pull_requests_count integer
+    pull_requests_count integer,
+    start_from_pull_number integer
 );
 
 
@@ -791,6 +792,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221230154819'),
 ('20221230184649'),
 ('20221231194301'),
-('20230101061815');
+('20230101061815'),
+('20230101082827');
 
 
