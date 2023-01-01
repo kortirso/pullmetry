@@ -239,3 +239,6 @@ Rails/RedundantForeignKey:
 
 Naming/BlockForwarding:
   EnforcedStyle: explicit
+
+Rails/I18nLocaleTexts:
+  Enabled: false

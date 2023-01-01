@@ -99,7 +99,7 @@ describe CompaniesController do
     it_behaves_like 'required auth'
     it_behaves_like 'required email confirmation'
 
-    context 'for admin' do
+    context 'for logged users' do
       let!(:company) { create :company }
 
       sign_in_user
