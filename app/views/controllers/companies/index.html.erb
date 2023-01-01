@@ -1,5 +1,8 @@
 <%= render PageWrappers::PageComponent.new do %>
-  <h1>Companies</h1>
+  <div class="list-title flex justify-between items-center">
+    <h1>Companies</h1>
+    <%= link_to 'Create company', new_company_path, class: 'button' %>
+  </div>
   <section class="list">
     <% @companies.each do |company| %>
       <div class="list-element">

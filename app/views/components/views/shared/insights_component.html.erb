@@ -1,31 +1,35 @@
 <h2>Insights</h2>
-<table class="table" cellSpacing="0">
-  <thead>
-    <tr>
-      <th></th>
-      <th>User</th>
-      <th>Open PRs</th>
-      <th>Total comments</th>
-      <th>Required reviews</th>
-      <th>Total reviews</th>
-      <th>Average review time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @insightable.insights.includes(:entity).order(comments_count: :desc).each do |insight| %>
+<% if @insightable.insights.exists? %>
+  <table class="table" cellSpacing="0">
+    <thead>
       <tr>
-        <td class="image">
-          <%= link_to "https://github.com/#{insight.entity.login}" do %>
-            <%= image_tag insight.entity.avatar_url %>
-          <% end %>
-        </td>
-        <td><%= insight.entity.login %></td>
-        <td><%= insight.open_pull_requests_count %></td>
-        <td><%= insight.comments_count %></td>
-        <td><%= insight.required_reviews_count %></td>
-        <td><%= insight.reviews_count %></td>
-        <td><%= convert_seconds(insight.average_review_seconds) %></td>
+        <th></th>
+        <th>User</th>
+        <th>Open PRs</th>
+        <th>Total comments</th>
+        <th>Required reviews</th>
+        <th>Total reviews</th>
+        <th>Average review time</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @insightable.insights.includes(:entity).order(comments_count: :desc).each do |insight| %>
+        <tr>
+          <td class="image">
+            <%= link_to "https://github.com/#{insight.entity.login}" do %>
+              <%= image_tag insight.entity.avatar_url %>
+            <% end %>
+          </td>
+          <td><%= insight.entity.login %></td>
+          <td><%= insight.open_pull_requests_count %></td>
+          <td><%= insight.comments_count %></td>
+          <td><%= insight.required_reviews_count %></td>
+          <td><%= insight.reviews_count %></td>
+          <td><%= convert_seconds(insight.average_review_seconds) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no insights yet.</p>
+<% end %>
