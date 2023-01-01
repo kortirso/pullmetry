@@ -12,5 +12,14 @@ describe Company do
     it { is_expected.to have_many(:repositories).dependent(:destroy) }
     it { is_expected.to have_one(:access_token).dependent(:destroy) }
     it { is_expected.to have_many(:insights).dependent(:destroy) }
+    it { is_expected.to have_many(:entities).through(:repositories) }
+
+    it {
+      is_expected.to have_many(:pull_requests_comments).class_name('::PullRequests::Comment').through(:repositories)
+    }
+
+    it {
+      is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').through(:repositories)
+    }
   end
 end

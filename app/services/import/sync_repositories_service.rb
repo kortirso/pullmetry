@@ -25,6 +25,7 @@ module Import
         end
         @generate_insights_service.call(insightable: repository)
       end
+      @generate_insights_service.call(insightable: company)
     end
   end
 end
