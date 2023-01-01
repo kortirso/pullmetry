@@ -6,11 +6,13 @@ describe Import::Fetchers::PullRequests, type: :service do
   let(:repository) { create :repository, start_from_pull_number: start_from_pull_number }
   let(:fetch_client) { double }
   let(:fetch_service) { double }
+  let(:valid_date) { (Date.current - 25.days).strftime('%Y-%m-%d') }
+  let(:invalid_date) { (Date.current - 35.days).strftime('%Y-%m-%d') }
   let(:data) {
     [
       {
         'number' => 3,
-        'created_at' => '2011-04-11T20:09:31Z',
+        'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
           'external_id' => 1,
           'source' => Entity::GITHUB,
@@ -20,11 +22,21 @@ describe Import::Fetchers::PullRequests, type: :service do
       },
       {
         'number' => 2,
-        'created_at' => '2011-04-10T20:09:31Z',
+        'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
           'external_id' => 2,
           'source' => Entity::GITHUB,
           'login' => 'octocat2',
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+        }
+      },
+      {
+        'number' => 1,
+        'created_at' => "#{invalid_date}T20:09:31Z",
+        'author' => {
+          'external_id' => 3,
+          'source' => Entity::GITHUB,
+          'login' => 'octocat3',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
       }
