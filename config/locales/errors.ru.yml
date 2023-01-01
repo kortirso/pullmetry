@@ -4,7 +4,15 @@ ru:
       password_confirmation: Подтверждение пароля
       password: Пароль
       passwords: Пароли
+      title: Заголовок
+      name: Название
     errors:
+      company:
+        rules:
+          title:
+            filled?: не может быть пустым
+          name:
+            filled?: не может быть пустым
       user:
         password_length: должен быть больше или равняться %{length} символам
         rules:

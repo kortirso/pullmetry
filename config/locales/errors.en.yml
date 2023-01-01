@@ -3,6 +3,12 @@ en:
     rules:
       password_confirmation: Password confirmation
     errors:
+      company:
+        rules:
+          title:
+            filled?: can't be blank
+          name:
+            filled?: can't be blank
       user:
         password_length: must be greater or equal %{length} characters
         rules:

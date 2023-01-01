@@ -1,14 +1,22 @@
 <%= render PageWrappers::PageComponent.new do %>
-  <h1>Repositories</h1>
+  <div class="list-title flex justify-between items-center">
+    <h1>Repositories</h1>
+    <%= link_to 'Create repository', new_repository_path, class: 'button' %>
+  </div>
   <section class="list">
     <% @repositories.each do |repository| %>
       <div class="list-element">
-        <div class="list-element-header">
-          <h2><%= repository.title %></h2>
-          <p>PRs count - <%= repository.pull_requests.size %></p>
-          <p>
-            <%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %>
-          </p>
+        <div class="list-element-header flex flex-col justify-between">
+          <div>
+            <h2><%= repository.title %></h2>
+            <p>PRs count - <%= repository.pull_requests.size %></p>
+            <p>
+              <%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %>
+            </p>
+          </div>
+          <div>
+            <%= button_to 'Destroy repository', repository_path(repository.uuid), class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')" %>
+          </div>
         </div>
         <div class="list-element-insights">
           <%= render Views::Shared::InsightsComponent.new(insightable: repository) %>
