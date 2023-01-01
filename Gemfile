@@ -51,6 +51,9 @@ gem 'faraday', '~> 2.0'
 # performance metrics
 gem 'skylight'
 
+# bugs tracking
+gem 'bugsnag'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'master'
   gem 'rubocop', '~> 1.35', require: false

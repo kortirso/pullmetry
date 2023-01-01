@@ -91,6 +91,8 @@ GEM
     bcrypt (3.1.18)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
+    bugsnag (6.25.0)
+      concurrent-ruby (~> 1.0)
     builder (3.2.4)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
@@ -324,6 +326,7 @@ DEPENDENCIES
   awesome_print
   bcrypt (~> 3.1)
   bootsnap (>= 1.4.4)
+  bugsnag
   bullet!
   database_cleaner (~> 2.0)
   dry-validation (~> 1.10)
