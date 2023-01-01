@@ -7,6 +7,7 @@ module Import
 
       def initialize(repository:, fetch_client: GithubApi::Client)
         @fetch_client = fetch_client.new(repository: repository)
+        @start_from_pull_number = repository.start_from_pull_number
         @result = []
       end
 
@@ -16,11 +17,11 @@ module Import
           # default sorting is desc by created_at attribute
           # first comes newest PRs
           result = @fetch_client.pull_requests(params: { state: 'all', per_page: 25, page: page })
+          result = result.select { |pr| pr['number'] >= @start_from_pull_number } if @start_from_pull_number
           break if result.blank?
 
           @result.concat(result)
-          # TODO1: in this place @result can be limited by created_at timestamp (for example, PRs for last 30 days)
-          # TODO2: in this place @result can be limited by start_from_pull_number, to skip old PRs
+          # TODO: in this place @result can be limited by created_at timestamp (for example, PRs for last 30 days)
           page += 1
         end
       end
