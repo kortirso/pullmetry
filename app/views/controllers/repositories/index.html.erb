@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="list-element-insights">
-          <%= render Views::Shared::InsightsComponent.new(access_token: repository.access_token, insights: @insights) %>
+          <%= render Views::Shared::InsightsComponent.new(access_token: repository.access_token, insights: repository.insights) %>
         </div>
       </div>
     <% end %>

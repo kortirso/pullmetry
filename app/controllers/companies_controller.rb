@@ -2,7 +2,6 @@
 
 class CompaniesController < ApplicationController
   before_action :find_companies, only: %i[index]
-  before_action :find_insights, only: %i[index]
   before_action :find_company, only: %i[destroy]
 
   def index; end
@@ -28,11 +27,12 @@ class CompaniesController < ApplicationController
   private
 
   def find_companies
-    @companies = Current.user.companies.includes(:access_token)
-  end
-
-  def find_insights
-    @insights = Insight.where(insightable: @companies).includes(:entity).order(comments_count: :desc)
+    @companies =
+      Current
+      .user
+      .companies
+      .includes(:access_token, insights: :entity)
+      .order('insights.insightable_id ASC, insights.comments_count DESC')
   end
 
   def find_company
