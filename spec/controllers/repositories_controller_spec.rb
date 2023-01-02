@@ -3,7 +3,6 @@
 describe RepositoriesController do
   describe 'GET#index' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -47,7 +46,6 @@ describe RepositoriesController do
 
   describe 'GET#new' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -66,7 +64,6 @@ describe RepositoriesController do
 
   describe 'POST#create' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -153,7 +150,6 @@ describe RepositoriesController do
 
   describe 'DELETE#destroy' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       let!(:repository) { create :repository }

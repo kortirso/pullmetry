@@ -13,7 +13,7 @@ FactoryBot.define do
 
   factory :oauth_info, class: 'OmniAuth::AuthHash::InfoHash' do
     email { 'test@email.com' }
-    login { 'test_first_name' }
+    nickname { 'test_first_name' }
   end
 
   factory :oauth_credentials, class: 'OmniAuth::AuthHash' do

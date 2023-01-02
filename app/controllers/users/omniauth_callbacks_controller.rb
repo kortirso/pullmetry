@@ -4,7 +4,6 @@ module Users
   class OmniauthCallbacksController < ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate
-    skip_before_action :check_email_confirmation
 
     def create
       auth = request.env['omniauth.auth']

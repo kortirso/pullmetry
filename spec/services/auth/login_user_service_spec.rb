@@ -18,7 +18,7 @@ describe Auth::LoginUserService, type: :service do
       expect { service_call }.to change(Identity, :count).by(1)
     end
 
-    it 'new Identity has params from oauth and belongs to new User' do
+    it 'new Identity has params from oauth and belongs to new User', :aggregate_failures do
       user = service_call.result
 
       identity = Identity.last
@@ -44,7 +44,7 @@ describe Auth::LoginUserService, type: :service do
       expect { service_call }.to change(Identity, :count).by(1)
     end
 
-    it 'new Identity has params from oauth and belongs to existed user' do
+    it 'new Identity has params from oauth and belongs to existed user', :aggregate_failures do
       service_call
 
       identity = Identity.last
@@ -57,7 +57,8 @@ describe Auth::LoginUserService, type: :service do
 
   context 'for existed user with identity' do
     let!(:user) { create :user, email: oauth.info[:email] }
-    let!(:identity) { create :identity, uid: oauth.uid, user: user }
+
+    before { create :identity, uid: oauth.uid, user: user }
 
     it 'does not create new User' do
       expect { service_call }.not_to change(User, :count)

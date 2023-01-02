@@ -4,7 +4,7 @@ describe Users::CreateService, type: :service do
   subject(:service_call) { described_class.call(params: params) }
 
   context 'for invalid params' do
-    let(:params) { { email: '1gmail.com', password: '1234qwer', password_confirmation: '1234qwer' } }
+    let(:params) { { email: '' } }
 
     it 'does not create User' do
       expect { service_call }.not_to change(User, :count)
@@ -16,7 +16,7 @@ describe Users::CreateService, type: :service do
   end
 
   context 'for valid params' do
-    let(:params) { { email: '1@gmail.com', password: '1234qwer', password_confirmation: '1234qwer' } }
+    let(:params) { { email: '1@gmail.com' } }
 
     it 'creates User' do
       expect { service_call }.to change(User, :count).by(1)
