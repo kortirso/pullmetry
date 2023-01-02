@@ -1,7 +1,5 @@
 en:
   dry_validation:
-    rules:
-      password_confirmation: Password confirmation
     errors:
       company:
         rules:
@@ -10,14 +8,7 @@ en:
           name:
             filled?: can't be blank
       user:
-        password_length: must be greater or equal %{length} characters
         rules:
           email:
             filled?: can't be blank
             invalid: has invalid format
-          password:
-            filled?: can't be blank
-          password_confirmation:
-            filled?: can't be blank
-          passwords:
-            different: must be equal

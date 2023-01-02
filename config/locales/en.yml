@@ -8,73 +8,15 @@ en:
         home: Home
         logout: Logout
         change_locale: Change locale
-        login: Login
-        sign_up: Sign Up
-        restore: Restore password
   controllers:
     application:
       page_not_found: Page is not found
     authentication:
       permission: Permission is denied
     users:
-      registrations:
-        success_create: You are signed up
       sessions:
-        success_create: You are logged in
         success_destroy: You are logged out
-        invalid: Invalid credentials
-      confirmations:
-        success: Your account is confirmed
-        failure: Your account can't be confirmed
-      restore:
-        success: Email with restore link was send
-        invalid: Password can't be restore
-      recovery:
-        success: Password is changed
-        invalid: Password can't be changed
   services:
     users:
       create:
         email_exists: Email is already used
-        invalid: Credentials are invalid
-  views:
-    users:
-      registrations:
-        new:
-          sing_up: Sign up
-          password: Password
-          password_confirmation: Password confirmation
-          create: Sign up
-          have_account: Already have account?
-        confirm:
-          title: Thank you for registration
-          description: You need to check your mailbox to verify your email and gaining access to Pullmetry
-      sessions:
-        new:
-          login: Login
-          sign_in: Sign in
-          no_account: Don't have account?
-          forgot: Forgot password?
-      restore:
-        new:
-          title: Password recovery
-          description: We will send email message with recovery link to your address
-          action: Restore
-      recovery:
-        new:
-          title: Set new password
-          action: Confirm
-      confirmations:
-        failed_complete:
-          title: Email can't be verified
-          description: Invalid credentials for email confirmation
-  mailers:
-    users:
-      auth:
-        confirmation_email:
-          subject: Confirmation email from Pullmetry
-          h1: Welcome to Pullmetry
-          click: Click link below to verify your account
-        password_restore_email:
-          subject: Password recovery link from Pullmetry
-          click: Click link below to restore your password
