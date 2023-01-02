@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount Que::Web => '/que'
 
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
+  get 'logout', to: 'users/omniauth_callbacks#destroy'
 
   resources :companies, only: %i[index new create destroy]
   resources :repositories, only: %i[index new create destroy]

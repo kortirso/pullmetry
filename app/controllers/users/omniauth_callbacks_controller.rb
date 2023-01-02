@@ -17,5 +17,11 @@ module Users
         redirect_to root_path, flash: { manifesto_username: true }
       end
     end
+
+    def destroy
+      # TODO: Here can be destroying token from database
+      session[:pullmetry_token] = nil
+      redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
+    end
   end
 end
