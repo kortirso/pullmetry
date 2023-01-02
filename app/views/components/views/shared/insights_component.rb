@@ -9,8 +9,9 @@ module Views
       MINUTES_IN_HOUR = 60
       HOURS_IN_DAY = 24
 
-      def initialize(insightable:)
-        @insightable = insightable
+      def initialize(access_token:, insights:)
+        @access_token = access_token
+        @insights = insights
 
         super()
       end

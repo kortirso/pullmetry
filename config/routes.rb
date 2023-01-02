@@ -26,5 +26,6 @@ Rails.application.routes.draw do
 
   resources :companies, only: %i[index new create destroy]
   resources :repositories, only: %i[index new create destroy]
+  resources :access_tokens, only: %i[new create]
   root 'welcome#index'
 end

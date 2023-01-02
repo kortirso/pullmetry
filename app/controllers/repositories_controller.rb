@@ -2,6 +2,7 @@
 
 class RepositoriesController < ApplicationController
   before_action :find_repositories, only: %i[index]
+  before_action :find_insights, only: %i[index]
   before_action :find_company, only: %i[create]
   before_action :find_repository, only: %i[destroy]
 
@@ -29,10 +30,14 @@ class RepositoriesController < ApplicationController
   private
 
   def find_repositories
-    @repositories = Current.user.repositories.includes(:company)
+    @repositories = Current.user.repositories.includes(:company, :access_token)
     return unless params[:company_id]
 
     @repositories = @repositories.where(company_id: Current.user.companies.find_by(uuid: params[:company_id]))
+  end
+
+  def find_insights
+    @insights = Insight.where(insightable: @repositories).includes(:entity).order(comments_count: :desc)
   end
 
   def find_company

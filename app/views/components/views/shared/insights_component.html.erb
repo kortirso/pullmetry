@@ -1,5 +1,5 @@
 <h2>Insights</h2>
-<% if @insightable.insights.exists? %>
+<% if @insights.load.size.positive? %>
   <table class="table" cellSpacing="0">
     <thead>
       <tr>
@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @insightable.insights.includes(:entity).order(comments_count: :desc).each do |insight| %>
+      <% @insights.each do |insight| %>
         <tr>
           <td class="image">
             <%= link_to "https://github.com/#{insight.entity.login}" do %>
@@ -31,5 +31,9 @@
     </tbody>
   </table>
 <% else %>
-  <p>There are no insights yet.</p>
+  <% if @access_token %>
+    <p>There are no insights yet.</p>
+  <% else %>
+    <p>You need to add access token first.</p>
+  <% end %>
 <% end %>
