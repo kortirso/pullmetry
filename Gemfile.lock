@@ -169,10 +169,6 @@ GEM
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
     jwt (2.6.0)
-    launchy (2.5.2)
-      addressable (~> 2.8)
-    letter_opener (1.8.1)
-      launchy (>= 2.2, < 3)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -388,7 +384,6 @@ DEPENDENCIES
   foreman
   json_spec (= 1.1.5)
   jwt (~> 2.5)
-  letter_opener
   octokit (~> 4.0)
   omniauth
   omniauth-github!
