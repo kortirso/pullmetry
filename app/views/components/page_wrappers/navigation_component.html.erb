@@ -10,8 +10,7 @@
     <% if Current.user %>
       <%= link_to t('components.page_wrappers.users_component.logout'), users_logout_path %>
     <% else %>
-      <%= link_to t('components.page_wrappers.users_component.login'), users_login_path %>
-      <%= link_to t('components.page_wrappers.users_component.sign_up'), users_sign_up_path %>
+      <%= link_to 'Github', 'https://github.com/login/oauth/authorize?client_id=Iv1.cdd880194d1f861c' %>
     <% end %>
   </div>
 </header>

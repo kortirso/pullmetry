@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :companies, dependent: :destroy
   has_many :repositories, through: :companies
 
+  has_many :identities, dependent: :destroy
+
   scope :not_confirmed, -> { where(confirmed_at: nil) }
 
   def confirmed?

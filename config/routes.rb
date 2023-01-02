@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
   mount Que::Web => '/que'
 
+  get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
+
   namespace :users do
     get 'sign_up', to: 'registrations#new'
     post 'sign_up', to: 'registrations#create'
