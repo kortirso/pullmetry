@@ -365,6 +365,41 @@ ALTER SEQUENCE public.entities_id_seq OWNED BY public.entities.id;
 
 
 --
+-- Name: identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.identities (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    uid character varying NOT NULL,
+    provider integer DEFAULT 0 NOT NULL,
+    email character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    login character varying
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
+
+
+--
 -- Name: insights; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -640,12 +675,8 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     uuid uuid NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
-    password_digest character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    confirmation_token character varying,
-    confirmed_at timestamp(6) without time zone,
-    restore_token character varying
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -719,6 +750,13 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 --
 
 ALTER TABLE ONLY public.entities ALTER COLUMN id SET DEFAULT nextval('public.entities_id_seq'::regclass);
+
+
+--
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
 
 
 --
@@ -814,6 +852,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -952,6 +998,20 @@ CREATE UNIQUE INDEX index_entities_on_source_and_external_id ON public.entities 
 --
 
 CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid);
+
+
+--
+-- Name: index_identities_on_uid_and_provider; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_identities_on_uid_and_provider ON public.identities USING btree (uid, provider);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
 
 
 --
@@ -1127,6 +1187,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230101061815'),
 ('20230101082827'),
 ('20230101101434'),
-('20230101151400');
+('20230101151400'),
+('20230102171638'),
+('20230102190258'),
+('20230102191844');
 
 

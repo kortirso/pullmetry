@@ -58,6 +58,11 @@ gem 'bugsnag'
 gem 'que', '~> 2.2.0'
 gem 'que-web'
 
+# oauth
+gem 'omniauth'
+gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
+gem 'omniauth-rails_csrf_protection'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'master'
   gem 'rubocop', '~> 1.35', require: false
@@ -74,7 +79,7 @@ group :development do
   # gem 'rack-mini-profiler', '>= 2.3.3'
 
   # email previews
-  gem 'letter_opener'
+  # gem 'letter_opener'
 end
 
 group :test do

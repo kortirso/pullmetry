@@ -3,7 +3,6 @@
 describe CompaniesController do
   describe 'GET#index' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -37,7 +36,6 @@ describe CompaniesController do
 
   describe 'GET#new' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -56,7 +54,6 @@ describe CompaniesController do
 
   describe 'POST#create' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       sign_in_user
@@ -97,7 +94,6 @@ describe CompaniesController do
 
   describe 'DELETE#destroy' do
     it_behaves_like 'required auth'
-    it_behaves_like 'required email confirmation'
 
     context 'for logged users' do
       let!(:company) { create :company }
