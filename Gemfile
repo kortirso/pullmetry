@@ -59,7 +59,6 @@ gem 'que', '~> 2.2.0'
 gem 'que-web'
 
 # oauth
-gem 'octokit', '~> 4.0'
 gem 'omniauth'
 gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
 gem 'omniauth-rails_csrf_protection'
