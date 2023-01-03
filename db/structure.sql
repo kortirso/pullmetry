@@ -306,7 +306,9 @@ CREATE TABLE public.companies (
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    repositories_count integer
+    repositories_count integer,
+    work_start_time time without time zone,
+    work_end_time time without time zone
 );
 
 
@@ -1199,6 +1201,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230102171638'),
 ('20230102190258'),
 ('20230102191844'),
-('20230103153335');
+('20230103153335'),
+('20230103184140');
 
 

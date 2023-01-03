@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
   get 'logout', to: 'users/omniauth_callbacks#destroy'
 
-  resources :companies, only: %i[index new create destroy]
+  resources :companies, except: %i[show]
   resources :repositories, only: %i[index new create destroy]
   resources :access_tokens, only: %i[new create]
   root 'welcome#index'

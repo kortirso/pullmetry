@@ -5,5 +5,5 @@ class CompanyPolicy < ApplicationPolicy
     user.id == record.user_id
   end
 
-  alias_rule :destroy?, to: :update?
+  alias_rule :edit?, :destroy?, to: :update?
 end

@@ -10,7 +10,7 @@
 
 .list-form {
   form {
-    min-width: 25rem;
+    width: 25rem;
     display: inline-block;
     background: $white;
     padding: 1.5rem;
@@ -37,6 +37,10 @@
       }
 
       .insightable-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+
         a {
           margin-bottom: .5rem;
         }

@@ -52,6 +52,46 @@ describe CompaniesController do
     end
   end
 
+  describe 'GET#edit' do
+    it_behaves_like 'required auth'
+
+    context 'for logged users' do
+      let!(:company) { create :company }
+
+      sign_in_user
+
+      context 'for not existing company' do
+        it 'renders 404 page' do
+          do_request
+
+          expect(response).to render_template 'shared/404'
+        end
+      end
+
+      context 'for not existing user company' do
+        it 'renders 404 page' do
+          get :edit, params: { id: company.uuid, locale: 'en' }
+
+          expect(response).to render_template 'shared/404'
+        end
+      end
+
+      context 'for existing user company' do
+        before { company.update!(user: @current_user) }
+
+        it 'renders new template' do
+          get :edit, params: { id: company.uuid, locale: 'en' }
+
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    def do_request
+      get :edit, params: { id: 'unexisting', locale: 'en' }
+    end
+  end
+
   describe 'POST#create' do
     it_behaves_like 'required auth'
 
@@ -89,6 +129,72 @@ describe CompaniesController do
 
     def do_request
       post :create, params: { company: { title: '', name: '' }, locale: 'en' }
+    end
+  end
+
+  describe 'PATCH#update' do
+    it_behaves_like 'required auth'
+
+    context 'for logged users' do
+      let!(:company) { create :company }
+
+      sign_in_user
+
+      context 'for not existing company' do
+        it 'renders 404 page' do
+          do_request
+
+          expect(response).to render_template 'shared/404'
+        end
+      end
+
+      context 'for not existing user company' do
+        it 'renders 404 page' do
+          patch :update, params: { id: company.uuid, company: { title: '', name: '' }, locale: 'en' }
+
+          expect(response).to render_template 'shared/404'
+        end
+      end
+
+      context 'for existing user company' do
+        before { company.update!(user: @current_user) }
+
+        context 'for invalid params' do
+          let(:request) { patch :update, params: { id: company.uuid, company: { title: '' }, locale: 'en' } }
+
+          it 'does not update company' do
+            request
+
+            expect(company.reload.title).not_to eq ''
+          end
+
+          it 'redirects to edit_company_path' do
+            request
+
+            expect(response).to redirect_to edit_company_path(company.uuid)
+          end
+        end
+
+        context 'for valid params' do
+          let(:request) { patch :update, params: { id: company.uuid, company: { title: 'New title' }, locale: 'en' } }
+
+          it 'updates company' do
+            request
+
+            expect(company.reload.title).to eq 'New title'
+          end
+
+          it 'redirects to companies_path' do
+            request
+
+            expect(response).to redirect_to companies_path
+          end
+        end
+      end
+    end
+
+    def do_request
+      patch :update, params: { id: 'unexisting', company: { title: '', name: '' }, locale: 'en' }
     end
   end
 
