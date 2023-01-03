@@ -2,6 +2,7 @@
 
 class RepositoriesController < ApplicationController
   before_action :find_repositories, only: %i[index]
+  before_action :filter_repositories, only: %i[index]
   before_action :find_company, only: %i[create]
   before_action :find_repository, only: %i[destroy]
 
@@ -30,14 +31,21 @@ class RepositoriesController < ApplicationController
 
   def find_repositories
     @repositories =
-      Current
-      .user
-      .repositories
+      Repository
+      .of_user(Current.user.id)
+      .or(
+        Repository
+        .not_of_user(Current.user.id)
+        .where(id: Current.user.insights.of_type_ids('Repository'))
+      )
       .includes(:company, :access_token, insights: :entity)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
+  end
+
+  def filter_repositories
     return unless params[:company_id]
 
-    @repositories = @repositories.where(company_id: Current.user.companies.find_by(uuid: params[:company_id]))
+    @repositories = @repositories.where(company_id: Company.find_by(uuid: params[:company_id]))
   end
 
   def find_company
