@@ -15,7 +15,7 @@ describe UserValidator, type: :service do
     let(:params) { { email: '1@gmail.com' } }
 
     it 'result does not contain errors' do
-      expect(validator_call.size.zero?).to be_truthy
+      expect(validator_call.empty?).to be_truthy
     end
   end
 end
