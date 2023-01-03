@@ -14,10 +14,12 @@
               <%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %>
             </p>
           </div>
-          <div class="insightable-actions">
-            <%= link_to (repository.access_token ? 'Refresh access token' : 'Add access token'), new_access_token_path(tokenable_uuid: repository.uuid, tokenable_type: 'Repository'), class: 'button' %>
-            <%= button_to 'Destroy repository', repository_path(repository.uuid), class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')" %>
-          </div>
+          <% if allowed_to?(:update?, repository) %>
+            <div class="insightable-actions">
+              <%= link_to (repository.access_token ? 'Refresh access token' : 'Add access token'), new_access_token_path(tokenable_uuid: repository.uuid, tokenable_type: 'Repository'), class: 'button' %>
+              <%= button_to 'Destroy repository', repository_path(repository.uuid), class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')" %>
+            </div>
+          <% end %>
         </div>
         <div class="list-element-insights">
           <%= render Views::Shared::InsightsComponent.new(access_token: repository.access_token, insights: repository.insights) %>

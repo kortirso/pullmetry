@@ -24,8 +24,8 @@ class AccessTokensController < ApplicationController
   def find_tokenable
     @tokenable =
       case params[:tokenable_type]
-      when 'Company' then Current.user.companies.find_by!(uuid: params[:tokenable_uuid])
-      when 'Repository' then Current.user.repositories.find_by!(uuid: params[:tokenable_uuid])
+      when 'Company' then current_user.companies.find_by!(uuid: params[:tokenable_uuid])
+      when 'Repository' then current_user.repositories.find_by!(uuid: params[:tokenable_uuid])
       end
 
     redirect_to companies_path, alert: 'Valid tokenable for access token is not found' unless @tokenable

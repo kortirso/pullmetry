@@ -10,7 +10,7 @@ class RepositoriesController < ApplicationController
 
   def new
     @repository = Repository.new
-    @companies = Current.user.companies.pluck(:name, :uuid)
+    @companies = current_user.companies.pluck(:name, :uuid)
   end
 
   def create
@@ -23,6 +23,7 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
+    authorize! @repository
     @repository.destroy
     redirect_to repositories_path, notice: "Repository #{@repository.title} is destroyed"
   end
@@ -32,11 +33,11 @@ class RepositoriesController < ApplicationController
   def find_repositories
     @repositories =
       Repository
-      .of_user(Current.user.id)
+      .of_user(current_user.id)
       .or(
         Repository
-        .not_of_user(Current.user.id)
-        .where(id: Current.user.insights.of_type_ids('Repository'))
+        .not_of_user(current_user.id)
+        .where(id: current_user.insights.of_type_ids('Repository'))
       )
       .includes(:company, :access_token, insights: :entity)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
@@ -49,12 +50,12 @@ class RepositoriesController < ApplicationController
   end
 
   def find_company
-    @company = Current.user.companies.find_by(uuid: params[:repository][:company_uuid])
+    @company = current_user.companies.find_by(uuid: params[:repository][:company_uuid])
     redirect_to new_repository_path, alert: 'Company does not exist' unless @company
   end
 
   def find_repository
-    @repository = Current.user.repositories.find_by!(uuid: params[:id])
+    @repository = current_user.repositories.find_by!(uuid: params[:id])
   end
 
   def repository_params

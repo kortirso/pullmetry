@@ -4,12 +4,12 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
-    before_action :current_user
+    before_action :set_current_user
   end
 
   private
 
-  def current_user
+  def set_current_user
     return unless session[:pullmetry_token]
 
     auth_call = Auth::FetchUserService.call(token: session[:pullmetry_token])
@@ -18,8 +18,12 @@ module Authentication
     Current.user ||= auth_call.result
   end
 
+  def current_user
+    Current.user
+  end
+
   def authenticate
-    return if Current.user
+    return if current_user
 
     redirect_to root_path, alert: t('controllers.authentication.permission')
   end
