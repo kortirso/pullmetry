@@ -10,7 +10,10 @@
     <% if Current.user %>
       <%= link_to t('components.page_wrappers.users_component.logout'), logout_path %>
     <% else %>
-      <%= link_to 'Github', "https://github.com/login/oauth/authorize?client_id=#{Rails.application.credentials.dig(:github_oauth, :development, :client_id)}" %>
+      <p id="auth-links">
+        <span>Login with</span>
+        <%= link_to image_tag('github.svg', width: 20, height: 20), "https://github.com/login/oauth/authorize?client_id=#{Rails.application.credentials.dig(:github_oauth, :development, :client_id)}" %>
+      </p>
     <% end %>
   </div>
 </header>
