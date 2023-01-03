@@ -13,6 +13,9 @@ class Repository < ApplicationRecord
   has_many :pull_requests_reviews, -> { distinct }, class_name: '::PullRequests::Review', through: :pull_requests
   has_many :entities, -> { distinct }, through: :pull_requests
 
+  scope :of_user, ->(user_id) { joins(:company).where(companies: { user_id: user_id }) }
+  scope :not_of_user, ->(user_id) { joins(:company).where.not(companies: { user_id: user_id }) }
+
   def fetch_access_token
     access_token || company.access_token
   end

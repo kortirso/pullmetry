@@ -341,7 +341,8 @@ CREATE TABLE public.entities (
     login character varying,
     avatar_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    identity_id bigint
 );
 
 
@@ -987,6 +988,13 @@ CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uui
 
 
 --
+-- Name: index_entities_on_identity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_entities_on_identity_id ON public.entities USING btree (identity_id);
+
+
+--
 -- Name: index_entities_on_source_and_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1190,6 +1198,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230101151400'),
 ('20230102171638'),
 ('20230102190258'),
-('20230102191844');
+('20230102191844'),
+('20230103153335');
 
 

@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   include Authentication
 
+  authorize :user, through: :current_user
+
   before_action :authenticate, except: %i[page_not_found]
 
   rescue_from ActiveRecord::RecordNotFound, with: :page_not_found

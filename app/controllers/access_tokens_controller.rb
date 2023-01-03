@@ -4,10 +4,12 @@ class AccessTokensController < ApplicationController
   before_action :find_tokenable
 
   def new
+    authorize! @tokenable, to: :update?
     @access_token = AccessToken.new
   end
 
   def create
+    authorize! @tokenable, to: :update?
     service_call = AccessTokens::CreateService.call(tokenable: @tokenable, params: access_token_params)
     if service_call.success?
       redirect_to redirect_path, notice: 'Access token is created'
@@ -24,8 +26,8 @@ class AccessTokensController < ApplicationController
   def find_tokenable
     @tokenable =
       case params[:tokenable_type]
-      when 'Company' then Current.user.companies.find_by!(uuid: params[:tokenable_uuid])
-      when 'Repository' then Current.user.repositories.find_by!(uuid: params[:tokenable_uuid])
+      when 'Company' then current_user.companies.find_by!(uuid: params[:tokenable_uuid])
+      when 'Repository' then current_user.repositories.find_by!(uuid: params[:tokenable_uuid])
       end
 
     redirect_to companies_path, alert: 'Valid tokenable for access token is not found' unless @tokenable

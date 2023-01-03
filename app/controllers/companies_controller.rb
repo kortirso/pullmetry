@@ -11,7 +11,7 @@ class CompaniesController < ApplicationController
   end
 
   def create
-    service_call = Companies::CreateService.call(user: Current.user, params: company_params)
+    service_call = Companies::CreateService.call(user: current_user, params: company_params)
     if service_call.success?
       redirect_to companies_path, notice: "Company #{service_call.result.title} is created"
     else
@@ -20,6 +20,7 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
+    authorize! @company
     @company.destroy
     redirect_to companies_path, notice: "Company #{@company.title} is destroyed"
   end
@@ -28,15 +29,19 @@ class CompaniesController < ApplicationController
 
   def find_companies
     @companies =
-      Current
-      .user
-      .companies
+      Company
+      .where(user_id: current_user.id)
+      .or(
+        Company
+        .where.not(user_id: current_user.id)
+        .where(id: current_user.insights.of_type_ids('Company'))
+      )
       .includes(:access_token, insights: :entity)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
   end
 
   def find_company
-    @company = Current.user.companies.find_by!(uuid: params[:id])
+    @company = current_user.companies.find_by!(uuid: params[:id])
   end
 
   def company_params

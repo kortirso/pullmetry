@@ -5,6 +5,8 @@ class Identity < ApplicationRecord
 
   belongs_to :user
 
+  has_many :entities, dependent: :nullify
+
   enum provider: { GITHUB => 0 }
 
   def self.find_for_oauth(auth)
