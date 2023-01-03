@@ -23,7 +23,7 @@ describe Import::Savers::Comments, type: :service do
         author: {
           external_id: 2,
           source: Entity::GITHUB,
-          login: 'octocat',
+          login: 'octocat2',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         }
       }
@@ -41,6 +41,14 @@ describe Import::Savers::Comments, type: :service do
 
     it 'creates 2 comments' do
       expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
+    end
+
+    context 'when there are identity' do
+      let!(:identity) { create :identity, provider: Identity::GITHUB, login: 'octocat' }
+
+      it 'attaches entity to identity' do
+        expect { service_call }.to change(identity.entities, :count).by(1)
+      end
     end
 
     context 'when there are entities' do
