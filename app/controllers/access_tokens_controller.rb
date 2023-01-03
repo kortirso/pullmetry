@@ -4,10 +4,12 @@ class AccessTokensController < ApplicationController
   before_action :find_tokenable
 
   def new
+    authorize! @tokenable, to: :update?
     @access_token = AccessToken.new
   end
 
   def create
+    authorize! @tokenable, to: :update?
     service_call = AccessTokens::CreateService.call(tokenable: @tokenable, params: access_token_params)
     if service_call.success?
       redirect_to redirect_path, notice: 'Access token is created'
