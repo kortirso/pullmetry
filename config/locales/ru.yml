@@ -6,8 +6,9 @@ ru:
     page_wrappers:
       users_component:
         home: Главная
+        companies: Компании
+        repositories: Репозитории
         logout: Выход
-        change_locale: Изменить локаль
   controllers:
     application:
       page_not_found: Страница не найдена
@@ -16,7 +17,3 @@ ru:
     users:
       sessions:
         success_destroy: Вы вышли
-  services:
-    users:
-      create:
-        email_exists: Email уже используется
