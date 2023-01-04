@@ -1,0 +1,12 @@
+#company_use_work_time {
+  width: auto;
+  margin-bottom: 1rem;
+}
+
+#company_use_work_time+#work-times {
+  display: none;
+}
+
+#company_use_work_time:checked+#work-times {
+  display: block;
+}
