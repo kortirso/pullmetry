@@ -11,10 +11,4 @@ class User < ApplicationRecord
   has_many :identities, dependent: :destroy
   has_many :entities, through: :identities
   has_many :insights, -> { distinct }, through: :entities
-
-  scope :not_confirmed, -> { where(confirmed_at: nil) }
-
-  def confirmed?
-    confirmed_at.present?
-  end
 end

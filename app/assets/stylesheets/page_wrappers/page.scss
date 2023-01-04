@@ -8,8 +8,21 @@
   overflow-x: hidden;
 
   .page-content {
+    flex: 1;
     width: 100%;
     max-width: 90rem;
     margin: 2rem auto;
+
+    &.welcome-page {
+      max-width: none;
+      margin: 0;
+      padding: 0 4rem;
+      background: $white;
+
+      .global-container {
+        max-width: 90rem;
+        margin: 2rem auto;
+      }
+    }
   }
 }

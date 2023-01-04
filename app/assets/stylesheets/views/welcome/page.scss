@@ -1,0 +1,50 @@
+#welcome-box {
+  padding: 7.5rem 0;
+
+  h1 {
+    font-size: 2.25rem;
+    line-height: 3rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 2rem;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+#benefits-box {
+  max-width: 60rem;
+  margin: 2rem auto;
+
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    line-height: 3rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      line-height: 2rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 60rem) {
+  #welcome-box {
+    padding: 4rem 0 0;
+  }
+
+  #benefits-box {
+    margin: 1rem 0;
+  }
+}

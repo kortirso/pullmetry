@@ -1,1 +1,23 @@
-<%= render PageWrappers::PageComponent.new %>
+<div class="page-container">
+  <%= render PageWrappers::NavigationComponent.new %>
+  <div class="page-content welcome-page">
+    <section id="welcome-box" class="global-container main-container">
+      <div class="half-container flex flex-col justify-center">
+        <h1>Pull requests relevant statistic</h1>
+        <p>Monitor pull requests for your repositories and get relevant statistics of reviewing and commenting pull requests.</p>
+      </div>
+      <div class="half-container">
+        <%= image_tag 'screenshot.webp' %>
+      </div>
+    </section>
+    <section id="benefits-box">
+      <h2>What do you get from the application</h2>
+      <ul>
+        <li>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for whole company, all information gathered from Github automatically</li>
+        <li>Customizeable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</li>
+        <li>Pull requests, reviewers and comments data is collected through Github API</li>
+        <li>Coming soon features: Slack integration, Gitlab and Bitbucket API integration</li>
+      </ul>
+    </section>
+  </div>
+</div>
