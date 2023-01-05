@@ -25,6 +25,24 @@ describe Insights::GenerateService, type: :service do
       end
     end
 
+    context 'for existing old insight' do
+      let!(:entity3) { create :entity, external_id: '3' }
+
+      before { create :insight, insightable: insightable, entity: entity3, comments_count: 1 }
+
+      it 'creates 2 new insights' do
+        service_call
+
+        expect(insightable.insights.pluck(:entity_id)).to match_array([entity1.id, entity2.id])
+      end
+
+      it 'destroys old insight' do
+        service_call
+
+        expect(insightable.insights.where(entity_id: entity3.id)).to be_empty
+      end
+    end
+
     context 'for existing insight' do
       let!(:insight) { create :insight, insightable: insightable, entity: entity1, comments_count: 0 }
 

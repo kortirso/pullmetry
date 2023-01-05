@@ -12,6 +12,7 @@ module Insights
       @insightable = insightable
       @entity_ids = @insightable.entities.pluck(:id)
       ActiveRecord::Base.transaction do
+        remove_old_insights
         @entity_ids.each do |entity_id|
           insight = @insightable.insights.find_or_initialize_by(entity_id: entity_id)
           insight.update!(insight_attributes(entity_id))
@@ -20,6 +21,10 @@ module Insights
     end
 
     private
+
+    def remove_old_insights
+      @insightable.insights.where.not(entity_id: @entity_ids).destroy_all
+    end
 
     # TODO: need to add settings to company to have list of generated attributes of insights
     def insight_attributes(entity_id)
