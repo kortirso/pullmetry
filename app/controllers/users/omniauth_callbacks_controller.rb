@@ -12,7 +12,7 @@ module Users
       user = ::Auth::LoginUserService.call(auth: auth).result
       if user
         session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
-        redirect_to companies_path
+        redirect_to companies_path, notice: 'Successful login'
       else
         redirect_to root_path, flash: { manifesto_username: true }
       end
