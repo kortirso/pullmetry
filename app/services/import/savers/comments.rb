@@ -46,7 +46,10 @@ module Import
       end
 
       def create_comment(pr_entity, payload)
-        pr_entity.pull_requests_comments.create!(payload)
+        pr_entity
+          .pull_requests_comments
+          .create_with(comment_created_at: payload[:comment_created_at])
+          .find_or_create_by!(external_id: payload[:external_id])
       end
     end
   end

@@ -47,7 +47,10 @@ module Import
       end
 
       def create_review(pr_entity, payload)
-        pr_entity.pull_requests_reviews.create!(payload)
+        pr_entity
+          .pull_requests_reviews
+          .create_with(review_created_at: payload[:review_created_at])
+          .find_or_create_by!(external_id: payload[:external_id])
       end
     end
   end
