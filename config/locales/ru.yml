@@ -1,8 +1,5 @@
 ru:
   components:
-    shared:
-      page_not_found_component:
-        title: Страница не найдена
     page_wrappers:
       users_component:
         home: Главная
@@ -10,8 +7,6 @@ ru:
         repositories: Репозитории
         logout: Выход
   controllers:
-    application:
-      page_not_found: Страница не найдена
     authentication:
       permission: Необходимо войти
     users:

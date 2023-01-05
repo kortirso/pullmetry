@@ -1,0 +1,30 @@
+@import '../general/colors.scss';
+
+.flash-block {
+  position: fixed;
+  top: 3.5rem;
+  right: 3rem;
+
+  .flash {
+    margin-bottom: .5rem;
+    padding: .5rem 1rem;
+    border-radius: .125rem;
+    opacity: .75;
+
+    &.notice {
+      background: $green300;
+    }
+
+    &.alert {
+      background: $red300;
+    }
+
+    p {
+      margin: 0 0 .5rem;
+
+      &:nth-last-of-type(1) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

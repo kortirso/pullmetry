@@ -1,8 +1,5 @@
 en:
   components:
-    shared:
-      page_not_found_component:
-        title: Page is not found
     page_wrappers:
       page_component:
         home: Home
@@ -10,8 +7,6 @@ en:
         repositories: Repositories
         logout: Logout
   controllers:
-    application:
-      page_not_found: Page is not found
     authentication:
       permission: Permission is denied
     users:
