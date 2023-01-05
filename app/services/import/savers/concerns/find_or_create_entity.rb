@@ -4,7 +4,8 @@ module Import
   module Savers
     module Concerns
       module FindOrCreateEntity
-        ENTITY_FIND_ATTRIBUTES = %i[source external_id].freeze
+        ENTITY_FIND_ATTRIBUTES = %i[provider external_id].freeze
+        IDENTITY_FIND_ATTRIBUTES = %i[provider login].freeze
 
         private
 
@@ -16,7 +17,7 @@ module Import
         end
 
         def matched_identity(payload)
-          Identity.find_by(provider: payload[:source], login: payload[:login])
+          Identity.find_by(payload.slice(*IDENTITY_FIND_ATTRIBUTES))
         end
       end
     end

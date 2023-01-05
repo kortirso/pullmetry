@@ -339,7 +339,7 @@ CREATE TABLE public.entities (
     id bigint NOT NULL,
     uuid uuid NOT NULL,
     external_id character varying NOT NULL,
-    source integer DEFAULT 0 NOT NULL,
+    provider integer DEFAULT 0 NOT NULL,
     login character varying,
     avatar_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -997,10 +997,10 @@ CREATE INDEX index_entities_on_identity_id ON public.entities USING btree (ident
 
 
 --
--- Name: index_entities_on_source_and_external_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_entities_on_provider_and_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_entities_on_source_and_external_id ON public.entities USING btree (source, external_id);
+CREATE UNIQUE INDEX index_entities_on_provider_and_external_id ON public.entities USING btree (provider, external_id);
 
 
 --
@@ -1202,6 +1202,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230102190258'),
 ('20230102191844'),
 ('20230103153335'),
-('20230103184140');
+('20230103184140'),
+('20230105044303');
 
 

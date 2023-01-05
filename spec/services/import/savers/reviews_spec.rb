@@ -12,7 +12,7 @@ describe Import::Savers::Reviews, type: :service do
         review_created_at: '2011-04-11T20:09:31Z',
         author: {
           external_id: 1,
-          source: Entity::GITHUB,
+          provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         }
@@ -22,7 +22,7 @@ describe Import::Savers::Reviews, type: :service do
         review_created_at: '2011-04-10T20:09:31Z',
         author: {
           external_id: 2,
-          source: Entity::GITHUB,
+          provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         }
@@ -44,8 +44,8 @@ describe Import::Savers::Reviews, type: :service do
     end
 
     context 'when there are entities' do
-      let!(:entity1) { create :entity, external_id: '1', source: Entity::GITHUB }
-      let!(:entity2) { create :entity, external_id: '2', source: Entity::GITHUB }
+      let!(:entity1) { create :entity, external_id: '1', provider: Providerable::GITHUB }
+      let!(:entity2) { create :entity, external_id: '2', provider: Providerable::GITHUB }
 
       it 'creates 2 new pull requests entities' do
         expect { service_call }.to change(pull_request.pull_requests_entities.reviewer, :count).by(2)

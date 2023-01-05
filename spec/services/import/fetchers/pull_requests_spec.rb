@@ -15,7 +15,7 @@ describe Import::Fetchers::PullRequests, type: :service do
         'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
           'external_id' => 1,
-          'source' => Entity::GITHUB,
+          'provider' => Providerable::GITHUB,
           'login' => 'octocat',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
@@ -25,7 +25,7 @@ describe Import::Fetchers::PullRequests, type: :service do
         'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
           'external_id' => 2,
-          'source' => Entity::GITHUB,
+          'provider' => Providerable::GITHUB,
           'login' => 'octocat2',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
@@ -35,7 +35,7 @@ describe Import::Fetchers::PullRequests, type: :service do
         'created_at' => "#{invalid_date}T20:09:31Z",
         'author' => {
           'external_id' => 3,
-          'source' => Entity::GITHUB,
+          'provider' => Providerable::GITHUB,
           'login' => 'octocat3',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }

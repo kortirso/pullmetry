@@ -36,7 +36,7 @@ describe Identities::CreateService, type: :service do
 
     context 'with entities' do
       before do
-        create :entity, login: 'name', source: 'github'
+        create :entity, login: 'name', provider: 'github'
       end
 
       it 'creates identity' do

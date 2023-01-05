@@ -15,20 +15,20 @@ describe Import::Savers::PullRequests, type: :service do
         open: true,
         author: {
           external_id: 1,
-          source: Entity::GITHUB,
+          provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         },
         reviewers: [
           {
             external_id: 1,
-            source: Entity::GITHUB,
+            provider: Providerable::GITHUB,
             login: 'octocat',
             avatar_url: 'https://github.com/images/error/octocat_happy.gif'
           },
           {
             external_id: 2,
-            source: Entity::GITHUB,
+            provider: Providerable::GITHUB,
             login: 'octocat2',
             avatar_url: 'https://github.com/images/error/octocat_happy.gif'
           }
@@ -42,7 +42,7 @@ describe Import::Savers::PullRequests, type: :service do
         open: false,
         author: {
           external_id: 1,
-          source: Entity::GITHUB,
+          provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         },

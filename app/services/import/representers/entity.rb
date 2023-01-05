@@ -7,7 +7,7 @@ module Import
         data = data.with_indifferent_access
         {
           external_id: data[:id].to_s,
-          source: ::Entity::GITHUB,
+          provider: Providerable::GITHUB,
           login: data[:login],
           avatar_url: data[:avatar_url]
         }
