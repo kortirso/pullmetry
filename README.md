@@ -1,24 +1,19 @@
-# README
+# Application for getting relevant stats about PRs and reviewers
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Ruby version
 
-Things you may want to cover:
+- 3.1.2
 
-* Ruby version
+## Running application locally
 
-* System dependencies
+```bash
+foreman s
+```
 
-* Configuration
+## Running application locally in production environment
 
-* Database creation
+For running production env locally you can call
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+bin/local-production
+```

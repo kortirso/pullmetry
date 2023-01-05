@@ -11,6 +11,10 @@ development:
   <<: *default
   database: pullmetry_development
 
+local_production:
+  <<: *default
+  database: pullmetry_development
+
 test:
   <<: *default
   database: pullmetry_test
