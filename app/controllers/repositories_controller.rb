@@ -9,11 +9,13 @@ class RepositoriesController < ApplicationController
   def index; end
 
   def new
+    authorize! Current.user, to: :create_repository?
     @repository = Repository.new
     @companies = current_user.companies.pluck(:title, :uuid)
   end
 
   def create
+    authorize! Current.user, to: :create_repository?
     service_call = Repositories::CreateService.call(company: @company, params: repository_params)
     if service_call.success?
       redirect_to repositories_path, notice: "Repository #{service_call.result.title} is created"

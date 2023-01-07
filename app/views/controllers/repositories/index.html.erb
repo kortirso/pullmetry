@@ -1,7 +1,9 @@
 <%= render PageWrappers::PageComponent.new do %>
   <div class="list-title flex justify-between items-center">
     <h1>Repositories</h1>
-    <%= link_to 'Create repository', new_repository_path, class: 'button' %>
+    <% if allowed_to?(:create_repository?, Current.user) %>
+      <%= link_to 'Create repository', new_repository_path, class: 'button' %>
+    <% end %>
   </div>
   <section class="list">
     <% @repositories.each do |repository| %>
