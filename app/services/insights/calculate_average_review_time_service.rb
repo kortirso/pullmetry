@@ -35,7 +35,7 @@ module Insights
     # if time is less than beginning of work day - use beginning of work day
     # if time is more than ending of work day - use ending of work day
     def convert_time(value)
-      value_minutes = (value.hour * 60) + value.min
+      value_minutes = (value.hour * MINUTES_IN_HOUR) + value.min
 
       if value_minutes < work_start_time_minutes
         value.change(hour: work_start_time.hour, min: work_start_time.min, sec: 0)
@@ -74,11 +74,11 @@ module Insights
     end
 
     def work_start_time
-      @work_start_time ||= @insightable.work_start_time
+      @work_start_time ||= @insightable.configuration.work_start_time
     end
 
     def work_end_time
-      @work_end_time ||= @insightable.work_end_time
+      @work_end_time ||= @insightable.configuration.work_end_time
     end
   end
 end

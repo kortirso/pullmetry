@@ -10,7 +10,7 @@ module Import
       def initialize(repository:, fetch_client: GithubApi::Client, duration_days: DEFAULT_DURATION_DAYS)
         @fetch_client = fetch_client.new(repository: repository)
         @started_at_limit = (DateTime.now - duration_days.days).beginning_of_day
-        @start_from_pull_number = repository.start_from_pull_number.to_i
+        # @start_from_pull_number = repository.configuration.start_from_pull_number.to_i
         @result = []
       end
 
@@ -32,7 +32,8 @@ module Import
 
       def filter_result(result)
         result.select do |element|
-          next false if element['number'] < @start_from_pull_number
+          # TODO: add repository configuration
+          # next false if element['number'] < @start_from_pull_number
           # TODO: in this place condition can be skipped if Company has unlimited PRs fetching
           next false if Date.strptime(element['created_at'], '%Y-%m-%d') < @started_at_limit
 
