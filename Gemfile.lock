@@ -128,6 +128,7 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    chronic (0.10.2)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     database_cleaner (2.0.1)
@@ -395,6 +396,8 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
     zeitwerk (2.6.6)
 
 PLATFORMS
@@ -444,6 +447,7 @@ DEPENDENCIES
   store_model
   strong_migrations (~> 1.4)
   view_component (~> 2.75)
+  whenever
 
 RUBY VERSION
    ruby 3.2.0p0

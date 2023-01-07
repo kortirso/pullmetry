@@ -54,9 +54,10 @@ gem 'skylight'
 # bugs tracking
 gem 'bugsnag'
 
-# active jobs adapter
+# background jobs
 gem 'que', '~> 2.2.0'
 gem 'que-web'
+gem 'whenever', require: false
 
 # oauth
 gem 'omniauth'
