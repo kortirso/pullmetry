@@ -50,10 +50,36 @@ describe RepositoriesController do
     context 'for logged users' do
       sign_in_user
 
-      it 'renders new template' do
-        do_request
+      context 'if user does not use repositories limit' do
+        it 'renders new template' do
+          do_request
 
-        expect(response).to render_template :new
+          expect(response).to render_template :new
+        end
+      end
+
+      context 'if user has use repositories limit' do
+        let!(:company) { create :company, user: @current_user }
+
+        before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
+
+        context 'for regular user' do
+          it 'renders access denied' do
+            do_request
+
+            expect(response).to render_template 'shared/access'
+          end
+        end
+
+        context 'for premium user' do
+          before { create :subscription, user: @current_user, start_time: 1.day.ago, end_time: 1.day.after }
+
+          it 'renders new template' do
+            do_request
+
+            expect(response).to render_template :new
+          end
+        end
       end
     end
 
@@ -130,14 +156,30 @@ describe RepositoriesController do
 
           before { company.update!(user: @current_user) }
 
-          it 'creates repository' do
-            expect { request }.to change(company.repositories, :count).by(1)
+          context 'if user does not use repositories limit' do
+            it 'creates repository' do
+              expect { request }.to change(company.repositories, :count).by(1)
+            end
+
+            it 'redirects to repositories_path' do
+              request
+
+              expect(response).to redirect_to repositories_path
+            end
           end
 
-          it 'redirects to repositories_path' do
-            request
+          context 'if user uses repositories limit' do
+            before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
 
-            expect(response).to redirect_to repositories_path
+            it 'does not create repository' do
+              expect { request }.not_to change(company.repositories, :count)
+            end
+
+            it 'renders access denied' do
+              request
+
+              expect(response).to render_template 'shared/access'
+            end
           end
         end
       end
