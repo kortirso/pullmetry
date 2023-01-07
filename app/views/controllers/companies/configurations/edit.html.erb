@@ -1,11 +1,7 @@
 <%= render PageWrappers::PageComponent.new do %>
-  <h1>Edit Company</h1>
+  <h1>Edit configuration</h1>
   <section class="list-form">
-    <%= form_with model: @company, url: company_path(@company.uuid), method: :patch do |form| %>
-      <div class="form-field">
-        <%= form.label :title, 'Title', class: 'form-label' %>
-        <%= form.text_field :title, required: true, placeholder: "Company's title", class: 'form-value' %>
-      </div>
+    <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
       <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
       <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
       <div id="work-times">
@@ -18,7 +14,7 @@
           <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
         </div>
       </div>
-      <%= form.submit 'Update company', class: 'button' %>
+      <%= form.submit 'Update configuration', class: 'button' %>
     <% end %>
   </section>
 <% end %>

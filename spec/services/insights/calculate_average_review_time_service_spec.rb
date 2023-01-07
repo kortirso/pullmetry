@@ -46,8 +46,10 @@ describe Insights::CalculateAverageReviewTimeService, type: :service do
   context 'for company with working time' do
     before do
       repository.company.update!(
-        work_start_time: DateTime.new(2023, 1, 1, 9, 0, 0),
-        work_end_time: DateTime.new(2023, 1, 1, 17, 0, 0)
+        configuration: {
+          work_start_time: DateTime.new(2023, 1, 1, 9, 0, 0),
+          work_end_time: DateTime.new(2023, 1, 1, 17, 0, 0)
+        }
       )
     end
 

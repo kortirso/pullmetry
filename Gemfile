@@ -66,6 +66,9 @@ gem 'omniauth-rails_csrf_protection'
 # authorization
 gem 'action_policy'
 
+# Work with JSON-backed attributes
+gem 'store_model'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'rubocop', '~> 1.35', require: false

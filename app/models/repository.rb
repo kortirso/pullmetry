@@ -16,9 +16,5 @@ class Repository < ApplicationRecord
   scope :of_user, ->(user_id) { joins(:company).where(companies: { user_id: user_id }) }
   scope :not_of_user, ->(user_id) { joins(:company).where.not(companies: { user_id: user_id }) }
 
-  delegate :with_work_time?, :work_start_time, :work_end_time, to: :company
-
-  def fetch_access_token
-    access_token || company.access_token
-  end
+  delegate :configuration, :with_work_time?, to: :company
 end
