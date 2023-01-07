@@ -5,7 +5,7 @@ module GithubApi
     module PullRequestReviewComments
       def pull_request_review_comments(pull_number:, review_id:, params: {})
         fetch_data(
-          "repos/#{company_name}/#{repository_name}/pulls/#{pull_number}/reviews/#{review_id}/comments",
+          "repos#{repository_path}/pulls/#{pull_number}/reviews/#{review_id}/comments",
           params
         )
       end

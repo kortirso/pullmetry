@@ -11,7 +11,7 @@
             <h2><%= repository.title %></h2>
             <p>PRs count - <%= repository.pull_requests.size %></p>
             <p>
-              <%= link_to "Repository's external link", "https://github.com/#{repository.company.name}/#{repository.name}" %>
+              <%= link_to "Repository's external link", repository.link %>
             </p>
           </div>
           <% if allowed_to?(:update?, repository) %>

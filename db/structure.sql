@@ -303,7 +303,6 @@ CREATE TABLE public.companies (
     uuid uuid NOT NULL,
     user_id bigint NOT NULL,
     title character varying NOT NULL,
-    name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     repositories_count integer,
@@ -633,10 +632,10 @@ CREATE TABLE public.repositories (
     uuid uuid NOT NULL,
     company_id bigint NOT NULL,
     title character varying NOT NULL,
-    name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    pull_requests_count integer
+    pull_requests_count integer,
+    link character varying DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -1202,6 +1201,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230103153335'),
 ('20230103184140'),
 ('20230105044303'),
-('20230106184328');
+('20230106184328'),
+('20230107113744');
 
 

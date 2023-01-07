@@ -12,7 +12,6 @@
             <p>
               Repositories count - <%= link_to company.repositories.size, repositories_path(company_id: company.uuid) %>
             </p>
-            <p><%= link_to "Company's external link", "https://github.com/#{company.name}" %></p>
           </div>
           <% if allowed_to?(:update?, company) %>
             <div class="insightable-actions">

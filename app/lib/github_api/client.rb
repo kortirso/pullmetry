@@ -14,12 +14,8 @@ module GithubApi
 
     private
 
-    def repository_name
-      @repository.name
-    end
-
-    def company_name
-      @repository.company.name
+    def repository_path
+      URI(@repository.link).path
     end
 
     def access_token

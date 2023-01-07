@@ -88,7 +88,7 @@ describe RepositoriesController do
         context 'for not existing company' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: 'unexisting', title: '', name: '' }, locale: 'en'
+              repository: { company_uuid: 'unexisting', title: '', link: '' }, locale: 'en'
             }
           }
 
@@ -106,7 +106,7 @@ describe RepositoriesController do
         context 'for existing not user company' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', name: 'nam' }, locale: 'en'
+              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam' }, locale: 'en'
             }
           }
 
@@ -124,7 +124,7 @@ describe RepositoriesController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', name: 'nam' }, locale: 'en'
+              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam' }, locale: 'en'
             }
           }
 
@@ -144,7 +144,7 @@ describe RepositoriesController do
     end
 
     def do_request
-      post :create, params: { repository: { company_uuid: 'unexisting', title: '', name: '' }, locale: 'en' }
+      post :create, params: { repository: { company_uuid: 'unexisting', title: '', link: '' }, locale: 'en' }
     end
   end
 

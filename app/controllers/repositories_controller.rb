@@ -10,7 +10,7 @@ class RepositoriesController < ApplicationController
 
   def new
     @repository = Repository.new
-    @companies = current_user.companies.pluck(:name, :uuid)
+    @companies = current_user.companies.pluck(:title, :uuid)
   end
 
   def create
@@ -59,6 +59,6 @@ class RepositoriesController < ApplicationController
   end
 
   def repository_params
-    params.require(:repository).permit(:title, :name)
+    params.require(:repository).permit(:title, :link)
   end
 end

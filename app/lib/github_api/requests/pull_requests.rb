@@ -4,7 +4,7 @@ module GithubApi
   module Requests
     module PullRequests
       def pull_requests(params: {})
-        fetch_data("repos/#{company_name}/#{repository_name}/pulls", params)
+        fetch_data("repos#{repository_path}/pulls", params)
       end
     end
   end

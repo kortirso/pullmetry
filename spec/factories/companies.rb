@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :company do
     title { 'Title' }
-    name { 'company_name' }
     association :user
   end
 end

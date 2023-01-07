@@ -5,6 +5,6 @@ class RepositoryContract < ApplicationContract
 
   params do
     required(:title).filled(:string)
-    required(:name).filled(:string)
+    required(:link).filled(:string)
   end
 end

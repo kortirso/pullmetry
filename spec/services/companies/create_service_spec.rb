@@ -6,7 +6,7 @@ describe Companies::CreateService, type: :service do
   let!(:user) { create :user }
 
   context 'for invalid params' do
-    let(:params) { { title: '', name: 'name' } }
+    let(:params) { { title: '' } }
 
     it 'does not create company' do
       expect { service_call }.not_to change(Company, :count)
@@ -18,7 +18,7 @@ describe Companies::CreateService, type: :service do
   end
 
   context 'for valid params' do
-    let(:params) { { title: 'Title', name: 'name' } }
+    let(:params) { { title: 'Title' } }
 
     it 'creates company' do
       expect { service_call }.to change(user.companies, :count).by(1)

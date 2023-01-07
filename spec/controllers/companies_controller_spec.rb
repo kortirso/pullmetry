@@ -73,7 +73,7 @@ describe CompaniesController do
       end
 
       context 'for valid params' do
-        let(:request) { post :create, params: { company: { title: 'Title', name: 'name' }, locale: 'en' } }
+        let(:request) { post :create, params: { company: { title: 'Title' }, locale: 'en' } }
 
         it 'creates company' do
           expect { request }.to change(@current_user.companies, :count).by(1)
@@ -88,7 +88,7 @@ describe CompaniesController do
     end
 
     def do_request
-      post :create, params: { company: { title: '', name: '' }, locale: 'en' }
+      post :create, params: { company: { title: '' }, locale: 'en' }
     end
   end
 

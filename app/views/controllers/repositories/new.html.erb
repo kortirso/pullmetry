@@ -11,8 +11,8 @@
         <%= form.text_field :title, required: true, placeholder: "Repository's title", class: 'form-value' %>
       </div>
       <div class="form-field">
-        <%= form.label :name, 'Name', class: 'form-label' %>
-        <%= form.text_field :name, required: true, placeholder: "Repository's name at Github", class: 'form-value' %>
+        <%= form.label :link, 'Link', class: 'form-label' %>
+        <%= form.text_field :link, required: true, placeholder: 'https://github.com/company_name/repo_name', class: 'form-value' %>
       </div>
       <%= form.submit 'Create repository', class: 'button' %>
     <% end %>

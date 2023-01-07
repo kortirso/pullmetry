@@ -6,7 +6,6 @@ module Companies
 
     params do
       required(:title).filled(:string)
-      required(:name).filled(:string)
     end
   end
 end
