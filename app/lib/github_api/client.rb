@@ -2,6 +2,9 @@
 
 module GithubApi
   class Client < HttpService::Client
+    include Requests::FetchAccessToken
+    include Requests::User
+    include Requests::UserEmails
     include Requests::PullRequests
     include Requests::PullRequestComments
     include Requests::PullRequestReviews
@@ -10,7 +13,7 @@ module GithubApi
     BASE_URL = 'https://api.github.com'
 
     option :url, default: proc { BASE_URL }
-    option :repository
+    option :repository, optional: true
 
     private
 
@@ -18,15 +21,15 @@ module GithubApi
       URI(@repository.link).path
     end
 
-    def access_token
+    def repository_access_token
       @repository.fetch_access_token&.value
     end
 
     def fetch_data(path, params)
-      get(path: path, params: params, headers: headers)
+      get(path: path, params: params, headers: headers(repository_access_token))
     end
 
-    def headers
+    def headers(access_token)
       {
         'Accept' => 'application/vnd.github+json',
         'Authorization' => "Bearer #{access_token}",

@@ -14,6 +14,16 @@ module HttpService
       response.body if response.success?
     end
 
+    def post(path:, body: {}, params: {})
+      response = connection.post(path) do |request|
+        params.each do |param, value|
+          request.params[param] = value
+        end
+        request.body = body.to_json
+      end
+      response.body if response.success?
+    end
+
     private
 
     def build_connection

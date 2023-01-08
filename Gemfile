@@ -59,11 +59,6 @@ gem 'que', '~> 2.2.0'
 gem 'que-web'
 gem 'whenever', require: false
 
-# oauth
-gem 'omniauth'
-gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
-gem 'omniauth-rails_csrf_protection'
-
 # authorization
 gem 'action_policy'
 

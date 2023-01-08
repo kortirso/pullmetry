@@ -6,10 +6,8 @@ module Users
     skip_before_action :authenticate
 
     def create
-      auth = request.env['omniauth.auth']
-      return redirect_to root_path, flash: { error: 'Access Error' } if auth.nil?
+      return redirect_to root_path, flash: { error: 'Access Error' } if params[:code].blank?
 
-      user = ::Auth::LoginUserService.call(auth: auth).result
       if user
         session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
         redirect_to companies_path, notice: 'Successful login'
@@ -22,6 +20,16 @@ module Users
       # TODO: Here can be destroying token from database
       session[:pullmetry_token] = nil
       redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
+    end
+
+    private
+
+    def user
+      @user ||= ::Auth::LoginUserService.call(auth: auth).result
+    end
+
+    def auth
+      ::Auth::Providers::Github.call(code: params[:code]).result
     end
   end
 end
