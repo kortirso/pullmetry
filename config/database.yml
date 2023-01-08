@@ -23,4 +23,4 @@ production:
   <<: *default
   database: pullmetry_production
   username: pullmetry
-  password: <%= ENV['PULLMETRY_DATABASE_PASSWORD'] %>
+  password: <%= Rails.application.credentials[:database_password] %>
