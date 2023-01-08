@@ -29,7 +29,7 @@ environment ENV.fetch('RAILS_ENV', 'production')
 bind "unix://#{shared_dir}/sockets/puma.sock"
 
 # Logging
-if Rails.env.production?
+if ENV.fetch('RAILS_ENV', 'production') == 'production'
   stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
 end
 
