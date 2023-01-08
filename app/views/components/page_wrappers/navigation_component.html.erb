@@ -12,7 +12,7 @@
     <% else %>
       <p id="auth-links">
         <span>Login with</span>
-        <%= link_to image_tag('github.svg', width: 20, height: 20), "https://github.com/login/oauth/authorize?client_id=#{Rails.application.credentials.dig(:github_oauth, :production, :client_id)}" %>
+        <%= link_to image_tag('github.svg', width: 20, height: 20), github_omniauth_link %>
       </p>
     <% end %>
   </div>
