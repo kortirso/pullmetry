@@ -15,6 +15,14 @@ module Auth
         fetch_user_info(access_token)
         fetch_user_emails(access_token)
 
+        Bugsnag.notify('user') do |report|
+          report.add_tab('payload', @user)
+        end
+
+        Bugsnag.notify('user_emails') do |report|
+          report.add_tab('payload', @emails)
+        end
+
         @result = {
           uid: @user['id'],
           provider: 'github',
@@ -31,6 +39,11 @@ module Auth
           client_secret: credentials.dig(:github_oauth, :development, :client_secret),
           code: code
         )
+
+        Bugsnag.notify('fetch_access_token') do |report|
+          report.add_tab('payload', response)
+        end
+
         response.split('&')[0].split('=')[1]
       end
 
