@@ -51,7 +51,7 @@ set :puma_access_log, "#{shared_path}/tmp/log/puma.access.log"
 set :puma_error_log, "#{shared_path}/tmp/log/puma.error.log"
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
-set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+set :puma_init_active_record, true # Change to false when not using ActiveRecord
 
 namespace :deploy do
   desc 'Restart application'
@@ -76,5 +76,36 @@ namespace :yarn do
   end
 end
 
+namespace :que do
+  desc 'Start que worker'
+  task :start do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :bundle, 'exec que ./config/environment.rb'
+        end
+      end
+    end
+  end
+
+  desc 'Stop que worker'
+  task :stop do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute "ps aux | grep '[b]in/que' | awk '{ print $2 }' | xargs kill"
+        end
+      end
+    end
+  end
+end
+
 after 'bundler:install', 'yarn:install'
 after 'deploy:published', 'bundler:clean'
+
+# after server restart need to do
+# cap production que:start
+
+# after deploy need to do
+# cap production que:stop
+# cap production que:start
