@@ -35,8 +35,8 @@ module Auth
 
       def fetch_access_token(code)
         response = @access_token_fetch_client.fetch_access_token(
-          client_id: credentials.dig(:github_oauth, :development, :client_id),
-          client_secret: credentials.dig(:github_oauth, :development, :client_secret),
+          client_id: credentials.dig(:github_oauth, Rails.env.to_sym, :client_id),
+          client_secret: credentials.dig(:github_oauth, Rails.env.to_sym, :client_secret),
           code: code
         )
 
