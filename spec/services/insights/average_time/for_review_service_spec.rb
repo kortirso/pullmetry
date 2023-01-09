@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Insights::CalculateAverageReviewTimeService, type: :service do
+describe Insights::AverageTime::ForReviewService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
@@ -8,8 +8,12 @@ describe Insights::CalculateAverageReviewTimeService, type: :service do
   let!(:pr2) { create :pull_request, repository: repository, pull_created_at: DateTime.new(2023, 1, 2, 12, 0, 0) }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
-  let!(:pre1) { create :pull_requests_entity, pull_request: pr1, entity: entity1 }
-  let!(:pre2) { create :pull_requests_entity, pull_request: pr2, entity: entity2 }
+  let!(:pre1) {
+    create :pull_requests_entity, pull_request: pr1, entity: entity1, origin: PullRequests::Entity::REVIEWER
+  }
+  let!(:pre2) {
+    create :pull_requests_entity, pull_request: pr2, entity: entity2, origin: PullRequests::Entity::REVIEWER
+  }
   let!(:prr1) {
     create :pull_requests_review, pull_requests_entity: pre1, review_created_at: DateTime.new(2023, 1, 4, 0, 0, 0)
   }
