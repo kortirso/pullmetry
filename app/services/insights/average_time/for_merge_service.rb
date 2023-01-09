@@ -8,10 +8,15 @@ module Insights
       def call(insightable:)
         @insightable = insightable
         @result = {}
-        insightable.pull_requests.merged.each do |pull_request|
-          entity_id = pull_request.pull_requests_entities.author.first.entity_id
-          update_result_with_total_review_time(entity_id, calculate_merge_seconds(pull_request))
-        end
+        PullRequests::Entity
+          .author
+          .includes(:pull_request)
+          .where(pull_request: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
+          .where.not(pull_request: { pull_merged_at: nil })
+          .each do |pull_requests_entity|
+            entity_id = pull_requests_entity.entity_id
+            update_result_with_total_review_time(entity_id, calculate_merge_seconds(pull_requests_entity.pull_request))
+          end
         update_result_with_average_time
       end
 

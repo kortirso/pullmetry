@@ -29,7 +29,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
     let(:insightable) { repository }
 
     it 'generates average time' do
-      expect(service_call.result.values).to eq([25_200, 3_600])
+      expect(service_call.result).to eq({ entity1.id => 25_200, entity2.id => 3_600 })
     end
 
     it 'succeeds' do
@@ -41,7 +41,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
     let(:insightable) { repository.company }
 
     it 'generates average time' do
-      expect(service_call.result.values).to eq([25_200, 3_600])
+      expect(service_call.result).to eq({ entity1.id => 25_200, entity2.id => 3_600 })
     end
 
     it 'succeeds' do
@@ -63,7 +63,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
       let(:insightable) { repository }
 
       it 'generates average time' do
-        expect(service_call.result.values).to eq([12_600, 3_600])
+        expect(service_call.result).to eq({ entity1.id => 12_600, entity2.id => 3_600 })
       end
 
       it 'succeeds' do
@@ -75,7 +75,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
       let(:insightable) { repository.company }
 
       it 'generates average time' do
-        expect(service_call.result.values).to eq([12_600, 3_600])
+        expect(service_call.result).to eq({ entity1.id => 12_600, entity2.id => 3_600 })
       end
 
       it 'succeeds' do
@@ -90,7 +90,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
         let(:insightable) { repository }
 
         it 'generates average time' do
-          expect(service_call.result.values).to eq([28_800, 3_600])
+          expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
         end
 
         it 'succeeds' do
@@ -102,7 +102,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
         let(:insightable) { repository.company }
 
         it 'generates average time' do
-          expect(service_call.result.values).to eq([28_800, 3_600])
+          expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
         end
 
         it 'succeeds' do
@@ -117,7 +117,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 3_600])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
           end
 
           it 'succeeds' do
@@ -129,7 +129,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 3_600])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
           end
 
           it 'succeeds' do
@@ -145,7 +145,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 32_400])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 32_400 })
           end
 
           it 'succeeds' do
@@ -157,7 +157,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 32_400])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 32_400 })
           end
 
           it 'succeeds' do
@@ -176,7 +176,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 0])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 0 })
           end
 
           it 'succeeds' do
@@ -188,7 +188,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time' do
-            expect(service_call.result.values).to eq([28_800, 0])
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 0 })
           end
 
           it 'succeeds' do

@@ -8,18 +8,17 @@ module Insights
       def call(insightable:)
         @insightable = insightable
         @result = {}
-        # TODO: check N+1, maybe there is false positive
-        insightable.pull_requests.each do |pull_request|
-          pull_request
-            .pull_requests_reviews
-            .includes(:pull_requests_entity)
-            .where(pull_requests_entities: { origin: PullRequests::Entity::REVIEWER }).each do |review|
-              # TODO: add penalties for not reviewing
-              # https://github.com/kortirso/pullmetry/issues/16
-              entity_id = review.pull_requests_entity.entity_id
-              update_result_with_total_review_time(entity_id, calculate_review_seconds(review, pull_request))
-            end
-        end
+        PullRequests::Review
+          .includes(pull_requests_entity: :pull_request)
+          .where(pull_requests: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
+          .where(pull_requests_entities: { origin: PullRequests::Entity::REVIEWER })
+          .each do |review|
+            entity_id = review.pull_requests_entity.entity_id
+            update_result_with_total_review_time(
+              entity_id,
+              calculate_review_seconds(review, review.pull_requests_entity.pull_request)
+            )
+          end
         update_result_with_average_time
       end
 
