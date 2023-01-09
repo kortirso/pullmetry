@@ -415,7 +415,8 @@ CREATE TABLE public.insights (
     reviews_count integer DEFAULT 0,
     required_reviews_count integer DEFAULT 0,
     open_pull_requests_count integer DEFAULT 0,
-    average_review_seconds integer DEFAULT 0
+    average_review_seconds integer DEFAULT 0,
+    average_merge_seconds integer DEFAULT 0
 );
 
 
@@ -1258,6 +1259,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230105044303'),
 ('20230106184328'),
 ('20230107113744'),
-('20230107125130');
+('20230107125130'),
+('20230109170258');
 
 

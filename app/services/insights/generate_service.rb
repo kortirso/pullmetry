@@ -4,8 +4,12 @@ module Insights
   class GenerateService
     prepend ApplicationService
 
-    def initialize(average_time_service: CalculateAverageReviewTimeService)
-      @average_time_service = average_time_service
+    def initialize(
+      average_review_time_service: AverageTime::ForReviewService,
+      average_merge_time_service: AverageTime::ForMergeService
+    )
+      @average_review_time_service = average_review_time_service
+      @average_merge_time_service = average_merge_time_service
     end
 
     def call(insightable:)
@@ -30,10 +34,11 @@ module Insights
     def insight_attributes(entity_id)
       {
         comments_count: comments_count[entity_id].to_i,
-        reviews_count: reviews_count[entity_id].to_i,
-        required_reviews_count: required_reviews_count[entity_id].to_i,
-        open_pull_requests_count: open_pull_requests_count[entity_id].to_i,
-        average_review_seconds: average_review_seconds[entity_id].to_i
+        reviews_count: reviews_count[entity_id],
+        average_review_seconds: average_review_seconds[entity_id],
+        required_reviews_count: required_reviews_count[entity_id],
+        open_pull_requests_count: open_pull_requests_count[entity_id],
+        average_merge_seconds: average_merge_seconds[entity_id]
       }
     end
 
@@ -61,7 +66,12 @@ module Insights
 
     # this method returns { entity_id => average_review_seconds }
     def average_review_seconds
-      @average_review_seconds ||= @average_time_service.call(insightable: @insightable).result
+      @average_review_seconds ||= @average_review_time_service.call(insightable: @insightable).result
+    end
+
+    # this method returns { entity_id => average_merge_seconds }
+    def average_merge_seconds
+      @average_merge_seconds ||= @average_merge_time_service.call(insightable: @insightable).result
     end
   end
 end

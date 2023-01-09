@@ -16,4 +16,6 @@ class PullRequest < ApplicationRecord
            -> { distinct },
            through: :pull_requests_entities,
            class_name: 'PullRequests::Review'
+
+  scope :merged, -> { where.not(pull_merged_at: nil) }
 end
