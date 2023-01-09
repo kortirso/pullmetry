@@ -6,6 +6,7 @@ module Insights
 
     SECONDS_IN_DAY = 86_400
     MINUTES_IN_HOUR = 60
+    WEEKEND_DAYS_INDEXES = [0, 6].freeze
 
     def call(insightable:)
       @insightable = insightable
@@ -27,7 +28,7 @@ module Insights
       return review.review_created_at.to_i - pull_request.pull_created_at.to_i unless @insightable.with_work_time?
 
       seconds_between_times(
-        convert_time(pull_request.pull_created_at).to_i,
+        convert_time(pull_request.pull_created_at),
         convert_time(review.review_created_at)
       )
     end
@@ -47,9 +48,24 @@ module Insights
     end
 
     def seconds_between_times(start_time, end_time)
-      days = (end_time.end_of_day.to_i - start_time) / SECONDS_IN_DAY
+      days = (end_time.end_of_day.to_i - start_time.to_i) / SECONDS_IN_DAY
 
-      (end_time.to_i - start_time) - (days * not_working_night_seconds)
+      weekend_days = find_weekend_days(start_time, days)
+      # if PR was created at weekend and reviewed at weekend
+      # weekend_days will be more than days variable
+      return 0 if weekend_days > days
+
+      # if there are weekend days between dates then end_time reduced by amount of such days
+      # and night time days reduced by this values too
+      ((end_time - weekend_days.days).to_i - start_time.to_i) - ((days - weekend_days) * not_working_night_seconds)
+    end
+
+    def find_weekend_days(end_time, days)
+      result = 0
+      (days + 1).times do |index|
+        result += 1 if (end_time + index.days).wday.in?(WEEKEND_DAYS_INDEXES)
+      end
+      result
     end
 
     def update_result_with_total_review_time(entity_id, review_seconds)
