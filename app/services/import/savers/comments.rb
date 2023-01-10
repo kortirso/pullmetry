@@ -10,7 +10,6 @@ module Import
         @pull_request = pull_request
 
         ActiveRecord::Base.transaction do
-          destroy_old_comments(data)
           data.each do |payload|
             next if payload[:external_id].in?(existing_comments)
 
@@ -22,13 +21,6 @@ module Import
       end
 
       private
-
-      def destroy_old_comments(data)
-        @pull_request
-          .pull_requests_comments
-          .where.not(external_id: data.pluck(:external_id))
-          .destroy_all
-      end
 
       def existing_comments
         @existing_comments ||=

@@ -10,7 +10,6 @@ module Import
         @pull_request = pull_request
 
         ActiveRecord::Base.transaction do
-          destroy_old_reviews(data)
           data.each do |payload|
             next if payload[:external_id].in?(existing_reviews)
 
@@ -22,13 +21,6 @@ module Import
       end
 
       private
-
-      def destroy_old_reviews(data)
-        @pull_request
-          .pull_requests_reviews
-          .where.not(external_id: data.pluck(:external_id))
-          .destroy_all
-      end
 
       def existing_reviews
         @existing_reviews ||=

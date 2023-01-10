@@ -4,10 +4,10 @@ module Users
   class OmniauthCallbacksController < ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate
+    before_action :validate_provider, only: %i[create]
+    before_action :validate_auth, only: %i[create]
 
     def create
-      return redirect_to root_path, flash: { error: 'Access Error' } if params[:code].blank?
-
       if user
         session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
         redirect_to companies_path, notice: 'Successful login'
@@ -24,12 +24,22 @@ module Users
 
     private
 
+    def validate_provider
+      return authentication_error if params[:provider].blank?
+
+      authentication_error if Identity.providers.keys.exclude?(params[:provider])
+    end
+
+    def validate_auth
+      authentication_error if params[:code].blank? || auth.nil?
+    end
+
     def user
       @user ||= ::Auth::LoginUserService.call(auth: auth).result
     end
 
     def auth
-      ::Auth::Providers::Github.call(code: params[:code]).result
+      @auth ||= "::Auth::Providers::#{params[:provider].capitalize}".constantize.call(code: params[:code]).result
     end
   end
 end

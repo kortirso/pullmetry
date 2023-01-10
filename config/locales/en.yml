@@ -8,7 +8,7 @@ en:
         logout: Logout
   controllers:
     authentication:
-      permission: Permission is denied
+      permission: You need to Sign In
     users:
       sessions:
         success_destroy: You are logged out

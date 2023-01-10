@@ -12,12 +12,10 @@ describe HttpService::Client, type: :client do
   end
 
   context 'for get request' do
-    subject(:client_request) {
-      described_class.new(url: 'https://github.com', connection: connection)
-    }
+    subject(:client_request) { described_class.new(url: 'https://api.github.com', connection: connection) }
 
     before do
-      stubs.get('/api/v1/stats') { [status, headers, body.to_json] }
+      stubs.get('/user') { [status, headers, body.to_json] }
     end
 
     context 'for invalid response' do
@@ -26,20 +24,43 @@ describe HttpService::Client, type: :client do
       let(:body) { { 'errors' => errors } }
 
       it 'returns nil' do
-        expect(client_request.get(path: '/api/v1/stats')).to be_nil
+        expect(client_request.get(path: '/user')).to be_nil
       end
     end
 
     context 'for valid response' do
       let(:status) { 200 }
-      let(:body) {
-        {
-          'data' => {}
-        }
-      }
+      let(:body) { { 'id' => 1 } }
 
-      it 'returns players data' do
-        expect(client_request.get(path: '/api/v1/stats')).to eq body
+      it 'returns user data' do
+        expect(client_request.get(path: '/user')).to eq body
+      end
+    end
+  end
+
+  context 'for post request' do
+    subject(:client_request) { described_class.new(url: 'https://github.com', connection: connection) }
+
+    before do
+      stubs.post('/login/oauth/access_token') { [status, headers, body.to_json] }
+    end
+
+    context 'for invalid response' do
+      let(:status) { 403 }
+      let(:errors) { [{ 'detail' => 'Forbidden' }] }
+      let(:body) { { 'errors' => errors } }
+
+      it 'returns nil' do
+        expect(client_request.post(path: '/login/oauth/access_token')).to be_nil
+      end
+    end
+
+    context 'for valid response' do
+      let(:status) { 200 }
+      let(:body) { { 'access_token' => 'access_token' } }
+
+      it 'returns access_token' do
+        expect(client_request.post(path: '/login/oauth/access_token')).to eq body
       end
     end
   end

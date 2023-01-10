@@ -81,16 +81,8 @@ describe Import::Savers::Reviews, type: :service do
             create :pull_requests_review, pull_requests_entity: pr_entity2, external_id: '4'
           end
 
-          it 'creates 2 new reviews' do
-            service_call
-
-            expect(pull_request.pull_requests_reviews.pluck(:external_id)).to match_array(%w[2 3])
-          end
-
-          it 'destroys old reviews' do
-            service_call
-
-            expect(pull_request.pull_requests_reviews.where(external_id: %w[1 4])).to be_empty
+          it 'creates 2 reviews' do
+            expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(2)
           end
         end
       end

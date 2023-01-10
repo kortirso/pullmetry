@@ -17,9 +17,9 @@ module Import
     end
 
     def call(company:)
-      company.repositories.find_each do |repository|
+      company.repositories.includes(:pull_requests).each do |repository|
         @sync_pull_requests_service.call(repository: repository)
-        repository.pull_requests.find_each do |pull_request|
+        repository.pull_requests.each do |pull_request|
           @sync_comments_service.call(pull_request: pull_request)
           @sync_reviews_service.call(pull_request: pull_request)
         end

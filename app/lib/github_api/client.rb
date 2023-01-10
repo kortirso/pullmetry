@@ -2,13 +2,11 @@
 
 module GithubApi
   class Client < HttpService::Client
-    include Requests::FetchAccessToken
     include Requests::User
     include Requests::UserEmails
     include Requests::PullRequests
     include Requests::PullRequestComments
     include Requests::PullRequestReviews
-    include Requests::PullRequestReviewComments
 
     BASE_URL = 'https://api.github.com'
 
@@ -32,8 +30,8 @@ module GithubApi
     def headers(access_token)
       {
         'Accept' => 'application/vnd.github+json',
-        'Authorization' => "Bearer #{access_token}",
-        'X-GitHub-Api-Version' => '2022-11-28'
+        'X-GitHub-Api-Version' => '2022-11-28',
+        'Authorization' => "Bearer #{access_token}"
       }
     end
   end

@@ -5,54 +5,45 @@ module Auth
     class Github
       prepend ApplicationService
 
-      def initialize(client: GithubApi::Client)
-        @access_token_fetch_client = client.new(url: 'https://github.com')
-        @user_fetch_client = client.new
+      def initialize(auth_client: GithubAuthApi::Client.new, api_client: GithubApi::Client.new)
+        @auth_client = auth_client
+        @api_client = api_client
       end
 
       def call(code:)
         access_token = fetch_access_token(code)
-        fetch_user_info(access_token)
-        fetch_user_emails(access_token)
+        return unless access_token
 
-        Bugsnag.notify('user') do |report|
-          report.add_tab('payload', @user)
-        end
-
-        Bugsnag.notify('user_emails') do |report|
-          report.add_tab('payload', @emails)
-        end
+        user = fetch_user_info(access_token)
+        email = fetch_user_emails(access_token, user)
 
         @result = {
-          uid: @user['id'],
+          uid: user['id'],
           provider: 'github',
-          login: @user['login'],
-          email: @emails.blank? ? nil : @emails[0]['email']
+          login: user['login'],
+          email: email
         }
       end
 
       private
 
       def fetch_access_token(code)
-        response = @access_token_fetch_client.fetch_access_token(
+        @auth_client.fetch_access_token(
           client_id: credentials.dig(:github_oauth, Rails.env.to_sym, :client_id),
           client_secret: credentials.dig(:github_oauth, Rails.env.to_sym, :client_secret),
           code: code
-        )
-
-        Bugsnag.notify('fetch_access_token') do |report|
-          report.add_tab('payload', response)
-        end
-
-        response.split('&')[0].split('=')[1]
+        )['access_token']
       end
 
       def fetch_user_info(access_token)
-        @user = @user_fetch_client.user(access_token: access_token)
+        @api_client.user(access_token: access_token)
       end
 
-      def fetch_user_emails(access_token)
-        @emails = @user_fetch_client.user_emails(access_token: access_token)
+      def fetch_user_emails(access_token, user)
+        return user['email'] if user['email']
+
+        emails = @api_client.user_emails(access_token: access_token)
+        emails.dig(0, 'email')
       end
 
       def credentials

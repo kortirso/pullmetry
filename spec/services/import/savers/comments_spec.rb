@@ -89,16 +89,8 @@ describe Import::Savers::Comments, type: :service do
             create :pull_requests_comment, pull_requests_entity: pr_entity2, external_id: '4'
           end
 
-          it 'creates 2 new comments' do
-            service_call
-
-            expect(pull_request.pull_requests_comments.pluck(:external_id)).to match_array(%w[2 3])
-          end
-
-          it 'destroys old comments' do
-            service_call
-
-            expect(pull_request.pull_requests_comments.where(external_id: %w[1 4])).to be_empty
+          it 'creates 2 comments' do
+            expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
           end
         end
       end
