@@ -3,6 +3,7 @@
 module Repositories
   class CreateService
     prepend ApplicationService
+    include Validateable
 
     def initialize(repository_validator: RepositoryValidator)
       @repository_validator = repository_validator

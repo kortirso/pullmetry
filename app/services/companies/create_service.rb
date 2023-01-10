@@ -3,6 +3,7 @@
 module Companies
   class CreateService
     prepend ApplicationService
+    include Validateable
 
     def initialize(company_validator: Companies::CreateValidator)
       @company_validator = company_validator

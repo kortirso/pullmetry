@@ -3,6 +3,7 @@
 module AccessTokens
   class CreateService
     prepend ApplicationService
+    include Validateable
 
     def initialize(access_token_validator: AccessTokenValidator)
       @access_token_validator = access_token_validator

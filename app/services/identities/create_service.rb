@@ -3,6 +3,7 @@
 module Identities
   class CreateService
     prepend ApplicationService
+    include Validateable
 
     def initialize(identity_validator: IdentityValidator)
       @identity_validator = identity_validator
