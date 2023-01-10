@@ -31,7 +31,7 @@ module Import
       private
 
       def filter_result(result)
-        result.select do |element|
+        result&.select do |element|
           # TODO: add repository configuration
           # next false if element['number'] < @start_from_pull_number
           # TODO: in this place condition can be skipped if Company has unlimited PRs fetching
