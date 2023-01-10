@@ -74,3 +74,19 @@
     }
   }
 }
+
+@media only screen and (max-width: 75rem) {
+  .list {
+    .list-element {
+      flex-direction: column;
+
+      .list-element-header {
+        margin-bottom: 2rem;
+      }
+
+      .list-element-insights {
+        overflow-x: scroll;
+      }
+    }
+  }
+}

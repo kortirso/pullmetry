@@ -12,11 +12,11 @@
     width: 100%;
     max-width: 90rem;
     margin: 2rem auto;
+    padding: 0 4rem;
 
     &.welcome-page {
       max-width: none;
       margin: 0;
-      padding: 0 4rem;
       background: $white;
 
       .global-container {
