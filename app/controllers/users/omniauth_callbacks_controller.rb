@@ -7,6 +7,10 @@ module Users
     before_action :validate_provider, only: %i[create]
     before_action :validate_auth, only: %i[create]
 
+    PROVIDERS = {
+      Providerable::GITHUB => ::Auth::Providers::Github
+    }.freeze
+
     def create
       if user
         session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
@@ -25,8 +29,6 @@ module Users
     private
 
     def validate_provider
-      return authentication_error if params[:provider].blank?
-
       authentication_error if Identity.providers.keys.exclude?(params[:provider])
     end
 
@@ -39,7 +41,7 @@ module Users
     end
 
     def auth
-      @auth ||= "::Auth::Providers::#{params[:provider].capitalize}".constantize.call(code: params[:code]).result
+      @auth ||= PROVIDERS[params[:provider]].call(code: params[:code]).result
     end
   end
 end
