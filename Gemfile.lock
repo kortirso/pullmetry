@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 8f24e357940b16707a1fd20082a59cc0c05240fe
+  revision: a528b0e7b68e0acb42478d2e6c43a8df48453554
   branch: main
   specs:
     bullet (7.0.7)
@@ -357,7 +357,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
     uniform_notifier (1.16.0)
-    view_component (2.80.0)
+    view_component (2.81.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -370,6 +370,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES

@@ -12,7 +12,7 @@
     <% else %>
       <p id="auth-links">
         <span>Login with</span>
-        <%= link_to image_tag('github.svg', width: 20, height: 20), omniauth_link(:github) %>
+        <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github' %>
       </p>
     <% end %>
   </div>
