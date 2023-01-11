@@ -14,9 +14,27 @@ class User < ApplicationRecord
 
   has_many :subscriptions, dependent: :destroy
 
-  # rubocop: disable Rails/WhereExists
   def premium?
-    subscriptions.where('start_time < :date AND end_time > :date', date: DateTime.now.new_offset(0)).exists?
+    subscriptions.exists?(['start_time < :date AND end_time > :date', { date: DateTime.now.new_offset(0) }])
   end
-  # rubocop: enable Rails/WhereExists
+
+  def available_companies
+    Company
+    .where(user_id: id)
+    .or(
+      Company
+      .where.not(user_id: id)
+      .where(id: insights.of_type('Company').pluck(:insightable_id))
+    )
+  end
+
+  def available_repositories
+    Repository
+      .of_user(id)
+      .or(
+        Repository
+        .not_of_user(id)
+        .where(id: insights.of_type('Repository').pluck(:insightable_id))
+      )
+  end
 end

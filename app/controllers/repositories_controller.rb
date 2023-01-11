@@ -34,13 +34,8 @@ class RepositoriesController < ApplicationController
 
   def find_repositories
     @repositories =
-      Repository
-      .of_user(current_user.id)
-      .or(
-        Repository
-        .not_of_user(current_user.id)
-        .where(id: current_user.insights.of_type_ids('Repository'))
-      )
+      current_user
+      .available_repositories
       .includes(:company, :access_token, insights: :entity)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
   end
