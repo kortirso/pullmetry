@@ -29,13 +29,8 @@ class CompaniesController < ApplicationController
 
   def find_companies
     @companies =
-      Company
-      .where(user_id: current_user.id)
-      .or(
-        Company
-        .where.not(user_id: current_user.id)
-        .where(id: current_user.insights.of_type_ids('Company'))
-      )
+      current_user
+      .available_companies
       .includes(:access_token, insights: :entity)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
   end
