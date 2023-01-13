@@ -1,0 +1,24 @@
+@import '../../general/colors.scss';
+
+footer {
+  background: $sky200;
+  padding: 1rem 2rem;
+
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+
+    & > div {
+      display: flex;
+      align-items: center;
+    }
+
+    .copyright {
+      font-size: 1.1rem;
+      margin-right: .5rem;
+    }
+  }
+}

@@ -26,3 +26,11 @@
     }
   }
 }
+
+@media only screen and (max-width: 60rem) {
+  .page-container {
+    .page-content {
+      padding: 0 2rem;
+    }
+  }
+}

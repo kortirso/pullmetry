@@ -14,5 +14,8 @@ Rails.application.routes.draw do
   end
   resources :repositories, only: %i[index new create destroy]
   resources :access_tokens, only: %i[new create]
+
+  get 'privacy', to: 'welcome#privacy'
+
   root 'welcome#index'
 end
