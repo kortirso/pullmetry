@@ -17,5 +17,8 @@ Rails.application.routes.draw do
 
   get 'privacy', to: 'welcome#privacy'
 
+  get 'sitemap.xml', to: 'sitemaps#index', format: :xml
+  get 'robots.txt', to: 'robots#index', format: :text
+
   root 'welcome#index'
 end
