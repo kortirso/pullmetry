@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :access_tokens, only: %i[new create]
 
   get 'privacy', to: 'welcome#privacy'
+  get 'sources', to: 'welcome#sources'
 
   get 'sitemap.xml', to: 'sitemaps#index', format: :xml
   get 'robots.txt', to: 'robots#index', format: :text

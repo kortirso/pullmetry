@@ -14,6 +14,10 @@ footer {
     & > div {
       display: flex;
       align-items: center;
+
+      a {
+        margin-left: 1.5rem;
+      }
     }
 
     .copyright {
