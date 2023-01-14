@@ -55,7 +55,15 @@ describe Import::SyncCommentsService, type: :service do
     before { create :pull_requests_comment, pull_requests_entity: pull_requests_entity, external_id: '1' }
 
     it 'creates 2 new comments' do
-      expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
+      service_call
+
+      expect(pull_request.pull_requests_comments.pluck(:external_id)).to match_array(%w[2 3])
+    end
+
+    it 'destroys old comments' do
+      service_call
+
+      expect(pull_request.pull_requests_comments.where(external_id: 1)).to be_empty
     end
   end
 
