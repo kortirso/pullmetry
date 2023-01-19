@@ -7,8 +7,3 @@ en:
             filled?: can't be blank
           name:
             filled?: can't be blank
-      user:
-        rules:
-          email:
-            filled?: can't be blank
-            invalid: has invalid format

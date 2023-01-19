@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-describe Import::Fetchers::PullRequests, type: :service do
+describe Import::Fetchers::Gitlab::PullRequests, type: :service do
   subject(:service_call) { described_class.new(repository: repository, fetch_client: fetch_client).call }
 
-  let(:repository) { create :repository }
+  let(:repository) { create :repository, provider: Providerable::GITLAB }
   let(:fetch_client) { double }
   let(:fetch_service) { double }
   let(:valid_date) { (Date.current - 25.days).strftime('%Y-%m-%d') }
@@ -11,32 +11,29 @@ describe Import::Fetchers::PullRequests, type: :service do
   let(:data) {
     [
       {
-        'number' => 3,
+        'iid' => 3,
         'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
-          'external_id' => 1,
-          'provider' => Providerable::GITHUB,
-          'login' => 'octocat',
+          'id' => 1,
+          'username' => 'octocat',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
       },
       {
-        'number' => 2,
+        'iid' => 2,
         'created_at' => "#{valid_date}T20:09:31Z",
         'author' => {
-          'external_id' => 2,
-          'provider' => Providerable::GITHUB,
-          'login' => 'octocat2',
+          'id' => 2,
+          'username' => 'octocat2',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
       },
       {
-        'number' => 1,
+        'iid' => 1,
         'created_at' => "#{invalid_date}T20:09:31Z",
         'author' => {
-          'external_id' => 3,
-          'provider' => Providerable::GITHUB,
-          'login' => 'octocat3',
+          'id' => 3,
+          'username' => 'octocat3',
           'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
         }
       }
@@ -45,12 +42,8 @@ describe Import::Fetchers::PullRequests, type: :service do
 
   before do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
-    allow(fetch_service).to(
-      receive(:pull_requests).with(params: { state: 'all', per_page: 25, page: 1 }).and_return(data)
-    )
-    allow(fetch_service).to(
-      receive(:pull_requests).with(params: { state: 'all', per_page: 25, page: 2 }).and_return([])
-    )
+    allow(fetch_service).to receive(:pull_requests).with(params: { per_page: 25, page: 1 }).and_return(data)
+    allow(fetch_service).to receive(:pull_requests).with(params: { per_page: 25, page: 2 }).and_return([])
   end
 
   context 'without start_from_pull_number at repository' do
@@ -60,20 +53,6 @@ describe Import::Fetchers::PullRequests, type: :service do
       result = service_call.result
 
       expect(result.size).to eq 2
-    end
-
-    it 'succeeds' do
-      expect(service_call.success?).to be_truthy
-    end
-  end
-
-  context 'with start_from_pull_number at repository', skip: 'start_from_pull_number is not added' do
-    let(:start_from_pull_number) { 3 }
-
-    it 'returns 1 object' do
-      result = service_call.result
-
-      expect(result.size).to eq 1
     end
 
     it 'succeeds' do

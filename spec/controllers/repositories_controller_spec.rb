@@ -147,6 +147,42 @@ describe RepositoriesController do
           end
         end
 
+        context 'for invalid params' do
+          let(:request) {
+            post :create, params: {
+              repository: { company_uuid: company.uuid, title: '', link: '' }, locale: 'en'
+            }
+          }
+
+          before { company.update!(user: @current_user) }
+
+          context 'if user does not use repositories limit' do
+            it 'does not create repository' do
+              expect { request }.not_to change(company.repositories, :count)
+            end
+
+            it 'redirects to new_repository_path' do
+              request
+
+              expect(response).to redirect_to new_repository_path
+            end
+          end
+
+          context 'if user uses repositories limit' do
+            before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
+
+            it 'does not create repository' do
+              expect { request }.not_to change(company.repositories, :count)
+            end
+
+            it 'renders access denied' do
+              request
+
+              expect(response).to render_template 'shared/access'
+            end
+          end
+        end
+
         context 'for valid params' do
           let(:request) {
             post :create, params: {

@@ -10,8 +10,3 @@ ru:
             filled?: не может быть пустым
           name:
             filled?: не может быть пустым
-      user:
-        rules:
-          email:
-            filled?: не может быть пустым
-            invalid: имеет неверный формат
