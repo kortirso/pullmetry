@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - fetching/representing/saving gitlab data
 - creating repository with for specific provider and external_id
 
+### Modified
+- text at welcome page
+
 ## [1.0.0] - 2023-01-18
 ### Added
 - release 1.0.0
