@@ -1,5 +1,7 @@
 en:
   dry_validation:
+    rules:
+      external_id: External id
     errors:
       company:
         rules:
@@ -7,8 +9,7 @@ en:
             filled?: can't be blank
           name:
             filled?: can't be blank
-      user:
+      repository:
         rules:
-          email:
-            filled?: can't be blank
-            invalid: has invalid format
+          external_id:
+            empty: can't be blank

@@ -5,6 +5,7 @@ describe Import::Savers::Reviews, type: :service do
   subject(:service_call) { described_class.call(pull_request: pull_request, data: data) }
 
   let!(:pull_request) { create :pull_request }
+  let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
   let(:data) {
     [
       {
@@ -26,9 +27,26 @@ describe Import::Savers::Reviews, type: :service do
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif'
         }
+      },
+      {
+        external_id: 10,
+        review_created_at: '2011-04-10T20:09:31Z',
+        author: {
+          external_id: 10,
+          provider: Providerable::GITHUB,
+          login: 'octocat10',
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+        }
       }
     ]
   }
+
+  before do
+    create :pull_requests_entity,
+           pull_request: pull_request,
+           origin: PullRequests::Entity::AUTHOR,
+           entity: author_entity
+  end
 
   context 'when there are no reviews, no entities' do
     it 'creates 2 new pull requests entities' do

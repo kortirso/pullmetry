@@ -3,23 +3,18 @@
 module Import
   class SyncCommentsService
     prepend ApplicationService
+    include Concerns::Serviceable
 
-    def initialize(
-      fetch_service: Fetchers::Comments,
-      represent_service: Representers::Comments,
-      save_service: Savers::Comments
-    )
-      @fetch_service = fetch_service
-      @represent_service = represent_service
-      @save_service = save_service
+    def initialize(pull_request:)
+      @pull_request = pull_request
+      @provider = pull_request.repository.provider.capitalize
+      @service_name = 'Comments'
     end
 
-    def call(pull_request:)
-      @pull_request = pull_request
-
-      @fetch_service.new(pull_request: @pull_request).call
-        .then { |fetch_data| @represent_service.new.call(data: fetch_data.result) }
-        .then { |represent_data| @save_service.call(pull_request: @pull_request, data: represent_data) }
+    def call
+      fetch_service.new(pull_request: @pull_request).call
+        .then { |fetch_data| represent_service.new.call(data: fetch_data.result) }
+        .then { |represent_data| save_service.call(pull_request: @pull_request, data: represent_data) }
     end
   end
 end

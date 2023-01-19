@@ -56,6 +56,6 @@ class RepositoriesController < ApplicationController
   end
 
   def repository_params
-    params.require(:repository).permit(:title, :link)
+    params.require(:repository).permit(:title, :link, :provider, :external_id)
   end
 end

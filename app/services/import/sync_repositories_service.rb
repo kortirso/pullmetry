@@ -5,10 +5,10 @@ module Import
     prepend ApplicationService
 
     def initialize(
-      sync_pull_requests_service: SyncPullRequestsService.new,
-      sync_comments_service: SyncCommentsService.new,
-      sync_reviews_service: SyncReviewsService.new,
-      generate_insights_service: Insights::GenerateService.new
+      sync_pull_requests_service: SyncPullRequestsService,
+      sync_comments_service: SyncCommentsService,
+      sync_reviews_service: SyncReviewsService,
+      generate_insights_service: Insights::GenerateService
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
@@ -17,11 +17,11 @@ module Import
     end
 
     def call(company:)
-      company.repositories.includes(:pull_requests).each do |repository|
-        @sync_pull_requests_service.call(repository: repository)
+      company.repositories.each do |repository|
+        @sync_pull_requests_service.new(repository: repository).call
         repository.pull_requests.each do |pull_request|
-          @sync_comments_service.call(pull_request: pull_request)
-          @sync_reviews_service.call(pull_request: pull_request)
+          @sync_comments_service.new(pull_request: pull_request).call
+          @sync_reviews_service.new(pull_request: pull_request).call
         end
         @generate_insights_service.call(insightable: repository)
       end

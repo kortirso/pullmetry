@@ -14,6 +14,14 @@
         <%= form.label :link, 'Link', class: 'form-label' %>
         <%= form.text_field :link, required: true, placeholder: 'https://github.com/company_name/repo_name', class: 'form-value' %>
       </div>
+      <div class="form-field">
+        <%= form.label :provider, 'Provider', class: 'form-label' %>
+        <%= form.select :provider, options_for_select(Repository.providers.map { |key, _| [key.capitalize, key] }), {}, { class: 'form-value' } %>
+      </div>
+      <div class="form-field">
+        <%= form.label :external_id, 'External id', class: 'form-label' %>
+        <%= form.text_field :external_id, placeholder: 'External id', class: 'form-value' %>
+      </div>
       <%= form.submit 'Create repository', class: 'button' %>
     <% end %>
   </section>

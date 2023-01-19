@@ -147,10 +147,73 @@ describe RepositoriesController do
           end
         end
 
+        context 'for invalid params' do
+          let(:request) {
+            post :create, params: {
+              repository: { company_uuid: company.uuid, title: '', link: '' }, locale: 'en'
+            }
+          }
+
+          before { company.update!(user: @current_user) }
+
+          it 'does not create repository' do
+            expect { request }.not_to change(company.repositories, :count)
+          end
+
+          it 'redirects to new_repository_path' do
+            request
+
+            expect(response).to redirect_to new_repository_path
+          end
+        end
+
+        context 'for invalid external_id' do
+          let(:request) {
+            post :create, params: {
+              repository: { company_uuid: company.uuid, title: 'Title', link: 'link', provider: 'gitlab' }, locale: 'en'
+            }
+          }
+
+          before { company.update!(user: @current_user) }
+
+          it 'does not create repository' do
+            expect { request }.not_to change(company.repositories, :count)
+          end
+
+          it 'redirects to new_repository_path' do
+            request
+
+            expect(response).to redirect_to new_repository_path
+          end
+        end
+
+        context 'for valid params with external id' do
+          let(:request) {
+            post :create, params: {
+              repository: {
+                company_uuid: company.uuid, title: 'Title', link: 'nam', provider: 'gitlab', external_id: '1'
+              },
+              locale: 'en'
+            }
+          }
+
+          before { company.update!(user: @current_user) }
+
+          it 'creates repository' do
+            expect { request }.to change(company.repositories, :count).by(1)
+          end
+
+          it 'redirects to repositories_path' do
+            request
+
+            expect(response).to redirect_to repositories_path
+          end
+        end
+
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam' }, locale: 'en'
+              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam', provider: 'github' }, locale: 'en'
             }
           }
 

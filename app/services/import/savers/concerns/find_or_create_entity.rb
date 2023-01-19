@@ -9,6 +9,14 @@ module Import
 
         private
 
+        def author_entity
+          @author_entity ||=
+            ::PullRequests::Entity.find_by(
+              pull_request: @pull_request,
+              origin: ::PullRequests::Entity::AUTHOR
+            ).entity_id
+        end
+
         def find_or_create_entity(payload)
           entity = ::Entity.find_or_initialize_by(payload.slice(*ENTITY_FIND_ATTRIBUTES))
           entity.identity = matched_identity(payload) if entity.new_record?

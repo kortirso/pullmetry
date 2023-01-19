@@ -15,6 +15,8 @@ module Import
             next if payload[:external_id].in?(existing_reviews)
 
             entity = find_or_create_entity(payload.delete(:author))
+            next if entity == author_entity
+
             pr_entity = find_or_create_pr_entity(entity)
             create_review(pr_entity, payload)
           end

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 describe Import::SyncPullRequestsService, type: :service do
-  subject(:service_call) { described_class.new(fetch_service: fetch_service).call(repository: repository) }
+  subject(:service_call) { described_class.new(repository: repository).call }
 
   let!(:repository) { create :repository }
-  let(:fetch_service) { double }
   let(:fetcher) { double }
   let(:fetch_data) { double }
   let(:data) {
@@ -45,7 +44,7 @@ describe Import::SyncPullRequestsService, type: :service do
   }
 
   before do
-    allow(fetch_service).to receive(:new).and_return(fetcher)
+    allow(Import::Fetchers::Github::PullRequests).to receive(:new).and_return(fetcher)
     allow(fetcher).to receive(:call).and_return(fetch_data)
     allow(fetch_data).to receive(:result).and_return(data)
   end
