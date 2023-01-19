@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - changelog file
+- fetching/representing/saving gitlab data
+- creating repository with for specific provider and external_id
 
 ## [1.0.0] - 2023-01-18
 ### Added

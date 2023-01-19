@@ -13,14 +13,14 @@ module Repositories
 
     def call(company:, params:)
       return if validate_with(@repository_validator, params) && failure?
-      return if validate_link(company.user, params[:link]) && failure?
+      return if validate_existing_link(company.user, params[:link]) && failure?
 
       @result = company.repositories.create!(params)
     end
 
     private
 
-    def validate_link(user, link)
+    def validate_existing_link(user, link)
       available_repositories = user.available_repositories
       return fail!('User has access to repository with the same link') if available_repositories.exists?(link: link)
       return fail!('Repository with the same link exists') if unavailable_repositories_exists?(available_repositories)

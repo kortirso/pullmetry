@@ -3,6 +3,7 @@ ru:
     rules:
       title: Заголовок
       name: Название
+      external_id: Внешний ID
     errors:
       company:
         rules:
@@ -10,3 +11,7 @@ ru:
             filled?: не может быть пустым
           name:
             filled?: не может быть пустым
+      repository:
+        rules:
+          external_id:
+            empty: не может быть пустым
