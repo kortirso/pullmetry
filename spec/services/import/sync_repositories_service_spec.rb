@@ -33,7 +33,7 @@ describe Import::SyncRepositoriesService, type: :service do
     allow(generate_insights_service).to receive(:call)
   end
 
-  it 'calls services', :aggregate_failures do
+  it 'calls services and updates repository', :aggregate_failures do
     service_call
 
     expect(sync_pull_requests_service).to have_received(:new).with(repository: repository)
@@ -41,6 +41,7 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(sync_reviews_service).to have_received(:new).with(pull_request: pull_request)
     expect(generate_insights_service).to have_received(:call).with(insightable: repository)
     expect(generate_insights_service).to have_received(:call).with(insightable: company)
+    expect(repository.reload.synced_at).not_to be_nil
   end
 
   it 'succeeds' do
