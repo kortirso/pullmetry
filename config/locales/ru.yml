@@ -1,10 +1,10 @@
 ru:
   components:
     page_wrappers:
-      users_component:
-        home: Главная
+      page_component:
         companies: Компании
         repositories: Репозитории
+        profile: Аккаунт
         logout: Выход
   controllers:
     authentication:
