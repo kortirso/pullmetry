@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 # Synchronize companies
-every 1.hour do
+every 15.minutes do
   runner 'Import::SyncCompaniesJob.perform_later'
 end
