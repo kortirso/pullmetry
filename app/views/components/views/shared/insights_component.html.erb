@@ -16,7 +16,7 @@
       <% @insights.each do |insight| %>
         <tr>
           <td class="image">
-            <%= link_to "https://github.com/#{insight.entity.login}" do %>
+            <%= link_to insight.entity.html_url, target: '_blank' do %>
               <%= image_tag insight.entity.avatar_url %>
             <% end %>
           </td>

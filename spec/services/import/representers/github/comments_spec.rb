@@ -10,7 +10,8 @@ describe Import::Representers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 1,
-          'login' => 'octocat'
+          'login' => 'octocat',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -18,7 +19,8 @@ describe Import::Representers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 2,
-          'login' => 'octocat2'
+          'login' => 'octocat2',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -26,7 +28,8 @@ describe Import::Representers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 3,
-          'login' => 'octocat3'
+          'login' => 'octocat3',
+          'html_url' => 'https://github.com/octocat'
         }
       }
     ]
@@ -43,7 +46,8 @@ describe Import::Representers::Github::Comments, type: :service do
             external_id: '1',
             provider: Providerable::GITHUB,
             login: 'octocat',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://github.com/octocat'
           }
         },
         {
@@ -53,7 +57,8 @@ describe Import::Representers::Github::Comments, type: :service do
             external_id: '2',
             provider: Providerable::GITHUB,
             login: 'octocat2',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://github.com/octocat'
           }
         },
         {
@@ -63,7 +68,8 @@ describe Import::Representers::Github::Comments, type: :service do
             external_id: '3',
             provider: Providerable::GITHUB,
             login: 'octocat3',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://github.com/octocat'
           }
         }
       ]

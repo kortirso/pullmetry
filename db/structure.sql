@@ -342,7 +342,8 @@ CREATE TABLE public.entities (
     avatar_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    identity_id bigint
+    identity_id bigint,
+    html_url character varying
 );
 
 
@@ -1266,6 +1267,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230109170258'),
 ('20230119174641'),
 ('20230119174916'),
-('20230120143333');
+('20230120143333'),
+('20230120194630');
 
 

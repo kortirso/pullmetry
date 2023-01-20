@@ -10,7 +10,8 @@ module Import
             external_id: data[:id].to_s,
             provider: Providerable::GITLAB,
             login: data[:username],
-            avatar_url: data[:avatar_url]
+            avatar_url: data[:avatar_url],
+            html_url: data[:web_url]
           }
         end
       end

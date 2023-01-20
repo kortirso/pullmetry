@@ -15,7 +15,8 @@ describe Import::Fetchers::Github::Reviews, type: :service do
         'state' => 'APPROVED',
         'user' => {
           'id' => 1,
-          'login' => 'octocat'
+          'login' => 'octocat',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -24,7 +25,8 @@ describe Import::Fetchers::Github::Reviews, type: :service do
         'state' => 'APPROVED',
         'user' => {
           'id' => 2,
-          'login' => 'octocat2'
+          'login' => 'octocat2',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -33,7 +35,8 @@ describe Import::Fetchers::Github::Reviews, type: :service do
         'state' => 'COMMENTED',
         'user' => {
           'id' => 3,
-          'login' => 'octocat3'
+          'login' => 'octocat3',
+          'html_url' => 'https://github.com/octocat'
         }
       }
     ]
