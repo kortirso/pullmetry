@@ -2,9 +2,9 @@ en:
   components:
     page_wrappers:
       page_component:
-        home: Home
         companies: Companies
         repositories: Repositories
+        profile: Profile
         logout: Logout
   controllers:
     authentication:
