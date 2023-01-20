@@ -5,18 +5,23 @@
       <div class="half-container flex flex-col justify-center">
         <h1>Pull requests relevant statistic</h1>
         <p>Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests.</p>
+        <% unless Current.user %>
+          <p>
+            <%= link_to 'Login with Github', omniauth_link(:github), class: 'button small' %>
+          </p>
+        <% end %>
       </div>
       <div class="half-container">
         <%= image_tag 'screenshot.webp', width: 616, height: 223, alt: 'interface-example' %>
       </div>
     </section>
     <section id="benefits-box">
-      <h2>What do you get from the application</h2>
+      <h2>What do you get from the PullKeeper</h2>
       <ul>
-        <li>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for the whole company, all information gathered from different automatically</li>
+        <li>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for the whole company, all information gathered from different sources automatically</li>
         <li>Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</li>
-        <li>Pull requests, reviewers, and comments data are collected through Github and Gitlab API</li>
-        <li>Coming soon features: Slack integration, Bitbucket API integration</li>
+        <li>Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank">Gitlab API</a></li>
+        <li>Coming soon features: Slack integration, Bitbucket API integration, more statistics data, comparing with previous periods</li>
       </ul>
     </section>
   </div>

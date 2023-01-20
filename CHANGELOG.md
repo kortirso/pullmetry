@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - saving and rendering last synced_at time for repositories
 
+### Modified
+- small SEO changes
+
 ## [1.1.0] - 2023-01-20
 ### Added
 - changelog file

@@ -1,5 +1,6 @@
 #welcome-box {
-  padding: 7.5rem 0;
+  padding: 7rem 0 6rem;
+  margin: 0;
 
   h1 {
     font-size: 2.25rem;
@@ -9,6 +10,10 @@
   p {
     font-size: 1.25rem;
     line-height: 2rem;
+
+    a {
+      margin-top: 1rem;
+    }
   }
 
   img {
@@ -19,7 +24,7 @@
 
 #benefits-box {
   max-width: 60rem;
-  margin: 2rem auto;
+  margin: 0 auto 4rem;
 
   h2 {
     text-align: center;
@@ -40,12 +45,13 @@
   }
 }
 
-@media only screen and (max-width: 60rem) {
+@media only screen and (max-width: 40rem) {
   #welcome-box {
-    padding: 4rem 0 0;
+    margin: 3rem 0 1rem;
+    padding: 0;
   }
 
   #benefits-box {
-    margin: 1rem 0;
+    margin: 0 0 3rem;
   }
 }
