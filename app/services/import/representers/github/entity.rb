@@ -10,7 +10,8 @@ module Import
             external_id: data[:id].to_s,
             provider: Providerable::GITHUB,
             login: data[:login],
-            avatar_url: data[:avatar_url]
+            avatar_url: data[:avatar_url],
+            html_url: data[:html_url]
           }
         end
       end

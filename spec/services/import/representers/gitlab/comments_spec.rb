@@ -10,7 +10,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 1,
-          'username' => 'octocat'
+          'username' => 'octocat',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -18,7 +19,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 2,
-          'username' => 'octocat2'
+          'username' => 'octocat2',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -26,7 +28,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 3,
-          'username' => 'octocat3'
+          'username' => 'octocat3',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       }
     ]
@@ -43,7 +46,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
             external_id: '1',
             provider: Providerable::GITLAB,
             login: 'octocat',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://gitlab.com/DouweM'
           }
         },
         {
@@ -53,7 +57,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
             external_id: '2',
             provider: Providerable::GITLAB,
             login: 'octocat2',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://gitlab.com/DouweM'
           }
         },
         {
@@ -63,7 +68,8 @@ describe Import::Representers::Gitlab::Comments, type: :service do
             external_id: '3',
             provider: Providerable::GITLAB,
             login: 'octocat3',
-            avatar_url: nil
+            avatar_url: nil,
+            html_url: 'https://gitlab.com/DouweM'
           }
         }
       ]

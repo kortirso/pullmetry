@@ -14,7 +14,8 @@ describe Import::Fetchers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 1,
-          'login' => 'octocat'
+          'login' => 'octocat',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -22,7 +23,8 @@ describe Import::Fetchers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 2,
-          'login' => 'octocat2'
+          'login' => 'octocat2',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -30,7 +32,8 @@ describe Import::Fetchers::Github::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'user' => {
           'id' => 3,
-          'login' => 'octocat3'
+          'login' => 'octocat3',
+          'html_url' => 'https://github.com/octocat'
         }
       }
     ]

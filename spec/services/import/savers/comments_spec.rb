@@ -15,7 +15,8 @@ describe Import::Savers::Comments, type: :service do
           external_id: 1,
           provider: Providerable::GITHUB,
           login: 'octocat',
-          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+          html_url: 'https://github.com/octocat'
         }
       },
       {
@@ -25,7 +26,8 @@ describe Import::Savers::Comments, type: :service do
           external_id: 2,
           provider: Providerable::GITHUB,
           login: 'octocat2',
-          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+          html_url: 'https://github.com/octocat'
         }
       },
       {
@@ -35,7 +37,8 @@ describe Import::Savers::Comments, type: :service do
           external_id: 10,
           provider: Providerable::GITHUB,
           login: 'octocat10',
-          avatar_url: 'https://github.com/images/error/octocat_happy.gif'
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+          html_url: 'https://github.com/octocat'
         }
       }
     ]

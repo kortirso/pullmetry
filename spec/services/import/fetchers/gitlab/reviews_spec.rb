@@ -15,21 +15,24 @@ describe Import::Fetchers::Gitlab::Reviews, type: :service do
           'user' => {
             'id' => 1,
             'username' => 'octocat',
-            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+            'web_url' => 'https://gitlab.com/DouweM'
           }
         },
         {
           'user' => {
             'id' => 2,
             'username' => 'octocat2',
-            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+            'web_url' => 'https://gitlab.com/DouweM'
           }
         },
         {
           'user' => {
             'id' => 3,
             'username' => 'octocat3',
-            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+            'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+            'web_url' => 'https://gitlab.com/DouweM'
           }
         }
       ]

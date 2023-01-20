@@ -14,7 +14,8 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 1,
-          'username' => 'octocat'
+          'username' => 'octocat',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -22,7 +23,8 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 2,
-          'username' => 'octocat2'
+          'username' => 'octocat2',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -30,7 +32,8 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
         'created_at' => '2013-10-02T08:57:14Z',
         'author' => {
           'id' => 3,
-          'username' => 'octocat3'
+          'username' => 'octocat3',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       }
     ]

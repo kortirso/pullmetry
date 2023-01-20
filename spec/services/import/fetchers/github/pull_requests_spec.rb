@@ -17,7 +17,8 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
           'external_id' => 1,
           'provider' => Providerable::GITHUB,
           'login' => 'octocat',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -27,7 +28,8 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
           'external_id' => 2,
           'provider' => Providerable::GITHUB,
           'login' => 'octocat2',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'html_url' => 'https://github.com/octocat'
         }
       },
       {
@@ -37,7 +39,8 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
           'external_id' => 3,
           'provider' => Providerable::GITHUB,
           'login' => 'octocat3',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'html_url' => 'https://github.com/octocat'
         }
       }
     ]

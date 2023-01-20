@@ -16,7 +16,8 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
         'author' => {
           'id' => 1,
           'username' => 'octocat',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -25,7 +26,8 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
         'author' => {
           'id' => 2,
           'username' => 'octocat2',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       },
       {
@@ -34,7 +36,8 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
         'author' => {
           'id' => 3,
           'username' => 'octocat3',
-          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif'
+          'avatar_url' => 'https://github.com/images/error/octocat_happy.gif',
+          'web_url' => 'https://gitlab.com/DouweM'
         }
       }
     ]
