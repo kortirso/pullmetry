@@ -410,7 +410,7 @@ CREATE TABLE public.insights (
     insightable_id bigint NOT NULL,
     insightable_type character varying NOT NULL,
     entity_id bigint NOT NULL,
-    comments_count integer DEFAULT 0 NOT NULL,
+    comments_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     reviews_count integer DEFAULT 0,
@@ -1268,6 +1268,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230119174641'),
 ('20230119174916'),
 ('20230120143333'),
-('20230120194630');
+('20230120194630'),
+('20230121154845');
 
 

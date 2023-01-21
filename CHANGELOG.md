@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Modified
 - update gems
+- generating insight attributes based on available insight_fields
 
 ## [1.1.2] - 2023-01-20
 ### Added

@@ -14,10 +14,9 @@ module Insights
 
     def call(insightable:)
       @insightable = insightable
-      @entity_ids = @insightable.entities.pluck(:id)
       ActiveRecord::Base.transaction do
         remove_old_insights
-        @entity_ids.each do |entity_id|
+        entity_ids.each do |entity_id|
           insight = @insightable.insights.find_or_initialize_by(entity_id: entity_id)
           insight.update!(insight_attributes(entity_id))
         end
@@ -26,20 +25,27 @@ module Insights
 
     private
 
-    def remove_old_insights
-      @insightable.insights.where.not(entity_id: @entity_ids).destroy_all
+    def entity_ids
+      @entity_ids ||= @insightable.entities.pluck(:id)
     end
 
-    # TODO: need to add settings to company to have list of generated attributes of insights
+    def remove_old_insights
+      @insightable.insights.where.not(entity_id: entity_ids).destroy_all
+    end
+
+    # this method generates insight attributes based on available insight_fields
     def insight_attributes(entity_id)
-      {
-        comments_count: comments_count[entity_id].to_i,
-        reviews_count: reviews_count[entity_id],
-        average_review_seconds: average_review_seconds[entity_id],
-        required_reviews_count: required_reviews_count[entity_id],
-        open_pull_requests_count: open_pull_requests_count[entity_id],
-        average_merge_seconds: average_merge_seconds[entity_id]
-      }
+      insight_fields.inject({}) { |acc, insight_field| acc.merge({ insight_field => send(insight_field)[entity_id] }) }
+    end
+
+    # selecting insight attributes based on company configuration
+    def insight_fields
+      @insight_fields ||=
+        if @insightable.premium? && @insightable.configuration.insight_fields.present?
+          @insightable.configuration.insight_fields.attributes.filter_map { |key, value| value ? key.to_sym : nil }
+        else
+          Insight::DEFAULT_ATTRIBUTES
+        end
     end
 
     # this method returns { entity_id => comments_count }
