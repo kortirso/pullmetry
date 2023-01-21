@@ -24,7 +24,7 @@
           <% end %>
         </div>
         <div class="list-element-insights">
-          <%= render Views::Shared::InsightsComponent.new(access_token: company.access_token, insights: company.insights) %>
+          <%= render Views::Shared::InsightsComponent.new(insightable: company) %>
         </div>
       </div>
     <% end %>

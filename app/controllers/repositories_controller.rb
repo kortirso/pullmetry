@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
     @repositories =
       current_user
       .available_repositories
-      .includes(:company, :access_token, insights: :entity)
+      .includes(:access_token, insights: :entity, company: :user)
       .order('insights.insightable_id ASC, insights.comments_count DESC')
   end
 

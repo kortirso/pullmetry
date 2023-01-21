@@ -25,7 +25,7 @@
           <% end %>
         </div>
         <div class="list-element-insights">
-          <%= render Views::Shared::InsightsComponent.new(access_token: repository.access_token, insights: repository.insights) %>
+          <%= render Views::Shared::InsightsComponent.new(insightable: repository) %>
         </div>
       </div>
     <% end %>

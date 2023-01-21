@@ -5,11 +5,9 @@
       <tr>
         <th></th>
         <th>User</th>
-        <th>Open PRs</th>
-        <th>Total comments</th>
-        <th>Required reviews</th>
-        <th>Total reviews</th>
-        <th>Average review time</th>
+        <% insight_fields.each do |insight_field| %>
+          <th><%= Insight::SHORT_ATTRIBUTE_NAMES[insight_field] %></th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -21,11 +19,9 @@
             <% end %>
           </td>
           <td><%= insight.entity.login %></td>
-          <td><%= insight.open_pull_requests_count.to_i %></td>
-          <td><%= insight.comments_count %></td>
-          <td><%= insight.required_reviews_count.to_i %></td>
-          <td><%= insight.reviews_count.to_i %></td>
-          <td><%= convert_seconds(insight.average_review_seconds) %></td>
+          <% insight_fields.each do |insight_field| %>
+            <td><%= Insight::TIME_ATTRIBUTES.include?(insight_field) ? convert_seconds(insight[insight_field]) : insight[insight_field].to_i %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
