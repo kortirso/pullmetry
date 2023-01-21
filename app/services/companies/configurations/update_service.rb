@@ -11,7 +11,7 @@ module Companies
         convert_working_time(use_work_time)
         return if use_work_time && validate_work_time && failure?
 
-        company.configuration.assign_attributes(@params.slice(:work_start_time, :work_end_time))
+        company.configuration.assign_attributes(sliced_params(company))
         company.save!
       end
 
@@ -30,6 +30,13 @@ module Companies
         return if @params[:work_start_time] < @params[:work_end_time]
 
         fail!('Start time must be before end time')
+      end
+
+      def sliced_params(company)
+        params_list = %i[work_start_time work_end_time]
+        # premium account has more available attributes for update
+        params_list.push(:insight_fields) if company.premium?
+        @params.slice(*params_list)
       end
     end
   end
