@@ -13,8 +13,6 @@
     width: 35rem;
     max-width: 100%;
     display: inline-block;
-    background: $white;
-    padding: 1.5rem;
 
     .form-value {
       width: 100%;
@@ -25,10 +23,6 @@
 .list {
   .list-element {
     display: flex;
-    background: $white;
-    padding: 1.5rem;
-    box-shadow: rgba(0, 0, 0, 0.08) 0 0.4rem 2rem, rgba(0, 0, 0, 0.18) 0 0.15rem 0.5rem;
-    margin-bottom: 1.5rem;
 
     .list-element-header {
       flex: 3;

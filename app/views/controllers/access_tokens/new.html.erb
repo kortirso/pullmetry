@@ -3,7 +3,7 @@
     <div class="half-container">
       <h1>New access token</h1>
       <section class="list-form">
-        <%= form_with model: @access_token, url: access_tokens_path(tokenable_uuid: @tokenable.uuid, tokenable_type: @tokenable.class.name), method: :post do |form| %>
+        <%= form_with model: @access_token, url: access_tokens_path(tokenable_uuid: @tokenable.uuid, tokenable_type: @tokenable.class.name), method: :post, class: 'form-block' do |form| %>
           <div class="form-field">
             <%= form.label :value, 'Value', class: 'form-label' %>
             <%= form.text_field :value, required: true, placeholder: "Access token's value", class: 'form-value' %>

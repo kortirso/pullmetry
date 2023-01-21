@@ -1,18 +1,38 @@
 <%= render PageWrappers::PageComponent.new do %>
   <h1>Edit configuration</h1>
-  <section class="list-form">
+  <section id="configuration-form">
     <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
-      <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
-      <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
-      <div id="work-times">
-        <div class="form-field">
-          <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
-          <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+      <div class="form-block">
+        <h2>Work time</h2>
+        <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
+        <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
+        <div id="work-times">
+          <div class="form-field">
+            <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
+            <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+          </div>
+          <div class="form-field">
+            <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
+            <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
+          </div>
         </div>
-        <div class="form-field">
-          <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
-          <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
-        </div>
+      </div>
+      <div class="form-block">
+        <h2>Insight attributes</h2>
+        <% if @company.premium? %>
+          <div id="insight-attributes">
+            <%= form.fields :insight_fields do |fields| %>
+              <% JsonbColumns::Insight.attribute_names.each do |attribute_name| %>
+                <div class="insight-attribute">
+                  <%= fields.check_box attribute_name.to_sym, checked: @company.configuration.insight_fields ? @company.configuration.insight_fields[attribute_name] : false %>
+                  <%= fields.label attribute_name.to_sym, attribute_name.split('_').join(' ').capitalize, class: 'form-label' %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p>This configuration is available for premium accounts.</p>
+        <% end %>
       </div>
       <%= form.submit 'Update configuration', class: 'button' %>
     <% end %>

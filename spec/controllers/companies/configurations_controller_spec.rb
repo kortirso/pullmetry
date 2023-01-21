@@ -116,25 +116,59 @@ describe Companies::ConfigurationsController do
                 'work_start_time(4i)' => '12',
                 'work_start_time(5i)' => '00',
                 'work_end_time(4i)' => '13',
-                'work_end_time(5i)' => '00'
+                'work_end_time(5i)' => '00',
+                'insight_fields' => {
+                  'unknown' => '1',
+                  'comments_count' => 2
+                }
               },
               locale: 'en'
             }
           }
 
-          it 'updates configuration', :aggregate_failures do
-            request
+          context 'for regular account' do
+            it 'updates regular configuration', :aggregate_failures do
+              request
 
-            configuration = company.reload.configuration
+              configuration = company.reload.configuration
 
-            expect(configuration.work_start_time).to eq DateTime.new(2023, 1, 1, 12, 0, 0)
-            expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
+              expect(configuration.work_start_time).to eq DateTime.new(2023, 1, 1, 12, 0, 0)
+              expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
+              expect(configuration.insight_fields).to be_nil
+            end
+
+            it 'redirects to companies_path' do
+              request
+
+              expect(response).to redirect_to companies_path
+            end
           end
 
-          it 'redirects to companies_path' do
-            request
+          context 'for premium account' do
+            before { create :subscription, user: @current_user }
 
-            expect(response).to redirect_to companies_path
+            it 'updates configuration with additional attributes', :aggregate_failures do
+              request
+
+              configuration = company.reload.configuration
+
+              expect(configuration.work_start_time).to eq DateTime.new(2023, 1, 1, 12, 0, 0)
+              expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
+              expect(configuration.insight_fields.attributes).to eq({
+                'comments_count' => true,
+                'reviews_count' => nil,
+                'required_reviews_count' => nil,
+                'open_pull_requests_count' => nil,
+                'average_review_seconds' => nil,
+                'average_merge_seconds' => nil
+              })
+            end
+
+            it 'redirects to companies_path' do
+              request
+
+              expect(response).to redirect_to companies_path
+            end
           end
         end
       end

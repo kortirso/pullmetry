@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- rendering/updating insight attributes at configuration edit form
+
 ### Modified
 - update gems
+- generating insight attributes based on available insight_fields
+- rendering insight attributes based on configuration
 
 ## [1.1.2] - 2023-01-20
 ### Added

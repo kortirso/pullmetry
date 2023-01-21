@@ -6,14 +6,17 @@ describe Insights::GenerateService, type: :service do
   let!(:repository) { create :repository }
   let!(:pr1) { create :pull_request, repository: repository }
   let!(:pr2) { create :pull_request, repository: repository }
+  let!(:pr3) { create :pull_request, repository: repository, pull_merged_at: 10.seconds.after }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
 
   before do
-    pr_entity1 = create :pull_requests_entity, pull_request: pr1, entity: entity1
-    pr_entity2 = create :pull_requests_entity, pull_request: pr2, entity: entity2
+    pr_entity1 = create :pull_requests_entity, origin: 'author', pull_request: pr1, entity: entity1
+    pr_entity2 = create :pull_requests_entity, origin: 'reviewer', pull_request: pr2, entity: entity2
+    create :pull_requests_entity, origin: 'author', pull_request: pr3, entity: entity2
     create :pull_requests_comment, pull_requests_entity: pr_entity1
     create :pull_requests_comment, pull_requests_entity: pr_entity2
+    create :pull_requests_review, pull_requests_entity: pr_entity2, review_created_at: 10.seconds.after
   end
 
   context 'for repository insightable' do
@@ -48,6 +51,21 @@ describe Insights::GenerateService, type: :service do
 
       it 'creates 1 insight' do
         expect { service_call }.to change(insightable.insights, :count).by(1)
+      end
+
+      it 'insight has default list of attributes', :aggregate_failures do
+        service_call
+
+        last_insight = Insight.last
+
+        expect(last_insight.required_reviews_count).to eq 1
+        expect(last_insight.reviews_count).to eq 1
+        expect(last_insight.average_review_seconds).not_to eq 0
+        expect(last_insight.comments_count).to eq 1
+        # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
+        expect(entity2.pull_requests_entities.author.size).to eq 1
+        expect(last_insight.open_pull_requests_count).to eq 0
+        expect(last_insight.average_merge_seconds).to eq 0
       end
 
       it 'updates existing insight' do

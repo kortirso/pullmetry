@@ -1,7 +1,7 @@
 <%= render PageWrappers::PageComponent.new do %>
   <h1>New Company</h1>
   <section class="list-form">
-    <%= form_with model: @company, url: companies_path, method: :post do |form| %>
+    <%= form_with model: @company, url: companies_path, method: :post, class: 'form-block' do |form| %>
       <div class="form-field">
         <%= form.label :title, 'Title', class: 'form-label' %>
         <%= form.text_field :title, required: true, placeholder: "Company's title", class: 'form-value' %>
