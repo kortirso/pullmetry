@@ -6,7 +6,7 @@
         <th></th>
         <th>User</th>
         <% insight_fields.each do |insight_field| %>
-          <th><%= Insight::SHORT_ATTRIBUTE_NAMES[insight_field] %></th>
+          <th><%= Insight::SHORT_ATTRIBUTE_NAMES[insight_field.to_sym] %></th>
         <% end %>
       </tr>
     </thead>
@@ -20,7 +20,10 @@
           </td>
           <td><%= insight.entity.login %></td>
           <% insight_fields.each do |insight_field| %>
-            <td><%= Insight::TIME_ATTRIBUTES.include?(insight_field) ? convert_seconds(insight[insight_field]) : insight[insight_field].to_i %></td>
+            <td>
+              <%= Insight::TIME_ATTRIBUTES.include?(insight_field.to_sym) ? convert_seconds(insight[insight_field]) : insight[insight_field].to_i %>
+              <%= insight_ratio ? insight_ratio_value(insight, insight_field) : nil %>
+            </td>
           <% end %>
         </tr>
       <% end %>

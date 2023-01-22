@@ -417,7 +417,13 @@ CREATE TABLE public.insights (
     required_reviews_count integer DEFAULT 0,
     open_pull_requests_count integer DEFAULT 0,
     average_review_seconds integer DEFAULT 0,
-    average_merge_seconds integer DEFAULT 0
+    average_merge_seconds integer DEFAULT 0,
+    comments_count_ratio integer,
+    reviews_count_ratio integer,
+    required_reviews_count_ratio integer,
+    open_pull_requests_count_ratio integer,
+    average_review_seconds_ratio integer,
+    average_merge_seconds_ratio integer
 );
 
 
@@ -1269,6 +1275,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230119174916'),
 ('20230120143333'),
 ('20230120194630'),
-('20230121154845');
+('20230121154845'),
+('20230121185501');
 
 

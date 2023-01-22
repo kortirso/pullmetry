@@ -4,35 +4,65 @@
     <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
       <div class="form-block">
         <h2>Work time</h2>
-        <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
-        <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
-        <div id="work-times">
-          <div class="form-field">
-            <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
-            <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+        <div class="main-container">
+          <div class="half-container">
+            <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
+            <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
+            <div id="work-times">
+              <div class="form-field">
+                <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
+                <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+              </div>
+              <div class="form-field">
+                <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
+                <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
+              </div>
+            </div>
           </div>
-          <div class="form-field">
-            <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
-            <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
+          <div class="half-container">
+            <p class="line-height">If this configuration enabled then you can select working time of your company. This allows better calculations of average review time, because it will not count not-working time and weekends.</p>
           </div>
         </div>
       </div>
       <div class="form-block">
         <h2>Insight attributes</h2>
-        <% if @company.premium? %>
-          <div id="insight-attributes">
-            <%= form.fields :insight_fields do |fields| %>
-              <% JsonbColumns::Insight.attribute_names.each do |attribute_name| %>
-                <div class="insight-attribute">
-                  <%= fields.check_box attribute_name.to_sym, checked: @company.configuration.insight_fields ? @company.configuration.insight_fields[attribute_name] : false %>
-                  <%= fields.label attribute_name.to_sym, attribute_name.split('_').join(' ').capitalize, class: 'form-label' %>
-                </div>
-              <% end %>
+        <div class="main-container">
+          <div class="half-container">
+            <% if @company.premium? %>
+              <div id="insight-attributes">
+                <%= form.fields :insight_fields do |fields| %>
+                  <% JsonbColumns::Insight.attribute_names.each do |attribute_name| %>
+                    <div class="insight-attribute">
+                      <%= fields.check_box attribute_name.to_sym, checked: @company.configuration.insight_fields ? @company.configuration.insight_fields[attribute_name] : false %>
+                      <%= fields.label attribute_name.to_sym, attribute_name.split('_').join(' ').capitalize, class: 'form-label' %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            <% else %>
+              <p>This configuration is available for premium accounts.</p>
             <% end %>
           </div>
-        <% else %>
-          <p>This configuration is available for premium accounts.</p>
-        <% end %>
+          <div class="half-container">
+            <p class="line-height">If this configuration enabled then you can select specific insight attributes to calculate and render such information at insight tables.</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-block">
+        <h2>Insight ratios</h2>
+        <div class="main-container">
+          <div class="half-container">
+            <% if @company.premium? %>
+              <%= form.check_box :insight_ratio, checked: @company.configuration.insight_ratio %>
+              <%= form.label :insight_ratio, 'Calculate insight ratios', class: 'form-label' %>
+            <% else %>
+              <p>This configuration is available for premium accounts.</p>
+            <% end %>
+          </div>
+          <div class="half-container">
+            <p class="line-height">If this configuration enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
+          </div>
+        </div>
       </div>
       <%= form.submit 'Update configuration', class: 'button' %>
     <% end %>

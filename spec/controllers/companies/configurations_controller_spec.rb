@@ -120,7 +120,8 @@ describe Companies::ConfigurationsController do
                 'insight_fields' => {
                   'unknown' => '1',
                   'comments_count' => 2
-                }
+                },
+                'insight_ratio' => '1'
               },
               locale: 'en'
             }
@@ -135,6 +136,7 @@ describe Companies::ConfigurationsController do
               expect(configuration.work_start_time).to eq DateTime.new(2023, 1, 1, 12, 0, 0)
               expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
               expect(configuration.insight_fields).to be_nil
+              expect(configuration.insight_ratio).to be_nil
             end
 
             it 'redirects to companies_path' do
@@ -162,6 +164,7 @@ describe Companies::ConfigurationsController do
                 'average_review_seconds' => nil,
                 'average_merge_seconds' => nil
               })
+              expect(configuration.insight_ratio).to be_truthy
             end
 
             it 'redirects to companies_path' do

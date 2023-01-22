@@ -12,7 +12,10 @@ module AccessTokens
     def call(tokenable:, params:)
       return if validate_with(@access_token_validator, params) && failure?
 
-      @result = tokenable.create_access_token!(params)
+      ActiveRecord::Base.transaction do
+        tokenable.access_token&.destroy
+        @result = tokenable.create_access_token!(params)
+      end
     end
   end
 end
