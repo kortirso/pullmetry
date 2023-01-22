@@ -63,6 +63,14 @@
           white-space: nowrap;
         }
 
+        tbody {
+          tr {
+            &:nth-of-type(2n) {
+              background: $gray100;
+            }
+          }
+        }
+
         td.image {
           img {
             width: 1.4rem;
