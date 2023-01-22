@@ -30,13 +30,32 @@ module Views
         "#{value / SECONDS_IN_DAY}d #{hours}h #{minutes}m"
       end
 
+      # rubocop: disable Layout/LineLength, Rails/OutputSafety
+      def insight_ratio_value(insight, attribute)
+        ratio_field_name = "#{attribute}_ratio"
+        ratio_value = insight[ratio_field_name].to_i
+        # for time attributes less value is better
+        ratio_value *= -1 if Insight::TIME_ATTRIBUTES.include?(attribute)
+
+        "(<span class='#{ratio_value.negative? ? 'negative' : 'positive'}'>#{ratio_value.positive? ? '+' : ''}#{ratio_value}%</span>)".html_safe
+      end
+      # rubocop: enable Layout/LineLength, Rails/OutputSafety
+
       def insight_fields
         @insight_fields ||=
-          if @insightable.premium? && @insightable.configuration.insight_fields.present?
-            @insightable.configuration.insight_fields.attributes.filter_map { |key, value| value ? key.to_sym : nil }
+          if premium && @insightable.configuration.insight_fields.present?
+            @insightable.selected_insight_fields
           else
             Insight::DEFAULT_ATTRIBUTES
           end
+      end
+
+      def premium
+        @insightable.premium?
+      end
+
+      def insight_ratio
+        @insight_ratio ||= premium && @insightable.configuration.insight_ratio
       end
     end
   end

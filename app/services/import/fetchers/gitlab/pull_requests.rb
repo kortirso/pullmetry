@@ -7,9 +7,7 @@ module Import
         prepend ApplicationService
         include Concerns::Urlable
 
-        DEFAULT_DURATION_DAYS = 30
-
-        def initialize(repository:, fetch_client: GitlabApi::Client, duration_days: DEFAULT_DURATION_DAYS)
+        def initialize(repository:, fetch_client: GitlabApi::Client, duration_days: Insight::FETCH_DAYS_PERIOD)
           @fetch_client = fetch_client.new(url: base_url(repository), repository: repository)
           @started_at_limit = (DateTime.now - duration_days.days).beginning_of_day
           @result = []

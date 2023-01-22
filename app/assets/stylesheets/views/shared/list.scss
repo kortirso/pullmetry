@@ -59,11 +59,23 @@
           }
         }
 
+        td {
+          white-space: nowrap;
+        }
+
         td.image {
           img {
             width: 1.4rem;
             height: 1.4rem;
           }
+        }
+
+        .negative {
+          color: $red500;
+        }
+
+        .positive {
+          color: $green500;
         }
       }
     }

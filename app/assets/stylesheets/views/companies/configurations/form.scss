@@ -11,26 +11,26 @@
     }
   }
 
-  #jsonb_columns_configuration_use_work_time {
-    width: auto;
-    margin-bottom: 1rem;
-  }
-
-  #jsonb_columns_configuration_use_work_time+#work-times {
-    display: none;
-  }
-
-  #jsonb_columns_configuration_use_work_time:checked+#work-times {
-    display: block;
-  }
-
   #insight-attributes {
     display: flex;
     flex-wrap: wrap;
 
     .insight-attribute {
-      width: 33%;
+      width: 50%;
       margin-bottom: .5rem;
     }
   }
+}
+
+#jsonb_columns_configuration_use_work_time {
+  width: auto;
+  margin-bottom: 1rem;
+}
+
+#jsonb_columns_configuration_use_work_time+#work-times {
+  display: none;
+}
+
+#jsonb_columns_configuration_use_work_time:checked+#work-times {
+  display: block;
 }

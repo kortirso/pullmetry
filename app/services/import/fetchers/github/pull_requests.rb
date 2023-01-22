@@ -6,11 +6,9 @@ module Import
       class PullRequests
         prepend ApplicationService
 
-        DEFAULT_DURATION_DAYS = 30
-
-        def initialize(repository:, fetch_client: GithubApi::Client, duration_days: DEFAULT_DURATION_DAYS)
+        def initialize(repository:, fetch_client: GithubApi::Client, duration_days: Insight::FETCH_DAYS_PERIOD)
           @fetch_client = fetch_client.new(repository: repository)
-          @started_at_limit = (DateTime.now - duration_days.days).beginning_of_day
+          @started_at_limit = (DateTime.now - (duration_days.days * (repository.premium? ? 2 : 1))).beginning_of_day
           # @start_from_pull_number = repository.configuration.start_from_pull_number.to_i
           @result = []
         end

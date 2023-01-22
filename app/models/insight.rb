@@ -11,6 +11,7 @@ class Insight < ApplicationRecord
     open_pull_requests_count: 'Open PRs',
     average_merge_seconds: 'Average merge time'
   }.freeze
+  FETCH_DAYS_PERIOD = 30
 
   belongs_to :insightable, polymorphic: true
   belongs_to :entity

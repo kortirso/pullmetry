@@ -15,7 +15,9 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
 
   def premium?
-    subscriptions.exists?(['start_time < :date AND end_time > :date', { date: DateTime.now.new_offset(0) }])
+    Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) do
+      subscriptions.exists?(['start_time < :date AND end_time > :date', { date: DateTime.now.new_offset(0) }])
+    end
   end
 
   def available_companies
