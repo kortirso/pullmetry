@@ -3,7 +3,7 @@
     <h1>Profile</h1>
   </div>
   <section id="profile">
-    <% if Current.user.premium? %>
+    <% if @end_time %>
       <div class="profile-block form-block">
         <h2>Premium details</h2>
         <p class="line-height">Your premium subscription ends at <%= @end_time %></p>
