@@ -195,16 +195,34 @@ describe AccessTokensController do
               }
             }
 
-            it 'creates access token' do
-              request
+            context 'without other tokens' do
+              it 'creates access token' do
+                request
 
-              expect(AccessToken.where(tokenable: repository).size).to eq 1
+                expect(AccessToken.where(tokenable: repository).size).to eq 1
+              end
+
+              it 'redirects to repositories_path' do
+                request
+
+                expect(response).to redirect_to repositories_path
+              end
             end
 
-            it 'redirects to repositories_path' do
-              request
+            context 'with another token' do
+              before { create :access_token, tokenable: repository }
 
-              expect(response).to redirect_to repositories_path
+              it 'creates access token' do
+                request
+
+                expect(AccessToken.where(tokenable: repository).size).to eq 1
+              end
+
+              it 'redirects to repositories_path' do
+                request
+
+                expect(response).to redirect_to repositories_path
+              end
             end
           end
         end
