@@ -122,6 +122,7 @@ GEM
     chronic (0.10.2)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
+    dalli (3.2.3)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -391,6 +392,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.6)
   capistrano-rvm
   capistrano3-puma!
+  dalli
   database_cleaner (~> 2.0)
   dry-validation (~> 1.10)
   factory_bot_rails (= 6.2.0)

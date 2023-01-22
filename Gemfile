@@ -65,6 +65,9 @@ gem 'action_policy'
 # Work with JSON-backed attributes
 gem 'store_model'
 
+# cache store
+gem 'dalli'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'rubocop', '~> 1.35', require: false
