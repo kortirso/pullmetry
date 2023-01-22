@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - rendering/updating insight attributes at configuration edit form
 - calculating/rendering insight ratios
+- render end time of premium
 
 ### Modified
 - update gems
