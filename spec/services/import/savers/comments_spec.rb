@@ -129,4 +129,41 @@ describe Import::Savers::Comments, type: :service do
   it 'succeeds' do
     expect(service_call.success?).to be_truthy
   end
+
+  context 'for stress testing' do
+    let!(:identity) { create :identity, provider: Providerable::GITHUB, login: 'octocat_6' }
+    let(:data) {
+      (0..999).map do |index|
+        external_id = (index / 10) + 1
+        {
+          external_id: index,
+          comment_created_at: '2011-04-11T20:09:31Z',
+          author: {
+            external_id: external_id,
+            provider: Providerable::GITHUB,
+            login: "octocat_#{external_id}",
+            avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+            html_url: 'https://github.com/octocat'
+          }
+        }
+      end
+    }
+
+    before do
+      create :entity, external_id: '1', provider: Providerable::GITHUB
+      create :entity, external_id: '2', provider: Providerable::GITHUB
+      create :entity, external_id: '3', provider: Providerable::GITHUB
+      create :entity, external_id: '4', provider: Providerable::GITHUB
+      create :entity, external_id: '5', provider: Providerable::GITHUB
+    end
+
+    it 'creates 94 new entities, attaches 1 entity to identity, creates 990 comments', :aggregate_failures do
+      result = service_call
+
+      expect(Entity.count).to eq 100
+      expect(identity.entities.size).to eq 1
+      expect(pull_request.pull_requests_comments.count).to eq 990
+      expect(result.success?).to be_truthy
+    end
+  end
 end

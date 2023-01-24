@@ -8,7 +8,6 @@ module Import
 
       def call(pull_request:, data:)
         @pull_request = pull_request
-
         ActiveRecord::Base.transaction do
           destroy_old_reviews(data)
           data.each do |payload|
@@ -51,8 +50,7 @@ module Import
       def create_review(pr_entity, payload)
         pr_entity
           .pull_requests_reviews
-          .create_with(review_created_at: payload[:review_created_at])
-          .find_or_create_by!(external_id: payload[:external_id])
+          .create!(external_id: payload[:external_id], review_created_at: payload[:review_created_at])
       end
     end
   end

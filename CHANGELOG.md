@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Modified
+- x2 speed improvements for saving comments data
+
 ## [1.1.3] - 2023-01-22
 ### Added
 - rendering/updating insight attributes at configuration edit form
