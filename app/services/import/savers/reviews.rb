@@ -48,9 +48,7 @@ module Import
       end
 
       def create_review(pr_entity, payload)
-        pr_entity
-          .pull_requests_reviews
-          .create!(external_id: payload[:external_id], review_created_at: payload[:review_created_at])
+        pr_entity.pull_requests_reviews.create!(payload.slice(:external_id, :review_created_at))
       end
     end
   end

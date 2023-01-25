@@ -70,9 +70,7 @@ module Import
       end
 
       def create_comment(pr_entity, payload)
-        pr_entity
-          .pull_requests_comments
-          .create!(external_id: payload[:external_id], comment_created_at: payload[:comment_created_at])
+        pr_entity.pull_requests_comments.create!(payload.slice(:external_id, :comment_created_at))
       end
     end
   end
