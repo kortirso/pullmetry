@@ -18,7 +18,7 @@ module Import
             # default sorting is asc by id attribute
             # first comes oldest PRs
             result =
-              @fetch_client.pull_request_comments(pull_number: @pull_number, params: { per_page: 25, page: page })
+              @fetch_client.pull_request_comments(pull_number: @pull_number, params: { per_page: 100, page: page })
             break if result.blank?
 
             @result.concat(result)

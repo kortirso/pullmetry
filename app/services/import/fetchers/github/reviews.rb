@@ -17,7 +17,7 @@ module Import
           loop do
             # default sorting is asc by id attribute
             # first comes oldest PRs
-            result = @fetch_client.pull_request_reviews(pull_number: @pull_number, params: { per_page: 25, page: page })
+            result = @fetch_client.pull_request_reviews(pull_number: @pull_number, params: { per_page: 50, page: page })
             break if result.blank?
 
             @result.concat(result.select { |review| review['state'] == 'APPROVED' })

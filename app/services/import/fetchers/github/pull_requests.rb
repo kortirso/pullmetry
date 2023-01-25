@@ -18,7 +18,7 @@ module Import
           loop do
             # default sorting is desc by created_at attribute
             # first comes newest PRs
-            result = @fetch_client.pull_requests(params: { state: 'all', per_page: 25, page: page })
+            result = @fetch_client.pull_requests(params: { state: 'all', per_page: 100, page: page })
             result = filter_result(result)
             break if result.blank?
 
