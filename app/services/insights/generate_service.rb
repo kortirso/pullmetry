@@ -37,7 +37,7 @@ module Insights
     def insight_attributes(entity_id)
       insight_fields.inject({}) do |acc, insight_field|
         unless insight_field.ends_with?('ratio')
-          next acc.merge({ insight_field.to_sym => send(insight_field)[entity_id] })
+          next acc.merge({ insight_field.to_sym => send(insight_field)[entity_id].to_i })
         end
 
         acc.merge({ insight_field.to_sym => send(:ratio, insight_field[0..-7], entity_id) })
