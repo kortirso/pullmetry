@@ -49,10 +49,7 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
   before do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
-      receive(:pull_requests).with(params: { state: 'all', per_page: 25, page: 1 }).and_return(data)
-    )
-    allow(fetch_service).to(
-      receive(:pull_requests).with(params: { state: 'all', per_page: 25, page: 2 }).and_return([])
+      receive(:pull_requests).with(params: { state: 'all', per_page: 100, page: 1 }).and_return(data)
     )
   end
 

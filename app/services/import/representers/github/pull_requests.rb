@@ -13,7 +13,6 @@ module Import
             payload = payload.with_indifferent_access
             {
               pull_number: payload[:number],
-              open: payload[:state] == 'open',
               pull_created_at: payload[:created_at],
               pull_closed_at: payload[:closed_at],
               pull_merged_at: payload[:merged_at],

@@ -14,7 +14,8 @@ describe Import::SyncRepositoriesService, type: :service do
 
   let!(:company) { create :company }
   let!(:repository) { create :repository, company: company }
-  let!(:pull_request) { create :pull_request, repository: repository }
+  let!(:pull_request1) { create :pull_request, repository: repository }
+  let!(:pull_request2) { create :pull_request, repository: repository, pull_closed_at: 1.minute.ago }
   let(:sync_pull_requests_service) { double(Import::SyncPullRequestsService) }
   let(:pull_requests_service) { double }
   let(:sync_comments_service) { double(Import::SyncCommentsService) }
@@ -37,8 +38,10 @@ describe Import::SyncRepositoriesService, type: :service do
     service_call
 
     expect(sync_pull_requests_service).to have_received(:new).with(repository: repository)
-    expect(sync_comments_service).to have_received(:new).with(pull_request: pull_request)
-    expect(sync_reviews_service).to have_received(:new).with(pull_request: pull_request)
+    expect(sync_comments_service).to have_received(:new).with(pull_request: pull_request1)
+    expect(sync_reviews_service).to have_received(:new).with(pull_request: pull_request1)
+    expect(sync_comments_service).not_to have_received(:new).with(pull_request: pull_request2)
+    expect(sync_reviews_service).not_to have_received(:new).with(pull_request: pull_request2)
     expect(generate_insights_service).to have_received(:call).with(insightable: repository)
     expect(generate_insights_service).to have_received(:call).with(insightable: company)
     expect(repository.reload.synced_at).not_to be_nil

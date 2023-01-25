@@ -18,4 +18,11 @@ class PullRequest < ApplicationRecord
            class_name: 'PullRequests::Review'
 
   scope :merged, -> { where.not(pull_merged_at: nil) }
+  scope :opened, -> { where(pull_closed_at: nil) }
+  scope :opened_before, ->(time) { opened.or(where('pull_closed_at > ?', time)) }
+  scope :closed, -> { where.not(pull_closed_at: nil) }
+
+  def open?
+    pull_closed_at.nil?
+  end
 end

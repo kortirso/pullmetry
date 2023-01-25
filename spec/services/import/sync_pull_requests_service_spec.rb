@@ -13,7 +13,6 @@ describe Import::SyncPullRequestsService, type: :service do
         'created_at' => '2011-04-11T20:09:31Z',
         'closed_at' => nil,
         'merged_at' => nil,
-        'state' => 'open',
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -32,7 +31,6 @@ describe Import::SyncPullRequestsService, type: :service do
         'created_at' => '2011-04-10T20:09:31Z',
         'closed_at' => '2011-04-10T20:09:31Z',
         'merged_at' => '2011-04-10T20:09:31Z',
-        'state' => 'closed',
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -65,7 +63,7 @@ describe Import::SyncPullRequestsService, type: :service do
     it 'updates existing pull request' do
       service_call
 
-      expect(pull_request.reload.open).to be_falsy
+      expect(pull_request.reload.open?).to be_falsy
     end
   end
 

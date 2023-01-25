@@ -52,7 +52,7 @@ module GithubGraphqlApi
     def headers
       {
         'Accept' => 'application/vnd.github+json',
-        'Content-Type' =>'application/json',
+        'Content-Type' => 'application/json',
         'Authorization' => "Bearer #{@access_token}"
       }
     end

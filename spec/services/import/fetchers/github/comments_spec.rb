@@ -42,10 +42,7 @@ describe Import::Fetchers::Github::Comments, type: :service do
   before do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
-      receive(:pull_request_comments).with(pull_number: 1, params: { per_page: 25, page: 1 }).and_return(data)
-    )
-    allow(fetch_service).to(
-      receive(:pull_request_comments).with(pull_number: 1, params: { per_page: 25, page: 2 }).and_return([])
+      receive(:pull_request_comments).with(pull_number: 1, params: { per_page: 100, page: 1 }).and_return(data)
     )
   end
 

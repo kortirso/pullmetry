@@ -12,7 +12,6 @@ describe Import::Savers::PullRequests, type: :service do
         pull_created_at: '2011-04-11T20:09:31Z',
         pull_closed_at: nil,
         pull_merged_at: nil,
-        open: true,
         author: {
           external_id: 1,
           provider: Providerable::GITHUB,
@@ -42,7 +41,6 @@ describe Import::Savers::PullRequests, type: :service do
         pull_created_at: '2011-04-10T20:09:31Z',
         pull_closed_at: '2011-04-10T20:09:31Z',
         pull_merged_at: '2011-04-10T20:09:31Z',
-        open: false,
         author: {
           external_id: 1,
           provider: Providerable::GITHUB,
@@ -105,7 +103,7 @@ describe Import::Savers::PullRequests, type: :service do
     it 'updates existing pull request' do
       service_call
 
-      expect(pull_request.reload.open).to be_falsy
+      expect(pull_request.reload.open?).to be_falsy
     end
 
     it 'creates 2 new entities' do
