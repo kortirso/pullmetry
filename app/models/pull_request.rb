@@ -19,7 +19,9 @@ class PullRequest < ApplicationRecord
 
   scope :merged, -> { where.not(pull_merged_at: nil) }
   scope :opened, -> { where(pull_closed_at: nil) }
-  scope :opened_before, ->(time) { opened.or(where('pull_closed_at > ?', time)) }
+  scope :opened_before, lambda { |time|
+    where('pull_closed_at is NULL OR pull_closed_at > :time OR created_at > :time', { time: time })
+  }
   scope :closed, -> { where.not(pull_closed_at: nil) }
 
   def open?
