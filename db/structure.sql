@@ -457,7 +457,7 @@ CREATE TABLE public.pull_requests (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     pull_number integer NOT NULL,
-    pull_created_at timestamp(6) without time zone NOT NULL,
+    pull_created_at timestamp(6) without time zone,
     pull_closed_at timestamp(6) without time zone,
     pull_merged_at timestamp(6) without time zone
 );
@@ -1276,6 +1276,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230120194630'),
 ('20230121154845'),
 ('20230121185501'),
-('20230125135040');
+('20230125135040'),
+('20230127092045');
 
 

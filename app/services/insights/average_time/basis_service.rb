@@ -25,7 +25,6 @@ module Insights
 
       def seconds_between_times(start_time, end_time)
         days = (end_time.end_of_day.to_i - start_time.to_i) / SECONDS_IN_DAY
-
         weekend_days = find_weekend_days(start_time, days)
         # if PR was created at weekend and reviewed at weekend
         # weekend_days will be more than days variable

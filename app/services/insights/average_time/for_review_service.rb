@@ -32,11 +32,16 @@ module Insights
       end
 
       def calculate_review_seconds(review, pull_request)
-        return review.review_created_at.to_i - pull_request.pull_created_at.to_i unless @insightable.with_work_time?
+        created_at = pull_request.pull_created_at
+        reviewed_at = review.review_created_at
+        # if PR merge was made before PR changed state from draft to open
+        # in such cases time spend for merge is 1 second
+        return 1 if created_at >= reviewed_at
+        return reviewed_at.to_i - created_at.to_i unless @insightable.with_work_time?
 
         seconds_between_times(
-          convert_time(pull_request.pull_created_at),
-          convert_time(review.review_created_at)
+          convert_time(created_at),
+          convert_time(reviewed_at)
         )
       end
     end

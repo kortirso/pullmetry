@@ -58,6 +58,12 @@ module Import
 
       def save_pull_request(payload)
         @pull_request = @repository.pull_requests.find_or_initialize_by(pull_number: payload.delete(:pull_number))
+        # if pull request tries to change state from draft to created, so it exists already
+        # then pull_created_at must be set to current time
+        # because pull_created_at value can contain long time ago value when PR was created as draft
+        if !@pull_request.new_record? && @pull_request.draft? && payload[:pull_created_at].present?
+          payload[:pull_created_at] = DateTime.now
+        end
         @pull_request.update!(payload.except(:author, :reviewers))
       end
 

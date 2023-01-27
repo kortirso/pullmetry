@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Modified
 - speed improvements for importing pull requests
+- better average time calculations for PRs that were draft
 
 ## [1.1.5] - 2023-01-25
 ### Modified

@@ -27,4 +27,8 @@ class PullRequest < ApplicationRecord
   def open?
     pull_closed_at.nil?
   end
+
+  def draft?
+    pull_created_at.nil?
+  end
 end

@@ -13,6 +13,7 @@ describe Import::SyncPullRequestsService, type: :service do
         'created_at' => '2011-04-11T20:09:31Z',
         'closed_at' => nil,
         'merged_at' => nil,
+        'draft' => true,
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -31,6 +32,7 @@ describe Import::SyncPullRequestsService, type: :service do
         'created_at' => '2011-04-10T20:09:31Z',
         'closed_at' => '2011-04-10T20:09:31Z',
         'merged_at' => '2011-04-10T20:09:31Z',
+        'draft' => false,
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -50,6 +52,13 @@ describe Import::SyncPullRequestsService, type: :service do
   context 'when there are no pull requests' do
     it 'creates 2 new pull requests' do
       expect { service_call }.to change(repository.pull_requests, :count).by(2)
+    end
+
+    it 'one of the PRs has nil value for pull_created_at', :aggregate_failures do
+      service_call
+
+      expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
+      expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
     end
   end
 
