@@ -35,6 +35,30 @@ describe Insights::AverageTime::ForReviewService, type: :service do
     it 'succeeds' do
       expect(service_call.success?).to be_truthy
     end
+
+    context 'when some PR does not have pull_created_at' do
+      before { pr1.update!(pull_created_at: nil) }
+
+      it 'generates average time without such PRs' do
+        expect(service_call.result).to eq({ entity2.id => 3_600 })
+      end
+
+      it 'succeeds' do
+        expect(service_call.success?).to be_truthy
+      end
+    end
+
+    context 'when some PR has pull_created_at after reviewed' do
+      before { pr1.update!(pull_created_at: DateTime.new(2023, 1, 4, 1, 0, 0)) }
+
+      it 'generates less average time for such PRs' do
+        expect(service_call.result).to eq({ entity1.id => 1, entity2.id => 3_600 })
+      end
+
+      it 'succeeds' do
+        expect(service_call.success?).to be_truthy
+      end
+    end
   end
 
   context 'for company insightable' do
