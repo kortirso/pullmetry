@@ -13,7 +13,7 @@ module Import
             payload = payload.with_indifferent_access
             {
               pull_number: payload[:iid],
-              pull_created_at: payload[:created_at],
+              pull_created_at: payload[:draft] ? nil : payload[:created_at],
               pull_closed_at: payload[:closed_at],
               pull_merged_at: payload[:merged_at],
               author: @entity_representer.call(data: payload[:author]),
