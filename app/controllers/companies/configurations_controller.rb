@@ -31,7 +31,7 @@ module Companies
     def configuration_params
       params
         .require(:jsonb_columns_configuration)
-        .permit(:insight_ratio, :work_start_time, :work_end_time, insight_fields: {})
+        .permit(:insight_ratio, :insights_webhook_url, :work_start_time, :work_end_time, insight_fields: {})
     end
   end
 end

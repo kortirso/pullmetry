@@ -30,6 +30,10 @@
     &:focus {
       border-color: $sky400;
     }
+
+    &.full {
+      width: 100%;
+    }
   }
 
   select {
