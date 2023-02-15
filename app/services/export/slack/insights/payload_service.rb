@@ -6,7 +6,7 @@ module Export
       class PayloadService
         prepend ApplicationService
 
-        def initialize(time_representer: Representers::ConvertSecondsService.new)
+        def initialize(time_representer: Converters::SecondsToTextService.new)
           @time_representer = time_representer
         end
 

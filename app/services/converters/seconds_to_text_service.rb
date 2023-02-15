@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Representers
-  class ConvertSecondsService
+module Converters
+  class SecondsToTextService
     SECONDS_IN_MINUTE = 60
     SECONDS_IN_HOUR = 3_600
     SECONDS_IN_DAY = 86_400

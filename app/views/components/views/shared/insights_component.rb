@@ -12,7 +12,7 @@ module Views
       end
 
       def convert_seconds(value)
-        Representers::ConvertSecondsService.new.call(value: value)
+        Converters::SecondsToTextService.new.call(value: value)
       end
 
       # rubocop: disable Layout/LineLength, Rails/OutputSafety

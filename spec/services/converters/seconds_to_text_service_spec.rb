@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Representers::ConvertSecondsService, type: :service do
+describe Converters::SecondsToTextService, type: :service do
   subject(:service_call) { described_class.new.call(value: value) }
 
   context 'when valus is nil' do
