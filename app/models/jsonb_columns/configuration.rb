@@ -15,6 +15,8 @@ module JsonbColumns
     attribute :fetch_period, :integer
     # slack notifications
     attribute :insights_webhook_url, :string
+    # different
+    enum :average_type, %i[arithmetic_mean median], default: :arithmetic_mean
     # TODO: configuration field for repository
     # attribute :start_from_pull_number, :integer
   end

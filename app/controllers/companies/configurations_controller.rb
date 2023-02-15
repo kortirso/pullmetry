@@ -6,6 +6,7 @@ module Companies
 
     def edit
       authorize! @company, to: :update?
+      find_average_type_values
     end
 
     def update
@@ -28,10 +29,18 @@ module Companies
       @company = current_user.companies.find_by!(uuid: params[:company_id])
     end
 
+    def find_average_type_values
+      @average_type_values = @company.configuration.average_type_values.map do |key, _v|
+        [key.to_s.capitalize.split('_').join(' '), key]
+      end
+    end
+
     def configuration_params
       params
         .require(:jsonb_columns_configuration)
-        .permit(:insight_ratio, :insights_webhook_url, :work_start_time, :work_end_time, insight_fields: {})
+        .permit(
+          :insight_ratio, :insights_webhook_url, :work_start_time, :work_end_time, :average_type, insight_fields: {}
+        )
     end
   end
 end

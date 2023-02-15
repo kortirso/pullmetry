@@ -49,6 +49,19 @@
         </div>
       </div>
       <div class="form-block">
+        <h2>Average type</h2>
+        <div class="main-container">
+          <div class="half-container">
+            <div class="form-field">
+              <%= form.select :average_type, options_for_select(@average_type_values, @company.configuration.average_type), {}, { class: 'form-value' } %>
+            </div>
+          </div>
+          <div class="half-container">
+            <p class="line-height">You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-block">
         <h2>Insight ratios</h2>
         <div class="main-container">
           <div class="half-container">
