@@ -7,6 +7,10 @@ module Insights
       MINUTES_IN_HOUR = 60
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
 
+      def initialize(find_average_service: Math::FindAverageService.new)
+        @find_average_service = find_average_service
+      end
+
       private
 
       # if time is less than beginning of work day - use beginning of work day
@@ -48,7 +52,9 @@ module Insights
       end
 
       def update_result_with_average_time
-        @result.transform_values! { |value| value.sum / value.size }
+        @result.transform_values! do |value|
+          @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+        end
       end
 
       def work_start_time_minutes
