@@ -6,6 +6,10 @@ module Export
       class PayloadService
         prepend ApplicationService
 
+        def initialize(time_representer: Representers::ConvertSecondsService.new)
+          @time_representer = time_representer
+        end
+
         def call(insightable:)
           @result = {
             blocks: insightable.insights.includes(:entity).order(comments_count: :desc).map { |insight|
@@ -41,7 +45,7 @@ module Export
 
         # rubocop: disable Layout/LineLength
         def insight_element(insight)
-          average_time = Representers::ConvertSecondsService.new.call(value: insight.average_review_seconds.to_i)
+          average_time = @time_representer.call(value: insight.average_review_seconds.to_i)
           {
             type: 'mrkdwn',
             text: "*Total comments:* #{insight.comments_count.to_i}, *Total reviews:* #{insight.reviews_count.to_i}, *Average review time:* #{average_time}"
