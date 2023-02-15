@@ -13,6 +13,8 @@ module JsonbColumns
     attribute :rows_limit, :integer
     # data fetching attributes
     attribute :fetch_period, :integer
+    # slack notifications
+    attribute :insights_webhook_url, :string
     # TODO: configuration field for repository
     # attribute :start_from_pull_number, :integer
   end
