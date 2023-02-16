@@ -7,6 +7,7 @@ module Companies
     def edit
       authorize! @company, to: :update?
       find_average_type_values
+      find_main_attribute_values
     end
 
     def update
@@ -35,11 +36,23 @@ module Companies
       end
     end
 
+    def find_main_attribute_values
+      @main_attribute_values = @company.configuration.main_attribute_values.map do |key, _v|
+        [key.to_s.capitalize.split('_').join(' '), key]
+      end
+    end
+
     def configuration_params
       params
         .require(:jsonb_columns_configuration)
         .permit(
-          :insight_ratio, :insights_webhook_url, :work_start_time, :work_end_time, :average_type, insight_fields: {}
+          :insight_ratio,
+          :insights_webhook_url,
+          :work_start_time,
+          :work_end_time,
+          :average_type,
+          :main_attribute,
+          insight_fields: {}
         )
     end
   end

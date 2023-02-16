@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - configuring Slack webhook url for notifications
 - sending insights notifications to Slack
 - changing average calculation type
+- selecting main insights attribute for sorting
 
 ### Modified
 - rendering insights data
