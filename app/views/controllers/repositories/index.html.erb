@@ -8,7 +8,7 @@
   <section class="list">
     <% @repositories.each do |repository| %>
       <div class="list-element form-block">
-        <div class="list-element-header flex flex-col justify-between">
+        <div class="list-element-header flex justify-between">
           <div>
             <h2><%= repository.title %></h2>
             <p>Last synced at: <%= repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data' %></p>
