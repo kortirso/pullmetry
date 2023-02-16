@@ -12,7 +12,7 @@ module Export
 
         def call(insightable:)
           @result = {
-            blocks: insightable.insights.includes(:entity).order(comments_count: :desc).map { |insight|
+            blocks: insightable.sorted_insights.map { |insight|
               {
                 type: 'context',
                 elements: [

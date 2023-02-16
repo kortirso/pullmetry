@@ -21,7 +21,7 @@ describe Export::Slack::Insights::PayloadService, type: :service do
 
   context 'with insights' do
     before do
-      create :insight, insightable: insightable
+      create :insight, insightable: insightable, reviews_count: 1
     end
 
     it 'generates payload' do

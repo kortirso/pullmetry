@@ -6,7 +6,7 @@ module Views
       def initialize(insightable:)
         @insightable = insightable
         @access_token = insightable.access_token
-        @insights = insightable.insights
+        @insights = @insightable.sorted_insights
 
         super()
       end

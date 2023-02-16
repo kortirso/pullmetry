@@ -39,6 +39,10 @@
                   <% end %>
                 <% end %>
               </div>
+              <div class="form-field">
+                <%= form.label :main_attribute, 'Main attribute for sorting insights', class: 'form-label' %>
+                <%= form.select :main_attribute, options_for_select(@main_attribute_values, @company.configuration.main_attribute), {}, { class: 'form-value' } %>
+              </div>
             <% else %>
               <p>This configuration is available for premium accounts.</p>
             <% end %>

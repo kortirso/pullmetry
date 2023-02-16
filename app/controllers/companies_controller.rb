@@ -31,8 +31,7 @@ class CompaniesController < ApplicationController
     @companies =
       current_user
       .available_companies
-      .includes(:user, :access_token, insights: :entity)
-      .order('insights.insightable_id ASC, insights.comments_count DESC')
+      .includes(:user, :access_token)
   end
 
   def find_company
