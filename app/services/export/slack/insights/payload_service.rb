@@ -11,21 +11,50 @@ module Export
         end
 
         def call(insightable:)
+          @insightable = insightable
           @result = {
-            blocks: insightable.sorted_insights.map { |insight|
-              {
-                type: 'context',
-                elements: [
-                  avatar_element(insight.entity.avatar_url),
-                  login_element(insight.entity.login),
-                  insight_element(insight)
-                ]
-              }
-            }
+            blocks: header_block + insights_blocks + footer_block
           }
         end
 
         private
+
+        def header_block
+          [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: "*Pull review insights of #{@insightable.class.name.downcase} #{@insightable.title}*"
+              }
+            }
+          ]
+        end
+
+        def insights_blocks
+          @insightable.sorted_insights.map { |insight|
+            {
+              type: 'context',
+              elements: [
+                avatar_element(insight.entity.avatar_url),
+                login_element(insight.entity.login),
+                insight_element(insight)
+              ]
+            }
+          }
+        end
+
+        def footer_block
+          [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: 'To check up-to-date statistics please visit <https://pullkeeper.dev|PullKeeper>'
+              }
+            }
+          ]
+        end
 
         def avatar_element(value)
           {

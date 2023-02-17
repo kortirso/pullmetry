@@ -9,9 +9,7 @@ describe Export::Slack::Insights::PayloadService, type: :service do
     it 'generates payload' do
       service_call
 
-      expect(service_call.result).to eq({
-        blocks: []
-      })
+      expect(service_call.result[:blocks].size).to eq 2
     end
 
     it 'succeeds' do
@@ -27,7 +25,7 @@ describe Export::Slack::Insights::PayloadService, type: :service do
     it 'generates payload' do
       service_call
 
-      expect(service_call.result.dig(:blocks, 0, :elements).size).to eq 3
+      expect(service_call.result.dig(:blocks, 1, :elements).size).to eq 3
     end
 
     it 'succeeds' do

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Modified
 - rendering insights data
+- generating slack insights payload
 
 ## [1.1.6] - 2023-01-25
 ### Modified
