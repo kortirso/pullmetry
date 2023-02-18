@@ -1,6 +1,6 @@
 <%= render PageWrappers::PageComponent.new do %>
   <div class="list-title flex justify-between items-center">
-    <h1>Profile</h1>
+    <h1>Profile <%= Current.user.uuid %></h1>
   </div>
   <section id="profile">
     <% if @end_time %>
