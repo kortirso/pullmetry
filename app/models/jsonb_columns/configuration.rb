@@ -16,7 +16,7 @@ module JsonbColumns
     # slack notifications
     attribute :insights_webhook_url, :string
     # different
-    enum :average_type, %i[arithmetic_mean median], default: :arithmetic_mean
+    enum :average_type, %i[arithmetic_mean median geometric_mean], default: :arithmetic_mean
     enum :main_attribute,
          %i[
            comments_count

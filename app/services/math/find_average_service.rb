@@ -11,6 +11,12 @@ module Math
 
     private
 
+    def geometric_mean(values)
+      return 0 if values.empty?
+
+      values.inject(:*)**(1.0 / values.size)
+    end
+
     def arithmetic_mean(values)
       return 0 if values.empty?
 
@@ -22,7 +28,7 @@ module Math
 
       midpoint = values.size / 2
       if values.length.even?
-        values.sort[midpoint - 1, 2].sum / 2
+        arithmetic_mean(values.sort[midpoint - 1, 2])
       else
         values.sort[midpoint]
       end

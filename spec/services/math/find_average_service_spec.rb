@@ -50,4 +50,24 @@ describe Math::FindAverageService, type: :service do
       end
     end
   end
+
+  context 'for geometric_mean mean' do
+    let(:type) { nil }
+
+    context 'for empty values' do
+      let(:values) { [] }
+
+      it 'returns result' do
+        expect(service_call).to eq 0
+      end
+    end
+
+    context 'for values' do
+      let(:values) { [2, 4, 8] }
+
+      it 'returns result' do
+        expect(service_call).to eq 4
+      end
+    end
+  end
 end
