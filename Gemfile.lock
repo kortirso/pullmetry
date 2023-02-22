@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: a528b0e7b68e0acb42478d2e6c43a8df48453554
+  revision: 185e07b4bb8326190b3a77f4beaed08bcd7b64d6
   branch: main
   specs:
     bullet (7.0.7)
@@ -102,11 +102,11 @@ GEM
     bcrypt (3.1.18)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
-    brakeman (5.4.0)
+    brakeman (5.4.1)
     bugsnag (6.25.2)
       concurrent-ruby (~> 1.0)
     builder (3.2.4)
-    capistrano (3.17.1)
+    capistrano (3.17.2)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -224,7 +224,7 @@ GEM
     parser (3.2.1.0)
       ast (~> 2.4.1)
     pg (1.4.5)
-    pghero (3.1.0)
+    pghero (3.2.0)
       activerecord (>= 6)
     puma (6.1.0)
       nio4r (~> 2.0)

@@ -7,6 +7,6 @@ module PullRequests
     belongs_to :pull_requests_entity,
                class_name: '::PullRequests::Entity',
                foreign_key: :pull_requests_entity_id,
-               counter_cache: true
+               counter_cache: :pull_requests_comments_count
   end
 end
