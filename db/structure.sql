@@ -506,7 +506,8 @@ CREATE TABLE public.pull_requests_entities (
     entity_id bigint NOT NULL,
     origin integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pull_requests_comments_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1277,6 +1278,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230121154845'),
 ('20230121185501'),
 ('20230125135040'),
-('20230127092045');
+('20230127092045'),
+('20230222145138');
 
 
