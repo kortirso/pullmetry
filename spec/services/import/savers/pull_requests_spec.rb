@@ -69,12 +69,8 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(Entity, :count).by(2)
     end
 
-    it 'creates 2 author PR entities' do
-      expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
-    end
-
     it 'creates 2 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
+      expect { service_call }.to change(PullRequests::Entity, :count).by(2)
     end
 
     context 'for receiving PRs with changing state from draft to open for review' do
@@ -138,12 +134,8 @@ describe Import::Savers::PullRequests, type: :service do
         expect(entity.reload.login).to eq 'octocat'
       end
 
-      it 'creates 2 author PR entities' do
-        expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
-      end
-
-      it 'creates 2 reviewer PR entity' do
-        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
+      it 'creates 2 PR entity' do
+        expect { service_call }.to change(PullRequests::Entity, :count).by(2)
       end
     end
   end
@@ -165,12 +157,8 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(Entity, :count).by(2)
     end
 
-    it 'creates 2 author PR entities' do
-      expect { service_call }.to change(PullRequests::Entity.author, :count).by(2)
-    end
-
     it 'creates 2 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
+      expect { service_call }.to change(PullRequests::Entity, :count).by(2)
     end
 
     context 'when there is 1 PR entity' do
@@ -178,12 +166,8 @@ describe Import::Savers::PullRequests, type: :service do
 
       before { create :pull_requests_entity, entity: entity, pull_request: pull_request }
 
-      it 'creates 1 author PR entities' do
-        expect { service_call }.to change(PullRequests::Entity.author, :count).by(1)
-      end
-
       it 'creates 2 reviewer PR entity' do
-        expect { service_call }.to change(PullRequests::Entity.reviewer, :count).by(2)
+        expect { service_call }.to change(PullRequests::Entity, :count).by(2)
       end
     end
   end

@@ -16,7 +16,6 @@ module Insights
             date_to.days.ago
           )
           .where(pull_requests: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
-          .where(pull_requests_entities: { origin: PullRequests::Entity::REVIEWER })
           .each { |review| handle_review(review) }
         update_result_with_average_time
       end

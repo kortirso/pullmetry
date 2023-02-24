@@ -57,12 +57,10 @@ module Import
           .pluck(:external_id)
       end
 
-      # here we create pr entity with reviewer origin because author's pr entity always exists
       def find_or_create_pr_entity(entity)
         result =
           @pull_request
           .pull_requests_entities
-          .create_with(origin: ::PullRequests::Entity::REVIEWER)
           .find_or_create_by!(entity_id: entity)
 
         @pr_entities[entity] = result

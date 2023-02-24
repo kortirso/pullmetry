@@ -459,7 +459,8 @@ CREATE TABLE public.pull_requests (
     pull_number integer NOT NULL,
     pull_created_at timestamp(6) without time zone,
     pull_closed_at timestamp(6) without time zone,
-    pull_merged_at timestamp(6) without time zone
+    pull_merged_at timestamp(6) without time zone,
+    entity_id bigint NOT NULL
 );
 
 
@@ -504,7 +505,6 @@ CREATE TABLE public.pull_requests_entities (
     id bigint NOT NULL,
     pull_request_id bigint NOT NULL,
     entity_id bigint NOT NULL,
-    origin integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     pull_requests_comments_count integer DEFAULT 0 NOT NULL
@@ -1116,6 +1116,13 @@ CREATE INDEX index_pull_requests_entities_on_pull_request_id_and_entity_id ON pu
 
 
 --
+-- Name: index_pull_requests_on_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_on_entity_id ON public.pull_requests USING btree (entity_id);
+
+
+--
 -- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1279,6 +1286,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230121185501'),
 ('20230125135040'),
 ('20230127092045'),
-('20230222145138');
+('20230222145138'),
+('20230222161252');
 
 

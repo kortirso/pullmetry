@@ -4,7 +4,7 @@
 describe Import::Savers::Reviews, type: :service do
   subject(:service_call) { described_class.call(pull_request: pull_request, data: data) }
 
-  let!(:pull_request) { create :pull_request }
+  let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
   let(:data) {
     [
@@ -44,16 +44,9 @@ describe Import::Savers::Reviews, type: :service do
     ]
   }
 
-  before do
-    create :pull_requests_entity,
-           pull_request: pull_request,
-           origin: PullRequests::Entity::AUTHOR,
-           entity: author_entity
-  end
-
   context 'when there are no reviews, no entities' do
     it 'creates 2 new pull requests entities' do
-      expect { service_call }.to change(pull_request.pull_requests_entities.reviewer, :count).by(2)
+      expect { service_call }.to change(pull_request.pull_requests_entities, :count).by(2)
     end
 
     it 'creates 2 new entities' do
@@ -69,7 +62,7 @@ describe Import::Savers::Reviews, type: :service do
       let!(:entity2) { create :entity, external_id: '2', provider: Providerable::GITHUB }
 
       it 'creates 2 new pull requests entities' do
-        expect { service_call }.to change(pull_request.pull_requests_entities.reviewer, :count).by(2)
+        expect { service_call }.to change(pull_request.pull_requests_entities, :count).by(2)
       end
 
       it 'does not create new entities' do
@@ -85,7 +78,7 @@ describe Import::Savers::Reviews, type: :service do
         let!(:pr_entity2) { create :pull_requests_entity, pull_request: pull_request, entity: entity2 }
 
         it 'does not create new pull requests entities' do
-          expect { service_call }.not_to change(pull_request.pull_requests_entities.reviewer, :count)
+          expect { service_call }.not_to change(pull_request.pull_requests_entities, :count)
         end
 
         it 'does not create new entities' do

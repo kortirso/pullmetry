@@ -20,8 +20,7 @@ module Import
           # find_create entities for all authors
           find_or_create_author_entities(data.pluck(:author, :reviewers))
           data.each do |payload|
-            save_pull_request(payload)
-            save_author_entity(find_entity_by_id(payload.dig(:author, :external_id)))
+            save_pull_request(payload, find_entity_by_id(payload.dig(:author, :external_id)))
             save_reviewers_entities(find_reviewers_entities(payload[:reviewers]))
           end
         end
@@ -56,32 +55,27 @@ module Import
           .pluck(:pull_number)
       end
 
-      def save_pull_request(payload)
-        @pull_request = @repository.pull_requests.find_or_initialize_by(pull_number: payload.delete(:pull_number))
+      def save_pull_request(payload, author_entity)
+        @pull_request =
+          @repository
+          .pull_requests
+          .find_or_initialize_by(pull_number: payload.delete(:pull_number))
         # if pull request tries to change state from draft to created, so it exists already
         # then pull_created_at must be set to current time
         # because pull_created_at value can contain long time ago value when PR was created as draft
         if !@pull_request.new_record? && @pull_request.draft? && payload[:pull_created_at].present?
           payload[:pull_created_at] = DateTime.now
         end
-        @pull_request.update!(payload.except(:author, :reviewers))
-      end
 
-      def save_author_entity(author_entity)
-        ::PullRequests::Entity.find_or_create_by!(
-          entity_id: author_entity,
-          pull_request: @pull_request,
-          origin: ::PullRequests::Entity::AUTHOR
-        )
+        @pull_request.update!(payload.except(:author, :reviewers).merge(entity_id: author_entity))
       end
 
       def save_reviewers_entities(reviewer_entities)
-        existing_reviewer_entities = @pull_request.pull_requests_entities.reviewer.pluck(:entity_id)
+        existing_reviewer_entities = @pull_request.pull_requests_entities.pluck(:entity_id)
         result = (reviewer_entities - existing_reviewer_entities).map do |entity|
           {
             entity_id: entity,
-            pull_request_id: @pull_request.id,
-            origin: ::PullRequests::Entity::REVIEWER
+            pull_request_id: @pull_request.id
           }
         end
         ::PullRequests::Entity.upsert_all(result) if result.any?

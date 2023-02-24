@@ -26,7 +26,7 @@ module Insights
     private
 
     def entity_ids
-      @entity_ids ||= @insightable.entities.pluck(:id)
+      @entity_ids ||= @insightable.all_entities.pluck(:id)
     end
 
     def remove_old_insights
@@ -66,7 +66,7 @@ module Insights
       previous_period = send(insight_field, Insight::FETCH_DAYS_PERIOD * 2, Insight::FETCH_DAYS_PERIOD)[entity_id].to_i
       return 0 if previous_period.zero?
 
-      (send(insight_field)[entity_id] - previous_period) * 100 / previous_period
+      (send(insight_field)[entity_id].to_i - previous_period) * 100 / previous_period
     end
 
     # this method returns { entity_id => comments_count }
@@ -112,7 +112,7 @@ module Insights
       @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
         @required_reviews_count[key] =
           @insightable
-          .pull_requests_entities.reviewer
+          .pull_requests_entities
           .joins(:pull_request)
           .where(
             'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
@@ -130,10 +130,9 @@ module Insights
       @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
         @open_pull_requests_count[key] =
           @insightable
-          .pull_requests_entities.author
-          .joins(:pull_request)
+          .pull_requests
           .where(
-            'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
+            'pull_created_at > ? AND pull_created_at < ?',
             date_from.days.ago,
             date_to.days.ago
           )

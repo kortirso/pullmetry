@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :entity do
-    external_id { '1' }
+    sequence(:external_id) { SecureRandom.uuid }
   end
 end

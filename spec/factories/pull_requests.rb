@@ -5,5 +5,6 @@ FactoryBot.define do
     pull_number { 1 }
     pull_created_at { DateTime.now }
     association :repository
+    association :entity
   end
 end

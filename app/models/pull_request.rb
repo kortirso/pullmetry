@@ -4,6 +4,7 @@ class PullRequest < ApplicationRecord
   include Uuidable
 
   belongs_to :repository, counter_cache: true
+  belongs_to :entity
 
   has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
   has_many :entities, through: :pull_requests_entities
@@ -30,5 +31,14 @@ class PullRequest < ApplicationRecord
 
   def draft?
     pull_created_at.nil?
+  end
+
+  def all_entities
+    Entity
+      .left_joins(:pull_requests_entities)
+      .where(pull_requests_entities: { pull_request_id: id })
+      .or(
+        Entity.where(id: entity_id)
+      )
   end
 end

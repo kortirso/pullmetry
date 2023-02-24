@@ -3,9 +3,9 @@
 describe Import::SyncCommentsService, type: :service do
   subject(:service_call) { described_class.new(pull_request: pull_request).call }
 
-  let!(:pull_request) { create :pull_request }
+  let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
-  let!(:pull_requests_entity) { create :pull_requests_entity, pull_request: pull_request, origin: 'reviewer' }
+  let!(:pull_requests_entity) { create :pull_requests_entity, pull_request: pull_request }
   let(:fetcher) { double }
   let(:fetch_data) { double }
   let(:data) {
@@ -44,11 +44,6 @@ describe Import::SyncCommentsService, type: :service do
     allow(Import::Fetchers::Github::Comments).to receive(:new).and_return(fetcher)
     allow(fetcher).to receive(:call).and_return(fetch_data)
     allow(fetch_data).to receive(:result).and_return(data)
-
-    create :pull_requests_entity,
-           pull_request: pull_request,
-           origin: PullRequests::Entity::AUTHOR,
-           entity: author_entity
   end
 
   context 'when there are no comments' do

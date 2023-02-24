@@ -9,21 +9,24 @@ describe Insights::AverageTime::ForMergeService, type: :service do
     DateTime.new(date.year, date.month, date.day)
   }
   let!(:repository) { create :repository }
-  let!(:pr1) { create :pull_request, repository: repository, pull_created_at: first_monday + 1.day + 12.hours }
   let!(:pr2) {
     create :pull_request,
            repository: repository,
            pull_created_at: first_monday + 12.hours,
-           pull_merged_at: first_monday + 1.day + 13.hours
+           pull_merged_at: first_monday + 1.day + 13.hours,
+           entity: entity2
   }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
   let!(:entity3) { create :entity, external_id: '3' }
 
   before do
-    create :pull_requests_entity, pull_request: pr1, entity: entity1
-    create :pull_requests_entity, pull_request: pr2, entity: entity2
-    create :pull_requests_entity, pull_request: pr2, entity: entity3, origin: PullRequests::Entity::REVIEWER
+    create :pull_request,
+           repository: repository,
+           pull_created_at: first_monday + 1.day + 12.hours,
+           entity: entity1
+
+    create :pull_requests_entity, pull_request: pr2, entity: entity3
   end
 
   context 'for repository insightable' do

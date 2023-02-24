@@ -8,25 +8,23 @@ module Insights
       def call(insightable:, date_from: Insight::FETCH_DAYS_PERIOD, date_to: 0)
         @insightable = insightable
         @result = {}
-        PullRequests::Entity
-          .author
-          .includes(:pull_request)
+        PullRequest
           .where(
-            'pull_request.pull_created_at > ? AND pull_request.pull_created_at < ?',
+            'pull_created_at > ? AND pull_created_at < ?',
             date_from.days.ago,
             date_to.days.ago
           )
-          .where(pull_request: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
-          .where.not(pull_request: { pull_merged_at: nil })
-          .each { |pull_requests_entity| handle_entity(pull_requests_entity) }
+          .where(repository: insightable.is_a?(Repository) ? insightable : insightable.repositories)
+          .where.not(pull_merged_at: nil)
+          .each { |pull_request| handle_entity(pull_request) }
         update_result_with_average_time
       end
 
       private
 
-      def handle_entity(pull_requests_entity)
-        entity_id = pull_requests_entity.entity_id
-        update_result_with_total_review_time(entity_id, calculate_merge_seconds(pull_requests_entity.pull_request))
+      def handle_entity(pull_request)
+        entity_id = pull_request.entity_id
+        update_result_with_total_review_time(entity_id, calculate_merge_seconds(pull_request))
       end
 
       def calculate_merge_seconds(pull_request)

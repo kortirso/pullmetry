@@ -4,16 +4,15 @@ describe Insights::GenerateService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
-  let!(:pr1) { create :pull_request, repository: repository }
-  let!(:pr2) { create :pull_request, repository: repository }
-  let!(:pr3) { create :pull_request, repository: repository, pull_merged_at: 10.seconds.after }
+  let!(:pr2) { create :pull_request, repository: repository, entity: entity1 }
+  let!(:pr3) { create :pull_request, repository: repository, pull_merged_at: 10.seconds.after, entity: entity2 }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
 
   before do
-    pr_entity1 = create :pull_requests_entity, origin: 'author', pull_request: pr1, entity: entity1
-    pr_entity2 = create :pull_requests_entity, origin: 'reviewer', pull_request: pr2, entity: entity2
-    create :pull_requests_entity, origin: 'author', pull_request: pr3, entity: entity2
+    create :pull_request, repository: repository, entity: entity1
+    pr_entity1 = create :pull_requests_entity, pull_request: pr3, entity: entity1
+    pr_entity2 = create :pull_requests_entity, pull_request: pr2, entity: entity2
     create :pull_requests_comment, pull_requests_entity: pr_entity1
     create :pull_requests_comment, pull_requests_entity: pr_entity2
     create :pull_requests_review, pull_requests_entity: pr_entity2, review_created_at: 10.seconds.after
@@ -58,6 +57,7 @@ describe Insights::GenerateService, type: :service do
 
         last_insight = Insight.last
 
+        expect(last_insight.entity).to eq entity2
         expect(last_insight.required_reviews_count).to eq 1
         expect(last_insight.reviews_count).to eq 1
         expect(last_insight.average_review_seconds).not_to eq 0
@@ -67,7 +67,6 @@ describe Insights::GenerateService, type: :service do
         expect(last_insight.average_review_seconds_ratio).to be_nil
         expect(last_insight.comments_count_ratio).to be_nil
         # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-        expect(entity2.pull_requests_entities.author.size).to eq 1
         expect(last_insight.open_pull_requests_count).to eq 0
         expect(last_insight.average_merge_seconds).to eq 0
       end
@@ -104,7 +103,6 @@ describe Insights::GenerateService, type: :service do
             expect(last_insight.average_review_seconds_ratio).to eq 0
             expect(last_insight.comments_count_ratio).to eq 0
             # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-            expect(entity2.pull_requests_entities.author.size).to eq 1
             expect(last_insight.open_pull_requests_count).to eq 0
             expect(last_insight.average_merge_seconds).to eq 0
           end
@@ -113,18 +111,29 @@ describe Insights::GenerateService, type: :service do
         context 'with PRs at previous period' do
           before do
             old_pr1 =
-              create :pull_request, repository: repository, pull_created_at: 40.days.ago, pull_merged_at: 35.days.ago
-            pr_entity1 = create :pull_requests_entity, origin: 'reviewer', pull_request: old_pr1, entity: entity2
+              create :pull_request,
+                     repository: repository,
+                     pull_created_at: 40.days.ago,
+                     pull_merged_at: 35.days.ago,
+                     entity: entity1
 
+            pr_entity1 = create :pull_requests_entity, pull_request: old_pr1, entity: entity2
             create_list :pull_requests_comment, 2, pull_requests_entity: pr_entity1
 
-            old_pr2 =
-              create :pull_request, repository: repository, pull_created_at: 40.days.ago, pull_merged_at: 35.days.ago
-            old_pr3 =
-              create :pull_request, repository: repository, pull_created_at: 40.days.ago, pull_merged_at: 35.days.ago
-            create :pull_requests_entity, origin: 'author', pull_request: old_pr2, entity: entity2
-            pr_entity3 = create :pull_requests_entity, origin: 'reviewer', pull_request: old_pr3, entity: entity2
+            create :pull_request,
+                   repository: repository,
+                   pull_created_at: 40.days.ago,
+                   pull_merged_at: 35.days.ago,
+                   entity: entity2
 
+            old_pr3 =
+              create :pull_request,
+                     repository: repository,
+                     pull_created_at: 40.days.ago,
+                     pull_merged_at: 35.days.ago,
+                     entity: entity1
+
+            pr_entity3 = create :pull_requests_entity, pull_request: old_pr3, entity: entity2
             create :pull_requests_review, pull_requests_entity: pr_entity3, review_created_at: 39.days.ago
           end
 
@@ -147,7 +156,6 @@ describe Insights::GenerateService, type: :service do
               expect(last_insight.average_review_seconds_ratio).to eq(-100)
               expect(last_insight.comments_count_ratio).to eq(-50)
               # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-              expect(entity2.pull_requests_entities.author.size).to eq 2
               expect(last_insight.open_pull_requests_count).to eq 0
               expect(last_insight.average_merge_seconds).to eq 0
             end
@@ -183,7 +191,6 @@ describe Insights::GenerateService, type: :service do
               expect(last_insight.average_review_seconds_ratio).to eq(-100)
               expect(last_insight.comments_count).to eq 1
               expect(last_insight.comments_count_ratio).to eq(-50)
-              expect(entity2.pull_requests_entities.author.size).to eq 2
               expect(last_insight.open_pull_requests_count).to eq 1
               expect(last_insight.open_pull_requests_count_ratio).to eq 0
               expect(last_insight.average_merge_seconds).to eq 10

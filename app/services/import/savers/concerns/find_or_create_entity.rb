@@ -10,11 +10,7 @@ module Import
         private
 
         def author_entity
-          @author_entity ||=
-            ::PullRequests::Entity.find_by(
-              pull_request: @pull_request,
-              origin: ::PullRequests::Entity::AUTHOR
-            ).entity_id
+          @pull_request.entity_id
         end
 
         def find_or_create_entity(payload)
