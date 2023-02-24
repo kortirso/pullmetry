@@ -168,7 +168,7 @@ module Insights
       @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
         @average_open_pr_comments[key] =
           sum_comments_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
           }
       end
     end

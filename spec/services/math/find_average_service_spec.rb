@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 describe Math::FindAverageService, type: :service do
-  subject(:service_call) { described_class.new.call(values: values, type: type) }
+  subject(:service_call) { described_class.new.call(values: values, type: type, round: round) }
+
+  let(:round) { 0 }
 
   context 'for ariphmetic mean' do
     let(:type) { nil }
@@ -15,10 +17,19 @@ describe Math::FindAverageService, type: :service do
     end
 
     context 'for values' do
-      let(:values) { [10, 35, 78] }
+      let(:values) { [10, 35, 79] }
 
       it 'returns result' do
         expect(service_call).to eq 41
+      end
+
+      context 'with round' do
+        let(:values) { [10, 35, 79] }
+        let(:round) { 2 }
+
+        it 'returns rounded result' do
+          expect(service_call).to eq 41.33
+        end
       end
     end
   end
@@ -67,6 +78,15 @@ describe Math::FindAverageService, type: :service do
 
       it 'returns result' do
         expect(service_call).to eq 4
+      end
+
+      context 'with round' do
+        let(:values) { [2, 4, 9] }
+        let(:round) { 2 }
+
+        it 'returns rounded result' do
+          expect(service_call).to eq 4.16
+        end
       end
     end
   end

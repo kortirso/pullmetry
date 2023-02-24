@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - geometric_mean for average calculations
 - new insights attributes - average_open_pr_comments
+- rounding average values
 
 ### Fixed
 - FindAverageService calculations

@@ -2,7 +2,9 @@
 
 module Math
   class FindAverageService
-    def call(values: [], type: nil)
+    def call(values: [], type: nil, round: 0)
+      @round = round
+
       case type
       when :median then median(values)
       when :geometric_mean then geometric_mean(values)
@@ -16,14 +18,14 @@ module Math
       return 0 if values.empty?
 
       result = values.inject(:*)**(1.0 / values.size)
-      result.round
+      result.round(@round)
     end
 
     def arithmetic_mean(values)
       return 0 if values.empty?
 
-      result = values.sum / values.size
-      result.round
+      result = values.sum.to_f / values.size
+      result.round(@round)
     end
 
     def median(values)
