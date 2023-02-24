@@ -52,7 +52,7 @@ describe Math::FindAverageService, type: :service do
   end
 
   context 'for geometric_mean mean' do
-    let(:type) { nil }
+    let(:type) { :geometric_mean }
 
     context 'for empty values' do
       let(:values) { [] }

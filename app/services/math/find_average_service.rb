@@ -5,6 +5,7 @@ module Math
     def call(values: [], type: nil)
       case type
       when :median then median(values)
+      when :geometric_mean then geometric_mean(values)
       else arithmetic_mean(values)
       end
     end
@@ -14,13 +15,15 @@ module Math
     def geometric_mean(values)
       return 0 if values.empty?
 
-      values.inject(:*)**(1.0 / values.size)
+      result = values.inject(:*)**(1.0 / values.size)
+      result.round
     end
 
     def arithmetic_mean(values)
       return 0 if values.empty?
 
-      values.sum / values.size
+      result = values.sum / values.size
+      result.round
     end
 
     def median(values)

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - geometric_mean for average calculations
 - new insights attributes - average_open_pr_comments
 
+### Fixed
+- FindAverageService calculations
+
 ## [1.2.0] - 2023-02-18
 ### Added
 - configuring Slack webhook url for notifications
