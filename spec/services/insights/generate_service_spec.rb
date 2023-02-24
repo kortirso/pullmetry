@@ -8,10 +8,10 @@ describe Insights::GenerateService, type: :service do
   let!(:pr3) { create :pull_request, repository: repository, pull_merged_at: 10.seconds.after, entity: entity2 }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
+  let!(:pr_entity1) { create :pull_requests_entity, pull_request: pr3, entity: entity1 }
 
   before do
     create :pull_request, repository: repository, entity: entity1
-    pr_entity1 = create :pull_requests_entity, pull_request: pr3, entity: entity1
     pr_entity2 = create :pull_requests_entity, pull_request: pr2, entity: entity2
     create :pull_requests_comment, pull_requests_entity: pr_entity1
     create :pull_requests_comment, pull_requests_entity: pr_entity2
@@ -109,6 +109,14 @@ describe Insights::GenerateService, type: :service do
         end
 
         context 'with PRs at previous period' do
+          let(:old_pr2) {
+            create :pull_request,
+                   repository: repository,
+                   pull_created_at: 40.days.ago,
+                   pull_merged_at: 35.days.ago,
+                   entity: entity2
+          }
+
           before do
             old_pr1 =
               create :pull_request,
@@ -119,12 +127,6 @@ describe Insights::GenerateService, type: :service do
 
             pr_entity1 = create :pull_requests_entity, pull_request: old_pr1, entity: entity2
             create_list :pull_requests_comment, 2, pull_requests_entity: pr_entity1
-
-            create :pull_request,
-                   repository: repository,
-                   pull_created_at: 40.days.ago,
-                   pull_merged_at: 35.days.ago,
-                   entity: entity2
 
             old_pr3 =
               create :pull_request,
@@ -163,11 +165,18 @@ describe Insights::GenerateService, type: :service do
 
           context 'with custom insight attributes' do
             before do
+              create :pull_requests_comment, pull_requests_entity: pr_entity1
+              create :pull_requests_comment, pull_requests_entity: pr_entity1
+
+              pr_entity = create :pull_requests_entity, pull_request: old_pr2, entity: entity1
+              create :pull_requests_comment, pull_requests_entity: pr_entity
+
               repository.company.configuration.insight_fields = {
                 comments_count: true,
                 reviews_count: true,
                 required_reviews_count: true,
                 open_pull_requests_count: true,
+                average_open_pr_comments: true,
                 average_review_seconds: true,
                 average_merge_seconds: true
               }
@@ -195,6 +204,8 @@ describe Insights::GenerateService, type: :service do
               expect(last_insight.open_pull_requests_count_ratio).to eq 0
               expect(last_insight.average_merge_seconds).to eq 10
               expect(last_insight.average_merge_seconds_ratio).to eq(-100)
+              expect(last_insight.average_open_pr_comments).to eq 3
+              expect(last_insight.average_open_pr_comments_ratio).to eq 200
             end
           end
         end

@@ -161,6 +161,7 @@ describe Companies::ConfigurationsController do
                 'reviews_count' => nil,
                 'required_reviews_count' => nil,
                 'open_pull_requests_count' => nil,
+                'average_open_pr_comments' => nil,
                 'average_review_seconds' => nil,
                 'average_merge_seconds' => nil
               })

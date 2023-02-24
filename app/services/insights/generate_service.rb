@@ -6,10 +6,12 @@ module Insights
 
     def initialize(
       average_review_time_service: AverageTime::ForReviewService,
-      average_merge_time_service: AverageTime::ForMergeService
+      average_merge_time_service: AverageTime::ForMergeService,
+      find_average_service: Math::FindAverageService.new
     )
       @average_review_time_service = average_review_time_service
       @average_merge_time_service = average_merge_time_service
+      @find_average_service = find_average_service
     end
 
     def call(insightable:)
@@ -158,6 +160,34 @@ module Insights
         @average_merge_seconds[key] =
           @average_merge_time_service.call(insightable: @insightable, date_from: date_from, date_to: date_to).result
       end
+    end
+
+    def average_open_pr_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      @average_open_pr_comments ||= {}
+
+      @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
+        @average_open_pr_comments[key] =
+          sum_comments_in_open_prs(date_from, date_to).transform_values { |value|
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+          }
+      end
+    end
+
+    def sum_comments_in_open_prs(date_from, date_to)
+      @insightable
+        .pull_requests
+        .where(
+          'pull_created_at > ? AND pull_created_at < ?',
+          date_from.days.ago,
+          date_to.days.ago
+        )
+        .each_with_object({}) { |pull_request, acc|
+          entity_id = pull_request.entity_id
+          next if entity_id.nil?
+
+          comments_count = pull_request.pull_requests_entities.sum(:pull_requests_comments_count)
+          acc[entity_id] ? acc[entity_id].push(comments_count) : (acc[entity_id] = [comments_count])
+        }
     end
 
     def premium

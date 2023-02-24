@@ -23,6 +23,7 @@ module JsonbColumns
            reviews_count
            required_reviews_count
            open_pull_requests_count
+           average_open_pr_comments
            average_review_seconds
            average_merge_seconds
          ],

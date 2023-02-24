@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - geometric_mean for average calculations
+- new insights attributes - average_open_pr_comments
 
 ## [1.2.0] - 2023-02-18
 ### Added
