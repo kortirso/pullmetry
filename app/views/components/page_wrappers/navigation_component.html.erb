@@ -9,6 +9,7 @@
   <div>
     <% if Current.user %>
       <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
+      <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path %>
       <%= link_to t('components.page_wrappers.page_component.logout'), logout_path %>
     <% else %>
       <p id="auth-links">
