@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - achievements system with Kudos library
+- event store for publishing achievement events
 
 ## [1.2.1] - 2023-02-24
 ### Added
