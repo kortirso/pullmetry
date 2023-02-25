@@ -50,5 +50,21 @@
       font-size: 1.25rem;
       font-weight: 600;
     }
+
+    &.unreceived {
+      opacity: 0.75;
+
+      .achievement-name {
+        background: $gray400;
+      }
+
+      .achievement-description {
+        background: $gray200;
+      }
+
+      .achievement-points {
+        background: $white;
+      }
+    }
   }
 }

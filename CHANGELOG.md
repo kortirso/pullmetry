@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - achievements system with Kudos library
 - event store for publishing achievement events
 - rendering earned achievements
+- rendering unreceived achievements
 
 ### Modified
 - rendering grouped achievements based on award_name

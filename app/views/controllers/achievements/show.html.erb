@@ -3,26 +3,36 @@
     <h1>Achievements</h1>
   </div>
   <section id="achievements" class="form-block">
-    <% if @achievements.size.positive? %>
-      <% @achievements.each do |achievement| %>
-        <div class="achievement">
-          <div class="achievement-name">
-            <p><%= achievement.title['en'] %></p>
-            <span class="achievement-earned">
-              <%= achievement.updated_at.strftime('%Y-%m-%d %H:%M') %>
-            </span>
-          </div>
-          <div class="achievement-description">
-            <%= achievement.description['en'] %>
-          </div>
-          <div class="achievement-icon"></div>
-          <div class="achievement-points">
-            <%= achievement.points %>
-          </div>
+    <% @achievements.each do |achievement| %>
+      <div class="achievement">
+        <div class="achievement-name">
+          <p><%= achievement.title['en'] %></p>
+          <span class="achievement-earned">
+            <%= achievement.updated_at.strftime('%Y-%m-%d %H:%M') %>
+          </span>
         </div>
-      <% end %>
-    <% else %>
-      <p>You don't have any achievements yet.</p>
+        <div class="achievement-description">
+          <%= achievement.description['en'] %>
+        </div>
+        <div class="achievement-icon"></div>
+        <div class="achievement-points">
+          <%= achievement.points %>
+        </div>
+      </div>
+    <% end %>
+    <% @unreceived_achievements.each do |achievement| %>
+      <div class="achievement unreceived">
+        <div class="achievement-name">
+          <p><%= achievement.title['en'] %></p>
+        </div>
+        <div class="achievement-description">
+          <%= achievement.description['en'] %>
+        </div>
+        <div class="achievement-icon"></div>
+        <div class="achievement-points">
+          <%= achievement.points %>
+        </div>
+      </div>
     <% end %>
   </section>
 <% end %>
