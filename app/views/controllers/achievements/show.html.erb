@@ -3,7 +3,7 @@
     <h1>Achievements</h1>
   </div>
   <section id="achievements" class="form-block">
-    <% if @achievements.load.size.positive? %>
+    <% if @achievements.size.positive? %>
       <% @achievements.each do |achievement| %>
         <div class="achievement">
           <div class="achievement-name">

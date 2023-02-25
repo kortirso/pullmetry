@@ -10,7 +10,7 @@ Kudos::Achievement.create(
 )
 Kudos::Achievement.create(
   award_name: 'comment_create',
-  points: 25,
+  points: 10,
   rank: 2,
   kudos_achievement_group: general_group,
   title: { en: 'Pack of comments' },
@@ -18,7 +18,7 @@ Kudos::Achievement.create(
 )
 Kudos::Achievement.create(
   award_name: 'comment_create',
-  points: 50,
+  points: 25,
   rank: 3,
   kudos_achievement_group: general_group,
   title: { en: 'Comments master' },
@@ -26,7 +26,7 @@ Kudos::Achievement.create(
 )
 Kudos::Achievement.create(
   award_name: 'comment_create',
-  points: 100,
+  points: 50,
   rank: 4,
   kudos_achievement_group: general_group,
   title: { en: 'Comments guru' },
@@ -34,7 +34,7 @@ Kudos::Achievement.create(
 )
 Kudos::Achievement.create(
   award_name: 'comment_create',
-  points: 250,
+  points: 100,
   rank: 5,
   kudos_achievement_group: general_group,
   title: { en: 'More comments to the God of comments' },

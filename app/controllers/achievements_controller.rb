@@ -8,6 +8,12 @@ class AchievementsController < ApplicationController
   private
 
   def find_achievements
-    @achievements = current_user.kudos_users_achievements.order(updated_at: :desc)
+    @achievements =
+      current_user
+      .kudos_users_achievements
+      .order(rank: :desc)
+      .includes(:kudos_achievement)
+      .group_by { |users_achievement| users_achievement.kudos_achievement.award_name }
+      .map { |_key, values| values.first }
   end
 end
