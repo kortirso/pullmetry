@@ -7,7 +7,8 @@ describe Import::SyncRepositoriesService, type: :service do
         sync_pull_requests_service: sync_pull_requests_service,
         sync_comments_service: sync_comments_service,
         sync_reviews_service: sync_reviews_service,
-        generate_insights_service: generate_insights_service
+        generate_insights_service: generate_insights_service,
+        refresh_user_achievements_service: refresh_user_achievements_service
       )
       .call(company: company)
   }
@@ -23,6 +24,7 @@ describe Import::SyncRepositoriesService, type: :service do
   let(:sync_reviews_service) { double(Import::SyncReviewsService) }
   let(:reviews_service) { double }
   let(:generate_insights_service) { double(Insights::GenerateService) }
+  let(:refresh_user_achievements_service) { double(Users::RefreshAchievementsService) }
 
   before do
     allow(sync_pull_requests_service).to receive(:new).and_return(pull_requests_service)
@@ -32,6 +34,7 @@ describe Import::SyncRepositoriesService, type: :service do
     allow(sync_reviews_service).to receive(:new).and_return(reviews_service)
     allow(reviews_service).to receive(:call)
     allow(generate_insights_service).to receive(:call)
+    allow(refresh_user_achievements_service).to receive(:call)
   end
 
   it 'calls services and updates repository', :aggregate_failures do
@@ -44,6 +47,7 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(sync_reviews_service).not_to have_received(:new).with(pull_request: pull_request2)
     expect(generate_insights_service).to have_received(:call).with(insightable: repository)
     expect(generate_insights_service).to have_received(:call).with(insightable: company)
+    expect(refresh_user_achievements_service).to have_received(:call)
     expect(repository.reload.synced_at).not_to be_nil
   end
 

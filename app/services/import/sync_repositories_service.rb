@@ -9,15 +9,18 @@ module Import
       sync_comments_service: SyncCommentsService,
       sync_reviews_service: SyncReviewsService,
       generate_insights_service: Insights::GenerateService,
-      update_repository_service: Repositories::UpdateService.new
+      update_repository_service: Repositories::UpdateService.new,
+      refresh_user_achievements_service: Users::RefreshAchievementsService
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
       @sync_reviews_service = sync_reviews_service
       @generate_insights_service = generate_insights_service
       @update_repository_service = update_repository_service
+      @refresh_user_achievements_service = refresh_user_achievements_service
     end
 
+    # rubocop: disable Metrics/AbcSize
     def call(company:)
       company.repositories.each do |repository|
         @sync_pull_requests_service.new(repository: repository).call
@@ -29,7 +32,9 @@ module Import
         @generate_insights_service.call(insightable: repository)
       end
       @generate_insights_service.call(insightable: company)
+      @refresh_user_achievements_service.call
     end
+    # rubocop: enable Metrics/AbcSize
 
     private
 

@@ -1,0 +1,54 @@
+@import '../../general/colors.scss';
+
+#achievements {
+  .achievement {
+    border-radius: .25rem;
+    overflow: hidden;
+    position: relative;
+
+    &:nth-of-type(n+2) {
+      margin-top: .5rem;
+    }
+
+    .achievement-name {
+      position: relative;
+      text-align: center;
+      background: $green600;
+      color: $white;
+      padding: .4rem 4.25rem;
+
+      p {
+        font-size: 1.25rem;
+      }
+
+      .achievement-earned {
+        position: absolute;
+        top: .5rem;
+        right: 4.25rem;
+        font-size: 1rem;
+      }
+    }
+
+    .achievement-description {
+      text-align: center;
+      background: $green200;
+      padding: .4rem 4.25rem;
+      font-size: .9rem;
+    }
+
+    .achievement-points {
+      position: absolute;
+      top: .625rem;
+      right: .625rem;
+      width: 3rem;
+      height: 3rem;
+      background: $orange400;
+      border-radius: .25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+}
