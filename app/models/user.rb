@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   include Uuidable
+  include Kudos::Achievementable
 
   has_one :users_session, class_name: 'Users::Session', dependent: :destroy
 
@@ -22,12 +23,12 @@ class User < ApplicationRecord
 
   def available_companies
     Company
-    .where(user_id: id)
-    .or(
-      Company
-      .where.not(user_id: id)
-      .where(id: insights.of_type('Company').pluck(:insightable_id))
-    )
+      .where(user_id: id)
+      .or(
+        Company
+        .where.not(user_id: id)
+        .where(id: insights.of_type('Company').pluck(:insightable_id))
+      )
   end
 
   def available_repositories
