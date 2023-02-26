@@ -10,16 +10,12 @@ class Achievement < Kudos::Achievement
   }.freeze
 
   award_for :comment_create do |achievements, user|
+    user_comments_count = user.insights.sum(:comments_count)
+
     achievements.each do |achievement|
-      if !user.awarded?(achievement: achievement) && user_comments_count(user) >= COMMENT_CREATE_RANKS[achievement.rank]
+      if !user.awarded?(achievement: achievement) && user_comments_count >= COMMENT_CREATE_RANKS[achievement.rank]
         user.award(achievement: achievement)
       end
     end
-  end
-
-  private
-
-  def user_comments_count(user)
-    @user_comments_count ||= user.insights.sum(:comments_count)
   end
 end
