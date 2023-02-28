@@ -12,6 +12,7 @@ describe User do
     it { is_expected.to have_many(:companies).dependent(:destroy) }
     it { is_expected.to have_many(:identities).dependent(:destroy) }
     it { is_expected.to have_many(:subscriptions).dependent(:destroy) }
+    it { is_expected.to have_many(:vacations).dependent(:destroy) }
   end
 
   describe '.premium?' do

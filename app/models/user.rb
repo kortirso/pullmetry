@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :insights, -> { distinct }, through: :entities
 
   has_many :subscriptions, dependent: :destroy
+  has_many :vacations, dependent: :destroy
 
   def premium?
     Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) do
