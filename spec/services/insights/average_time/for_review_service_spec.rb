@@ -5,7 +5,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
 
   let!(:first_monday) {
     date = DateTime.now.beginning_of_month
-    date += 1.day until date.wday == 1
+    date -= 1.day until date.wday == 1
     DateTime.new(date.year, date.month, date.day)
   }
   let!(:repository) { create :repository }
@@ -142,7 +142,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time' do
-            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 14_400 })
           end
 
           it 'succeeds' do
@@ -154,7 +154,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time' do
-            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 3_600 })
+            expect(service_call.result).to eq({ entity1.id => 28_800, entity2.id => 14_400 })
           end
 
           it 'succeeds' do

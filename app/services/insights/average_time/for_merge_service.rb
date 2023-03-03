@@ -37,7 +37,8 @@ module Insights
 
         seconds_between_times(
           convert_time(created_at),
-          convert_time(merged_at)
+          convert_time(merged_at),
+          pull_request.entity&.identity&.user&.vacations
         )
       end
     end
