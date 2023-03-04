@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :access_tokens, only: %i[new create]
   resource :profile, only: %i[show destroy]
   resource :achievements, only: %i[show]
+  resources :vacations, only: %i[new create destroy]
 
   get 'privacy', to: 'welcome#privacy'
   get 'sources', to: 'welcome#sources'

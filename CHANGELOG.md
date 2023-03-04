@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - excluding vacation time from calculating of average time
+- editing vacation time for users
 
 ## [1.2.3] - 2023-02-26
 ### Fixed
