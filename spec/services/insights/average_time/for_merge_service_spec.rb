@@ -3,9 +3,10 @@
 describe Insights::AverageTime::ForMergeService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
+  let!(:identity) { create :identity }
   let!(:first_monday) {
     date = DateTime.now.beginning_of_month
-    date += 1.day until date.wday == 1
+    date -= 1.day until date.wday == 1
     DateTime.new(date.year, date.month, date.day)
   }
   let!(:repository) { create :repository }
@@ -17,7 +18,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
            entity: entity2
   }
   let!(:entity1) { create :entity, external_id: '1' }
-  let!(:entity2) { create :entity, external_id: '2' }
+  let!(:entity2) { create :entity, external_id: '2', identity: identity }
   let!(:entity3) { create :entity, external_id: '3' }
 
   before do
@@ -145,7 +146,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time' do
-            expect(service_call.result).to eq({ entity2.id => 50_400 })
+            expect(service_call.result).to eq({ entity2.id => 61_200 })
           end
 
           it 'succeeds' do
@@ -157,7 +158,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time' do
-            expect(service_call.result).to eq({ entity2.id => 50_400 })
+            expect(service_call.result).to eq({ entity2.id => 61_200 })
           end
 
           it 'succeeds' do
@@ -179,6 +180,18 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           it 'succeeds' do
             expect(service_call.success?).to be_truthy
           end
+
+          context 'with vacation for author' do
+            before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
+
+            it 'generates average time' do
+              expect(service_call.result).to eq({ entity2.id => 18_000 })
+            end
+
+            it 'succeeds' do
+              expect(service_call.success?).to be_truthy
+            end
+          end
         end
 
         context 'for company insightable' do
@@ -197,7 +210,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       context 'with PR created and merged at weekend' do
         before do
           pr2.update!(
-            pull_created_at: first_monday - 2.days - 12.hours,
+            pull_created_at: first_monday - 2.days + 12.hours,
             pull_merged_at: first_monday - 12.hours
           )
         end

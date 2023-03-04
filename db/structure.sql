@@ -952,6 +952,39 @@ ALTER SEQUENCE public.users_sessions_id_seq OWNED BY public.users_sessions.id;
 
 
 --
+-- Name: vacations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vacations (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    start_time timestamp(6) without time zone NOT NULL,
+    end_time timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: vacations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.vacations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vacations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
+
+
+--
 -- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1082,6 +1115,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 ALTER TABLE ONLY public.users_sessions ALTER COLUMN id SET DEFAULT nextval('public.users_sessions_id_seq'::regclass);
+
+
+--
+-- Name: vacations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vacations ALTER COLUMN id SET DEFAULT nextval('public.vacations_id_seq'::regclass);
 
 
 --
@@ -1266,6 +1306,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users_sessions
     ADD CONSTRAINT users_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vacations vacations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vacations
+    ADD CONSTRAINT vacations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1549,6 +1597,13 @@ CREATE UNIQUE INDEX index_users_sessions_on_uuid ON public.users_sessions USING 
 
 
 --
+-- Name: index_vacations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id);
+
+
+--
 -- Name: kudos_users_achievements_unique_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1670,6 +1725,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230222161252'),
 ('20230224044112'),
 ('20230225034617'),
-('20230225111223');
+('20230225111223'),
+('20230228150952');
 
 

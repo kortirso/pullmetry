@@ -40,7 +40,8 @@ module Insights
 
         seconds_between_times(
           convert_time(created_at),
-          convert_time(reviewed_at)
+          convert_time(reviewed_at),
+          review.pull_requests_entity.entity&.identity&.user&.vacations
         )
       end
     end

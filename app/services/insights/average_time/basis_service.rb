@@ -27,24 +27,54 @@ module Insights
         end
       end
 
-      def seconds_between_times(start_time, end_time)
-        days = (end_time.end_of_day.to_i - start_time.to_i) / SECONDS_IN_DAY
-        weekend_days = find_weekend_days(start_time, days)
-        # if PR was created at weekend and reviewed at weekend
-        # weekend_days will be more than days variable
-        return 0 if weekend_days > days
+      # find seconds between 2 times
+      # except working hours at weekends and vacation
+      # except night not working hours between days
+      def seconds_between_times(start_time, end_time, vacations=nil)
+        converted_vacations = convert_vacations(start_time, vacations)
+        days = ((end_time.end_of_day.to_i - start_time.to_i) / SECONDS_IN_DAY)
 
-        # if there are weekend days between dates then end_time reduced by amount of such days
-        # and night time days reduced by this values too
-        ((end_time - weekend_days.days).to_i - start_time.to_i) - ((days - weekend_days) * not_working_night_seconds)
+        full_time_seconds = end_time.to_i - start_time.to_i
+        not_working_day_seconds = not_working_day_seconds(days, start_time, end_time, converted_vacations)
+
+        full_time_seconds - not_working_day_seconds - (days * not_working_night_seconds)
       end
 
-      def find_weekend_days(end_time, days)
+      def not_working_day_seconds(days, start_time, end_time, converted_vacations)
         result = 0
-        (days + 1).times do |index|
-          result += 1 if (end_time + index.days).wday.in?(WEEKEND_DAYS_INDEXES)
+        (days + 1).times do |day_index|
+          if not_working_day?(start_time + day_index.days, converted_vacations)
+            result += reduced_time(start_time, end_time, day_index, days)
+          end
         end
         result
+      end
+
+      def not_working_day?(current_day, converted_vacations)
+        current_day.wday.in?(WEEKEND_DAYS_INDEXES) || current_day.strftime('%Y-%m-%d').in?(converted_vacations)
+      end
+
+      def reduced_time(start_time, end_time, day_index, days_amount)
+        return convert_day(work_end_time, start_time) - start_time.to_i if day_index.zero?
+        return end_time.to_i - convert_day(work_start_time, end_time) if day_index == days_amount
+
+        working_seconds
+      end
+
+      def convert_day(time, day_from)
+        time.change(year: day_from.year, month: day_from.month, day: day_from.day).to_i
+      end
+
+      def convert_vacations(end_time, vacations)
+        return [] if vacations.blank?
+
+        vacations
+          .where('start_time >= ?', end_time.beginning_of_day)
+          .flat_map { |vacation|
+            (vacation.start_time.to_datetime..vacation.end_time.to_datetime)
+              .map { |date| date.strftime('%Y-%m-%d') }
+              .uniq
+          }
       end
 
       def update_result_with_total_review_time(entity_id, review_seconds)
@@ -68,6 +98,10 @@ module Insights
       # seconds between ending time previous day and starting time of new day in seconds
       def not_working_night_seconds
         @not_working_night_seconds ||= work_start_time.to_i - (work_end_time - 1.day).to_i
+      end
+
+      def working_seconds
+        @working_seconds ||= 86_400 - not_working_night_seconds
       end
 
       def work_start_time

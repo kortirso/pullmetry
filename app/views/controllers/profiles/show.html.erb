@@ -10,6 +10,29 @@
       </div>
     <% end %>
     <div class="profile-block form-block">
+      <div class="with-action flex justify-between items-center">
+        <h2>Vacations</h2>
+        <%= link_to 'Add vacation time', new_vacation_path, class: 'button' %>
+      </div>
+      <div class="main-container">
+        <div id="vacations-list" class="half-container">
+          <% if @vacations.load.blank? %>
+            <p class="line-height">You didn't specify any vacations yet.</p>
+          <% else %>
+            <% @vacations.each do |vacation| %>
+              <div class="vacation flex justify-between items-center">
+                <p><%= vacation.start_time.strftime('%Y-%m-%d') %> - <%= vacation.end_time.strftime('%Y-%m-%d') %></p>
+                <%= button_to 'X', vacation_path(vacation), class: 'button small danger', method: :delete %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="half-container">
+          <p class="line-height">Here you can specify your vacations, and for any of your company this time will be reduced from time spending for reviews for better calculating average times.</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-block form-block">
       <h2 class="warning">Delete account</h2>
       <p class="line-height">You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery.</p>
       <%= button_to 'Delete account', profile_path, class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
