@@ -16,12 +16,14 @@ module Import
       @sync_reviews_service = sync_reviews_service
       @generate_insights_service = generate_insights_service
       @update_repository_service = update_repository_service
+
+      @import_time = DateTime.now
     end
 
     def call(company:)
       company.repositories.each do |repository|
         @sync_pull_requests_service.new(repository: repository).call
-        repository.pull_requests.opened_before(import_time).each do |pull_request|
+        repository.pull_requests.opened_before(@import_time).each do |pull_request|
           @sync_comments_service.new(pull_request: pull_request).call
           @sync_reviews_service.new(pull_request: pull_request).call
         end
@@ -29,12 +31,6 @@ module Import
         @generate_insights_service.call(insightable: repository)
       end
       @generate_insights_service.call(insightable: company)
-    end
-
-    private
-
-    def import_time
-      @import_time ||= DateTime.now
     end
   end
 end
