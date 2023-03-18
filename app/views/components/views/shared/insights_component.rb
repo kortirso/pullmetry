@@ -35,6 +35,13 @@ module Views
           end
       end
 
+      def convert_insight_field(insight, insight_field)
+        return convert_seconds(insight[insight_field]) if Insight::TIME_ATTRIBUTES.include?(insight_field)
+        return insight[insight_field].to_f if Insight::DECIMAL_ATTRIBUTES.include?(insight_field)
+
+        insight[insight_field].to_i
+      end
+
       def premium
         @insightable.premium?
       end

@@ -21,7 +21,7 @@
           <td><%= insight.entity.login %></td>
           <% insight_fields.each do |insight_field| %>
             <td>
-              <%= Insight::TIME_ATTRIBUTES.include?(insight_field.to_sym) ? convert_seconds(insight[insight_field]) : insight[insight_field].to_i %>
+              <%= convert_insight_field(insight, insight_field.to_sym) %>
               <%= insight_ratio ? insight_ratio_value(insight, insight_field) : nil %>
             </td>
           <% end %>

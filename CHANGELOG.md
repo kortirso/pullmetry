@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Fixed
 - Import::SyncRepositoriesService, bug with first fetching already closed PRs
+- rendering decimal values of Average PR comments column for insights table
 
 ## [1.2.5] - 2023-03-18
 ### Fixed
