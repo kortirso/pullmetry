@@ -13,6 +13,6 @@ module Insightable
     insights
       .where('reviews_count IS NOT NULL AND reviews_count > 0')
       .includes(:entity)
-      .order(main_attribute => (main_attribute.ends_with?('seconds') ? :asc : :desc))
+      .order(main_attribute => (Insight::REVERSE_ORDER_ATTRIBUTES.include?(main_attribute.to_sym) ? :asc : :desc))
   end
 end

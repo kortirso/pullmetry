@@ -4,6 +4,7 @@ class Insight < ApplicationRecord
   DEFAULT_ATTRIBUTES = %i[required_reviews_count reviews_count average_review_seconds comments_count].freeze
   TIME_ATTRIBUTES = %i[average_review_seconds average_merge_seconds].freeze
   DECIMAL_ATTRIBUTES = %i[average_open_pr_comments].freeze
+  REVERSE_ORDER_ATTRIBUTES = %i[average_review_seconds average_merge_seconds average_open_pr_comments].freeze
   SHORT_ATTRIBUTE_NAMES = {
     required_reviews_count: 'Required reviews',
     reviews_count: 'Total reviews',
