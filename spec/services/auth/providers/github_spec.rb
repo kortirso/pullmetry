@@ -32,7 +32,7 @@ describe Auth::Providers::Github do
       context 'for user response with email' do
         it 'returns result' do
           expect(service_call.result).to eq({
-            uid: 1,
+            uid: '1',
             provider: 'github',
             login: 'octocat',
             email: 'email'
@@ -50,7 +50,7 @@ describe Auth::Providers::Github do
         context 'without emails in response' do
           it 'returns result' do
             expect(service_call.result).to eq({
-              uid: 1,
+              uid: '1',
               provider: 'github',
               login: 'octocat',
               email: nil
@@ -67,7 +67,7 @@ describe Auth::Providers::Github do
 
           it 'returns result' do
             expect(service_call.result).to eq({
-              uid: 1,
+              uid: '1',
               provider: 'github',
               login: 'octocat',
               email: 'private_email'

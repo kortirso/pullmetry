@@ -18,7 +18,7 @@ module Auth
         email = fetch_user_emails(access_token, user)
 
         @result = {
-          uid: user['id'],
+          uid: user['id'].to_s,
           provider: 'github',
           login: user['login'],
           email: email
