@@ -82,7 +82,7 @@ describe Import::SyncPullRequestsService, type: :service do
     it 'creates 2 new pull requests' do
       service_call
 
-      expect(repository.pull_requests.pluck(:pull_number)).to match_array([2, 3])
+      expect(repository.pull_requests.pluck(:pull_number)).to contain_exactly(2, 3)
     end
 
     it 'destroys old pull request' do

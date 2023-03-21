@@ -35,7 +35,7 @@ describe Insights::GenerateService, type: :service do
       it 'creates 2 new insights' do
         service_call
 
-        expect(insightable.insights.pluck(:entity_id)).to match_array([entity1.id, entity2.id])
+        expect(insightable.insights.pluck(:entity_id)).to contain_exactly(entity1.id, entity2.id)
       end
 
       it 'destroys old insight' do

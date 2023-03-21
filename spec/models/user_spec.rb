@@ -54,7 +54,7 @@ describe User do
     end
 
     it 'return 2 available companies' do
-      expect(user.available_companies.ids).to match_array([company1.id, company2.id])
+      expect(user.available_companies.ids).to contain_exactly(company1.id, company2.id)
     end
   end
 
@@ -72,7 +72,7 @@ describe User do
     end
 
     it 'return 2 available repositories' do
-      expect(user.available_repositories.ids).to match_array([repository1.id, repository2.id])
+      expect(user.available_repositories.ids).to contain_exactly(repository1.id, repository2.id)
     end
   end
 end
