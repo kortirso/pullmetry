@@ -28,7 +28,7 @@ describe Import::SyncRepositoriesJob, type: :service do
 
     context 'with current time inside working time' do
       before do
-        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 1, 10, 0))
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 10, 0))
       end
 
       it 'calls service' do
@@ -38,9 +38,21 @@ describe Import::SyncRepositoriesJob, type: :service do
       end
     end
 
+    context 'with current time at weekend' do
+      before do
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 1, 10, 0))
+      end
+
+      it 'does not call service' do
+        job_call
+
+        expect(Import::SyncRepositoriesService).not_to have_received(:call).with(company: company)
+      end
+    end
+
     context 'with current time outside working time' do
       before do
-        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 1, 7, 0))
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 7, 0))
       end
 
       it 'does not call service' do

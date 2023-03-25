@@ -6,7 +6,7 @@ every 1.hour do
 end
 
 # Refresh user achievements
-every '15 * * * *' do
+every '15 * * * 1-5' do
   runner 'Users::RefreshAchievementsJob.perform_later'
 end
 

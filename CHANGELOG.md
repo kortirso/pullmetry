@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - sending company notifications only at work time
+- sending company notifications only at weekdays
 
 ## [1.2.6] - 2023-03-18
 ### Modified

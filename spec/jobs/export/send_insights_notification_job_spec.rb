@@ -6,7 +6,11 @@ describe Export::SendInsightsNotificationJob, type: :service do
   let!(:user) { create :user }
   let!(:company) { create :company, user: user }
   let(:send_service) { double(Export::Slack::Insights::SendService) }
-  let(:date) { DateTime.now }
+  let(:date) {
+    value = DateTime.now
+    value = value.change(day: value.day + 2) if value.wday.in?([0, 6])
+    value
+  }
 
   before do
     allow(Export::Slack::Insights::SendService).to receive(:new).and_return(send_service)
@@ -22,7 +26,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
   end
 
   context 'with active subscription' do
-    before { create :subscription, user: user }
+    before { create :subscription, user: user, start_time: 10.days.ago, end_time: 10.days.after }
 
     context 'without working time' do
       it 'calls service' do
