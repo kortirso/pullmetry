@@ -1,3 +1,5 @@
+@import '../../general/colors.scss';
+
 #welcome-box {
   margin: 6rem auto;
 
@@ -22,24 +24,43 @@
 }
 
 #benefits-box {
-  max-width: 70rem;
+  max-width: 84rem;
   margin: 0 auto 6rem;
 
   h2 {
     text-align: center;
     font-size: 2rem;
     line-height: 3rem;
+    margin-bottom: 2rem;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  #benefits-list {
+    display: flex;
+    flex-wrap: wrap;
 
-    li {
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 33.33%;
+      padding: 1.25rem;
       margin-bottom: 1rem;
-      font-size: 1.1rem;
-      line-height: 2rem;
+
+      h3 {
+        font-size: 1.35rem;
+        line-height: 1.75rem;
+      }
+      
+      p {
+        font-size: 1.1rem;
+        line-height: 2rem;
+        text-align: center;
+        color: $gray500;
+      }
+
+      &:hover {
+        background: $white;
+      }
     }
   }
 }
@@ -63,9 +84,27 @@
   }
 }
 
+@media only screen and (max-width: 60rem) {
+  #benefits-box {
+    #benefits-list {
+      div {
+        width: 50%;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 40rem) {
   #welcome-box {
     margin: 3rem auto;
+  }
+
+  #benefits-box {
+    #benefits-list {
+      div {
+        width: 100%;
+      }
+    }
   }
 
   #benefits-box, #slack-box {

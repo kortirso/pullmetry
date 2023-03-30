@@ -4,7 +4,7 @@
     <section id="welcome-box" class="global-container main-container">
       <div class="half-container flex flex-col justify-center">
         <h1>Pull requests relevant statistic</h1>
-        <p>Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests.</p>
+        <p>Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests.</p>
         <% unless Current.user %>
           <p>
             <%= link_to 'Login with Github', omniauth_link(:github), class: 'button small' %>
@@ -16,16 +16,33 @@
       </div>
     </section>
     <section id="benefits-box">
-      <h2>What do you get from the PullKeeper</h2>
-      <ul>
-        <li>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for the whole company, all information gathered from different sources automatically</li>
-        <li>Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</li>
-        <li>Compareable data with previous periods for better understanding development changes</li>
-        <li>Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges</li>
-        <li>Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer">Gitlab API</a></li>
-        <li>Achievement system as a way to represent developer success</li>
-        <li>Coming soon features: more statistics data, various types calculating of average values</li>
-      </ul>
+      <h2>What features you get from the PullKeeper</h2>
+      <div id="benefits-list">
+        <div>
+          <h3>Reviewer statistics</h3>
+          <p>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for the whole company</p>
+        </div>
+        <div>
+          <h3>Customize calculations</h3>
+          <p>Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
+        </div>
+        <div>
+          <h3>Comparing data</h3>
+          <p>Compareable data with previous periods for better understanding development changes</p>
+        </div>
+        <div>
+          <h3>Exclude vacations</h3>
+          <p>Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges</p>
+        </div>
+        <div>
+          <h3>Github and Gitlab API</h3>
+          <p>Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer">Gitlab API</a></p>
+        </div>
+        <div>
+          <h3>Achievements system</h3>
+          <p>PullKeeper has achievements system for representing and comparing developer success</p>
+        </div>
+      </div>
     </section>
     <section id="slack-box" class="global-container main-container">
       <div class="half-container">
