@@ -97,6 +97,22 @@
           </div>
         </div>
       </div>
+      <div class="form-block">
+        <h2>Discord integration</h2>
+        <div class="main-container">
+          <div class="half-container form-field">
+            <% if @company.premium? %>
+              <%= form.text_field :insights_discord_webhook_url, class: 'form-value full', placeholder: 'https://discord.com/api/webhooks/000111222333444555/long-key' %>
+            <% else %>
+              <p>This configuration is available for premium accounts.</p>
+            <% end %>
+          </div>
+          <div class="half-container">
+            <p class="line-height">If this configuration enabled then you can set url of Discord webhook and notifications will be send to Discord.</p>
+            <p class="line-height">For getting webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
+          </div>
+        </div>
+      </div>
       <%= form.submit 'Update configuration', class: 'button' %>
     <% end %>
   </section>

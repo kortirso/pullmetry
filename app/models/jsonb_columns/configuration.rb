@@ -15,6 +15,8 @@ module JsonbColumns
     attribute :fetch_period, :integer
     # slack notifications
     attribute :insights_webhook_url, :string
+    # discord notifications
+    attribute :insights_discord_webhook_url, :string
     # different
     enum :average_type, %i[arithmetic_mean median geometric_mean], default: :arithmetic_mean
     enum :main_attribute,
