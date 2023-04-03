@@ -48,6 +48,7 @@ module Companies
         .permit(
           :insight_ratio,
           :insights_webhook_url,
+          :insights_discord_webhook_url,
           :work_start_time,
           :work_end_time,
           :average_type,

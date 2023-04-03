@@ -35,7 +35,12 @@ module Companies
       def sliced_params(company)
         params_list = %i[work_start_time work_end_time average_type]
         # premium account has more available attributes for update
-        params_list.push(:insight_fields, :insight_ratio, :insights_webhook_url, :main_attribute) if company.premium?
+        if company.premium?
+          params_list.push(
+            :insight_fields, :insight_ratio, :insights_webhook_url,
+            :insights_discord_webhook_url, :main_attribute
+          )
+        end
         @params.slice(*params_list)
       end
     end
