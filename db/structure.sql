@@ -1485,13 +1485,6 @@ CREATE INDEX index_kudos_users_achievements_on_kudos_achievement_id ON public.ku
 
 
 --
--- Name: index_kudos_users_achievements_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_kudos_users_achievements_on_user_id ON public.kudos_users_achievements USING btree (user_id);
-
-
---
 -- Name: index_pull_requests_comments_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1726,6 +1719,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230224044112'),
 ('20230225034617'),
 ('20230225111223'),
-('20230228150952');
+('20230228150952'),
+('20230429043024');
 
 

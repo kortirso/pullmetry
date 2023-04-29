@@ -22,7 +22,7 @@ gem 'sassc-rails'
 gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'main'
 
 # A framework for building view components
-gem 'view_component', '~> 2.75', require: 'view_component/engine'
+gem 'view_component', '~> 3.0', require: 'view_component/engine'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem 'bcrypt', '~> 3.1'
