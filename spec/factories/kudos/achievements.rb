@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :kudos_achievement, class: 'Kudos::Achievement' do
     award_name { 'comment_create' }
     points { 5 }
-    association :kudos_achievement_group
+    kudos_achievement_group
   end
 end

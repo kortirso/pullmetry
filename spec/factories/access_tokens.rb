@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :access_token do
     value { SecureRandom.hex }
-    association :tokenable, factory: :repository
+    tokenable factory: %i[repository]
   end
 end

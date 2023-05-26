@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :repository do
     title { 'Title' }
     link { 'https://github.com/company_name/repo_name' }
-    association :company
+    company
   end
 end

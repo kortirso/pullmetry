@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :kudos_users_achievement, class: 'Kudos::Users::Achievement' do
-    association :user
-    association :kudos_achievement
+    user
+    kudos_achievement
   end
 end

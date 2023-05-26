@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :pull_requests_comment, class: 'PullRequests::Comment' do
     external_id { '1' }
     comment_created_at { DateTime.now }
-    association :pull_requests_entity
+    pull_requests_entity
   end
 end

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :pull_requests_entity, class: 'PullRequests::Entity' do
-    association :pull_request
-    association :entity
+    pull_request
+    entity
   end
 end

@@ -6,6 +6,6 @@ FactoryBot.define do
     provider { 'github' }
     sequence(:email) { |i| "user#{i}@gmail.com" }
     login { 'login' }
-    association :user
+    user
   end
 end
