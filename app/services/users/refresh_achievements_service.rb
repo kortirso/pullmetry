@@ -8,6 +8,8 @@ module Users
     def call
       User.find_each do |user|
         publish_event(event: PullRequests::Comments::CreatedEvent, data: { user_uuid: user.uuid })
+        publish_event(event: PullRequests::Reviews::CreatedEvent, data: { user_uuid: user.uuid })
+        publish_event(event: PullRequests::CreatedEvent, data: { user_uuid: user.uuid })
       end
     end
   end
