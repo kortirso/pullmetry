@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Modified
 - better seeds
+- achievements rendering
 
 ## [1.2.8] - 2023-04-11
 ### Added

@@ -10,6 +10,7 @@ module Authentication
   private
 
   def set_current_user
+    # session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: User.first).result
     return unless session[:pullmetry_token]
 
     auth_call = Auth::FetchUserService.call(token: session[:pullmetry_token])
