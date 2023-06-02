@@ -34,9 +34,10 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER:
-          POSTGRES_PASSWORD:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -65,8 +66,9 @@ jobs:
       - name: Setup test database
         env:
           PGHOST: localhost
-          PGUSER:
-          PGPASSWORD:
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         run: |
           RAILS_ENV=test bundle exec rails db:create
