@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 class RepositoriesController < ApplicationController
+  include Pagy::Backend
+
+  PER_PAGE = 5
+
   before_action :find_repositories, only: %i[index]
   before_action :filter_repositories, only: %i[index]
+  before_action :paginate_repositories, only: %i[index]
   before_action :find_company, only: %i[create]
   before_action :find_repository, only: %i[destroy]
 
@@ -40,6 +45,10 @@ class RepositoriesController < ApplicationController
     return unless params[:company_id]
 
     @repositories = @repositories.where(company_id: Company.find_by(uuid: params[:company_id]))
+  end
+
+  def paginate_repositories
+    @pagy, @repositories = pagy(@repositories, items: PER_PAGE)
   end
 
   def find_company
