@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - admin users
 - companies and repositories pages pagination
+- Github Actions CI integration
 
 ### Modified
 - better seeds
