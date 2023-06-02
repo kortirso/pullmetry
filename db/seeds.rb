@@ -143,50 +143,82 @@ Kudos::Achievement.create(
   )
 end
 user = User.first
+user.update(role: User::ADMIN)
 Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
-company = Company.create(title: 'Test company', user: user)
-3.times do |repository_index|
-  repository = Repositories::CreateService.call(
-    company: company,
-    params: {
-      title: "Test #{repository_index + 1}",
-      link: "https://github.com/octocat_#{repository_index + 1}/first",
-      provider: 'github'
-    }
-  ).result
+7.times do |company_index|
+  company = Company.create(title: "Test company #{company_index + 1}", user: User.all.sample)
+  3.times do |repository_index|
+    repository = Repositories::CreateService.call(
+      company: company,
+      params: {
+        title: "Test #{company_index + 1} #{repository_index + 1}",
+        link: "https://github.com/octocat_#{company_index + 1}_#{repository_index + 1}/first",
+        provider: 'github'
+      }
+    ).result
 
-  Entity.all.each_with_index do |entity, entity_index|
-    # open pull requests
-    rand(6).times do |index|
-      pull_request = PullRequest.create!(
-        repository: repository,
-        entity: entity,
-        pull_number: entity_index * 100 + index,
-        pull_created_at: (index + 1).days.ago
-      )
-      # approves
-      if [true, false].sample
-        approve_entity = Entity.where.not(id: entity.id).sample
-        pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: approve_entity)
-        PullRequests::Review.create!(
-          pull_requests_entity: pre,
-          external_id: SecureRandom.uuid,
-          review_created_at: (index + 1).days.ago + rand(120).minutes
+    Entity.all.each_with_index do |entity, entity_index|
+      # old pull requests
+      rand(6).times do |index|
+        pull_request = PullRequest.create!(
+          repository: repository,
+          entity: entity,
+          pull_number: entity_index * 100 + index,
+          pull_created_at: (index - 40).days.ago
         )
+        # approves
+        if [true, false].sample
+          approve_entity = Entity.where.not(id: entity.id).sample
+          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: approve_entity)
+          PullRequests::Review.create!(
+            pull_requests_entity: pre,
+            external_id: SecureRandom.uuid,
+            review_created_at: (index - 40).days.ago + rand(120).minutes
+          )
+        end
+        # comments
+        rand(5).times do
+          comment_entity = Entity.where.not(id: entity.id).sample
+          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: comment_entity)
+          PullRequests::Comment.create!(
+            pull_requests_entity: pre,
+            external_id: SecureRandom.uuid,
+            comment_created_at: (index - 40).days.ago + rand(60).minutes
+          )
+        end
       end
-      # comments
-      rand(5).times do
-        comment_entity = Entity.where.not(id: entity.id).sample
-        pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: comment_entity)
-        PullRequests::Comment.create!(
-          pull_requests_entity: pre,
-          external_id: SecureRandom.uuid,
-          comment_created_at: (index + 1).days.ago + rand(60).minutes
+      # open pull requests
+      rand(6).times do |index|
+        pull_request = PullRequest.create!(
+          repository: repository,
+          entity: entity,
+          pull_number: entity_index * 100 + index,
+          pull_created_at: (index + 1).days.ago
         )
+        # approves
+        if [true, false].sample
+          approve_entity = Entity.where.not(id: entity.id).sample
+          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: approve_entity)
+          PullRequests::Review.create!(
+            pull_requests_entity: pre,
+            external_id: SecureRandom.uuid,
+            review_created_at: (index + 1).days.ago + rand(120).minutes
+          )
+        end
+        # comments
+        rand(5).times do
+          comment_entity = Entity.where.not(id: entity.id).sample
+          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: comment_entity)
+          PullRequests::Comment.create!(
+            pull_requests_entity: pre,
+            external_id: SecureRandom.uuid,
+            comment_created_at: (index + 1).days.ago + rand(60).minutes
+          )
+        end
       end
     end
+    Insights::GenerateService.call(insightable: repository)
   end
-  Insights::GenerateService.call(insightable: repository)
+  Insights::GenerateService.call(insightable: company)
 end
-Insights::GenerateService.call(insightable: company)
 Users::RefreshAchievementsService.call

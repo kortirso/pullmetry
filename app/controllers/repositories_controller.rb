@@ -33,10 +33,7 @@ class RepositoriesController < ApplicationController
   private
 
   def find_repositories
-    @repositories =
-      current_user
-      .available_repositories
-      .includes(:access_token, company: :user)
+    @repositories = authorized_scope(Repository.all).includes(:access_token, company: :user)
   end
 
   def filter_repositories

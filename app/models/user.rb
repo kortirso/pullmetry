@@ -4,6 +4,9 @@ class User < ApplicationRecord
   include Uuidable
   include Kudos::Achievementable
 
+  REGULAR = 'regular'
+  ADMIN = 'admin'
+
   has_one :users_session, class_name: 'Users::Session', dependent: :destroy
 
   has_many :companies, dependent: :destroy
@@ -15,6 +18,8 @@ class User < ApplicationRecord
 
   has_many :subscriptions, dependent: :destroy
   has_many :vacations, dependent: :destroy
+
+  enum role: { REGULAR => 0, ADMIN => 1 }
 
   def premium?
     Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) do
