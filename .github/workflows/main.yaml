@@ -27,6 +27,30 @@ jobs:
         run: |
           bundle exec rubocop
 
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.0
+
+      - name: Install latest bundler
+        run: |
+          gem install bundler --no-document
+          bundle config set without 'tools benchmarks docs'
+
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Run linters
+        run: |
+          bundle exec brakeman
+
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -34,9 +58,6 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
@@ -66,9 +87,6 @@ jobs:
       - name: Setup test database
         env:
           PGHOST: localhost
-          PGUSER: postgres
-          PGPASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         run: |
           RAILS_ENV=test bundle exec rails db:create
