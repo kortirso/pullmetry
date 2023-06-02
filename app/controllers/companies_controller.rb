@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController
+  include Pagy::Backend
+
+  PER_PAGE = 5
+
   before_action :find_companies, only: %i[index]
   before_action :find_company, only: %i[destroy]
 
@@ -28,7 +32,7 @@ class CompaniesController < ApplicationController
   private
 
   def find_companies
-    @companies = authorized_scope(Company.all).includes(:user, :access_token)
+    @pagy, @companies = pagy(authorized_scope(Company.all).includes(:user, :access_token), items: PER_PAGE)
   end
 
   def find_company

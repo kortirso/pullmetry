@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include Pagy::Frontend
+
   def omniauth_link(provider)
     case provider
     when :github then github_oauth_link
