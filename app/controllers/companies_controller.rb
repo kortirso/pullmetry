@@ -28,10 +28,7 @@ class CompaniesController < ApplicationController
   private
 
   def find_companies
-    @companies =
-      current_user
-      .available_companies
-      .includes(:user, :access_token)
+    @companies = authorized_scope(Company.all).includes(:user, :access_token)
   end
 
   def find_company

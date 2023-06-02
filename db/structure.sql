@@ -896,7 +896,8 @@ CREATE TABLE public.users (
     uuid uuid NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    role integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1720,6 +1721,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230225034617'),
 ('20230225111223'),
 ('20230228150952'),
-('20230429043024');
+('20230429043024'),
+('20230602143731');
 
 
