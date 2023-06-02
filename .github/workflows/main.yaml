@@ -34,8 +34,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER:
+          POSTGRES_PASSWORD:
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
@@ -65,8 +65,8 @@ jobs:
       - name: Setup test database
         env:
           PGHOST: localhost
-          PGUSER: postgres
-          PGPASSWORD: postgres
+          PGUSER:
+          PGPASSWORD:
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         run: |
           RAILS_ENV=test bundle exec rails db:create
