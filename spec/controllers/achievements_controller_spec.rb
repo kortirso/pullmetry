@@ -27,6 +27,22 @@ describe AchievementsController do
 
           expect(response).to render_template :show
         end
+
+        context 'with filtering by unexisting group' do
+          it 'renders show template' do
+            get :show, params: { locale: 'en', group: 1 }
+
+            expect(response).to render_template :show
+          end
+        end
+
+        context 'with filtering by existing group' do
+          it 'renders show template' do
+            get :show, params: { locale: 'en', group: kudos_achievement.kudos_achievement_group_id }
+
+            expect(response).to render_template :show
+          end
+        end
       end
     end
 

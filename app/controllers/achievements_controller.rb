@@ -12,18 +12,25 @@ class AchievementsController < ApplicationController
   private
 
   def find_achievements
-    @achievements = base_achievements
-    @achievements = @achievements.where(kudos_achievement_group_id: params[:group]) if params[:group].present?
-    @achievements = group_achievements
+    base_achievements
+    filter_achievements
+    group_achievements
     @achievements = @achievements.first(SUMMARY_ACHIEVEMENTS_RENDER_SIZE) if params[:group].blank?
   end
 
   def base_achievements
-    current_user.kudos_users_achievements.order(rank: :desc).eager_load(:kudos_achievement)
+    @achievements = current_user.kudos_users_achievements.order(rank: :desc).eager_load(:kudos_achievement)
+  end
+
+  def filter_achievements
+    return if params[:group].blank?
+
+    @achievements = @achievements.where(kudos_achievement: { kudos_achievement_group_id: params[:group].to_i })
   end
 
   def group_achievements
-    @achievements
+    @achievements =
+      @achievements
       .group_by { |users_achievement| users_achievement.kudos_achievement.award_name }
       .map { |_key, values| values.first }
   end
