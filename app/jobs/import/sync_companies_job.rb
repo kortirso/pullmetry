@@ -2,6 +2,8 @@
 
 module Import
   class SyncCompaniesJob < ApplicationJob
+    include Monitoring
+
     queue_as :default
 
     def perform

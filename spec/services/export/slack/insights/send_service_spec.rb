@@ -20,19 +20,11 @@ describe Export::Slack::Insights::SendService, type: :service do
   end
 
   context 'for regular user' do
-    it 'does not call payload service' do
+    it 'does not call services and succeeds', :aggregate_failures do
       service_call
 
       expect(payload_service).not_to have_received(:call)
-    end
-
-    it 'does not call send service' do
-      service_call
-
       expect(send_service).not_to have_received(:send_message)
-    end
-
-    it 'succeeds' do
       expect(service_call.success?).to be_truthy
     end
   end
@@ -41,19 +33,11 @@ describe Export::Slack::Insights::SendService, type: :service do
     before { user.subscriptions.create(start_time: 1.day.ago, end_time: 1.day.after) }
 
     context 'without webhook url' do
-      it 'does not call payload service' do
+      it 'does not call services and succeeds', :aggregate_failures do
         service_call
 
         expect(payload_service).not_to have_received(:call)
-      end
-
-      it 'does not call send service' do
-        service_call
-
         expect(send_service).not_to have_received(:send_message)
-      end
-
-      it 'succeeds' do
         expect(service_call.success?).to be_truthy
       end
     end
@@ -64,19 +48,11 @@ describe Export::Slack::Insights::SendService, type: :service do
         insightable.save
       end
 
-      it 'calls payload service' do
+      it 'calls services and succeeds', :aggregate_failures do
         service_call
 
         expect(payload_service).to have_received(:call)
-      end
-
-      it 'calls send service' do
-        service_call
-
         expect(send_service).to have_received(:send_message)
-      end
-
-      it 'succeeds' do
         expect(service_call.success?).to be_truthy
       end
     end
