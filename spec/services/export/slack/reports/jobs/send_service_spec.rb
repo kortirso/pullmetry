@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 describe Export::Slack::Reports::Jobs::SendService, type: :service do
-  subject(:service_call) {
-    described_class.new(payload_service: payload_service, send_service: send_service).call(job: job)
-  }
+  subject(:service_call) { service_object.call(job: job) }
+
+  let!(:service_object) { described_class.new(payload_service: payload_service, send_service: send_service) }
 
   let!(:job) { double }
   let(:payload_service) { double }
@@ -12,6 +12,7 @@ describe Export::Slack::Reports::Jobs::SendService, type: :service do
   let(:body) { { blocks: [] } }
 
   before do
+    allow(service_object).to receive(:webhook_url).and_return('https://hooks.slack.com/services/T0/B0/G0')
     allow(payload_service).to receive(:call).and_return(service_result)
     allow(service_result).to receive(:result).and_return(body)
 
