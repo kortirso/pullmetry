@@ -13,6 +13,20 @@ module Insights
 
       private
 
+      attr_reader :work_start_time, :work_end_time
+
+      # working time can be based on company working time
+      # or at user's
+      def find_using_work_time(pull_request)
+        user = pull_request.entity.identity&.user
+        @work_start_time, @work_end_time =
+          if user&.with_work_time?
+            [user.work_start_time, user.work_end_time]
+          else
+            [@insightable.configuration.work_start_time, @insightable.configuration.work_end_time]
+          end
+      end
+
       # if time is less than beginning of work day - use beginning of work day
       # if time is more than ending of work day - use ending of work day
       def convert_time(value)
@@ -88,28 +102,20 @@ module Insights
       end
 
       def work_start_time_minutes
-        @work_start_time_minutes ||= (work_start_time.hour * MINUTES_IN_HOUR) + work_start_time.min
+        (work_start_time.hour * MINUTES_IN_HOUR) + work_start_time.min
       end
 
       def work_end_time_minutes
-        @work_end_time_minutes ||= (work_end_time.hour * MINUTES_IN_HOUR) + work_end_time.min
+        (work_end_time.hour * MINUTES_IN_HOUR) + work_end_time.min
       end
 
       # seconds between ending time previous day and starting time of new day in seconds
       def not_working_night_seconds
-        @not_working_night_seconds ||= work_start_time.to_i - (work_end_time - 1.day).to_i
+        work_start_time.to_i - (work_end_time - 1.day).to_i
       end
 
       def working_seconds
-        @working_seconds ||= 86_400 - not_working_night_seconds
-      end
-
-      def work_start_time
-        @work_start_time ||= @insightable.configuration.work_start_time
-      end
-
-      def work_end_time
-        @work_end_time ||= @insightable.configuration.work_end_time
+        SECONDS_IN_DAY - not_working_night_seconds
       end
     end
   end

@@ -33,6 +33,31 @@
       </div>
     </div>
     <div class="profile-block form-block">
+      <%= form_with model: Current.user, url: profile_path, method: :patch do |form| %>
+        <h2>Work time</h2>
+        <div class="main-container">
+          <div class="half-container">
+            <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
+            <%= form.check_box :use_work_time, checked: Current.user.with_work_time? %>
+            <div id="work-times">
+              <div class="form-field">
+                <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
+                <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+              </div>
+              <div class="form-field">
+                <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
+                <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
+              </div>
+            </div>
+          </div>
+          <div class="half-container">
+            <p class="line-height">You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
+          </div>
+        </div>
+        <%= form.submit 'Update user data', class: 'button' %>
+      <% end %>
+    </div>
+    <div class="profile-block form-block">
       <h2 class="warning">Delete account</h2>
       <p class="line-height">You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery.</p>
       <%= button_to 'Delete account', profile_path, class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>

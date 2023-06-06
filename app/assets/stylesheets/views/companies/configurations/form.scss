@@ -23,15 +23,29 @@
   }
 }
 
-#jsonb_columns_configuration_use_work_time {
+#profile {
+  #work-times {
+    display: flex;
+    flex-direction: row;
+
+    .form-field {
+      display: inline-block;
+      margin-right: 2rem;
+    }
+  }
+}
+
+#jsonb_columns_configuration_use_work_time, #user_use_work_time {
   width: auto;
   margin-bottom: 1rem;
 }
 
-#jsonb_columns_configuration_use_work_time+#work-times {
+#jsonb_columns_configuration_use_work_time+#work-times,
+#user_use_work_time+#work-times {
   display: none;
 }
 
-#jsonb_columns_configuration_use_work_time:checked+#work-times {
+#jsonb_columns_configuration_use_work_time:checked+#work-times,
+#user_use_work_time:checked+#work-times {
   display: block;
 }
