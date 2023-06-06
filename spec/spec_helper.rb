@@ -3,6 +3,8 @@
 require 'simplecov'
 
 SimpleCov.start do
+  nocov_token 'skippit'
+
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers'
   add_group 'Services', 'app/services'

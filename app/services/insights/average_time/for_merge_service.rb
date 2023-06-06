@@ -35,6 +35,7 @@ module Insights
         return 1 if created_at >= merged_at
         return merged_at.to_i - created_at.to_i unless @insightable.with_work_time?
 
+        find_using_work_time(pull_request)
         seconds_between_times(
           convert_time(created_at),
           convert_time(merged_at),

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - editing users working time
 
+### Modified
+- average time calculating based on user working time
+
 ## [1.3.1] - 2023-06-06
 ### Added
 - checking accessability of repositories for invalid link and/or access token
