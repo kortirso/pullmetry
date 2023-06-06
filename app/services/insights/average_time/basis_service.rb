@@ -102,20 +102,20 @@ module Insights
       end
 
       def work_start_time_minutes
-        @work_start_time_minutes ||= (work_start_time.hour * MINUTES_IN_HOUR) + work_start_time.min
+        (work_start_time.hour * MINUTES_IN_HOUR) + work_start_time.min
       end
 
       def work_end_time_minutes
-        @work_end_time_minutes ||= (work_end_time.hour * MINUTES_IN_HOUR) + work_end_time.min
+        (work_end_time.hour * MINUTES_IN_HOUR) + work_end_time.min
       end
 
       # seconds between ending time previous day and starting time of new day in seconds
       def not_working_night_seconds
-        @not_working_night_seconds ||= work_start_time.to_i - (work_end_time - 1.day).to_i
+        work_start_time.to_i - (work_end_time - 1.day).to_i
       end
 
       def working_seconds
-        @working_seconds ||= 86_400 - not_working_night_seconds
+        SECONDS_IN_DAY - not_working_night_seconds
       end
     end
   end
