@@ -23,8 +23,11 @@ describe HttpService::Client, type: :client do
       let(:errors) { [{ 'detail' => 'Forbidden' }] }
       let(:body) { { 'errors' => errors } }
 
-      it 'returns nil' do
-        expect(client_request.get(path: '/user')).to be_nil
+      it 'returns nil', :aggregate_failures do
+        result = client_request.get(path: '/user')
+
+        expect(result[:success]).to be_falsy
+        expect(result[:body]).to eq body
       end
     end
 
@@ -32,8 +35,11 @@ describe HttpService::Client, type: :client do
       let(:status) { 200 }
       let(:body) { { 'id' => 1 } }
 
-      it 'returns user data' do
-        expect(client_request.get(path: '/user')).to eq body
+      it 'returns user data', :aggregate_failures do
+        result = client_request.get(path: '/user')
+
+        expect(result[:success]).to be_truthy
+        expect(result[:body]).to eq body
       end
     end
   end

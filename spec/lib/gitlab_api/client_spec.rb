@@ -22,8 +22,9 @@ describe GitlabApi::Client, type: :client do
       let(:errors) { [{ 'detail' => 'Forbidden' }] }
       let(:body) { { 'errors' => errors } }
 
-      it 'returns nil' do
-        expect(client_request).to be_nil
+      it 'returns nil', :aggregate_failures do
+        expect(client_request[:success]).to be_falsy
+        expect(client_request[:body]).to eq body
       end
     end
 
@@ -31,8 +32,9 @@ describe GitlabApi::Client, type: :client do
       let(:status) { 200 }
       let(:body) { [{ 'iid' => 1 }] }
 
-      it 'returns user data' do
-        expect(client_request).to eq body
+      it 'returns user data', :aggregate_failures do
+        expect(client_request[:success]).to be_truthy
+        expect(client_request[:body]).to eq body
       end
     end
   end
@@ -49,8 +51,9 @@ describe GitlabApi::Client, type: :client do
       let(:errors) { [{ 'detail' => 'Forbidden' }] }
       let(:body) { { 'errors' => errors } }
 
-      it 'returns nil' do
-        expect(client_request).to be_nil
+      it 'returns nil', :aggregate_failures do
+        expect(client_request[:success]).to be_falsy
+        expect(client_request[:body]).to eq body
       end
     end
 
@@ -58,8 +61,9 @@ describe GitlabApi::Client, type: :client do
       let(:status) { 200 }
       let(:body) { { 'approved_by' => [] } }
 
-      it 'returns reviews data' do
-        expect(client_request).to eq body
+      it 'returns reviews data', :aggregate_failures do
+        expect(client_request[:success]).to be_truthy
+        expect(client_request[:body]).to eq body
       end
     end
   end
@@ -76,8 +80,9 @@ describe GitlabApi::Client, type: :client do
       let(:errors) { [{ 'detail' => 'Forbidden' }] }
       let(:body) { { 'errors' => errors } }
 
-      it 'returns nil' do
-        expect(client_request).to be_nil
+      it 'returns nil', :aggregate_failures do
+        expect(client_request[:success]).to be_falsy
+        expect(client_request[:body]).to eq body
       end
     end
 
@@ -85,8 +90,9 @@ describe GitlabApi::Client, type: :client do
       let(:status) { 200 }
       let(:body) { [{ 'id' => 1, 'created_at' => DateTime.now.to_s, 'author' => {} }] }
 
-      it 'returns comment data' do
-        expect(client_request).to eq body
+      it 'returns comment data', :aggregate_failures do
+        expect(client_request[:success]).to be_truthy
+        expect(client_request[:body]).to eq body
       end
     end
   end

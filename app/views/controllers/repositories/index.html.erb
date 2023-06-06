@@ -10,7 +10,12 @@
       <div class="list-element form-block">
         <div class="list-element-header flex justify-between">
           <div>
-            <h2><%= repository.title %></h2>
+            <h2 class="flex items-center">
+              <%= repository.title %>
+              <% unless repository.accessable %>
+                <span class="unaccessable">Repository access error</span>
+              <% end %>
+            </h2>
             <p>Last synced at: <%= repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data' %></p>
             <p>PRs count - <%= repository.pull_requests.size %></p>
             <p>

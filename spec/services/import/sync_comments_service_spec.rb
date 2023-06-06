@@ -50,6 +50,14 @@ describe Import::SyncCommentsService, type: :service do
     it 'creates 2 new comments' do
       expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
     end
+
+    context 'when repository is unaccessable' do
+      before { pull_request.repository.update!(accessable: false) }
+
+      it 'does not create new comments' do
+        expect { service_call }.not_to change(pull_request.pull_requests_comments, :count)
+      end
+    end
   end
 
   context 'when there is 1 existing comment' do
