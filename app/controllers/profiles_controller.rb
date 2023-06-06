@@ -6,6 +6,19 @@ class ProfilesController < ApplicationController
 
   def show; end
 
+  def update
+    service_call = Users::UpdateService.call(
+      user: current_user,
+      params: user_params,
+      use_work_time: ActiveModel::Type::Boolean.new.cast(params[:user][:use_work_time])
+    )
+    if service_call.success?
+      redirect_to profile_path, notice: 'User is updated'
+    else
+      redirect_to profile_path, alert: service_call.errors
+    end
+  end
+
   def destroy
     current_user.destroy
     session[:pullmetry_token] = nil
@@ -28,5 +41,9 @@ class ProfilesController < ApplicationController
       .vacations
       .order(start_time: :desc)
       .load_async
+  end
+
+  def user_params
+    params.require(:user).permit(:work_start_time, :work_end_time)
   end
 end

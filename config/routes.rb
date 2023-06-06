@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
   resources :repositories, only: %i[index new create destroy]
   resources :access_tokens, only: %i[new create]
-  resource :profile, only: %i[show destroy]
+  resource :profile, only: %i[show update destroy]
   resource :achievements, only: %i[show]
   resources :vacations, only: %i[new create destroy]
 

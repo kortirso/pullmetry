@@ -27,6 +27,10 @@ class User < ApplicationRecord
     end
   end
 
+  def with_work_time?
+    work_start_time.present? && work_end_time.present?
+  end
+
   def available_companies
     Company
       .where(user_id: id)
