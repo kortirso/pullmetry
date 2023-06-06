@@ -11,8 +11,8 @@ describe Auth::Providers::Github do
 
   before do
     allow(auth_client).to receive(:fetch_access_token).and_return(token_response)
-    allow(api_client).to receive(:user).and_return(user_response)
-    allow(api_client).to receive(:user_emails).and_return(emails_response)
+    allow(api_client).to receive(:user).and_return({ body: user_response })
+    allow(api_client).to receive(:user_emails).and_return({ body: emails_response })
   end
 
   context 'if code is invalid' do

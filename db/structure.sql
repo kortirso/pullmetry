@@ -822,7 +822,8 @@ CREATE TABLE public.repositories (
     link character varying DEFAULT ''::character varying NOT NULL,
     provider integer DEFAULT 0 NOT NULL,
     external_id character varying,
-    synced_at timestamp(6) without time zone
+    synced_at timestamp(6) without time zone,
+    accessable boolean DEFAULT true NOT NULL
 );
 
 
@@ -1722,6 +1723,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230225111223'),
 ('20230228150952'),
 ('20230429043024'),
-('20230602143731');
+('20230602143731'),
+('20230606045228');
 
 

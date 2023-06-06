@@ -5,11 +5,13 @@ module Import
     module Github
       class Reviews
         prepend ApplicationService
+        include Import::Concerns::Accessable
 
         PER_PAGE = 50
 
         def initialize(pull_request:, fetch_client: GithubApi::Client)
-          @fetch_client = fetch_client.new(repository: pull_request.repository)
+          @repository = pull_request.repository
+          @fetch_client = fetch_client.new(repository: @repository)
           @pull_number = pull_request.pull_number
           @result = []
         end
@@ -21,10 +23,13 @@ module Import
             # first comes oldest PRs
             result =
               @fetch_client.pull_request_reviews(pull_number: @pull_number, params: { per_page: PER_PAGE, page: page })
-            break if result.blank?
+            break if !result[:success] && mark_repository_as_unaccessable
 
-            @result.concat(result.select { |review| review['state'] == 'APPROVED' })
-            break if result.size != PER_PAGE
+            body = result[:body]
+            break if body.blank?
+
+            @result.concat(body.select { |review| review['state'] == 'APPROVED' })
+            break if body.size != PER_PAGE
 
             page += 1
           end

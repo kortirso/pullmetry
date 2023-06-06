@@ -6,9 +6,11 @@ module Import
       class Comments
         prepend ApplicationService
         include Concerns::Urlable
+        include Import::Concerns::Accessable
 
         def initialize(pull_request:, fetch_client: GitlabApi::Client)
-          @fetch_client = fetch_client.new(url: base_url(pull_request.repository), repository: pull_request.repository)
+          @repository = pull_request.repository
+          @fetch_client = fetch_client.new(url: base_url(@repository), repository: @repository)
           @pull_number = pull_request.pull_number
           @result = []
         end
@@ -20,9 +22,12 @@ module Import
             # first comes oldest PRs
             result =
               @fetch_client.pull_request_comments(pull_number: @pull_number, params: { per_page: 25, page: page })
-            break if result.blank?
+            break if !result[:success] && mark_repository_as_unaccessable
 
-            @result.concat(result)
+            body = result[:body]
+            break if body.blank?
+
+            @result.concat(body)
             page += 1
           end
         end

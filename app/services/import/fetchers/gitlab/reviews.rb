@@ -6,15 +6,20 @@ module Import
       class Reviews
         prepend ApplicationService
         include Concerns::Urlable
+        include Import::Concerns::Accessable
 
         def initialize(pull_request:, fetch_client: GitlabApi::Client)
-          @fetch_client = fetch_client.new(url: base_url(pull_request.repository), repository: pull_request.repository)
+          @repository = pull_request.repository
+          @fetch_client = fetch_client.new(url: base_url(@repository), repository: @repository)
           @pull_number = pull_request.pull_number
           @result = []
         end
 
         def call
-          @result = @fetch_client.pull_request_reviews(pull_number: @pull_number)
+          result = @fetch_client.pull_request_reviews(pull_number: @pull_number)
+          return if !result[:success] && mark_repository_as_unaccessable
+
+          @result = result[:body]
         end
       end
     end

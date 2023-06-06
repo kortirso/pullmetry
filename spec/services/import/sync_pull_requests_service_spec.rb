@@ -60,6 +60,14 @@ describe Import::SyncPullRequestsService, type: :service do
       expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
       expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
     end
+
+    context 'when repository is unaccessable' do
+      before { repository.update!(accessable: false) }
+
+      it 'does not create new comments' do
+        expect { service_call }.not_to change(repository.pull_requests, :count)
+      end
+    end
   end
 
   context 'when there is 1 existing pull request' do

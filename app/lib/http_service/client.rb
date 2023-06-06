@@ -11,7 +11,10 @@ module HttpService
 
     def get(path:, params: nil, headers: nil)
       response = connection.get(path, params, headers)
-      response.body if response.success?
+      {
+        success: response.success?,
+        body: response.body
+      }
     end
 
     def post(path:, body: {}, params: {}, headers: {})

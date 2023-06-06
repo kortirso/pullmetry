@@ -41,16 +41,11 @@ describe Import::Fetchers::Gitlab::Reviews, type: :service do
 
   before do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
-    allow(fetch_service).to receive(:pull_request_reviews).and_return(data)
+    allow(fetch_service).to receive(:pull_request_reviews).and_return({ success: true, body: data })
   end
 
-  it 'returns 3 objects' do
-    result = service_call.result
-
-    expect(result['approved_by'].size).to eq 3
-  end
-
-  it 'succeeds' do
+  it 'returns 3 objects and succeeds', :aggregate_failures do
     expect(service_call.success?).to be_truthy
+    expect(service_call.result['approved_by'].size).to eq 3
   end
 end

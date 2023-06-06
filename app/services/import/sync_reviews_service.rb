@@ -12,8 +12,10 @@ module Import
     end
 
     def call
-      fetch_service.new(pull_request: @pull_request).call
-        .then { |fetch_data| represent_service.new.call(data: fetch_data.result) }
+      fetch_data = fetch_service.new(pull_request: @pull_request).call
+      return unless @pull_request.repository.accessable?
+
+      represent_service.new.call(data: fetch_data.result)
         .then { |represent_data| save_service.call(pull_request: @pull_request, data: represent_data) }
     end
   end

@@ -36,13 +36,13 @@ module Auth
       end
 
       def fetch_user_info(access_token)
-        @api_client.user(access_token: access_token)
+        @api_client.user(access_token: access_token)[:body]
       end
 
       def fetch_user_emails(access_token, user)
         return user['email'] if user['email']
 
-        emails = @api_client.user_emails(access_token: access_token)
+        emails = @api_client.user_emails(access_token: access_token)[:body]
         emails.dig(0, 'email')
       end
 

@@ -58,6 +58,14 @@ describe Import::SyncReviewsService, type: :service do
     it 'creates 1 new review' do
       expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(1)
     end
+
+    context 'when repository is unaccessable' do
+      before { pull_request.repository.update!(accessable: false) }
+
+      it 'does not create new review' do
+        expect { service_call }.not_to change(pull_request.pull_requests_reviews, :count)
+      end
+    end
   end
 
   context 'when there is 1 old existing review' do
