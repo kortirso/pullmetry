@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   has_many :identities, dependent: :destroy
   has_many :entities, through: :identities
-  has_many :insights, -> { distinct }, through: :entities
+  has_many :insights, through: :entities
 
   has_many :subscriptions, dependent: :destroy
   has_many :vacations, dependent: :destroy
