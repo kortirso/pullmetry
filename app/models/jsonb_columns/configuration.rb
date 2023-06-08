@@ -5,6 +5,7 @@ module JsonbColumns
     include StoreModel::Model
 
     # insights calculation attributes
+    attribute :ignore_users_work_time, :boolean
     attribute :work_start_time, :datetime
     attribute :work_end_time, :datetime
     # insights table view attributes

@@ -49,6 +49,7 @@ module Companies
           :insight_ratio,
           :insights_webhook_url,
           :insights_discord_webhook_url,
+          :ignore_users_work_time,
           :work_start_time,
           :work_end_time,
           :average_type,
