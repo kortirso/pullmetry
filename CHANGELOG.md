@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - editing users working time
+- ignore user work time for companies
 
 ### Modified
 - average time calculating based on user working time

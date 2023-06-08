@@ -20,7 +20,7 @@ module Insights
       def find_using_work_time(pull_request)
         user = pull_request.entity.identity&.user
         @work_start_time, @work_end_time =
-          if user&.with_work_time?
+          if user&.with_work_time? && !@insightable.configuration.ignore_users_work_time
             [user.work_start_time, user.work_end_time]
           else
             [@insightable.configuration.work_start_time, @insightable.configuration.work_end_time]

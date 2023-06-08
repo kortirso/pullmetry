@@ -96,6 +96,20 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           expect(service_call.result).to eq({ entity2.id => 28_800 })
           expect(service_call.success?).to be_truthy
         end
+
+        context 'when company ignores user work time' do
+          before do
+            repository.company.configuration.assign_attributes(
+              ignore_users_work_time: true
+            )
+            repository.company.save!
+          end
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 32_400 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
       end
     end
 

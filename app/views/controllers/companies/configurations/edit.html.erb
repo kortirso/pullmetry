@@ -17,6 +17,12 @@
                 <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
                 <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
               </div>
+
+              <div>
+                <%= form.check_box :ignore_users_work_time, checked: @company.configuration.ignore_users_work_time %>
+                <%= form.label :ignore_users_work_time, 'Ignore users work time', class: 'form-label' %>
+              </div>
+
             </div>
           </div>
           <div class="half-container">
