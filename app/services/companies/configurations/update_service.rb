@@ -33,7 +33,7 @@ module Companies
       end
 
       def sliced_params(company)
-        params_list = %i[ignore_users_work_time work_start_time work_end_time average_type]
+        params_list = %i[ignore_users_work_time work_time_zone work_start_time work_end_time average_type]
         # premium account has more available attributes for update
         if company.premium?
           params_list.push(

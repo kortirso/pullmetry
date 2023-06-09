@@ -5,6 +5,10 @@
     display: flex;
     flex-direction: row;
 
+    #jsonb_columns_configuration_work_time_zone {
+      width: 100%;
+    }
+
     .form-field {
       display: inline-block;
       margin-right: 2rem;
@@ -27,6 +31,10 @@
   #work-times {
     display: flex;
     flex-direction: row;
+
+    #user_work_time_zone {
+      width: 100%;
+    }
 
     .form-field {
       display: inline-block;

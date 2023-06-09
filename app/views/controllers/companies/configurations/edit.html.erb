@@ -9,20 +9,24 @@
             <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
             <%= form.check_box :use_work_time, checked: @company.with_work_time? %>
             <div id="work-times">
-              <div class="form-field">
-                <%= form.label :work_start_time, 'Work start time (UTC)', class: 'form-label' %>
-                <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+              <div class="flex flex-row">
+                <div class="flex-1 form-field">
+                  <%= form.label :work_start_time, 'Work start time', class: 'form-label' %>
+                  <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
+                </div>
+                <div class="flex-1 form-field">
+                  <%= form.label :work_end_time, 'Work end time', class: 'form-label' %>
+                  <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
+                </div>
+                <div class="flex-1 form-field">
+                  <%= form.label :work_time_zone, 'Work time zone', class: 'form-label' %>
+                  <%= form.time_zone_select :work_time_zone, nil, class: 'form-value', default: 'UTC' %>
+                </div>
               </div>
-              <div class="form-field">
-                <%= form.label :work_end_time, 'Work end time (UTC)', class: 'form-label' %>
-                <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
-              </div>
-
               <div>
                 <%= form.check_box :ignore_users_work_time, checked: @company.configuration.ignore_users_work_time %>
                 <%= form.label :ignore_users_work_time, 'Ignore users work time', class: 'form-label' %>
               </div>
-
             </div>
           </div>
           <div class="half-container">

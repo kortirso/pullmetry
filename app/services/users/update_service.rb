@@ -10,7 +10,7 @@ module Users
       convert_working_time(use_work_time)
       return if use_work_time && validate_work_time && failure?
 
-      user.update!(sliced_params)
+      user.update!(@params)
     end
 
     private
@@ -28,10 +28,6 @@ module Users
       return if @params[:work_start_time] < @params[:work_end_time]
 
       fail!('Start time must be before end time')
-    end
-
-    def sliced_params
-      @params.slice(:work_start_time, :work_end_time)
     end
   end
 end
