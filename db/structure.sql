@@ -900,7 +900,8 @@ CREATE TABLE public.users (
     updated_at timestamp(6) without time zone NOT NULL,
     role integer DEFAULT 0 NOT NULL,
     work_start_time time without time zone,
-    work_end_time time without time zone
+    work_end_time time without time zone,
+    work_time_zone character varying
 );
 
 
@@ -1727,6 +1728,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230429043024'),
 ('20230602143731'),
 ('20230606045228'),
-('20230606135138');
+('20230606135138'),
+('20230609173154');
 
 

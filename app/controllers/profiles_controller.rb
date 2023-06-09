@@ -44,6 +44,6 @@ class ProfilesController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:work_start_time, :work_end_time)
+    params.require(:user).permit(:work_time_zone, :work_start_time, :work_end_time)
   end
 end

@@ -6,6 +6,7 @@ module Insights
       SECONDS_IN_DAY = 86_400
       MINUTES_IN_HOUR = 60
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
+      DEFAULT_WORK_TIME_ZONE = 'UTC'
 
       def initialize(find_average_service: Math::FindAverageService.new)
         @find_average_service = find_average_service
@@ -19,26 +20,47 @@ module Insights
       # or at user's
       def find_using_work_time(pull_request)
         user = pull_request.entity.identity&.user
-        @work_start_time, @work_end_time =
+        @work_start_time, @work_end_time, @time_offset =
           if user&.with_work_time? && !@insightable.configuration.ignore_users_work_time
-            [user.work_start_time, user.work_end_time]
+            user_work_time_params(user)
           else
-            [@insightable.configuration.work_start_time, @insightable.configuration.work_end_time]
+            insightable_work_time_params
           end
+      end
+
+      def user_work_time_params(user)
+        [
+          user.work_start_time,
+          user.work_end_time,
+          ActiveSupport::TimeZone[user.work_time_zone || DEFAULT_WORK_TIME_ZONE].utc_offset
+        ]
+      end
+
+      def insightable_work_time_params
+        [
+          @insightable.configuration.work_start_time,
+          @insightable.configuration.work_end_time,
+          ActiveSupport::TimeZone[@insightable.configuration.work_time_zone || DEFAULT_WORK_TIME_ZONE].utc_offset
+        ]
       end
 
       # if time is less than beginning of work day - use beginning of work day
       # if time is more than ending of work day - use ending of work day
       def convert_time(value)
+        value += @time_offset.seconds
         value_minutes = (value.hour * MINUTES_IN_HOUR) + value.min
 
         if value_minutes < work_start_time_minutes
-          value.change(hour: work_start_time.hour, min: work_start_time.min, sec: 0)
+          change_time_value(value, work_start_time)
         elsif value_minutes > work_end_time_minutes
-          value.change(hour: work_end_time.hour, min: work_end_time.min, sec: 0)
+          change_time_value(value, work_end_time)
         else
           value
         end
+      end
+
+      def change_time_value(value, from_value)
+        value.change(hour: from_value.hour, min: from_value.min, sec: 0)
       end
 
       # find seconds between 2 times

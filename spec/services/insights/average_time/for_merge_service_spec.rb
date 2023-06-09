@@ -84,6 +84,20 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         expect(service_call.success?).to be_truthy
       end
 
+      context 'when company work time zone is not UTC' do
+        before do
+          repository.company.configuration.assign_attributes(
+            work_time_zone: 'Amsterdam'
+          )
+          repository.company.save!
+        end
+
+        it 'generates average time and succeeds', :aggregate_failures do
+          expect(service_call.result).to eq({ entity2.id => 32_400 }) # 9 work hours
+          expect(service_call.success?).to be_truthy
+        end
+      end
+
       context 'for user with work time' do
         before do
           identity.user.update!(
@@ -93,8 +107,19 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         end
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => 28_800 })
+          expect(service_call.result).to eq({ entity2.id => 28_800 }) # 8 work hours
           expect(service_call.success?).to be_truthy
+        end
+
+        context 'when user work time zone is not UTC' do
+          before do
+            identity.user.update!(work_time_zone: 'Tokyo')
+          end
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 25_200 }) # 7 work hours
+            expect(service_call.success?).to be_truthy
+          end
         end
 
         context 'when company ignores user work time' do
@@ -106,7 +131,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           end
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => 32_400 })
+            expect(service_call.result).to eq({ entity2.id => 32_400 }) # 9 work hours
             expect(service_call.success?).to be_truthy
           end
         end

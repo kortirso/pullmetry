@@ -50,6 +50,7 @@ module Companies
           :insights_webhook_url,
           :insights_discord_webhook_url,
           :ignore_users_work_time,
+          :work_time_zone,
           :work_start_time,
           :work_end_time,
           :average_type,
