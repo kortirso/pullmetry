@@ -61,13 +61,8 @@ describe CompaniesController do
       context 'for invalid params' do
         let(:request) { do_request }
 
-        it 'does not create company' do
+        it 'does not create company and redirects', :aggregate_failures do
           expect { request }.not_to change(Company, :count)
-        end
-
-        it 'redirects to new_company_path' do
-          request
-
           expect(response).to redirect_to new_company_path
         end
       end
@@ -75,13 +70,8 @@ describe CompaniesController do
       context 'for valid params' do
         let(:request) { post :create, params: { company: { title: 'Title' }, locale: 'en' } }
 
-        it 'creates company' do
+        it 'creates company and redirects', :aggregate_failures do
           expect { request }.to change(@current_user.companies, :count).by(1)
-        end
-
-        it 'redirects to companies_path' do
-          request
-
           expect(response).to redirect_to companies_path
         end
       end
@@ -121,13 +111,8 @@ describe CompaniesController do
 
         before { company.update!(user: @current_user) }
 
-        it 'destroys company' do
+        it 'destroys company and redirects', :aggregate_failures do
           expect { request }.to change(Company, :count).by(-1)
-        end
-
-        it 'redirects to companies_path' do
-          request
-
           expect(response).to redirect_to companies_path
         end
       end

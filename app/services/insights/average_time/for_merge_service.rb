@@ -37,8 +37,8 @@ module Insights
 
         find_using_work_time(pull_request)
         seconds_between_times(
-          convert_time(created_at),
-          convert_time(merged_at),
+          convert_time(created_at, true),
+          convert_time(merged_at, false),
           pull_request.entity&.identity&.user&.vacations
         )
       end

@@ -76,13 +76,8 @@ describe AccessTokensController do
       sign_in_user
 
       context 'for unexisting type' do
-        it 'does not create access token' do
+        it 'does not create access token and redirects', :aggregate_failures do
           expect { do_request }.not_to change(AccessToken, :count)
-        end
-
-        it 'redirects to companies_path' do
-          do_request
-
           expect(response).to redirect_to companies_path
         end
       end
@@ -91,13 +86,8 @@ describe AccessTokensController do
         let(:type) { 'Company' }
 
         context 'for unexisting company' do
-          it 'does not create access token' do
+          it 'does not create access token and redirects', :aggregate_failures do
             expect { do_request }.not_to change(AccessToken, :count)
-          end
-
-          it 'renders 404 page' do
-            do_request
-
             expect(response).to render_template 'shared/404'
           end
         end
@@ -112,13 +102,8 @@ describe AccessTokensController do
               }
             }
 
-            it 'does not create access token' do
+            it 'does not create access token and redirects', :aggregate_failures do
               expect { request }.not_to change(AccessToken, :count)
-            end
-
-            it 'redirects to new_access_token_path' do
-              request
-
               expect(response).to(
                 redirect_to(new_access_token_path(tokenable_uuid: company.uuid, tokenable_type: 'Company'))
               )
@@ -132,15 +117,10 @@ describe AccessTokensController do
               }
             }
 
-            it 'creates access token' do
+            it 'creates access token and redirects', :aggregate_failures do
               request
 
               expect(AccessToken.where(tokenable: company).size).to eq 1
-            end
-
-            it 'redirects to companies_path' do
-              request
-
               expect(response).to redirect_to companies_path
             end
           end
@@ -172,13 +152,8 @@ describe AccessTokensController do
               }
             }
 
-            it 'does not create access token' do
+            it 'does not create access token and redirects', :aggregate_failures do
               expect { request }.not_to change(AccessToken, :count)
-            end
-
-            it 'redirects to new_access_token_path' do
-              request
-
               expect(response).to(
                 redirect_to(new_access_token_path(tokenable_uuid: repository.uuid, tokenable_type: 'Repository'))
               )
@@ -196,15 +171,10 @@ describe AccessTokensController do
             }
 
             context 'without other tokens' do
-              it 'creates access token' do
+              it 'creates access token and redirects', :aggregate_failures do
                 request
 
                 expect(AccessToken.where(tokenable: repository).size).to eq 1
-              end
-
-              it 'redirects to repositories_path' do
-                request
-
                 expect(response).to redirect_to repositories_path
               end
             end
@@ -212,15 +182,10 @@ describe AccessTokensController do
             context 'with another token' do
               before { create :access_token, tokenable: repository }
 
-              it 'creates access token' do
+              it 'creates access token and redirects', :aggregate_failures do
                 request
 
                 expect(AccessToken.where(tokenable: repository).size).to eq 1
-              end
-
-              it 'redirects to repositories_path' do
-                request
-
                 expect(response).to redirect_to repositories_path
               end
             end

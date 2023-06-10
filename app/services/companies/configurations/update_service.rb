@@ -27,9 +27,9 @@ module Companies
       end
 
       def validate_work_time
-        return if @params[:work_start_time] < @params[:work_end_time]
+        return if @params[:work_start_time] != @params[:work_end_time]
 
-        fail!('Start time must be before end time')
+        fail!('Start and end time must be different')
       end
 
       def sliced_params(company)
