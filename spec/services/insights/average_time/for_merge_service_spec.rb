@@ -249,4 +249,190 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       end
     end
   end
+
+  # PR created at 12 and merged at 13
+  context 'for company with night working time' do
+    before do
+      repository.company.update!(
+        configuration: {
+          work_start_time: DateTime.new(2023, 1, 1, 20, 0, 0),
+          work_end_time: DateTime.new(2023, 1, 1, 4, 0, 0)
+        }
+      )
+    end
+
+    context 'for repository insightable' do
+      let(:insightable) { repository }
+
+      it 'generates average time and succeeds', :aggregate_failures do
+        expect(service_call.result).to eq({ entity2.id => 28_800 })
+        expect(service_call.success?).to be_truthy
+      end
+
+      context 'when company work time zone is not UTC' do
+        before do
+          repository.company.configuration.assign_attributes(
+            work_time_zone: 'Amsterdam'
+          )
+          repository.company.save!
+        end
+
+        it 'generates average time and succeeds', :aggregate_failures do
+          expect(service_call.result).to eq({ entity2.id => 28_800 }) # 8 work hours
+          expect(service_call.success?).to be_truthy
+        end
+      end
+
+      context 'for user with work time' do
+        before do
+          identity.user.update!(
+            work_start_time: DateTime.new(2023, 1, 1, 21, 0, 0),
+            work_end_time: DateTime.new(2023, 1, 1, 4, 0, 0)
+          )
+        end
+
+        it 'generates average time and succeeds', :aggregate_failures do
+          expect(service_call.result).to eq({ entity2.id => 25_200 }) # 7 work hours
+          expect(service_call.success?).to be_truthy
+        end
+
+        context 'when user work time zone is not UTC' do
+          before do
+            identity.user.update!(work_time_zone: 'Tokyo')
+          end
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 28_800 }) # 8 work hours
+            expect(service_call.success?).to be_truthy
+          end
+        end
+
+        context 'when company ignores user work time' do
+          before do
+            repository.company.configuration.assign_attributes(
+              ignore_users_work_time: true
+            )
+            repository.company.save!
+          end
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 28_800 }) # 8 work hours
+            expect(service_call.success?).to be_truthy
+          end
+        end
+      end
+    end
+
+    context 'for company insightable' do
+      let(:insightable) { repository.company }
+
+      it 'generates average time and succeeds', :aggregate_failures do
+        expect(service_call.result).to eq({ entity2.id => 28_800 })
+        expect(service_call.success?).to be_truthy
+      end
+    end
+
+    # PR created at 12 and merged at 10
+    context 'with more than 1 day between dates' do
+      before { pr2.update!(pull_merged_at: first_monday + 2.days + 10.hours) }
+
+      context 'for repository insightable' do
+        let(:insightable) { repository }
+
+        it 'generates average time and succeeds', :aggregate_failures do
+          expect(service_call.result).to eq({ entity2.id => 57_600 })
+          expect(service_call.success?).to be_truthy
+        end
+      end
+
+      context 'for company insightable' do
+        let(:insightable) { repository.company }
+
+        it 'generates average time and succeeds', :aggregate_failures do
+          expect(service_call.result).to eq({ entity2.id => 57_600 })
+          expect(service_call.success?).to be_truthy
+        end
+      end
+
+      context 'with PR created at weekend' do
+        before { pr2.update!(pull_created_at: first_monday - 12.hours) }
+
+        context 'for repository insightable' do
+          let(:insightable) { repository }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 57_600 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
+
+        context 'for company insightable' do
+          let(:insightable) { repository.company }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 57_600 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
+      end
+
+      context 'with PR created before weekend' do
+        before { pr2.update!(pull_created_at: first_monday - 2.days - 12.hours) }
+
+        context 'for repository insightable' do
+          let(:insightable) { repository }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 86_400 })
+            expect(service_call.success?).to be_truthy
+          end
+
+          context 'with vacation for author' do
+            before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
+
+            it 'generates average time and succeeds', :aggregate_failures do
+              expect(service_call.result).to eq({ entity2.id => 28_800 })
+              expect(service_call.success?).to be_truthy
+            end
+          end
+        end
+
+        context 'for company insightable' do
+          let(:insightable) { repository.company }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 86_400 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
+      end
+
+      context 'with PR created and merged at weekend' do
+        before do
+          pr2.update!(
+            pull_created_at: first_monday - 2.days + 12.hours,
+            pull_merged_at: first_monday - 12.hours
+          )
+        end
+
+        context 'for repository insightable' do
+          let(:insightable) { repository }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 0 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
+
+        context 'for company insightable' do
+          let(:insightable) { repository.company }
+
+          it 'generates average time and succeeds', :aggregate_failures do
+            expect(service_call.result).to eq({ entity2.id => 0 })
+            expect(service_call.success?).to be_truthy
+          end
+        end
+      end
+    end
+  end
 end

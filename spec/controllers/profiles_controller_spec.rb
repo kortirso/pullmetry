@@ -30,7 +30,7 @@ describe ProfilesController do
           patch :update, params: {
             user: {
               'use_work_time' => '1',
-              'work_start_time(4i)' => '14',
+              'work_start_time(4i)' => '13',
               'work_start_time(5i)' => '00',
               'work_end_time(4i)' => '13',
               'work_end_time(5i)' => '00'
@@ -104,17 +104,13 @@ describe ProfilesController do
         expect(User.find_by(id: @current_user)).to be_nil
       end
 
-      it 'destroys user companies' do
+      it 'destroys user companies and redirects', :aggregate_failures do
         expect { do_request }.to change(@current_user.companies, :count).by(-1)
+        expect(response).to redirect_to root_path
       end
 
-      it 'destroys user repositories' do
+      it 'destroys user repositories and redirects', :aggregate_failures do
         expect { do_request }.to change(@current_user.repositories, :count).by(-1)
-      end
-
-      it 'redirects to root_path' do
-        do_request
-
         expect(response).to redirect_to root_path
       end
     end

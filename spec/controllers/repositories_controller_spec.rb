@@ -97,13 +97,8 @@ describe RepositoriesController do
       context 'for invalid params' do
         let(:request) { do_request }
 
-        it 'does not create repository' do
+        it 'does not create repository and redirects', :aggregate_failures do
           expect { request }.not_to change(Repository, :count)
-        end
-
-        it 'redirects to new_repository_path' do
-          request
-
           expect(response).to redirect_to new_repository_path
         end
       end
@@ -118,13 +113,8 @@ describe RepositoriesController do
             }
           }
 
-          it 'does not create repository' do
+          it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(Repository, :count)
-          end
-
-          it 'redirects to new_repository_path' do
-            request
-
             expect(response).to redirect_to new_repository_path
           end
         end
@@ -136,13 +126,8 @@ describe RepositoriesController do
             }
           }
 
-          it 'does not create repository' do
+          it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(Repository, :count)
-          end
-
-          it 'redirects to new_repository_path' do
-            request
-
             expect(response).to redirect_to new_repository_path
           end
         end
@@ -156,13 +141,8 @@ describe RepositoriesController do
 
           before { company.update!(user: @current_user) }
 
-          it 'does not create repository' do
+          it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(company.repositories, :count)
-          end
-
-          it 'redirects to new_repository_path' do
-            request
-
             expect(response).to redirect_to new_repository_path
           end
         end
@@ -176,13 +156,8 @@ describe RepositoriesController do
 
           before { company.update!(user: @current_user) }
 
-          it 'does not create repository' do
+          it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(company.repositories, :count)
-          end
-
-          it 'redirects to new_repository_path' do
-            request
-
             expect(response).to redirect_to new_repository_path
           end
         end
@@ -199,13 +174,8 @@ describe RepositoriesController do
 
           before { company.update!(user: @current_user) }
 
-          it 'creates repository' do
+          it 'creates repository and redirects', :aggregate_failures do
             expect { request }.to change(company.repositories, :count).by(1)
-          end
-
-          it 'redirects to repositories_path' do
-            request
-
             expect(response).to redirect_to repositories_path
           end
         end
@@ -220,13 +190,8 @@ describe RepositoriesController do
           before { company.update!(user: @current_user) }
 
           context 'if user does not use repositories limit' do
-            it 'creates repository' do
+            it 'creates repository and redirects', :aggregate_failures do
               expect { request }.to change(company.repositories, :count).by(1)
-            end
-
-            it 'redirects to repositories_path' do
-              request
-
               expect(response).to redirect_to repositories_path
             end
           end
@@ -234,13 +199,8 @@ describe RepositoriesController do
           context 'if user uses repositories limit' do
             before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
 
-            it 'does not create repository' do
+            it 'does not create repository and redirects', :aggregate_failures do
               expect { request }.not_to change(company.repositories, :count)
-            end
-
-            it 'renders access denied' do
-              request
-
               expect(response).to render_template 'shared/access'
             end
           end
@@ -282,13 +242,8 @@ describe RepositoriesController do
 
         before { repository.company.update!(user: @current_user) }
 
-        it 'destroys repository' do
+        it 'destroys repository and redirects', :aggregate_failures do
           expect { request }.to change(Repository, :count).by(-1)
-        end
-
-        it 'redirects to repositories_path' do
-          request
-
           expect(response).to redirect_to repositories_path
         end
       end

@@ -82,7 +82,7 @@ describe Companies::ConfigurationsController do
               company_id: company.uuid,
               jsonb_columns_configuration: {
                 'use_work_time' => '1',
-                'work_start_time(4i)' => '14',
+                'work_start_time(4i)' => '13',
                 'work_start_time(5i)' => '00',
                 'work_end_time(4i)' => '13',
                 'work_end_time(5i)' => '00'
@@ -91,18 +91,13 @@ describe Companies::ConfigurationsController do
             }
           }
 
-          it 'does not update configuration', :aggregate_failures do
+          it 'does not update configuration and redirects', :aggregate_failures do
             request
 
             configuration = company.reload.configuration
 
             expect(configuration.work_start_time).to be_nil
             expect(configuration.work_end_time).to be_nil
-          end
-
-          it 'redirects to edit_company_configuration_path' do
-            request
-
             expect(response).to redirect_to edit_company_configuration_path(company.uuid)
           end
         end
@@ -128,7 +123,7 @@ describe Companies::ConfigurationsController do
           }
 
           context 'for regular account' do
-            it 'updates regular configuration', :aggregate_failures do
+            it 'updates regular configuration and redirects', :aggregate_failures do
               request
 
               configuration = company.reload.configuration
@@ -137,11 +132,6 @@ describe Companies::ConfigurationsController do
               expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
               expect(configuration.insight_fields).to be_nil
               expect(configuration.insight_ratio).to be_nil
-            end
-
-            it 'redirects to companies_path' do
-              request
-
               expect(response).to redirect_to companies_path
             end
           end
@@ -149,7 +139,7 @@ describe Companies::ConfigurationsController do
           context 'for premium account' do
             before { create :subscription, user: @current_user }
 
-            it 'updates configuration with additional attributes', :aggregate_failures do
+            it 'updates configuration with additional attributes and redirects', :aggregate_failures do
               request
 
               configuration = company.reload.configuration
@@ -166,11 +156,6 @@ describe Companies::ConfigurationsController do
                 'average_merge_seconds' => nil
               })
               expect(configuration.insight_ratio).to be_truthy
-            end
-
-            it 'redirects to companies_path' do
-              request
-
               expect(response).to redirect_to companies_path
             end
           end

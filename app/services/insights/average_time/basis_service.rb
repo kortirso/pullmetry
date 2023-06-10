@@ -4,7 +4,9 @@ module Insights
   module AverageTime
     class BasisService
       SECONDS_IN_DAY = 86_400
+      MINUTES_IN_DAY = 1_440
       MINUTES_IN_HOUR = 60
+      SECONDS_IN_MINUTE = 60
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
       DEFAULT_WORK_TIME_ZONE = 'UTC'
 
@@ -46,59 +48,96 @@ module Insights
 
       # if time is less than beginning of work day - use beginning of work day
       # if time is more than ending of work day - use ending of work day
-      def convert_time(value)
+      def convert_time(value, for_start)
         value += @time_offset.seconds
         value_minutes = (value.hour * MINUTES_IN_HOUR) + value.min
 
+        if work_start_time_minutes < work_end_time_minutes
+          convert_time_for_day_mode(value, value_minutes)
+        else
+          convert_time_for_night_mode(value, value_minutes, for_start)
+        end
+      end
+
+      def convert_time_for_day_mode(value, value_minutes)
+        @night_mode = false
+        # conditions for working at day time
         if value_minutes < work_start_time_minutes
-          change_time_value(value, work_start_time)
+          change_hours_for_time(value, work_start_time)
         elsif value_minutes > work_end_time_minutes
-          change_time_value(value, work_end_time)
+          change_hours_for_time(value, work_end_time)
         else
           value
         end
       end
 
-      def change_time_value(value, from_value)
+      def convert_time_for_night_mode(value, value_minutes, for_start)
+        @night_mode = true
+        # conditions for working at night time
+        if value_minutes < work_end_time_minutes || value_minutes > work_start_time_minutes
+          value
+        elsif for_start
+          change_hours_for_time(value, work_start_time)
+        else
+          change_hours_for_time(value, work_end_time)
+        end
+      end
+
+      def change_hours_for_time(value, from_value)
         value.change(hour: from_value.hour, min: from_value.min, sec: 0)
+      end
+
+      def change_date_for_time(value, from_value)
+        value.change(year: from_value.year, month: from_value.month, day: from_value.day)
       end
 
       # find seconds between 2 times
       # except working hours at weekends and vacation
-      # except night not working hours between days
+      # except not working hours between days
       def seconds_between_times(start_time, end_time, vacations=nil)
         converted_vacations = convert_vacations(start_time, vacations)
-        days = ((end_time.end_of_day.to_i - start_time.to_i) / SECONDS_IN_DAY)
 
-        full_time_seconds = end_time.to_i - start_time.to_i
-        not_working_day_seconds = not_working_day_seconds(days, start_time, end_time, converted_vacations)
+        if @night_mode
+          night_offset = work_end_time_minutes.minutes + 1.minute
+          start_time -= night_offset
+          end_time -= night_offset
+          @work_start_time -= night_offset
+          @work_end_time -= night_offset
+        end
 
-        full_time_seconds - not_working_day_seconds - (days * not_working_night_seconds)
+        days_with_work = (start_time.to_date..end_time.to_date).to_a.size
+
+        end_time.to_i - start_time.to_i - off_work_seconds(days_with_work, start_time, end_time, converted_vacations)
       end
 
-      def not_working_day_seconds(days, start_time, end_time, converted_vacations)
+      def off_work_seconds(days_with_work, start_time, end_time, converted_vacations)
         result = 0
-        (days + 1).times do |day_index|
-          if not_working_day?(start_time + day_index.days, converted_vacations)
-            result += reduced_time(start_time, end_time, day_index, days)
+        days_with_work.times do |day_index|
+          if holiday?(start_time + day_index.days, converted_vacations)
+            result += reduced_time_by_holiday(start_time, end_time, day_index, days_with_work)
           end
+
+          result += reduce_time_by_off_work_time(day_index, days_with_work) if days_with_work > 1
         end
         result
       end
 
-      def not_working_day?(current_day, converted_vacations)
+      def holiday?(current_day, converted_vacations)
         current_day.wday.in?(WEEKEND_DAYS_INDEXES) || current_day.strftime('%Y-%m-%d').in?(converted_vacations)
       end
 
-      def reduced_time(start_time, end_time, day_index, days_amount)
-        return convert_day(work_end_time, start_time) - start_time.to_i if day_index.zero?
-        return end_time.to_i - convert_day(work_start_time, end_time) if day_index == days_amount
+      def reduced_time_by_holiday(start_time, end_time, day_index, days_with_work)
+        return change_date_for_time(work_end_time, start_time).to_i - start_time.to_i if day_index.zero?
+        return end_time.to_i - change_date_for_time(work_start_time, end_time).to_i if day_index == days_with_work - 1
 
         working_seconds
       end
 
-      def convert_day(time, day_from)
-        time.change(year: day_from.year, month: day_from.month, day: day_from.day).to_i
+      def reduce_time_by_off_work_time(day_index, days_with_work)
+        return (MINUTES_IN_DAY - work_end_time_minutes) * SECONDS_IN_MINUTE if day_index.zero?
+        return work_start_time_minutes * SECONDS_IN_MINUTE if day_index == days_with_work - 1
+
+        off_working_seconds
       end
 
       def convert_vacations(end_time, vacations)
@@ -131,13 +170,15 @@ module Insights
         (work_end_time.hour * MINUTES_IN_HOUR) + work_end_time.min
       end
 
-      # seconds between ending time previous day and starting time of new day in seconds
-      def not_working_night_seconds
+      # seconds between ending time of previous day and starting time of new day in seconds
+      def off_working_seconds
+        return work_start_time.to_i - work_end_time.to_i if @night_mode
+
         work_start_time.to_i - (work_end_time - 1.day).to_i
       end
 
       def working_seconds
-        SECONDS_IN_DAY - not_working_night_seconds
+        SECONDS_IN_DAY - off_working_seconds
       end
     end
   end
