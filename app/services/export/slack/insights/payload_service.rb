@@ -13,7 +13,7 @@ module Export
         def call(insightable:)
           @insightable = insightable
           @result = {
-            blocks: header_block + insights_blocks + footer_block
+            blocks: (header_block + accessable_message + insights_blocks + footer_block).compact
           }
         end
 
@@ -26,6 +26,20 @@ module Export
               text: {
                 type: 'mrkdwn',
                 text: "*Pull review insights of #{@insightable.class.name.downcase} #{@insightable.title}*"
+              }
+            }
+          ]
+        end
+
+        def accessable_message
+          return [nil] if @insightable.accessable?
+
+          [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: "*#{@insightable.class.name} #{@insightable.title} has access error*"
               }
             }
           ]

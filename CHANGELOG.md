@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - average time calculations for night working time
 - restoring accessability of repositories
 - checking accessability of companies
+- sending accessability errors to slack and discord
 
 ## [1.3.2] - 2023-06-08
 ### Added

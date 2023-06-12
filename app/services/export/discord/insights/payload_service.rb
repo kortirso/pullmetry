@@ -12,13 +12,19 @@ module Export
 
         def call(insightable:)
           @insightable = insightable
-          @result = header_block + insights_blocks + footer_block
+          @result = header_block + accessable_message + insights_blocks + footer_block
         end
 
         private
 
         def header_block
           "**Pull review insights of #{@insightable.class.name.downcase} #{@insightable.title}**\n"
+        end
+
+        def accessable_message
+          return '' if @insightable.accessable?
+
+          "**#{@insightable.class.name} #{@insightable.title} has access error**\n"
         end
 
         def insights_blocks
