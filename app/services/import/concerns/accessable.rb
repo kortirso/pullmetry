@@ -7,7 +7,12 @@ module Import
 
       def mark_repository_as_unaccessable
         Repositories::UpdateService.new
-          .call(repository: @repository, params: { accessable: false, synced_at: DateTime.now })
+          .call(repository: @repository, params: { accessable: false })
+      end
+
+      def mark_repository_as_accessable
+        Repositories::UpdateService.new
+          .call(repository: @repository, params: { accessable: true })
       end
     end
   end

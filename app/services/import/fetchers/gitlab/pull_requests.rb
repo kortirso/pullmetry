@@ -25,6 +25,7 @@ module Import
             result = @fetch_client.pull_requests(params: { per_page: PER_PAGE, page: page })
             break if !result[:success] && mark_repository_as_unaccessable
 
+            mark_repository_as_accessable unless @repository.accessable
             body = filter_result(result[:body])
             break if body.blank?
 

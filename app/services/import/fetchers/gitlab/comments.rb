@@ -24,6 +24,7 @@ module Import
               @fetch_client.pull_request_comments(pull_number: @pull_number, params: { per_page: 25, page: page })
             break if !result[:success] && mark_repository_as_unaccessable
 
+            mark_repository_as_accessable unless @repository.accessable
             body = result[:body]
             break if body.blank?
 

@@ -19,6 +19,7 @@ module Import
           result = @fetch_client.pull_request_reviews(pull_number: @pull_number)
           return if !result[:success] && mark_repository_as_unaccessable
 
+          mark_repository_as_accessable unless @repository.accessable
           @result = result[:body]
         end
       end

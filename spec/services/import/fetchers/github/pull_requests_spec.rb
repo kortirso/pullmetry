@@ -3,7 +3,7 @@
 describe Import::Fetchers::Github::PullRequests, type: :service do
   subject(:service_call) { described_class.new(repository: repository, fetch_client: fetch_client).call }
 
-  let(:repository) { create :repository }
+  let(:repository) { create :repository, accessable: false }
   let(:fetch_client) { double }
   let(:fetch_service) { double }
   let(:valid_date) { (Date.current - 25.days).strftime('%Y-%m-%d') }
@@ -61,6 +61,7 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
     it 'returns 2 objects and succeeds', :aggregate_failures do
       expect(service_call.success?).to be_truthy
       expect(service_call.result.size).to eq 2
+      expect(repository.reload.accessable).to be_truthy
     end
   end
 
