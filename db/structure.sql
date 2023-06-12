@@ -306,7 +306,8 @@ CREATE TABLE public.companies (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     repositories_count integer,
-    configuration jsonb DEFAULT '{}'::jsonb NOT NULL
+    configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
+    accessable boolean DEFAULT true NOT NULL
 );
 
 
@@ -1729,6 +1730,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230602143731'),
 ('20230606045228'),
 ('20230606135138'),
-('20230609173154');
+('20230609173154'),
+('20230612131612');
 
 

@@ -32,7 +32,8 @@ class CompaniesController < ApplicationController
   private
 
   def find_companies
-    @pagy, @companies = pagy(authorized_scope(Company.all).includes(:user, :access_token), items: PER_PAGE)
+    @pagy, @companies =
+      pagy(authorized_scope(Company.order(id: :desc)).includes(:user, :access_token), items: PER_PAGE)
   end
 
   def find_company
