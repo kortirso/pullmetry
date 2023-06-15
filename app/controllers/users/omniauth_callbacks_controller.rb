@@ -8,7 +8,8 @@ module Users
     before_action :validate_auth, only: %i[create]
 
     PROVIDERS = {
-      Providerable::GITHUB => ::Auth::Providers::Github
+      Providerable::GITHUB => ::Auth::Providers::Github,
+      Providerable::GITLAB => ::Auth::Providers::Gitlab
     }.freeze
 
     def create

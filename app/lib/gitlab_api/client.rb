@@ -2,11 +2,15 @@
 
 module GitlabApi
   class Client < HttpService::Client
+    include Requests::User
     include Requests::PullRequests
     include Requests::PullRequestComments
     include Requests::PullRequestReviews
 
-    option :repository
+    BASE_URL = 'https://gitlab.com'
+
+    option :url, default: proc { BASE_URL }
+    option :repository, optional: true
 
     private
 

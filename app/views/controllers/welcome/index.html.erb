@@ -8,6 +8,7 @@
         <% unless Current.user %>
           <p>
             <%= link_to 'Login with Github', omniauth_link(:github), class: 'button small' %>
+            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'button small' %>
           </p>
         <% end %>
       </div>

@@ -15,6 +15,7 @@
       <p id="auth-links">
         <span>Login with</span>
         <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github' %>
+        <%= link_to image_tag('gitlab.svg', width: 20, height: 20, alt: 'gitlab'), omniauth_link(:gitlab), 'aria-label': 'Login with Gitlab' %>
       </p>
     <% end %>
   </div>

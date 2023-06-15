@@ -26,6 +26,15 @@ github_oauth:
     client_id:
     client_secret:
     redirect_url:
+gitlab_oauth:
+  production: 
+    client_id:
+    client_secret:
+    redirect_url:
+  development:
+    client_id:
+    client_secret:
+    redirect_url:
 queweb:
   user:
   password:
