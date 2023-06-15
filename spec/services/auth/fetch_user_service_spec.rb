@@ -9,12 +9,9 @@ describe Auth::FetchUserService do
     context 'for unexisted session' do
       let(:session_uuid) { 'random uuid' }
 
-      it 'fails' do
-        expect(service_call.failure?).to be_truthy
-      end
-
-      it 'does not assign user' do
+      it 'does not assign user and fails', :aggregate_failures do
         expect(service_call.result).to be_nil
+        expect(service_call.failure?).to be_truthy
       end
     end
 
@@ -22,12 +19,9 @@ describe Auth::FetchUserService do
       let(:users_session) { create :users_session }
       let(:session_uuid) { users_session.uuid }
 
-      it 'succeed' do
-        expect(service_call.success?).to be_truthy
-      end
-
-      it 'assigns user' do
+      it 'assigns user and succeeds', :aggregate_failures do
         expect(service_call.result).to eq users_session.user
+        expect(service_call.success?).to be_truthy
       end
     end
   end
@@ -35,12 +29,9 @@ describe Auth::FetchUserService do
   context 'for invalid token' do
     let(:token) { 'random uuid' }
 
-    it 'fails' do
-      expect(service_call.failure?).to be_truthy
-    end
-
-    it 'does not assign user' do
+    it 'does not assign user and fails', :aggregate_failures do
       expect(service_call.result).to be_nil
+      expect(service_call.failure?).to be_truthy
     end
   end
 end

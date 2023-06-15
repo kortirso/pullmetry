@@ -8,11 +8,8 @@ describe Identities::CreateService, type: :service do
   context 'for invalid params' do
     let(:params) { { uid: '' } }
 
-    it 'does not create identity' do
+    it 'does not create identity and fails', :aggregate_failures do
       expect { service_call }.not_to change(Identity, :count)
-    end
-
-    it 'fails' do
       expect(service_call.failure?).to be_truthy
     end
   end
@@ -21,16 +18,13 @@ describe Identities::CreateService, type: :service do
     let(:params) { { uid: '1234', login: 'name', provider: 'github', email: user.email } }
 
     context 'without entities' do
-      it 'creates identity' do
+      it 'creates identity and succeeds', :aggregate_failures do
         expect { service_call }.to change(user.identities, :count).by(1)
+        expect(service_call.success?).to be_truthy
       end
 
       it 'does not attach entities' do
         expect { service_call }.not_to change(user.entities, :count)
-      end
-
-      it 'succeeds' do
-        expect(service_call.success?).to be_truthy
       end
     end
 
@@ -39,16 +33,13 @@ describe Identities::CreateService, type: :service do
         create :entity, login: 'name', provider: 'github'
       end
 
-      it 'creates identity' do
+      it 'creates identity and succeeds', :aggregate_failures do
         expect { service_call }.to change(user.identities, :count).by(1)
+        expect(service_call.success?).to be_truthy
       end
 
       it 'attaches entities' do
         expect { service_call }.to change(user.entities, :count).by(1)
-      end
-
-      it 'succeeds' do
-        expect(service_call.success?).to be_truthy
       end
     end
   end

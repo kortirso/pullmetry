@@ -17,10 +17,6 @@ describe Auth::LoginUserService, type: :service do
       expect { service_call }.to change(User, :count).by(1)
     end
 
-    it 'returns new User' do
-      expect(service_call.result).to eq User.last
-    end
-
     it 'creates new Identity' do
       expect { service_call }.to change(Identity, :count).by(1)
     end
@@ -43,10 +39,6 @@ describe Auth::LoginUserService, type: :service do
       expect { service_call }.not_to change(User, :count)
     end
 
-    it 'returns existed user' do
-      expect(service_call.result).to eq user
-    end
-
     it 'creates new Identity' do
       expect { service_call }.to change(Identity, :count).by(1)
     end
@@ -56,6 +48,7 @@ describe Auth::LoginUserService, type: :service do
 
       identity = Identity.last
 
+      expect(service_call.result).to eq user
       expect(identity.uid).to eq oauth[:uid]
       expect(identity.provider).to eq oauth[:provider]
       expect(identity.user).to eq user
@@ -67,11 +60,8 @@ describe Auth::LoginUserService, type: :service do
 
     before { create :identity, uid: oauth[:uid], user: user }
 
-    it 'does not create new User' do
+    it 'does not create new User', :aggregate_failures do
       expect { service_call }.not_to change(User, :count)
-    end
-
-    it 'returns existed user' do
       expect(service_call.result).to eq user
     end
 

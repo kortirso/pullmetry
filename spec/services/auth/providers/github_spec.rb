@@ -18,11 +18,8 @@ describe Auth::Providers::Github do
   context 'if code is invalid' do
     let(:token_response) { { 'message' => 'Bad credentials' } }
 
-    it 'returns nil result' do
+    it 'returns nil result and succeeds', :aggregate_failures do
       expect(service_call.result).to be_nil
-    end
-
-    it 'succeeds' do
       expect(service_call.success?).to be_truthy
     end
 
@@ -30,16 +27,13 @@ describe Auth::Providers::Github do
       let(:token_response) { { 'access_token' => 'access_token' } }
 
       context 'for user response with email' do
-        it 'returns result' do
+        it 'returns result and succeeds', :aggregate_failures do
           expect(service_call.result).to eq({
             uid: '1',
             provider: 'github',
             login: 'octocat',
             email: 'email'
           })
-        end
-
-        it 'succeeds' do
           expect(service_call.success?).to be_truthy
         end
       end
@@ -48,16 +42,13 @@ describe Auth::Providers::Github do
         let(:user_response) { { 'id' => 1, 'email' => nil, 'login' => 'octocat' } }
 
         context 'without emails in response' do
-          it 'returns result' do
+          it 'returns result and succeeds', :aggregate_failures do
             expect(service_call.result).to eq({
               uid: '1',
               provider: 'github',
               login: 'octocat',
               email: nil
             })
-          end
-
-          it 'succeeds' do
             expect(service_call.success?).to be_truthy
           end
         end
@@ -65,16 +56,13 @@ describe Auth::Providers::Github do
         context 'with email in response' do
           let(:emails_response) { [{ 'email' => 'private_email' }] }
 
-          it 'returns result' do
+          it 'returns result and succeeds', :aggregate_failures do
             expect(service_call.result).to eq({
               uid: '1',
               provider: 'github',
               login: 'octocat',
               email: 'private_email'
             })
-          end
-
-          it 'succeeds' do
             expect(service_call.success?).to be_truthy
           end
         end

@@ -12,15 +12,12 @@ describe Users::RefreshAchievementsService, type: :service do
     )
   end
 
-  it 'publishes PullRequests::Comments::CreatedEvent' do
+  it 'publishes PullRequests::Comments::CreatedEvent and succeeds', :aggregate_failures do
     service_call
 
     expect(event_store).to(
       have_published(an_event(PullRequests::Comments::CreatedEvent).with_data(user_uuid: user.uuid))
     )
-  end
-
-  it 'succeeds' do
     expect(service_call.success?).to be_truthy
   end
 end
