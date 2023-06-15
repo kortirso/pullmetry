@@ -23,12 +23,13 @@ module Repositories
     def validate_existing_link(user, link)
       available_repositories = user.available_repositories
       return fail!('User has access to repository with the same link') if available_repositories.exists?(link: link)
-      return fail!('Repository with the same link exists') if unavailable_repositories_exists?(available_repositories)
+      return fail!('Repository with the same link exists') if repository_exists?(available_repositories, link)
     end
 
-    def unavailable_repositories_exists?(available_repositories)
+    def repository_exists?(available_repositories, link)
       Repository
         .where.not(id: available_repositories)
+        .where(link: link)
         .where.associated(:insights)
         .exists?(['insights.updated_at > ?', HOURS_FOR_OLD_INSIGHTS.hours.ago])
     end
