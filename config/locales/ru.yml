@@ -5,6 +5,7 @@ ru:
         companies: Компании
         repositories: Репозитории
         profile: Аккаунт
+        achievements: Достижения
         logout: Выход
   controllers:
     authentication:
@@ -12,3 +13,9 @@ ru:
     users:
       sessions:
         success_destroy: Вы вышли
+    achievements:
+      show:
+        summary: Сводка
+        pull_requests: Пулл реквесты
+        reviews: Ревью
+        comments: Комменты

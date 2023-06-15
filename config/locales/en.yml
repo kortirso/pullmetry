@@ -5,6 +5,7 @@ en:
         companies: Companies
         repositories: Repositories
         profile: Profile
+        achievements: Achievements
         logout: Logout
   controllers:
     authentication:
@@ -12,3 +13,9 @@ en:
     users:
       sessions:
         success_destroy: You are logged out
+    achievements:
+      show:
+        summary: Summary
+        pull_requests: Pull requests
+        reviews: Reviews
+        comments: Comments
