@@ -58,7 +58,7 @@ describe Insights::GenerateService, type: :service do
         last_insight = Insight.last
 
         expect(last_insight.entity).to eq entity2
-        expect(last_insight.required_reviews_count).to eq 1
+        expect(last_insight.required_reviews_count).to eq 0
         expect(last_insight.reviews_count).to eq 1
         expect(last_insight.average_review_seconds).not_to eq 0
         expect(last_insight.comments_count).to eq 1
@@ -66,8 +66,7 @@ describe Insights::GenerateService, type: :service do
         expect(last_insight.reviews_count_ratio).to be_nil
         expect(last_insight.average_review_seconds_ratio).to be_nil
         expect(last_insight.comments_count_ratio).to be_nil
-        # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-        expect(last_insight.open_pull_requests_count).to eq 0
+        expect(last_insight.open_pull_requests_count).to eq 1
         expect(last_insight.average_merge_seconds).to eq 0
       end
 
@@ -94,16 +93,15 @@ describe Insights::GenerateService, type: :service do
 
             last_insight = Insight.last
 
-            expect(last_insight.required_reviews_count).to eq 1
+            expect(last_insight.required_reviews_count).to eq 0
             expect(last_insight.reviews_count).to eq 1
             expect(last_insight.average_review_seconds).not_to eq 0
             expect(last_insight.comments_count).to eq 1
-            expect(last_insight.required_reviews_count_ratio).to eq 0
+            expect(last_insight.required_reviews_count_ratio).to be_nil
             expect(last_insight.reviews_count_ratio).to eq 0
             expect(last_insight.average_review_seconds_ratio).to eq 0
             expect(last_insight.comments_count_ratio).to eq 0
-            # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-            expect(last_insight.open_pull_requests_count).to eq 0
+            expect(last_insight.open_pull_requests_count).to eq 1
             expect(last_insight.average_merge_seconds).to eq 0
           end
         end
@@ -149,16 +147,15 @@ describe Insights::GenerateService, type: :service do
 
               last_insight = Insight.last
 
-              expect(last_insight.required_reviews_count).to eq 1
+              expect(last_insight.required_reviews_count).to eq 0
               expect(last_insight.reviews_count).to eq 1
               expect(last_insight.average_review_seconds).not_to eq 0
               expect(last_insight.comments_count).to eq 1
-              expect(last_insight.required_reviews_count_ratio).to eq(-50)
+              expect(last_insight.required_reviews_count_ratio).to be_nil
               expect(last_insight.reviews_count_ratio).to eq 0
               expect(last_insight.average_review_seconds_ratio).to eq(-100)
               expect(last_insight.comments_count_ratio).to eq(-50)
-              # entity2 has 1 open pull request, but this attribute is disabled -> result is 0
-              expect(last_insight.open_pull_requests_count).to eq 0
+              expect(last_insight.open_pull_requests_count).to eq 1
               expect(last_insight.average_merge_seconds).to eq 0
             end
           end
