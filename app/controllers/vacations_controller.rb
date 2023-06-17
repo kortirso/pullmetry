@@ -24,7 +24,8 @@ class VacationsController < ApplicationController
   private
 
   def find_vacation
-    @vacation = current_user.vacations.find(params[:id])
+    @vacation = current_user.vacations.find_by(id: params[:id])
+    redirect_to profile_path, alert: 'Vacation is not found' if @vacation.nil?
   end
 
   def vacation_params

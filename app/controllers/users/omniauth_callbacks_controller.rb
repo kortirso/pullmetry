@@ -3,7 +3,7 @@
 module Users
   class OmniauthCallbacksController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :authenticate
+    skip_before_action :authenticate, only: %i[create]
     before_action :validate_provider, only: %i[create]
     before_action :validate_auth, only: %i[create]
 
