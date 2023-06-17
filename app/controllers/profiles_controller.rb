@@ -3,6 +3,8 @@
 class ProfilesController < ApplicationController
   before_action :find_end_time, only: %i[show]
   before_action :find_vacations, only: %i[show]
+  before_action :find_identities, only: %i[show]
+  before_action :find_not_attached_identities, only: %i[show]
 
   def show; end
 
@@ -41,6 +43,14 @@ class ProfilesController < ApplicationController
       .vacations
       .order(start_time: :desc)
       .load_async
+  end
+
+  def find_identities
+    @identities = current_user.identities.order(provider: :asc).load
+  end
+
+  def find_not_attached_identities
+    @need_identities = Identity.providers.keys - @identities.pluck(:provider)
   end
 
   def user_params
