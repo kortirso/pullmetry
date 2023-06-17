@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - login through Gitlab
 - expiration time to auth tokens
 - removing expired users sessions
+- attaching more identities to one account
 
 ### Modified
 - default insight fields
