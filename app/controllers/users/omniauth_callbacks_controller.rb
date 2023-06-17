@@ -38,7 +38,13 @@ module Users
     end
 
     def user
-      @user ||= ::Auth::LoginUserService.call(auth: auth).result
+      @user ||=
+        if current_user.nil?
+          ::Auth::LoginUserService.call(auth: auth).result
+        else
+          ::Auth::AttachUserService.new.call(user: current_user, auth: auth)
+          current_user
+        end
     end
 
     def auth

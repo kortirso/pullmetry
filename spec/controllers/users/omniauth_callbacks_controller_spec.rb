@@ -48,35 +48,73 @@ describe Users::OmniauthCallbacksController do
             allow(auth_service).to receive(:result).and_return(auth_payload)
           end
 
-          context 'for invalid payload' do
-            let(:auth_payload) do
-              {
-                uid: '123',
-                provider: 'github',
-                login: 'octocat',
-                email: nil
-              }
+          context 'for not logged user' do
+            context 'for invalid payload' do
+              let(:auth_payload) do
+                {
+                  uid: '123',
+                  provider: 'github',
+                  login: 'octocat',
+                  email: nil
+                }
+              end
+
+              it 'redirects to root path', :aggregate_failures do
+                expect { request }.not_to change(User, :count)
+                expect(response).to redirect_to root_path
+              end
             end
 
-            it 'redirects to root path', :aggregate_failures do
-              expect { request }.not_to change(User, :count)
-              expect(response).to redirect_to root_path
+            context 'for valid payload' do
+              let(:auth_payload) do
+                {
+                  uid: '123',
+                  provider: 'github',
+                  login: 'octocat',
+                  email: 'email@gmail.com'
+                }
+              end
+
+              it 'redirects to companies path', :aggregate_failures do
+                expect { request }.to change(User, :count).by(1)
+                expect(response).to redirect_to companies_path
+              end
             end
           end
 
-          context 'for valid payload' do
-            let(:auth_payload) do
-              {
-                uid: '123',
-                provider: 'github',
-                login: 'octocat',
-                email: 'email@gmail.com'
-              }
+          context 'for logged user' do
+            sign_in_user
+
+            context 'for invalid payload' do
+              let(:auth_payload) do
+                {
+                  uid: '123',
+                  provider: 'github',
+                  login: 'octocat',
+                  email: nil
+                }
+              end
+
+              it 'redirects to companies path', :aggregate_failures do
+                expect { request }.not_to change(Identity, :count)
+                expect(response).to redirect_to companies_path
+              end
             end
 
-            it 'redirects to companies path', :aggregate_failures do
-              expect { request }.to change(User, :count).by(1)
-              expect(response).to redirect_to companies_path
+            context 'for valid payload' do
+              let(:auth_payload) do
+                {
+                  uid: '123',
+                  provider: 'github',
+                  login: 'octocat',
+                  email: 'email@gmail.com'
+                }
+              end
+
+              it 'redirects to companies path', :aggregate_failures do
+                expect { request }.to change(Identity, :count).by(1)
+                expect(response).to redirect_to companies_path
+              end
             end
           end
         end
