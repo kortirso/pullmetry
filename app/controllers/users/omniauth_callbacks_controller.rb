@@ -22,7 +22,7 @@ module Users
     end
 
     def destroy
-      # TODO: Here can be destroying token from database
+      Auth::FetchUserService.call(token: session[:pullmetry_token]).session&.destroy
       session[:pullmetry_token] = nil
       redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
     end

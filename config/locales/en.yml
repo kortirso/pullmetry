@@ -9,7 +9,7 @@ en:
         logout: Logout
   controllers:
     authentication:
-      permission: You need to Sign In
+      permission: You need to sign in
     users:
       sessions:
         success_destroy: You are logged out

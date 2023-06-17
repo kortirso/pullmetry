@@ -1585,14 +1585,14 @@ CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
 -- Name: index_users_sessions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_sessions_on_user_id ON public.users_sessions USING btree (user_id);
+CREATE INDEX index_users_sessions_on_user_id ON public.users_sessions USING btree (user_id);
 
 
 --
 -- Name: index_users_sessions_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_sessions_on_uuid ON public.users_sessions USING btree (uuid);
+CREATE INDEX index_users_sessions_on_uuid ON public.users_sessions USING btree (uuid);
 
 
 --
@@ -1731,6 +1731,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230606045228'),
 ('20230606135138'),
 ('20230609173154'),
-('20230612131612');
+('20230612131612'),
+('20230617083913');
 
 
