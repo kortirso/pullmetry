@@ -14,13 +14,12 @@ describe Auth::GenerateTokenService do
   end
 
   context 'with existing session' do
-    let!(:users_session) { create :users_session, user: user }
+    before { create :users_session, user: user }
 
-    it 'creates users session and succeeds', :aggregate_failures do
+    it 'creates new users session and succeeds', :aggregate_failures do
       service_call
 
-      expect(Users::Session.find_by(id: users_session.id).nil?).to be_truthy
-      expect(user.users_session.nil?).to be_falsy
+      expect(user.users_sessions.count).to eq 2
       expect(service_call.result.is_a?(String)).to be_truthy
       expect(service_call.success?).to be_truthy
     end

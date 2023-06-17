@@ -88,4 +88,35 @@ describe VacationsController do
       }
     end
   end
+
+  describe 'DELETE#destroy' do
+    it_behaves_like 'required auth'
+
+    context 'for logged users' do
+      sign_in_user
+
+      let!(:vacation) { create :vacation }
+      let(:request) { delete :destroy, params: { id: vacation.id, locale: 'en' } }
+
+      context 'for not user vacation' do
+        it 'destroys vacation and redirects', :aggregate_failures do
+          expect { request }.not_to change(Vacation, :count)
+          expect(response).to redirect_to profile_path
+        end
+      end
+
+      context 'for user vacation' do
+        before { vacation.update!(user: @current_user) }
+
+        it 'destroys vacation and redirects', :aggregate_failures do
+          expect { request }.to change(Vacation, :count).by(-1)
+          expect(response).to redirect_to profile_path
+        end
+      end
+    end
+
+    def do_request
+      delete :destroy, params: { id: 'unexisting', locale: 'en' }
+    end
+  end
 end

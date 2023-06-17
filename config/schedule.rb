@@ -14,3 +14,8 @@ end
 every 4.hours do
   runner 'Export::SendInsightsNotificationJob.perform_later'
 end
+
+# Clear expired users sessions
+every 1.day do
+  runner 'Users::Sessions::RemoveExpiredJob.perform_later'
+end

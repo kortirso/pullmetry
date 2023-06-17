@@ -8,7 +8,7 @@ describe User do
   end
 
   describe 'associations' do
-    it { is_expected.to have_one(:users_session).class_name('::Users::Session').dependent(:destroy) }
+    it { is_expected.to have_many(:users_sessions).class_name('::Users::Session').dependent(:destroy) }
     it { is_expected.to have_many(:companies).dependent(:destroy) }
     it { is_expected.to have_many(:identities).dependent(:destroy) }
     it { is_expected.to have_many(:subscriptions).dependent(:destroy) }

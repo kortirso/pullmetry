@@ -3,7 +3,7 @@
 module Users
   class OmniauthCallbacksController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :authenticate
+    skip_before_action :authenticate, only: %i[create]
     before_action :validate_provider, only: %i[create]
     before_action :validate_auth, only: %i[create]
 
@@ -22,7 +22,7 @@ module Users
     end
 
     def destroy
-      # TODO: Here can be destroying token from database
+      Auth::FetchUserService.call(token: session[:pullmetry_token]).session&.destroy
       session[:pullmetry_token] = nil
       redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
     end
