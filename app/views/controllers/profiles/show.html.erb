@@ -104,7 +104,7 @@
     </div>
     <div class="profile-block form-block">
       <h2 class="warning">Delete account</h2>
-      <p class="line-height">You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery.</p>
+      <p class="line-height">You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery. Only information about your subscriptions will be saved.</p>
       <%= button_to 'Delete account', profile_path, class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
     </div>
   </section>

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - trial subscription
+- soft deleting user, left only subscriptions
 
 ## [1.3.4] - 2023-06-17
 ### Added

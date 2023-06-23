@@ -98,10 +98,10 @@ describe ProfilesController do
         create :access_token, tokenable: repository
       end
 
-      it 'destroys user' do
+      it 'does not fully destroy user' do
         do_request
 
-        expect(User.find_by(id: @current_user)).to be_nil
+        expect(User.find_by(id: @current_user)).to eq @current_user
       end
 
       it 'destroys user companies and redirects', :aggregate_failures do
