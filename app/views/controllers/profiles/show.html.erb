@@ -3,12 +3,26 @@
     <h1>Profile <%= Current.user.uuid %></h1>
   </div>
   <section id="profile">
-    <% if @end_time %>
-      <div class="profile-block form-block">
-        <h2>Premium details</h2>
-        <p class="line-height">Your premium subscription ends at <%= @end_time %></p>
+    <div class="profile-block form-block">
+      <div id="subscriptions" class="with-action flex justify-between items-center">
+        <h2>Premium account</h2>
+        <% unless @used_trial_subscription %>
+          <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'button' %>
+        <% end %>
       </div>
-    <% end %>
+      <div class="main-container">
+        <div class="half-container">
+          <% if @end_time %>
+            <p class="line-height">Your premium subscription ends at <%= @end_time %></p>
+          <% else %>
+            <p class="line-height">You don't have active subscription.</p>
+          <% end %>
+        </div>
+        <div class="half-container">
+          <p class="line-height">Here you can see information about your subscriptions.</p>
+        </div>
+      </div>
+    </div>
     <div class="profile-block form-block">
       <div class="with-action flex justify-between items-center">
         <h2>Vacations</h2>
