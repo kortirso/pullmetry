@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   resource :achievements, only: %i[show]
   resources :vacations, only: %i[new create destroy]
 
+  post 'subscriptions/trial', to: 'subscriptions/trial#create'
+
   get 'privacy', to: 'welcome#privacy'
   get 'sources', to: 'welcome#sources'
 
