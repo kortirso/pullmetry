@@ -130,6 +130,44 @@ module Insights
       end
     end
 
+    # this method returns { entity_id => review_involving }
+    # rubocop: disable Metrics/AbcSize
+    def review_involving(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      @review_involving ||= {}
+
+      @review_involving.fetch("#{date_from},#{date_to}") do |key|
+        @review_involving[key] =
+          entity_ids.each_with_object({}) do |entity_id, acc|
+            other_user_pulls = open_pull_requests_count.except(entity_id).values.sum
+            involved_pulls = pulls_with_user_comments[entity_id].to_i + reviews_count[entity_id].to_i
+            acc[entity_id] = 100 * involved_pulls / other_user_pulls
+          end
+      end
+    end
+    # rubocop: enable Metrics/AbcSize
+
+    def pulls_with_user_comments(date_from, date_to)
+      @pulls_with_user_comments ||= {}
+
+      @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
+        @pulls_with_user_comments[key] =
+          @insightable
+          .pull_requests
+          .where(
+            'pull_created_at > ? AND pull_created_at < ?',
+            date_from.days.ago,
+            date_to.days.ago
+          )
+          .flat_map { |pull|
+            Entity
+              .joins(pull_requests_entities: :pull_requests_comments)
+              .where(pull_requests_comments: { id: pull.pull_requests_comments })
+              .pluck(:id)
+              .uniq
+          }.tally
+      end
+    end
+
     # this method returns { entity_id => open_pull_requests_count }
     def open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
       @open_pull_requests_count ||= {}

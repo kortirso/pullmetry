@@ -150,6 +150,7 @@ describe Companies::ConfigurationsController do
                 'comments_count' => true,
                 'reviews_count' => nil,
                 'required_reviews_count' => nil,
+                'review_involving' => nil,
                 'open_pull_requests_count' => nil,
                 'average_open_pr_comments' => nil,
                 'average_review_seconds' => nil,
