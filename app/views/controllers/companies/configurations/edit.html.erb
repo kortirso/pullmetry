@@ -80,8 +80,16 @@
         <div class="main-container">
           <div class="half-container">
             <% if @company.premium? %>
-              <%= form.check_box :insight_ratio, checked: @company.configuration.insight_ratio %>
               <%= form.label :insight_ratio, 'Calculate insight ratios', class: 'form-label' %>
+              <%= form.check_box :insight_ratio, checked: @company.configuration.insight_ratio %>
+              <div id="insight-ratio-types">
+                <div class="flex flex-row">
+                  <div class="flex-1 form-field">
+                    <%= form.label :insight_ratio_type, 'Insight ratio type', class: 'form-label' %>
+                    <%= form.select :insight_ratio_type, options_for_select(@insight_ratio_type_values, @company.configuration.insight_ratio_type), {}, { class: 'form-value' } %>
+                  </div>
+                </div>
+              </div>
             <% else %>
               <p>This configuration is available for premium accounts.</p>
             <% end %>

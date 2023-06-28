@@ -5,7 +5,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
 
   let!(:identity) { create :identity }
   let!(:first_monday) {
-    date = DateTime.now.beginning_of_month
+    date = DateTime.now.beginning_of_month + 7.days
     date -= 1.day until date.wday == 1
     DateTime.new(date.year, date.month, date.day)
   }

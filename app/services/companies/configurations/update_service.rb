@@ -37,7 +37,7 @@ module Companies
         # premium account has more available attributes for update
         if company.premium?
           params_list.push(
-            :insight_fields, :insight_ratio, :insights_webhook_url,
+            :insight_fields, :insight_ratio, :insight_ratio_type, :insights_webhook_url,
             :insights_discord_webhook_url, :main_attribute
           )
         end

@@ -9,7 +9,7 @@ module Converters
     HOURS_IN_DAY = 24
 
     def call(value:)
-      return '-' if value.to_i.zero?
+      return '-' unless value.to_i.positive?
       return '1m' if value < SECONDS_IN_MINUTE
 
       minutes = (value / SECONDS_IN_MINUTE) % MINUTES_IN_HOUR

@@ -21,8 +21,7 @@
           <td><%= insight.entity.login %></td>
           <% insight_fields.each do |insight_field| %>
             <td>
-              <%= convert_insight_field(insight, insight_field.to_sym) %>
-              <%= insight_ratio ? insight_ratio_value(insight, insight_field) : nil %>
+              <%= render_insight_field(insight, insight_field) %>
             </td>
           <% end %>
         </tr>

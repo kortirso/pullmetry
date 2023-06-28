@@ -12,6 +12,7 @@ module JsonbColumns
     # insights table view attributes
     attribute :insight_fields, JsonbColumns::Insight.to_type
     attribute :insight_ratio, :boolean
+    enum :insight_ratio_type, %i[ratio change], default: :ratio
     attribute :rows_limit, :integer
     # data fetching attributes
     attribute :fetch_period, :integer
@@ -23,13 +24,14 @@ module JsonbColumns
     enum :average_type, %i[arithmetic_mean median geometric_mean], default: :arithmetic_mean
     enum :main_attribute,
          %i[
+           required_reviews_count
            comments_count
            reviews_count
-           required_reviews_count
-           open_pull_requests_count
-           average_open_pr_comments
            average_review_seconds
+           review_involving
+           open_pull_requests_count
            average_merge_seconds
+           average_open_pr_comments
          ],
          default: :comments_count
     # TODO: configuration field for repository

@@ -22,9 +22,7 @@ class User < ApplicationRecord
   enum role: { REGULAR => 0, ADMIN => 1 }
 
   def premium?
-    Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) do
-      subscriptions.exists?(['start_time < :date AND end_time > :date', { date: DateTime.now.new_offset(0) }])
-    end
+    Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) { subscriptions.active.exists? }
   end
 
   def with_work_time?
