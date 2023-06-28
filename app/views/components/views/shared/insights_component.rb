@@ -22,11 +22,13 @@ module Views
           end
       end
 
+      # rubocop: disable Rails/OutputSafety
       def render_insight_field(insight, attribute)
         result = convert_insight_field(insight, attribute.to_sym).to_s
         result += insight_ratio_value(insight, attribute) if @insight_ratio && result != '-'
         result.html_safe
       end
+      # rubocop: enable Rails/OutputSafety
 
       private
 
@@ -42,7 +44,7 @@ module Views
         Converters::SecondsToTextService.new.call(value: value)
       end
 
-      # rubocop: disable Layout/LineLength, Rails/OutputSafety
+      # rubocop: disable Layout/LineLength
       def insight_ratio_value(insight, attribute)
         return '' if insight[attribute].nil?
 
@@ -55,7 +57,7 @@ module Views
 
         " (<span class='#{span_class(ratio_value, time_attribute)}'>#{value_sign(value)}#{value_for_rendering}#{change_type ? '' : '%'}</span>)"
       end
-      # rubocop: enable Layout/LineLength, Rails/OutputSafety
+      # rubocop: enable Layout/LineLength
 
       def span_class(ratio_value, time_attribute)
         return 'negative' if ratio_value.negative? && !time_attribute
