@@ -4,7 +4,7 @@ describe Insights::AverageTime::ForReviewService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
   let!(:first_monday) {
-    date = DateTime.now.beginning_of_month
+    date = DateTime.now.beginning_of_month + 7.days
     date -= 1.day until date.wday == 1
     DateTime.new(date.year, date.month, date.day)
   }
