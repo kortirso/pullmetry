@@ -38,16 +38,16 @@ module Insights
     # this method generates insight attributes based on available insight_fields
     def insight_attributes(entity_id)
       insight_fields.inject({}) do |acc, insight_field|
-        unless insight_field.ends_with?('ratio')
-          value = send(insight_field)[entity_id]
-          decimal = Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym)
+        field_value =
+          if insight_field.ends_with?('ratio')
+            method_name = configuration.insight_ratio_type == 'ratio' ? :ratio : :change
+            send(method_name, insight_field[0..-7], entity_id)
+          else
+            value = send(insight_field)[entity_id]
+            Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value.to_i
+          end
 
-          next acc.merge({
-            insight_field.to_sym => (decimal ? value.to_f : value.to_i)
-          })
-        end
-
-        acc.merge({ insight_field.to_sym => send(:ratio, insight_field[0..-7], entity_id) })
+        acc.merge({ insight_field.to_sym => field_value })
       end
     end
 
@@ -70,10 +70,16 @@ module Insights
     end
 
     def ratio(insight_field, entity_id)
-      previous_period = send(insight_field, Insight::FETCH_DAYS_PERIOD * 2, Insight::FETCH_DAYS_PERIOD)[entity_id].to_i
+      previous_period =
+        send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id].to_i
       return 0 if previous_period.zero?
 
       (send(insight_field)[entity_id].to_i - previous_period) * 100 / previous_period
+    end
+
+    def change(insight_field, entity_id)
+      previous_period = send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id]
+      send(insight_field)[entity_id].to_i - previous_period.to_i
     end
 
     # this method returns { entity_id => comments_count }
@@ -138,15 +144,18 @@ module Insights
       @review_involving.fetch("#{date_from},#{date_to}") do |key|
         @review_involving[key] =
           entity_ids.each_with_object({}) do |entity_id, acc|
-            other_user_pulls = open_pull_requests_count.except(entity_id).values.sum
-            involved_pulls = pulls_with_user_comments[entity_id].to_i + reviews_count[entity_id].to_i
-            acc[entity_id] = 100 * involved_pulls / other_user_pulls
+            other_user_pulls = open_pull_requests_count(date_from, date_to).except(entity_id).values.sum
+            return 0 if other_user_pulls.zero?
+
+            commented_pulls = pulls_with_user_comments(date_from, date_to)[entity_id].to_i
+            reviewed_pulls = reviews_count(date_from, date_to)[entity_id].to_i
+            acc[entity_id] = 100 * (commented_pulls + reviewed_pulls) / other_user_pulls
           end
       end
     end
     # rubocop: enable Metrics/AbcSize
 
-    def pulls_with_user_comments(date_from, date_to)
+    def pulls_with_user_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
       @pulls_with_user_comments ||= {}
 
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|

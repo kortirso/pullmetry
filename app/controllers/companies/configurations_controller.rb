@@ -6,6 +6,8 @@ module Companies
 
     def edit
       authorize! @company, to: :update?
+
+      find_insight_ratio_type_values
       find_average_type_values
       find_main_attribute_values
     end
@@ -30,16 +32,20 @@ module Companies
       @company = current_user.companies.find_by!(uuid: params[:company_id])
     end
 
+    def find_insight_ratio_type_values
+      @insight_ratio_type_values = @company.configuration.insight_ratio_type_values.map { |key, _v| transform_key(key) }
+    end
+
     def find_average_type_values
-      @average_type_values = @company.configuration.average_type_values.map do |key, _v|
-        [key.to_s.capitalize.split('_').join(' '), key]
-      end
+      @average_type_values = @company.configuration.average_type_values.map { |key, _v| transform_key(key) }
     end
 
     def find_main_attribute_values
-      @main_attribute_values = @company.configuration.main_attribute_values.map do |key, _v|
-        [key.to_s.capitalize.split('_').join(' '), key]
-      end
+      @main_attribute_values = @company.configuration.main_attribute_values.map { |key, _v| transform_key(key) }
+    end
+
+    def transform_key(key)
+      [key.to_s.capitalize.split('_').join(' '), key]
     end
 
     def configuration_params
@@ -47,6 +53,7 @@ module Companies
         .require(:jsonb_columns_configuration)
         .permit(
           :insight_ratio,
+          :insight_ratio_type,
           :insights_webhook_url,
           :insights_discord_webhook_url,
           :ignore_users_work_time,

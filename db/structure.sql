@@ -493,16 +493,8 @@ CREATE TABLE public.insights (
     average_merge_seconds_ratio integer,
     average_open_pr_comments numeric(6,2),
     average_open_pr_comments_ratio integer,
-    comments_count_change integer,
-    reviews_count_change integer,
-    required_reviews_count_change integer,
-    open_pull_requests_count_change integer,
-    average_review_seconds_change integer,
-    average_merge_seconds_change integer,
-    average_open_pr_comments_change integer,
     review_involving integer,
-    review_involving_ratio integer,
-    review_involving_change integer
+    review_involving_ratio integer
 );
 
 

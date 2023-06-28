@@ -12,6 +12,7 @@ module JsonbColumns
     # insights table view attributes
     attribute :insight_fields, JsonbColumns::Insight.to_type
     attribute :insight_ratio, :boolean
+    enum :insight_ratio_type, %i[ratio change], default: :ratio
     attribute :rows_limit, :integer
     # data fetching attributes
     attribute :fetch_period, :integer

@@ -32,15 +32,10 @@ describe Insights::GenerateService, type: :service do
 
       before { create :insight, insightable: insightable, entity: entity3, comments_count: 1 }
 
-      it 'creates 2 new insights' do
+      it 'creates 2 new insights and destroys old insight', :aggregate_failures do
         service_call
 
         expect(insightable.insights.pluck(:entity_id)).to contain_exactly(entity1.id, entity2.id)
-      end
-
-      it 'destroys old insight' do
-        service_call
-
         expect(insightable.insights.where(entity_id: entity3.id)).to be_empty
       end
     end
@@ -48,12 +43,8 @@ describe Insights::GenerateService, type: :service do
     context 'for existing insight' do
       let!(:insight) { create :insight, insightable: insightable, entity: entity1, comments_count: 0 }
 
-      it 'creates 1 insight' do
-        expect { service_call }.to change(insightable.insights, :count).by(1)
-      end
-
       it 'insight has default list of attributes', :aggregate_failures do
-        service_call
+        expect { service_call }.to change(insightable.insights, :count).by(1)
 
         last_insight = Insight.last
 
@@ -84,12 +75,8 @@ describe Insights::GenerateService, type: :service do
         end
 
         context 'without PRs at previous period' do
-          it 'creates 1 insight' do
-            expect { service_call }.to change(insightable.insights, :count).by(1)
-          end
-
           it 'insight has default list of attributes', :aggregate_failures do
-            service_call
+            expect { service_call }.to change(insightable.insights, :count).by(1)
 
             last_insight = Insight.last
 
@@ -138,12 +125,8 @@ describe Insights::GenerateService, type: :service do
           end
 
           context 'with default insight attributes' do
-            it 'creates 1 insight' do
-              expect { service_call }.to change(insightable.insights, :count).by(1)
-            end
-
             it 'insight has default list of attributes', :aggregate_failures do
-              service_call
+              expect { service_call }.to change(insightable.insights, :count).by(1)
 
               last_insight = Insight.last
 
@@ -156,7 +139,8 @@ describe Insights::GenerateService, type: :service do
               expect(last_insight.average_review_seconds_ratio).to eq(-100)
               expect(last_insight.comments_count_ratio).to eq(-50)
               expect(last_insight.open_pull_requests_count).to eq 1
-              expect(last_insight.average_merge_seconds).to eq 0
+              expect(last_insight.review_involving).to be_nil
+              expect(last_insight.review_involving_ratio).to be_nil
             end
           end
 
@@ -175,17 +159,14 @@ describe Insights::GenerateService, type: :service do
                 open_pull_requests_count: true,
                 average_open_pr_comments: true,
                 average_review_seconds: true,
-                average_merge_seconds: true
+                average_merge_seconds: true,
+                review_involving: true
               }
               repository.company.save!
             end
 
-            it 'creates 1 insight' do
-              expect { service_call }.to change(insightable.insights, :count).by(1)
-            end
-
             it 'insight has full list of attributes', :aggregate_failures do
-              service_call
+              expect { service_call }.to change(insightable.insights, :count).by(1)
 
               last_insight = Insight.last
 
@@ -203,6 +184,29 @@ describe Insights::GenerateService, type: :service do
               expect(last_insight.average_merge_seconds_ratio).to eq(-100)
               expect(last_insight.average_open_pr_comments).to eq 3
               expect(last_insight.average_open_pr_comments_ratio).to eq 200
+              expect(last_insight.review_involving).to eq 100
+              expect(last_insight.review_involving_ratio).to eq 0
+            end
+
+            context 'with absolute changes for ratios' do
+              before do
+                repository.company.configuration.insight_ratio_type = 'change'
+                repository.company.save!
+              end
+
+              it 'insight has full list of attributes', :aggregate_failures do
+                expect { service_call }.to change(insightable.insights, :count).by(1)
+
+                last_insight = Insight.last
+
+                expect(last_insight.required_reviews_count_ratio).to eq(-1)
+                expect(last_insight.reviews_count_ratio).to eq 0
+                expect(last_insight.comments_count_ratio).to eq(-1)
+                expect(last_insight.average_review_seconds_ratio).to eq(-86_390)
+                expect(last_insight.open_pull_requests_count_ratio).to eq 0
+                expect(last_insight.average_merge_seconds_ratio).to eq(-431_990)
+                expect(last_insight.review_involving_ratio).to eq 0
+              end
             end
           end
         end
