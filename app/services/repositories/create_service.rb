@@ -23,7 +23,8 @@ module Repositories
     def validate_existing_link(user, link)
       available_repositories = user.available_repositories
       return fail!('User has access to repository with the same link') if available_repositories.exists?(link: link)
-      return fail!('Repository with the same link exists') if repository_exists?(available_repositories, link)
+
+      fail!('Repository with the same link exists') if repository_exists?(available_repositories, link)
     end
 
     def repository_exists?(available_repositories, link)
