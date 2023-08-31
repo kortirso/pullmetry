@@ -10,7 +10,7 @@
           <div>
             <h2 class="flex items-center">
               <%= company.title %>
-              <% unless company.accessable %>
+              <% if company.access_token && !company.accessable %>
                 <span class="unaccessable">Company has repositories with access error</span>
               <% end %>
             </h2>

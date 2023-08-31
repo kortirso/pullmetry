@@ -22,8 +22,11 @@ module Import
       @import_time = DateTime.now
     end
 
+    # rubocop: disable Metrics/AbcSize
     def call(company:)
       company.repositories.each do |repository|
+        next if repository.fetch_access_token.nil?
+
         @sync_pull_requests_service.new(repository: repository).call
         repository.pull_requests.opened_before(@import_time).each do |pull_request|
           @sync_comments_service.new(pull_request: pull_request).call
@@ -35,6 +38,7 @@ module Import
       update_company_accessable(company)
       @generate_insights_service.call(insightable: company)
     end
+    # rubocop: enable Metrics/AbcSize
 
     private
 

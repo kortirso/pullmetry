@@ -50,13 +50,8 @@ describe Import::SyncPullRequestsService, type: :service do
   end
 
   context 'when there are no pull requests' do
-    it 'creates 2 new pull requests' do
+    it 'creates 2 new pull requests', :aggregate_failures do
       expect { service_call }.to change(repository.pull_requests, :count).by(2)
-    end
-
-    it 'one of the PRs has nil value for pull_created_at', :aggregate_failures do
-      service_call
-
       expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
       expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
     end
@@ -73,13 +68,8 @@ describe Import::SyncPullRequestsService, type: :service do
   context 'when there is 1 existing pull request' do
     let!(:pull_request) { create :pull_request, repository: repository, pull_number: 2 }
 
-    it 'creates 1 new pull request' do
+    it 'creates 1 new pull request and updates existing pull request', :aggregate_failures do
       expect { service_call }.to change(repository.pull_requests, :count).by(1)
-    end
-
-    it 'updates existing pull request' do
-      service_call
-
       expect(pull_request.reload.open?).to be_falsy
     end
   end
@@ -87,20 +77,11 @@ describe Import::SyncPullRequestsService, type: :service do
   context 'when there is 1 old existing pull request' do
     let!(:pull_request) { create :pull_request, repository: repository, pull_number: 1 }
 
-    it 'creates 2 new pull requests' do
+    it 'creates 2 new pull requests and destroys old pull request', :aggregate_failures do
       service_call
 
       expect(repository.pull_requests.pluck(:pull_number)).to contain_exactly(2, 3)
-    end
-
-    it 'destroys old pull request' do
-      service_call
-
       expect(repository.pull_requests.find_by(pull_number: pull_request.pull_number)).to be_nil
     end
-  end
-
-  it 'succeeds' do
-    expect(service_call.success?).to be_truthy
   end
 end

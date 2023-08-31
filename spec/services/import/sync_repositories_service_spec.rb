@@ -25,6 +25,8 @@ describe Import::SyncRepositoriesService, type: :service do
   let(:generate_insights_service) { double(Insights::GenerateService) }
 
   before do
+    create :access_token, tokenable: company
+
     allow(sync_pull_requests_service).to receive(:new).and_return(pull_requests_service)
     allow(pull_requests_service).to receive(:call)
     allow(sync_comments_service).to receive(:new).and_return(comments_service)
@@ -46,9 +48,7 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(generate_insights_service).to have_received(:call).with(insightable: company)
     expect(repository.reload.synced_at).not_to be_nil
     expect(company.reload.accessable).to be_falsy
-  end
 
-  it 'succeeds' do
     expect(service_call.success?).to be_truthy
   end
 end

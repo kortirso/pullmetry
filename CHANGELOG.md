@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - absolute changes for insights
 
+### Modified
+- rendering access error warnings
+
 ## [1.3.5] - 2023-06-23
 ### Added
 - trial subscription
