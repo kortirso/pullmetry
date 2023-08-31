@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Modified
 - rendering access error warnings
+- trial period
 
 ## [1.3.5] - 2023-06-23
 ### Added
