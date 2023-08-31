@@ -8,6 +8,8 @@ module Tokenable
   end
 
   def fetch_access_token
+    return access_token if is_a?(Company)
+
     access_token || company.access_token
   end
 end

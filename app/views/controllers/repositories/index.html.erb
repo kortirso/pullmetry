@@ -12,7 +12,7 @@
           <div>
             <h2 class="flex items-center">
               <%= repository.title %>
-              <% unless repository.accessable %>
+              <% if repository.fetch_access_token && !repository.accessable %>
                 <span class="unaccessable">Repository access error</span>
               <% end %>
             </h2>

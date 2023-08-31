@@ -71,15 +71,10 @@ describe Import::SyncReviewsService, type: :service do
   context 'when there is 1 old existing review' do
     before { create :pull_requests_review, pull_requests_entity: pull_requests_entity, external_id: '1' }
 
-    it 'creates 2 new reviews' do
+    it 'creates 2 new reviews and destroys old reviews', :aggregate_failures do
       service_call
 
       expect(pull_request.pull_requests_reviews.pluck(:external_id)).to match_array(%w[2 3])
-    end
-
-    it 'destroys old reviews' do
-      service_call
-
       expect(pull_request.pull_requests_reviews.where(external_id: 1)).to be_empty
     end
   end
