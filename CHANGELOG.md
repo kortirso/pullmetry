@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - absolute changes for insights
+- clear insights ratios after changing type
 
 ### Modified
 - rendering access error warnings
