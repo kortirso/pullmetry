@@ -45,7 +45,7 @@ describe Companies::ConfigurationsController do
     it_behaves_like 'required auth'
 
     context 'for logged users' do
-      let!(:company) { create :company }
+      let!(:company) { create :company, configuration: { insight_ratio_type: 'ratio' } }
 
       sign_in_user
 
@@ -103,6 +103,8 @@ describe Companies::ConfigurationsController do
         end
 
         context 'for valid params' do
+          let!(:insight) { create :insight, insightable: company, comments_count_ratio: 30 }
+
           let(:request) {
             patch :update, params: {
               company_id: company.uuid,
@@ -116,7 +118,8 @@ describe Companies::ConfigurationsController do
                   'unknown' => '1',
                   'comments_count' => 2
                 },
-                'insight_ratio' => '1'
+                'insight_ratio' => '1',
+                'insight_ratio_type' => 'change'
               },
               locale: 'en'
             }
@@ -132,6 +135,8 @@ describe Companies::ConfigurationsController do
               expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
               expect(configuration.insight_fields).to be_nil
               expect(configuration.insight_ratio).to be_nil
+              expect(configuration.insight_ratio_type).to eq 'ratio'
+              expect(insight.reload.comments_count_ratio).to eq 30
               expect(response).to redirect_to companies_path
             end
           end
@@ -157,6 +162,8 @@ describe Companies::ConfigurationsController do
                 'average_merge_seconds' => nil
               })
               expect(configuration.insight_ratio).to be_truthy
+              expect(configuration.insight_ratio_type).to eq 'change'
+              expect(insight.reload.comments_count_ratio).to be_nil
               expect(response).to redirect_to companies_path
             end
           end
