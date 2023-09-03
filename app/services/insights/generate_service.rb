@@ -7,7 +7,7 @@ module Insights
     def initialize(
       average_review_time_service: AverageTime::ForReviewService,
       average_merge_time_service: AverageTime::ForMergeService,
-      find_average_service: Math::FindAverageService.new
+      find_average_service: Math::Average.new
     )
       @average_review_time_service = average_review_time_service
       @average_merge_time_service = average_merge_time_service

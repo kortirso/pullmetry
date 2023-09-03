@@ -15,6 +15,7 @@ class CompaniesController < ApplicationController
   end
 
   def create
+    # commento: companies.title
     service_call = Companies::CreateService.call(user: current_user, params: company_params)
     if service_call.success?
       redirect_to companies_path, notice: "Company #{service_call.result.title} is created"

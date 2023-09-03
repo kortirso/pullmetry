@@ -19,6 +19,7 @@ module Identities
     private
 
     def attach_entities
+      # commento: entities.identity_id
       Entity
         .where(identity_id: nil, provider: @result.provider, login: @result.login)
         .update_all(identity_id: @result.id)

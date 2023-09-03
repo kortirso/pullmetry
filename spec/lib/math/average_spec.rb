@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Math::FindAverageService, type: :service do
+describe Math::Average, type: :service do
   subject(:service_call) { described_class.new.call(values: values, type: type, round: round) }
 
   let(:round) { 0 }

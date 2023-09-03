@@ -10,7 +10,7 @@ module Insights
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
       DEFAULT_WORK_TIME_ZONE = 'UTC'
 
-      def initialize(find_average_service: Math::FindAverageService.new)
+      def initialize(find_average_service: Math::Average.new)
         @find_average_service = find_average_service
       end
 

@@ -9,6 +9,7 @@ module Auth
       email = auth[:email]
       return if email.nil?
 
+      # commento: identities.uid, identities.provide, identities.email, identities.login
       Identities::CreateService.call(user: user, params: auth)
     end
   end

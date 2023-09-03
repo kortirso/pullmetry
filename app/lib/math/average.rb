@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Math
-  class FindAverageService
+  class Average
     def call(values: [], type: nil, round: 0)
       @round = round
 

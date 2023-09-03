@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProfilesController < ApplicationController
+  include Boolable
+
   before_action :find_used_trial_subscription, only: %i[show]
   before_action :find_end_time, only: %i[show]
   before_action :find_vacations, only: %i[show]
@@ -13,7 +15,7 @@ class ProfilesController < ApplicationController
     service_call = Users::UpdateService.call(
       user: current_user,
       params: user_params,
-      use_work_time: ActiveModel::Type::Boolean.new.cast(params[:user][:use_work_time])
+      use_work_time: to_bool(params[:user][:use_work_time])
     )
     if service_call.success?
       redirect_to profile_path, notice: 'User is updated'

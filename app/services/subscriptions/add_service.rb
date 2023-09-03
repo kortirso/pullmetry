@@ -18,6 +18,7 @@ module Subscriptions
       return fail!("Trial subscription can't be created") if @user.subscriptions.exists?
 
       time = DateTime.now
+      # commento: subscriptions.start_time, subscriptions.end_time
       @user.subscriptions.create!(start_time: time, end_time: time + Subscription::TRIAL_PERIOD_DAYS.days)
     end
 

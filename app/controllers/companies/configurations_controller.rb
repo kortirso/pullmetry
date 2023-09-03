@@ -2,6 +2,8 @@
 
 module Companies
   class ConfigurationsController < ApplicationController
+    include Boolable
+
     before_action :find_company
 
     def edit
@@ -17,7 +19,7 @@ module Companies
       service_call = Companies::Configurations::UpdateService.call(
         company: @company,
         params: configuration_params,
-        use_work_time: ActiveModel::Type::Boolean.new.cast(params[:jsonb_columns_configuration][:use_work_time])
+        use_work_time: to_bool(params[:jsonb_columns_configuration][:use_work_time])
       )
       if service_call.success?
         redirect_to companies_path, notice: "Configuration for company #{@company.title} is updated"
