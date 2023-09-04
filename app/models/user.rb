@@ -8,6 +8,7 @@ class User < ApplicationRecord
   ADMIN = 'admin'
 
   has_many :users_sessions, class_name: 'Users::Session', dependent: :destroy
+  has_many :notifications, class_name: 'Users::Notification', dependent: :destroy
 
   has_many :companies, dependent: :destroy
   has_many :repositories, through: :companies

@@ -19,3 +19,8 @@ en:
         pull_requests: Pull requests
         reviews: Reviews
         comments: Comments
+  mailers:
+    users:
+      notification:
+        repository_access_error_email:
+          subject: Repository access error

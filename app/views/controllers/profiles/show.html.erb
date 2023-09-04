@@ -47,9 +47,12 @@
       </div>
     </div>
     <div class="profile-block form-block">
-      <h2>Work time</h2>
       <%= form_with model: Current.user, url: profile_path, method: :patch do |form| %>
-        <div class="main-container">
+        <div class="with-action flex justify-between items-center">
+          <h2>User settings</h2>
+          <%= form.submit 'Update user settings', class: 'button' %>
+        </div>
+        <div class="main-container mb-4">
           <div class="half-container">
             <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
             <%= form.check_box :use_work_time, checked: Current.user.with_work_time? %>
@@ -74,7 +77,15 @@
             <p class="line-height">You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
           </div>
         </div>
-        <%= form.submit 'Update user data', class: 'button' %>
+        <div class="main-container">
+          <div class="half-container">
+            <%= form.label :access_error, 'Repository access error notifications', class: 'form-label' %>
+            <%= form.check_box :access_error, checked: Current.user.notifications.access_error.first&.value %>
+          </div>
+          <div class="half-container">
+            <p class="line-height">You can select email notifications you would like to receive.</p>
+          </div>
+        </div>
       <% end %>
     </div>
     <div class="profile-block form-block">
