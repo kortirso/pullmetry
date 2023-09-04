@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - absolute changes for insights
 - clear insights ratios after changing type
+- sending emails about repository access errors
 
 ### Modified
 - rendering access error warnings

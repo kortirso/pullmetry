@@ -307,7 +307,8 @@ CREATE TABLE public.companies (
     updated_at timestamp(6) without time zone NOT NULL,
     repositories_count integer,
     configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
-    accessable boolean DEFAULT true NOT NULL
+    accessable boolean DEFAULT true NOT NULL,
+    not_accessable_ticks integer DEFAULT 0 NOT NULL
 );
 
 
@@ -928,6 +929,39 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: users_notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users_notifications (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    value boolean DEFAULT false NOT NULL,
+    notification_type integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_notifications_id_seq OWNED BY public.users_notifications.id;
+
+
+--
 -- Name: users_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1119,6 +1153,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: users_notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_notifications ALTER COLUMN id SET DEFAULT nextval('public.users_notifications_id_seq'::regclass);
+
+
+--
 -- Name: users_sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1298,6 +1339,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.subscriptions
     ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_notifications users_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users_notifications
+    ADD CONSTRAINT users_notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1570,6 +1619,13 @@ CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree 
 
 
 --
+-- Name: index_users_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_notifications_on_user_id ON public.users_notifications USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1735,6 +1791,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230609173154'),
 ('20230612131612'),
 ('20230617083913'),
-('20230627192841');
+('20230627192841'),
+('20230904082413'),
+('20230904130559');
 
 

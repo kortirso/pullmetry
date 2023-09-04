@@ -101,6 +101,9 @@ group :development do
   gem 'capistrano-rails', '~> 1.6', require: false
   gem 'capistrano-rvm', require: false
   gem 'sshkit-sudo'
+
+  # email previews
+  gem 'letter_opener'
 end
 
 group :test do

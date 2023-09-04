@@ -4,13 +4,15 @@ module Import
   class SyncRepositoriesService
     prepend ApplicationService
 
+    NOT_ACCESSABLE_LIMIT_TICKS = 10
+
     def initialize(
       sync_pull_requests_service: SyncPullRequestsService,
       sync_comments_service: SyncCommentsService,
       sync_reviews_service: SyncReviewsService,
       generate_insights_service: Insights::GenerateService,
       update_repository_service: Repositories::UpdateService.new,
-      update_company_service: Companies::UpdateService.new
+      update_company_service: Companies::UpdateService
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
@@ -33,24 +35,40 @@ module Import
           @sync_reviews_service.new(pull_request: pull_request).call
         end
         update_repository_synced_timestamp(repository)
-        @generate_insights_service.call(insightable: repository)
+        @generate_insights_service.call(insightable: repository) if repository.accessable
       end
-      update_company_accessable(company)
-      @generate_insights_service.call(insightable: company)
+
+      finalize_sync(company)
     end
     # rubocop: enable Metrics/AbcSize
 
     private
 
     def update_repository_synced_timestamp(repository)
+      # commento: repositories.synced_at
       @update_repository_service.call(repository: repository, params: { synced_at: DateTime.now })
     end
 
-    def update_company_accessable(company)
-      @update_company_service.call(
+    def finalize_sync(company)
+      not_accessable_count = company.repositories.where(accessable: false).count
+
+      update_company_accessable(company, not_accessable_count.zero?)
+      @generate_insights_service.call(insightable: company) if company.repositories_count != not_accessable_count
+    end
+
+    def update_company_accessable(company, accessable)
+      not_accessable_ticks = accessable ? 0 : (company.not_accessable_ticks + 1)
+      # commento: companies.accessable, companies.not_accessable_ticks
+      @update_company_service.new.call(
         company: company,
-        params: { accessable: !company.repositories.exists?(accessable: false) }
+        params: {
+          accessable: accessable,
+          not_accessable_ticks: not_accessable_ticks
+        }
       )
+      return if not_accessable_ticks < NOT_ACCESSABLE_LIMIT_TICKS
+
+      Users::NotificationMailer.repository_access_error_email(id: company.user_id).deliver_now
     end
   end
 end
