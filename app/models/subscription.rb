@@ -2,7 +2,7 @@
 
 class Subscription < ApplicationRecord
   FREE_REPOSITORIES_AMOUNT = 5
-  TRIAL_PERIOD_DAYS = 365
+  TRIAL_PERIOD_DAYS = 100
 
   belongs_to :user
 

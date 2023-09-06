@@ -10,6 +10,8 @@ module Views
         @premium = insightable.premium?
         @insight_ratio = @premium && insightable.configuration.insight_ratio
 
+        @seconds_converter = Converters::SecondsToTextService.new
+
         super()
       end
 
@@ -41,7 +43,7 @@ module Views
       end
 
       def convert_seconds(value)
-        Converters::SecondsToTextService.new.call(value: value)
+        @seconds_converter.call(value: value)
       end
 
       # rubocop: disable Layout/LineLength
