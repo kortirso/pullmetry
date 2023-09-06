@@ -15,6 +15,9 @@ foreman s
 If you would like to run application locally or on your production server you need to generate new config/master.key and update config/credentials.yml.enc like this example with your api keys.
 
 ```bash
+emailbutler:
+  username:
+  password:
 smtp:
   domain:
   username:

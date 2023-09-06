@@ -4,6 +4,7 @@ require 'que/web'
 
 Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
+  mount Emailbutler::Engine => '/emailbutler'
   mount Que::Web => '/que'
 
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
