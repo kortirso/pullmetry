@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 41d713fb9f88ec0d9a8932e94e3e2db568a72aa9
+  revision: 1a71e5ad186f6f2c495ee17b3af156c9c36cf6c4
   branch: main
   specs:
     bullet (7.0.7)
@@ -172,7 +172,7 @@ GEM
       dry-initializer (~> 3.0)
       dry-schema (>= 1.12, < 2)
       zeitwerk (~> 2.6)
-    emailbutler (0.7.1)
+    emailbutler (0.7.2)
       pagy (> 4.0)
       rails (> 6.0.0)
       sassc-rails
