@@ -46,16 +46,30 @@ module Export
         end
 
         def insights_blocks
-          @insightable.sorted_insights.map { |insight|
+          visible_insights.map { |insight|
             {
               type: 'context',
               elements: [
-                avatar_element(insight.entity.avatar_url),
-                login_element(insight.entity.login),
-                insight_element(insight)
+                avatar_element(insight[:entities_avatar_url]),
+                login_element(insight[:entities_login]),
+                insight_data(insight)
               ]
             }
           }
+        end
+
+        def visible_insights
+          ::Insights::VisibleQuery
+            .new(relation: @insightable.insights)
+            .resolve(insightable: @insightable)
+            .joins(:entity)
+            .hashable_pluck(
+              :comments_count,
+              :reviews_count,
+              :average_review_seconds,
+              'entities.login',
+              'entities.avatar_url'
+            )
         end
 
         def footer_block
@@ -87,11 +101,11 @@ module Export
         end
 
         # rubocop: disable Layout/LineLength
-        def insight_element(insight)
-          average_time = @time_representer.call(value: insight.average_review_seconds.to_i)
+        def insight_data(insight)
+          average_time = @time_representer.call(value: insight[:average_review_seconds].to_i)
           {
             type: 'mrkdwn',
-            text: "*Total comments:* #{insight.comments_count.to_i}, *Total reviews:* #{insight.reviews_count.to_i}, *Average review time:* #{average_time}"
+            text: "*Total comments:* #{insight[:comments_count].to_i}, *Total reviews:* #{insight[:reviews_count].to_i}, *Average review time:* #{average_time}"
           }
         end
         # rubocop: enable Layout/LineLength

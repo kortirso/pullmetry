@@ -9,6 +9,7 @@ module Users
         user.identities.destroy_all
         user.vacations.destroy_all
         user.kudos_users_achievements.destroy_all
+        user.notifications.destroy_all
       end
     end
   end

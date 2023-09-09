@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Monitoring
+module Monitorable
   extend ActiveSupport::Concern
 
   included do

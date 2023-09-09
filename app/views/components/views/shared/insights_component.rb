@@ -6,13 +6,21 @@ module Views
       def initialize(insightable:)
         @insightable = insightable
         @access_token = insightable.access_token
-        @insights = insightable.sorted_insights
         @premium = insightable.premium?
         @insight_ratio = @premium && insightable.configuration.insight_ratio
 
         @seconds_converter = Converters::SecondsToTextService.new
 
         super()
+      end
+
+      def visible_insights
+        @visible_insights ||=
+          Insights::VisibleQuery
+            .new(relation: @insightable.insights)
+            .resolve(insightable: @insightable)
+            .includes(:entity)
+            .load
       end
 
       def insight_fields

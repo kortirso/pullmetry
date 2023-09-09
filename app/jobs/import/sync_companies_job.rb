@@ -2,7 +2,7 @@
 
 module Import
   class SyncCompaniesJob < ApplicationJob
-    include Monitoring
+    include Monitorable
 
     queue_as :default
 

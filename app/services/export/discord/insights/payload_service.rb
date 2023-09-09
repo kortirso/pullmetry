@@ -28,12 +28,17 @@ module Export
         end
 
         def insights_blocks
-          @insightable.sorted_insights.map { |insight|
-            [
-              insight.entity.login,
-              insight_element(insight)
-            ].join(' ')
+          visible_insights.map { |insight|
+            "#{insight[:entities_login]} #{insight_data(insight)}"
           }.join("\n")
+        end
+
+        def visible_insights
+          ::Insights::VisibleQuery
+            .new(relation: @insightable.insights)
+            .resolve(insightable: @insightable)
+            .joins(:entity)
+            .hashable_pluck(:comments_count, :reviews_count, :average_review_seconds, 'entities.login')
         end
 
         def footer_block
@@ -41,9 +46,9 @@ module Export
         end
 
         # rubocop: disable Layout/LineLength
-        def insight_element(insight)
-          average_time = @time_representer.call(value: insight.average_review_seconds.to_i)
-          "**Total comments:** #{insight.comments_count.to_i}, **Total reviews:** #{insight.reviews_count.to_i}, **Average review time:** #{average_time}"
+        def insight_data(insight)
+          average_time = @time_representer.call(value: insight[:average_review_seconds].to_i)
+          "**Total comments:** #{insight[:comments_count].to_i}, **Total reviews:** #{insight[:reviews_count].to_i}, **Average review time:** #{average_time}"
         end
         # rubocop: enable Layout/LineLength
       end
