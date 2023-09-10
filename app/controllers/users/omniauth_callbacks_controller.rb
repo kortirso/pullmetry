@@ -52,12 +52,7 @@ module Users
       @auth ||= PROVIDERS[params[:provider]].call(code: params[:code]).result
     end
 
-    # rubocop: disable Lint/UnreachableCode
     def refresh_company_entities_cache(user)
-      return
-
-      # TODO: enabled this code if cache writing does not work from Import::SyncRepositoriesService 75 line
-      # or remove if caching works
       user.available_companies.each do |company|
         Entities::ForInsightableQuery
           .resolve(insightable: company)
@@ -71,6 +66,5 @@ module Users
           end
       end
     end
-    # rubocop: enable Lint/UnreachableCode
   end
 end
