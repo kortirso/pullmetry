@@ -15,6 +15,7 @@ module Users
     def create
       if user
         session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
+        refresh_company_entities_cache(user)
         redirect_to companies_path, notice: 'Successful login'
       else
         redirect_to root_path, flash: { manifesto_username: true }
@@ -50,5 +51,26 @@ module Users
     def auth
       @auth ||= PROVIDERS[params[:provider]].call(code: params[:code]).result
     end
+
+    # rubocop: disable Lint/UnreachableCode
+    def refresh_company_entities_cache(user)
+      return
+
+      # TODO: enabled this code if cache writing does not work from Import::SyncRepositoriesService 75 line
+      # or remove if caching works
+      user.available_companies.each do |company|
+        Entities::ForInsightableQuery
+          .resolve(insightable: company)
+          .hashable_pluck(:id, :html_url, :avatar_url, :login)
+          .each do |payload|
+            Rails.cache.write(
+              "entity_payload_#{payload.delete(:id)}_v1",
+              payload.symbolize_keys,
+              expires_in: 12.hours
+            )
+          end
+      end
+    end
+    # rubocop: enable Lint/UnreachableCode
   end
 end

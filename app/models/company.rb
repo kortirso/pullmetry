@@ -15,13 +15,4 @@ class Company < ApplicationRecord
   has_many :pull_requests_reviews, class_name: '::PullRequests::Review', through: :repositories
 
   delegate :premium?, to: :user
-
-  def all_entities
-    Entity
-      .left_joins(:pull_requests_entities)
-      .where(pull_requests_entities: { pull_request_id: pull_requests })
-      .or(
-        Entity.where(id: pull_requests.select(:entity_id))
-      )
-  end
 end
