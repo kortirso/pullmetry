@@ -4,6 +4,12 @@ class Entity < ApplicationRecord
   include Uuidable
   include Providerable
 
+  EMPTY_PAYLOAD = {
+    login: 'octocat',
+    html_url: 'https://github.com/octocat',
+    avatar_url: 'https://avatars.githubusercontent.com/u/583231?v=4'
+  }.freeze
+
   belongs_to :identity, optional: true
 
   has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy

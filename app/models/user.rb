@@ -36,7 +36,7 @@ class User < ApplicationRecord
       .or(
         Company
         .where.not(user_id: id)
-        .where(id: insights.of_type('Company').pluck(:insightable_id))
+        .where(id: insights.of_type('Company').select(:insightable_id))
       )
   end
 
@@ -46,7 +46,7 @@ class User < ApplicationRecord
       .or(
         Repository
         .not_of_user(id)
-        .where(id: insights.of_type('Repository').pluck(:insightable_id))
+        .where(id: insights.of_type('Repository').select(:insightable_id))
       )
   end
 end

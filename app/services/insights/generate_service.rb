@@ -28,7 +28,7 @@ module Insights
     private
 
     def entity_ids
-      @entity_ids ||= @insightable.all_entities.pluck(:id)
+      @entity_ids ||= Entities::ForInsightableQuery.resolve(insightable: @insightable).pluck(:id)
     end
 
     def remove_old_insights

@@ -34,7 +34,7 @@ module Import
           @sync_comments_service.new(pull_request: pull_request).call
           @sync_reviews_service.new(pull_request: pull_request).call
         end
-        update_repository_synced_timestamp(repository)
+        update_repository(repository)
         @generate_insights_service.call(insightable: repository) if repository.accessable
       end
 
@@ -44,7 +44,7 @@ module Import
 
     private
 
-    def update_repository_synced_timestamp(repository)
+    def update_repository(repository)
       # commento: repositories.synced_at
       @update_repository_service.call(repository: repository, params: { synced_at: DateTime.now })
     end
@@ -53,6 +53,7 @@ module Import
       not_accessable_count = company.repositories.where(accessable: false).count
 
       update_company_accessable(company, not_accessable_count.zero?)
+      update_entities_cache(company)
       @generate_insights_service.call(insightable: company) if company.repositories_count != not_accessable_count
     end
 
@@ -69,6 +70,19 @@ module Import
       return if not_accessable_ticks != NOT_ACCESSABLE_LIMIT_TICKS
 
       Users::NotificationMailer.repository_access_error_email(id: company.user_id).deliver_now
+    end
+
+    def update_entities_cache(company)
+      Entities::ForInsightableQuery
+        .resolve(insightable: company)
+        .hashable_pluck(:id, :html_url, :avatar_url, :login)
+        .each do |payload|
+          Rails.cache.write(
+            "entity_payload_#{payload.delete(:id)}_v1",
+            payload.symbolize_keys,
+            expires_in: 12.hours
+          )
+        end
     end
   end
 end
