@@ -16,7 +16,7 @@ class ApplicationRecord < ActiveRecord::Base
       column_name
     end
 
-    all.pluck(*column_names).map do |values|
+    pluck(*column_names).map do |values|
       values = [values] if convert_values_to_array
 
       [symbolized_column_names, values].transpose.to_h

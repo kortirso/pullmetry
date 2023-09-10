@@ -16,7 +16,7 @@ module Insights
           )
           .where(repository: insightable.is_a?(Repository) ? insightable : insightable.repositories)
           .where.not(pull_merged_at: nil)
-          .each { |pull_request| handle_entity(pull_request) }
+          .find_each { |pull_request| handle_entity(pull_request) }
         update_result_with_average_time
       end
 
