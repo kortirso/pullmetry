@@ -19,6 +19,7 @@ module Views
           Insights::VisibleQuery
             .new(relation: @insightable.insights)
             .resolve(insightable: @insightable)
+            .includes(:entity)
             .load
       end
 
