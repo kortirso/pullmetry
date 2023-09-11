@@ -16,11 +16,11 @@ class CompaniesController < ApplicationController
 
   def create
     # commento: companies.title
-    service_call = Companies::CreateService.call(user: current_user, params: company_params)
-    if service_call.success?
-      redirect_to companies_path, notice: "Company #{service_call.result.title} is created"
+    form = Companies::CreateForm.call(user: current_user, params: company_params)
+    if form.success?
+      redirect_to companies_path, notice: "Company #{form.result.title} is created"
     else
-      redirect_to new_company_path, alert: service_call.errors
+      redirect_to new_company_path, alert: form.errors
     end
   end
 

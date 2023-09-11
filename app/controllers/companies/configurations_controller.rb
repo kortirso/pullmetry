@@ -16,15 +16,15 @@ module Companies
 
     def update
       authorize! @company, to: :update?
-      service_call = Companies::Configurations::UpdateService.call(
+      form = Companies::Configurations::UpdateForm.call(
         company: @company,
         params: configuration_params,
         use_work_time: to_bool(params[:jsonb_columns_configuration][:use_work_time])
       )
-      if service_call.success?
+      if form.success?
         redirect_to companies_path, notice: "Configuration for company #{@company.title} is updated"
       else
-        redirect_to edit_company_configuration_path(@company.uuid), alert: service_call.errors
+        redirect_to edit_company_configuration_path(@company.uuid), alert: form.errors
       end
     end
 

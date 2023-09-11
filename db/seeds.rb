@@ -137,7 +137,7 @@ Kudos::Achievement.create(
     html_url: "https://github.com/octocat_#{index}"
   )
 
-  Identities::CreateService.call(
+  Identities::CreateForm.call(
     user: user,
     params: { uid: index.to_s, provider: 'github', email: "user#{index}@gmail.com", login: "octocat_#{index}" }
   )

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - query objects
 - cache entities data for skipping redundant queries
+- form object to interact with users input
 
 ## [1.3.7] - 2023-09-06
 ### Added

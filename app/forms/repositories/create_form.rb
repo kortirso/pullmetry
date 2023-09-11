@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 module Repositories
-  class CreateService
+  class CreateForm
     prepend ApplicationService
     include Validateable
 
     HOURS_FOR_OLD_INSIGHTS = 12
 
-    def initialize(repository_validator: RepositoryValidator)
-      @repository_validator = repository_validator
-    end
-
     def call(company:, params:)
-      return if validate_with(@repository_validator, params) && failure?
+      return if validate_with(validator, params) && failure?
       return if validate_existing_link(company.user, params[:link]) && failure?
 
       @result = company.repositories.create!(params)
@@ -34,5 +30,7 @@ module Repositories
         .where.associated(:insights)
         .exists?(['insights.updated_at > ?', HOURS_FOR_OLD_INSIGHTS.hours.ago])
     end
+
+    def validator = RepositoryValidator
   end
 end

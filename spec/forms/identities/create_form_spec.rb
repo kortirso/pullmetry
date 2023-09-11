@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Identities::CreateService, type: :service do
-  subject(:service_call) { described_class.call(user: user, params: params) }
+describe Identities::CreateForm, type: :service do
+  subject(:form) { described_class.call(user: user, params: params) }
 
   let!(:user) { create :user }
 
@@ -9,8 +9,8 @@ describe Identities::CreateService, type: :service do
     let(:params) { { uid: '' } }
 
     it 'does not create identity and fails', :aggregate_failures do
-      expect { service_call }.not_to change(Identity, :count)
-      expect(service_call.failure?).to be_truthy
+      expect { form }.not_to change(Identity, :count)
+      expect(form.failure?).to be_truthy
     end
   end
 
@@ -19,12 +19,12 @@ describe Identities::CreateService, type: :service do
 
     context 'without entities' do
       it 'creates identity and succeeds', :aggregate_failures do
-        expect { service_call }.to change(user.identities, :count).by(1)
-        expect(service_call.success?).to be_truthy
+        expect { form }.to change(user.identities, :count).by(1)
+        expect(form.success?).to be_truthy
       end
 
       it 'does not attach entities' do
-        expect { service_call }.not_to change(user.entities, :count)
+        expect { form }.not_to change(user.entities, :count)
       end
     end
 
@@ -34,12 +34,12 @@ describe Identities::CreateService, type: :service do
       end
 
       it 'creates identity and succeeds', :aggregate_failures do
-        expect { service_call }.to change(user.identities, :count).by(1)
-        expect(service_call.success?).to be_truthy
+        expect { form }.to change(user.identities, :count).by(1)
+        expect(form.success?).to be_truthy
       end
 
       it 'attaches entities' do
-        expect { service_call }.to change(user.entities, :count).by(1)
+        expect { form }.to change(user.entities, :count).by(1)
       end
     end
   end

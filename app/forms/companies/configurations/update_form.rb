@@ -2,7 +2,7 @@
 
 module Companies
   module Configurations
-    class UpdateService
+    class UpdateForm
       prepend ApplicationService
 
       def call(company:, params:, use_work_time:)
@@ -14,6 +14,7 @@ module Companies
         sliced_params = sliced_params(company)
         ActiveRecord::Base.transaction do
           clear_insights_ratios(company) if need_clear_insights_ratios?(company, sliced_params[:insight_ratio_type])
+          # commento: companies.configuration
           company.configuration.assign_attributes(sliced_params)
           company.save!
         end
