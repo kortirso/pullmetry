@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get 'sources', to: 'welcome#sources'
 
   get 'sitemap.xml', to: 'sitemaps#index', format: :xml
-  get 'robots.txt', to: 'robots#index', format: :text
+  get 'robots.txt', to: 'robots#index'
 
   root 'welcome#index'
 end

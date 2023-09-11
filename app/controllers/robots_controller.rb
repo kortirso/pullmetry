@@ -3,5 +3,7 @@
 class RobotsController < ApplicationController
   skip_before_action :authenticate
 
-  def index; end
+  def index
+    render :index, layout: false, formats: :text
+  end
 end
