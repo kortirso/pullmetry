@@ -66,7 +66,8 @@ gem 'action_policy'
 gem 'store_model'
 
 # cache store
-gem 'dalli'
+gem 'redis', '~> 5.0'
+gem 'redis-rails'
 
 # achievements system
 gem 'kudos'

@@ -13,14 +13,7 @@
     <tbody>
       <% visible_insights.each do |insight| %>
         <tr>
-          <%- render Views::Shared::InsightsEntityComponent.new(entity_id: insight.entity_id) %>
-
-          <td class="image">
-            <%= link_to insight.entity.html_url, target: '_blank', rel: 'noopener noreferrer' do %>
-              <%= image_tag insight.entity.avatar_url %>
-            <% end %>
-          </td>
-          <td><%= insight.entity.login %></td>
+          <%= render Views::Shared::InsightsEntityComponent.new(entity_id: insight.entity_id) %>
           <% insight_fields.each do |insight_field| %>
             <td>
               <%= render_insight_field(insight, insight_field) %>
