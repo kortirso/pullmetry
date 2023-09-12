@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
   def show; end
 
   def update
-    service_call = Users::UpdateService.call(
+    service_call = Users::UpdateForm.call(
       user: current_user,
       params: user_params,
       use_work_time: to_bool(params[:user][:use_work_time]),
