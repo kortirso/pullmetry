@@ -21,7 +21,7 @@ module Import
           find_or_create_author_entities(data.pluck(:author, :reviewers))
           data.each do |payload|
             save_pull_request(payload, find_entity_by_id(payload.dig(:author, :external_id)))
-            save_reviewers_entities(find_reviewers_entities(payload[:reviewers]))
+            save_requested_reviewers(find_reviewers_entities(payload[:reviewers]))
           end
         end
       end
@@ -70,15 +70,16 @@ module Import
         @pull_request.update!(payload.except(:author, :reviewers).merge(entity_id: author_entity))
       end
 
-      def save_reviewers_entities(reviewer_entities)
-        existing_reviewer_entities = @pull_request.pull_requests_entities.pluck(:entity_id)
+      def save_requested_reviewers(reviewer_entities)
+        existing_reviewer_entities = @pull_request.pull_requests_reviews.pluck(:entity_id)
         result = (reviewer_entities - existing_reviewer_entities).map do |entity|
           {
             entity_id: entity,
-            pull_request_id: @pull_request.id
+            pull_request_id: @pull_request.id,
+            required: true
           }
         end
-        ::PullRequests::Entity.upsert_all(result) if result.any?
+        ::PullRequests::Review.upsert_all(result) if result.any?
       end
     end
   end

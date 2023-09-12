@@ -6,17 +6,10 @@ class PullRequest < ApplicationRecord
   belongs_to :repository, counter_cache: true
   belongs_to :entity
 
-  has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
-  has_many :entities, through: :pull_requests_entities
-  has_many :pull_requests_comments,
-           -> { distinct },
-           through: :pull_requests_entities,
-           class_name: 'PullRequests::Comment'
-
-  has_many :pull_requests_reviews,
-           -> { distinct },
-           through: :pull_requests_entities,
-           class_name: 'PullRequests::Review'
+  # has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
+  # has_many :entities, through: :pull_requests_entities
+  has_many :pull_requests_comments, class_name: 'PullRequests::Comment', dependent: :destroy
+  has_many :pull_requests_reviews, class_name: 'PullRequests::Review', dependent: :destroy
 
   scope :merged, -> { where.not(pull_merged_at: nil) }
   scope :opened, -> { where(pull_closed_at: nil) }
@@ -31,14 +24,5 @@ class PullRequest < ApplicationRecord
 
   def draft?
     pull_created_at.nil?
-  end
-
-  def all_entities
-    Entity
-      .left_joins(:pull_requests_entities)
-      .where(pull_requests_entities: { pull_request_id: id })
-      .or(
-        Entity.where(id: entity_id)
-      )
   end
 end

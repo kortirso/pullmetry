@@ -9,7 +9,8 @@ module Insights
         @insightable = insightable
         @result = {}
         PullRequests::Review
-          .includes(pull_requests_entity: :pull_request)
+          .includes(:pull_request)
+          .approved
           .where(
             'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
             date_from.days.ago,
@@ -23,10 +24,10 @@ module Insights
       private
 
       def handle_review(review)
-        entity_id = review.pull_requests_entity.entity_id
+        entity_id = review.entity_id
         update_result_with_total_review_time(
           entity_id,
-          calculate_review_seconds(review, review.pull_requests_entity.pull_request)
+          calculate_review_seconds(review, review.pull_request)
         )
       end
 
@@ -42,7 +43,7 @@ module Insights
         seconds_between_times(
           convert_time(created_at, true),
           convert_time(reviewed_at, false),
-          review.pull_requests_entity.entity&.identity&.user&.vacations
+          review.entity.identity&.user&.vacations
         )
       end
     end

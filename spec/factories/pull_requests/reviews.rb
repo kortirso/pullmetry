@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :pull_requests_review, class: 'PullRequests::Review' do
     external_id { '1' }
     review_created_at { DateTime.now }
-    pull_requests_entity
+    pull_request
+    entity
   end
 end

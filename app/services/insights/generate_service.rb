@@ -89,14 +89,14 @@ module Insights
       @comments_count.fetch("#{date_from},#{date_to}") do |key|
         @comments_count[key] =
           @insightable
-          .pull_requests_comments
-          .joins(pull_requests_entity: :pull_request)
-          .where(
-            'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
-          )
-          .group('pull_requests_entities.entity_id').count
+            .pull_requests_comments
+            .joins(:pull_request)
+            .where(
+              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
+              date_from.days.ago,
+              date_to.days.ago
+            )
+            .group(:entity_id).count
       end
     end
 
@@ -107,14 +107,15 @@ module Insights
       @reviews_count.fetch("#{date_from},#{date_to}") do |key|
         @reviews_count[key] =
           @insightable
-          .pull_requests_reviews
-          .joins(pull_requests_entity: :pull_request)
-          .where(
-            'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
-          )
-          .group('pull_requests_entities.entity_id').count
+            .pull_requests_reviews
+            .approved
+            .joins(:pull_request)
+            .where(
+              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
+              date_from.days.ago,
+              date_to.days.ago
+            )
+            .group(:entity_id).count
       end
     end
 
@@ -125,14 +126,15 @@ module Insights
       @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
         @required_reviews_count[key] =
           @insightable
-          .pull_requests_entities
-          .joins(:pull_request)
-          .where(
-            'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
-          )
-          .group('entity_id').count
+            .pull_requests_reviews
+            .required
+            .joins(:pull_request)
+            .where(
+              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
+              date_from.days.ago,
+              date_to.days.ago
+            )
+            .group(:entity_id).count
       end
     end
 
@@ -161,19 +163,19 @@ module Insights
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
         @pulls_with_user_comments[key] =
           @insightable
-          .pull_requests
-          .where(
-            'pull_created_at > ? AND pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
-          )
-          .flat_map { |pull|
-            Entity
-              .joins(pull_requests_entities: :pull_requests_comments)
-              .where(pull_requests_comments: { id: pull.pull_requests_comments })
-              .pluck(:id)
-              .uniq
-          }.tally
+            .pull_requests
+            .where(
+              'pull_created_at > ? AND pull_created_at < ?',
+              date_from.days.ago,
+              date_to.days.ago
+            )
+            .flat_map { |pull|
+              Entity
+                .joins(:pull_requests_comments)
+                .where(pull_requests_comments: { id: pull.pull_requests_comments })
+                .pluck(:id)
+                .uniq
+            }.tally
       end
     end
 
@@ -184,13 +186,13 @@ module Insights
       @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
         @open_pull_requests_count[key] =
           @insightable
-          .pull_requests
-          .where(
-            'pull_created_at > ? AND pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
-          )
-          .group('entity_id').count
+            .pull_requests
+            .where(
+              'pull_created_at > ? AND pull_created_at < ?',
+              date_from.days.ago,
+              date_to.days.ago
+            )
+            .group(:entity_id).count
       end
     end
 
@@ -228,18 +230,18 @@ module Insights
     def sum_comments_in_open_prs(date_from, date_to)
       @insightable
         .pull_requests
-        .where(
-          'pull_created_at > ? AND pull_created_at < ?',
-          date_from.days.ago,
-          date_to.days.ago
-        )
-        .each_with_object({}) { |pull_request, acc|
-          entity_id = pull_request.entity_id
-          next if entity_id.nil?
+          .where(
+            'pull_created_at > ? AND pull_created_at < ?',
+            date_from.days.ago,
+            date_to.days.ago
+          )
+          .each_with_object({}) { |pull_request, acc|
+            entity_id = pull_request.entity_id
+            next if entity_id.nil?
 
-          comments_count = pull_request.pull_requests_entities.sum(:pull_requests_comments_count)
-          acc[entity_id] ? acc[entity_id].push(comments_count) : (acc[entity_id] = [comments_count])
-        }
+            comments_count = pull_request.pull_requests_comments_count
+            acc[entity_id] ? acc[entity_id].push(comments_count) : (acc[entity_id] = [comments_count])
+          }
     end
 
     def premium

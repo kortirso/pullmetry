@@ -678,7 +678,8 @@ CREATE TABLE public.pull_requests (
     pull_created_at timestamp(6) without time zone,
     pull_closed_at timestamp(6) without time zone,
     pull_merged_at timestamp(6) without time zone,
-    entity_id bigint NOT NULL
+    entity_id bigint NOT NULL,
+    pull_requests_comments_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -688,11 +689,13 @@ CREATE TABLE public.pull_requests (
 
 CREATE TABLE public.pull_requests_comments (
     id bigint NOT NULL,
-    pull_requests_entity_id bigint NOT NULL,
+    pull_requests_entity_id bigint,
     external_id character varying NOT NULL,
     comment_created_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pull_request_id bigint NOT NULL,
+    entity_id bigint NOT NULL
 );
 
 
@@ -773,11 +776,14 @@ ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 
 CREATE TABLE public.pull_requests_reviews (
     id bigint NOT NULL,
-    pull_requests_entity_id bigint NOT NULL,
-    external_id character varying NOT NULL,
-    review_created_at timestamp(6) without time zone NOT NULL,
+    pull_requests_entity_id bigint,
+    external_id character varying,
+    review_created_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pull_request_id bigint NOT NULL,
+    entity_id bigint NOT NULL,
+    required boolean DEFAULT false NOT NULL
 );
 
 
@@ -1609,13 +1615,6 @@ CREATE INDEX index_pull_requests_comments_on_external_id ON public.pull_requests
 
 
 --
--- Name: index_pull_requests_comments_on_pull_requests_entity_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pull_requests_comments_on_pull_requests_entity_id ON public.pull_requests_comments USING btree (pull_requests_entity_id);
-
-
---
 -- Name: index_pull_requests_entities_on_pull_request_id_and_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1648,13 +1647,6 @@ CREATE UNIQUE INDEX index_pull_requests_on_uuid ON public.pull_requests USING bt
 --
 
 CREATE INDEX index_pull_requests_reviews_on_external_id ON public.pull_requests_reviews USING btree (external_id);
-
-
---
--- Name: index_pull_requests_reviews_on_pull_requests_entity_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pull_requests_reviews_on_pull_requests_entity_id ON public.pull_requests_reviews USING btree (pull_requests_entity_id);
 
 
 --
@@ -1854,6 +1846,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230627192841'),
 ('20230904082413'),
 ('20230904130559'),
-('20230906185155');
+('20230906185155'),
+('20230912175713'),
+('20230912182023'),
+('20230912195115'),
+('20230912200254');
 
 
