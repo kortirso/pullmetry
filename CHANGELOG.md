@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - previous insights calculated 1 time per day for faster insight ratio calculations
+- LOC insights attributes
 
 ### Modified
 - skip using PullRequests::Entity model
 - calculating company insights by using repository insights
 - updating pull_requests_count counter after import
+- remove ratio insights attributes
 
 ### Fixed
 - calculate insight ratios for average_open_pr_comments field

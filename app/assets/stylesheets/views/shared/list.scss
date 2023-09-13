@@ -58,10 +58,11 @@
 
       .table {
         border-collapse: collapse;
+        font-size: .9rem;
 
         th, td {
           border: 1px solid $gray300;
-          padding: .5rem 1rem;
+          padding: .5rem .75rem;
         }
 
         tr {

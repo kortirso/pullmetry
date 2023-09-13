@@ -11,13 +11,17 @@ class Insight < ApplicationRecord
   REVERSE_ORDER_ATTRIBUTES = %i[average_review_seconds average_merge_seconds average_open_pr_comments].freeze
   SHORT_ATTRIBUTE_NAMES = {
     required_reviews_count: 'Required reviews',
-    comments_count: 'Total comments',
-    reviews_count: 'Total reviews',
-    review_involving: 'Review involving ratio',
-    average_review_seconds: 'Average review time',
-    open_pull_requests_count: 'Open Pulls',
-    average_merge_seconds: 'Average merge time',
-    average_open_pr_comments: 'Average received comments'
+    comments_count: 'Comments',
+    reviews_count: 'Reviews',
+    review_involving: 'Involving',
+    average_review_seconds: 'Avg review time',
+    reviewed_loc: 'Reviewed LOC',
+    average_reviewed_loc: 'Avg review LOC',
+    open_pull_requests_count: 'Open pulls',
+    average_merge_seconds: 'Avg merge time',
+    average_open_pr_comments: 'Avg received comments',
+    changed_loc: 'Reviewed LOC',
+    average_changed_loc: 'Avg review LOC'
   }.freeze
 
   FETCH_DAYS_PERIOD = 30
@@ -29,4 +33,8 @@ class Insight < ApplicationRecord
   scope :of_type, ->(type) { where(insightable_type: type) }
   scope :previous, -> { where.not(previous_date: nil) }
   scope :actual, -> { where(previous_date: nil) }
+
+  def actual?
+    previous_date.nil?
+  end
 end

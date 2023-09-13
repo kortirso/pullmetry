@@ -103,8 +103,6 @@ describe Companies::ConfigurationsController do
         end
 
         context 'for valid params' do
-          let!(:insight) { create :insight, insightable: company, comments_count_ratio: 30 }
-
           let(:request) {
             patch :update, params: {
               company_id: company.uuid,
@@ -136,7 +134,6 @@ describe Companies::ConfigurationsController do
               expect(configuration.insight_fields).to be_nil
               expect(configuration.insight_ratio).to be_nil
               expect(configuration.insight_ratio_type).to eq 'ratio'
-              expect(insight.reload.comments_count_ratio).to eq 30
               expect(response).to redirect_to companies_path
             end
           end
@@ -144,6 +141,7 @@ describe Companies::ConfigurationsController do
           context 'for premium account' do
             before { create :subscription, user: @current_user }
 
+            # rubocop: disable RSpec/ExampleLength
             it 'updates configuration with additional attributes and redirects', :aggregate_failures do
               request
 
@@ -156,16 +154,20 @@ describe Companies::ConfigurationsController do
                 'reviews_count' => nil,
                 'required_reviews_count' => nil,
                 'review_involving' => nil,
+                'reviewed_loc' => nil,
+                'average_reviewed_loc' => nil,
                 'open_pull_requests_count' => nil,
                 'average_open_pr_comments' => nil,
                 'average_review_seconds' => nil,
-                'average_merge_seconds' => nil
+                'average_merge_seconds' => nil,
+                'changed_loc' => nil,
+                'average_changed_loc' => nil
               })
               expect(configuration.insight_ratio).to be_truthy
               expect(configuration.insight_ratio_type).to eq 'change'
-              expect(insight.reload.comments_count_ratio).to be_nil
               expect(response).to redirect_to companies_path
             end
+            # rubocop: enable RSpec/ExampleLength
           end
         end
       end

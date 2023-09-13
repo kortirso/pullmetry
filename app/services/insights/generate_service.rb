@@ -60,24 +60,14 @@ module Insights
     # this method generates insight attributes based on available insight_fields
     # rubocop: disable Style/OptionalBooleanParameter
     def insight_attributes(entity_id, previous=false)
-      active_fields(previous).inject({}) do |acc, insight_field|
-        field_value =
-          if insight_field.ends_with?('ratio')
-            method_name = configuration.insight_ratio_type == 'ratio' ? :ratio : :change
-            send(method_name, insight_field[0..-7], entity_id)
-          else
-            value = find_insight_field_value(insight_field, entity_id, previous)
-            Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value.to_i
-          end
+      insight_fields.inject({}) do |acc, insight_field|
+        value = find_insight_field_value(insight_field, entity_id, previous)
+        field_value = Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value.to_i
 
         acc.merge({ insight_field.to_sym => field_value })
       end
     end
     # rubocop: enable Style/OptionalBooleanParameter
-
-    def active_fields(previous)
-      previous ? previous_insight_fields : insight_fields
-    end
 
     def find_insight_field_value(insight_field, entity_id, previous)
       return send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id] if previous
@@ -87,39 +77,12 @@ module Insights
 
     # selecting insight attributes based on company configuration
     def insight_fields
-      @insight_fields ||= begin
-        list = previous_insight_fields
-        if premium && configuration.insight_ratio
-          list = list.flat_map { |insight_field| [insight_field, "#{insight_field}_ratio"] }
-        end
-        list
-      end
-    end
-
-    # selecting previous insight attributes based on company configuration
-    def previous_insight_fields
-      @previous_insight_fields ||=
+      @insight_fields ||=
         if premium && configuration.insight_fields.present?
           @insightable.selected_insight_fields
         else
           Insight::DEFAULT_ATTRIBUTES
         end
-    end
-
-    def ratio(insight_field, entity_id)
-      return 0 if @previous_insight.nil?
-
-      previous_period = @previous_insight[insight_field].to_f
-      return 0 if previous_period.zero?
-
-      ((send(insight_field)[entity_id].to_f - previous_period) * 100 / previous_period).to_i
-    end
-
-    def change(insight_field, entity_id)
-      return 0 if @previous_insight.nil?
-
-      method_name = insight_field == 'average_open_pr_comments' ? :to_f : :to_i
-      send(insight_field)[entity_id].send(method_name) - @previous_insight[insight_field].send(method_name)
     end
 
     # this method returns { entity_id => comments_count_by_entity }

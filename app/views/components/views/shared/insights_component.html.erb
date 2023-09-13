@@ -1,17 +1,17 @@
 <h2>Insights</h2>
-<% if visible_insights.size.positive? %>
+<% if actual_insights.size.positive? %>
   <table class="table" cellSpacing="0">
     <thead>
       <tr>
         <th></th>
-        <th>User</th>
+        <th>Developer</th>
         <% insight_fields.each do |insight_field| %>
           <th><%= Insight::SHORT_ATTRIBUTE_NAMES[insight_field.to_sym] %></th>
         <% end %>
       </tr>
     </thead>
     <tbody>
-      <% visible_insights.each do |insight| %>
+      <% actual_insights.each do |insight| %>
         <tr>
           <%- render Views::Shared::InsightsEntityComponent.new(entity_id: insight.entity_id) %>
 
