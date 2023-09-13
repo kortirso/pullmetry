@@ -14,7 +14,7 @@ describe Import::SyncRepositoriesService, type: :service do
   }
 
   let!(:company) { create :company, accessable: true }
-  let!(:repository) { create :repository, company: company, accessable: false }
+  let!(:repository) { create :repository, company: company, accessable: false, pull_requests_count: 3 }
   let!(:pull_request1) { create :pull_request, repository: repository }
   let!(:pull_request2) { create :pull_request, repository: repository, pull_closed_at: 1.minute.ago }
   let(:sync_pull_requests_service) { double(Import::SyncPullRequestsService) }
@@ -53,6 +53,7 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(generate_company_insights_service).not_to have_received(:call)
     expect(generate_repository_insights_service).not_to have_received(:call)
     expect(repository.reload.synced_at).not_to be_nil
+    expect(repository.pull_requests_count).to eq 2
     expect(company.reload.accessable).to be_falsy
     expect(company.not_accessable_ticks).to eq 1
     expect(service_call.success?).to be_truthy

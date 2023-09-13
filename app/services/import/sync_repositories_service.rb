@@ -52,7 +52,7 @@ module Import
         repository: repository,
         params: {
           synced_at: DateTime.now,
-          pull_requests_count: repository.pull_requests.actual
+          pull_requests_count: repository.pull_requests.actual.count
         }
       )
     end
