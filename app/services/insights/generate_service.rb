@@ -109,16 +109,17 @@ module Insights
     def ratio(insight_field, entity_id)
       return 0 if @previous_insight.nil?
 
-      previous_period = @previous_insight[insight_field].to_i
+      previous_period = @previous_insight[insight_field].to_f
       return 0 if previous_period.zero?
 
-      (send(insight_field)[entity_id].to_i - previous_period) * 100 / previous_period
+      ((send(insight_field)[entity_id].to_f - previous_period) * 100 / previous_period).to_i
     end
 
     def change(insight_field, entity_id)
       return 0 if @previous_insight.nil?
 
-      send(insight_field)[entity_id].to_i - @previous_insight[insight_field].to_i
+      method_name = insight_field == 'average_open_pr_comments' ? :to_f : :to_i
+      send(insight_field)[entity_id].send(method_name) - @previous_insight[insight_field].send(method_name)
     end
 
     # this method returns { entity_id => comments_count_by_entity }

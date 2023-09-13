@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - skip using PullRequests::Entity model
 - calculating company insights by using repository insights
 
+### Fixed
+- calculate insight ratios for average_open_pr_comments field
+
 ## [1.3.8] - 2023-09-11
 ### Added
 - query objects
