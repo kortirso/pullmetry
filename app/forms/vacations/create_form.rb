@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Vacations
-  class CreateService
+  class CreateForm
     prepend ApplicationService
 
     def call(user:, params:)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Repositories::CreateService, type: :service do
-  subject(:service_call) { described_class.call(company: company, params: params) }
+describe Repositories::CreateForm, type: :service do
+  subject(:form) { described_class.call(company: company, params: params) }
 
   let!(:company) { create :company }
 
@@ -9,8 +9,8 @@ describe Repositories::CreateService, type: :service do
     let(:params) { { title: '', link: '' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { service_call }.not_to change(Repository, :count)
-      expect(service_call.failure?).to be_truthy
+      expect { form }.not_to change(Repository, :count)
+      expect(form.failure?).to be_truthy
     end
   end
 
@@ -18,8 +18,8 @@ describe Repositories::CreateService, type: :service do
     let(:params) { { title: 'Title', link: 'link', provider: 'gitlab' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { service_call }.not_to change(Repository, :count)
-      expect(service_call.failure?).to be_truthy
+      expect { form }.not_to change(Repository, :count)
+      expect(form.failure?).to be_truthy
     end
   end
 
@@ -27,8 +27,8 @@ describe Repositories::CreateService, type: :service do
     let(:params) { { title: 'Title', link: 'link', provider: 'gitlab', external_id: '1' } }
 
     it 'creates repository and succeeds', :aggregate_failures do
-      expect { service_call }.to change(company.repositories, :count).by(1)
-      expect(service_call.success?).to be_truthy
+      expect { form }.to change(company.repositories, :count).by(1)
+      expect(form.success?).to be_truthy
     end
   end
 
@@ -37,16 +37,16 @@ describe Repositories::CreateService, type: :service do
     let(:params) { { title: 'Title', link: 'link', provider: 'github' } }
 
     it 'creates repository and succeeds', :aggregate_failures do
-      expect { service_call }.to change(company.repositories, :count).by(1)
-      expect(service_call.success?).to be_truthy
+      expect { form }.to change(company.repositories, :count).by(1)
+      expect(form.success?).to be_truthy
     end
 
     context 'when user has access to repository with the same link' do
       before { repository.update!(company: company) }
 
       it 'does not create repository and fails', :aggregate_failures do
-        expect { service_call }.not_to change(Repository, :count)
-        expect(service_call.failure?).to be_truthy
+        expect { form }.not_to change(Repository, :count)
+        expect(form.failure?).to be_truthy
       end
     end
 
@@ -54,8 +54,8 @@ describe Repositories::CreateService, type: :service do
       let!(:insight) { create :insight, insightable: repository }
 
       it 'does not create repository and fails', :aggregate_failures do
-        expect { service_call }.not_to change(Repository, :count)
-        expect(service_call.failure?).to be_truthy
+        expect { form }.not_to change(Repository, :count)
+        expect(form.failure?).to be_truthy
       end
 
       context 'when insight is old' do
@@ -65,8 +65,8 @@ describe Repositories::CreateService, type: :service do
         end
 
         it 'creates repository and succeeds', :aggregate_failures do
-          expect { service_call }.to change(company.repositories, :count).by(1)
-          expect(service_call.success?).to be_truthy
+          expect { form }.to change(company.repositories, :count).by(1)
+          expect(form.success?).to be_truthy
         end
       end
     end

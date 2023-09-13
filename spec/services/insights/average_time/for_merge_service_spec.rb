@@ -27,7 +27,7 @@ describe Insights::AverageTime::ForMergeService, type: :service do
            pull_created_at: first_monday + 1.day + 12.hours,
            entity: entity1
 
-    create :pull_requests_entity, pull_request: pr2, entity: entity3
+    create :pull_requests_review, pull_request: pr2, entity: entity3
   end
 
   context 'for repository insightable' do

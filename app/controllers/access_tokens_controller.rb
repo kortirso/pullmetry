@@ -11,13 +11,13 @@ class AccessTokensController < ApplicationController
   def create
     authorize! @tokenable, to: :update?
     # commento: access_tokens.value
-    service_call = AccessTokens::CreateService.call(tokenable: @tokenable, params: access_token_params)
-    if service_call.success?
+    form = AccessTokens::CreateForm.call(tokenable: @tokenable, params: access_token_params)
+    if form.success?
       redirect_to redirect_path, notice: 'Access token is created'
     else
       redirect_to(
         new_access_token_path(tokenable_uuid: @tokenable.uuid, tokenable_type: @tokenable.class.name),
-        alert: service_call.errors
+        alert: form.errors
       )
     end
   end

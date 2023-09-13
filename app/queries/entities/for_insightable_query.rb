@@ -5,12 +5,12 @@ module Entities
     def initialize(relation: Entity.none) = super
 
     def resolve(insightable:)
-      Entity
-        .left_joins(:pull_requests_entities)
-        .where(pull_requests_entities: { pull_request_id: insightable.pull_requests })
-        .or(
-          Entity.where(id: insightable.pull_requests.select(:entity_id))
-        )
+      relation = Entity.left_joins(:pull_requests_comments, :pull_requests_reviews)
+
+      relation.where(pull_requests_comments: { pull_request_id: insightable.pull_requests })
+        .or(relation.where(pull_requests_reviews: { pull_request_id: insightable.pull_requests }))
+        .or(Entity.where(id: insightable.pull_requests.select(:entity_id)))
+        .distinct
     end
   end
 end

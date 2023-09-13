@@ -8,7 +8,7 @@ class VacationsController < ApplicationController
   end
 
   def create
-    service_call = Vacations::CreateService.call(user: current_user, params: vacation_params)
+    service_call = Vacations::CreateForm.call(user: current_user, params: vacation_params)
     if service_call.success?
       redirect_to profile_path, notice: 'Vacation is added'
     else

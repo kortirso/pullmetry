@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class UpdateService
+  class UpdateForm
     prepend ApplicationService
 
     def call(user:, params:, use_work_time:, notification_params:)

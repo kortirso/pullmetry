@@ -6,8 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 ### Added
+- previous insights calculated 1 time per day for faster insight ratio calculations
+
+### Modified
+- skip using PullRequests::Entity model
+- calculating company insights by using repository insights
+- updating pull_requests_count counter after import
+
+### Fixed
+- calculate insight ratios for average_open_pr_comments field
+
+## [1.3.8] - 2023-09-11
+### Added
 - query objects
 - cache entities data for skipping redundant queries
+- form object to interact with users input
+
+### Fixed
+- rendering robots file for text/html request
+- rendering sitemap zgip file
 
 ### Modified
 - cache store from memcached to redis

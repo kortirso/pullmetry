@@ -10,14 +10,16 @@ module Import
       sync_pull_requests_service: SyncPullRequestsService,
       sync_comments_service: SyncCommentsService,
       sync_reviews_service: SyncReviewsService,
-      generate_insights_service: Insights::GenerateService,
+      generate_repository_insights_service: Insights::Generate::RepositoryService,
+      generate_company_insights_service: Insights::Generate::CompanyService,
       update_repository_service: Repositories::UpdateService.new,
       update_company_service: Companies::UpdateService
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
       @sync_reviews_service = sync_reviews_service
-      @generate_insights_service = generate_insights_service
+      @generate_repository_insights_service = generate_repository_insights_service
+      @generate_company_insights_service = generate_company_insights_service
       @update_repository_service = update_repository_service
       @update_company_service = update_company_service
 
@@ -35,7 +37,7 @@ module Import
           @sync_reviews_service.new(pull_request: pull_request).call
         end
         update_repository(repository)
-        @generate_insights_service.call(insightable: repository) if repository.accessable
+        @generate_repository_insights_service.call(insightable: repository) if repository.accessable
       end
 
       finalize_sync(company)
@@ -45,8 +47,14 @@ module Import
     private
 
     def update_repository(repository)
-      # commento: repositories.synced_at
-      @update_repository_service.call(repository: repository, params: { synced_at: DateTime.now })
+      # commento: repositories.synced_at, repositories.pull_requests_count
+      @update_repository_service.call(
+        repository: repository,
+        params: {
+          synced_at: DateTime.now,
+          pull_requests_count: repository.pull_requests.actual.count
+        }
+      )
     end
 
     def finalize_sync(company)
@@ -54,7 +62,9 @@ module Import
 
       update_company_accessable(company, not_accessable_count.zero?)
       refresh_entities_cache(company)
-      @generate_insights_service.call(insightable: company) if company.repositories_count != not_accessable_count
+      return if company.repositories_count == not_accessable_count
+
+      @generate_company_insights_service.call(insightable: company)
     end
 
     def update_company_accessable(company, accessable)

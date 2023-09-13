@@ -13,7 +13,7 @@ module Auth
 
       @result = User.find_or_create_by!(email: email)
       # commento: identities.uid, identities.provider, identities.email, identities.login
-      Identities::CreateService.call(
+      Identities::CreateForm.call(
         user: @result,
         params: { uid: auth[:uid], provider: auth[:provider], email: email, login: auth[:login] }
       )

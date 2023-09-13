@@ -5,7 +5,7 @@ describe Import::SyncCommentsService, type: :service do
 
   let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
-  let!(:pull_requests_entity) { create :pull_requests_entity, pull_request: pull_request }
+  let!(:entity) { create :entity }
   let(:fetcher) { double }
   let(:fetch_data) { double }
   let(:data) {
@@ -61,7 +61,7 @@ describe Import::SyncCommentsService, type: :service do
   end
 
   context 'when there is 1 existing comment' do
-    before { create :pull_requests_comment, pull_requests_entity: pull_requests_entity, external_id: '2' }
+    before { create :pull_requests_comment, entity: entity, pull_request: pull_request, external_id: '2' }
 
     it 'creates 1 new comment' do
       expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(1)
@@ -69,7 +69,7 @@ describe Import::SyncCommentsService, type: :service do
   end
 
   context 'when there is 1 old existing comment' do
-    before { create :pull_requests_comment, pull_requests_entity: pull_requests_entity, external_id: '1' }
+    before { create :pull_requests_comment, entity: entity, pull_request: pull_request, external_id: '1' }
 
     it 'creates 2 new comments and destroys old comments', :aggregate_failures do
       service_call

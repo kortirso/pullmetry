@@ -8,6 +8,7 @@ describe PullRequests::Comment do
   end
 
   describe 'associations' do
-    it { is_expected.to belong_to(:pull_requests_entity).class_name('::PullRequests::Entity') }
+    it { is_expected.to belong_to(:pull_request).class_name('::PullRequest') }
+    it { is_expected.to belong_to(:entity).class_name('::Entity') }
   end
 end

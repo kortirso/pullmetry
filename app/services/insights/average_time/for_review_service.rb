@@ -5,28 +5,32 @@ module Insights
     class ForReviewService < BasisService
       prepend ApplicationService
 
+      # rubocop: disable Metrics/AbcSize
       def call(insightable:, date_from: Insight::FETCH_DAYS_PERIOD, date_to: 0)
         @insightable = insightable
         @result = {}
+
         PullRequests::Review
-          .includes(pull_requests_entity: :pull_request)
+          .approved
+          .includes(:pull_request)
           .where(
             'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
+            date_from.days.ago.beginning_of_day,
+            date_to.zero? ? DateTime.now : date_to.days.ago.beginning_of_day
           )
           .where(pull_requests: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
           .find_each { |review| handle_review(review) }
         update_result_with_average_time
       end
+      # rubocop: enable Metrics/AbcSize
 
       private
 
       def handle_review(review)
-        entity_id = review.pull_requests_entity.entity_id
+        entity_id = review.entity_id
         update_result_with_total_review_time(
           entity_id,
-          calculate_review_seconds(review, review.pull_requests_entity.pull_request)
+          calculate_review_seconds(review, review.pull_request)
         )
       end
 
@@ -42,7 +46,7 @@ module Insights
         seconds_between_times(
           convert_time(created_at, true),
           convert_time(reviewed_at, false),
-          review.pull_requests_entity.entity&.identity&.user&.vacations
+          review.entity.identity&.user&.vacations
         )
       end
     end

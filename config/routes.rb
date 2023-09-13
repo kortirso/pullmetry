@@ -24,8 +24,8 @@ Rails.application.routes.draw do
   get 'privacy', to: 'welcome#privacy'
   get 'sources', to: 'welcome#sources'
 
-  get 'sitemap.xml', to: 'sitemaps#index', format: :xml
-  get 'robots.txt', to: 'robots#index', format: :text
+  get 'sitemap', to: 'sitemaps#index'
+  get 'robots', to: 'robots#index'
 
   root 'welcome#index'
 end

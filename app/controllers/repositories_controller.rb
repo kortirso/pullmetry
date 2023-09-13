@@ -21,11 +21,12 @@ class RepositoriesController < ApplicationController
 
   def create
     authorize! Current.user, to: :create_repository?
-    service_call = Repositories::CreateService.call(company: @company, params: repository_params)
-    if service_call.success?
-      redirect_to repositories_path, notice: "Repository #{service_call.result.title} is created"
+    # commento: repositories.title, repositories.link, repositories.provider, repositories.external_id
+    form = Repositories::CreateForm.call(company: @company, params: repository_params)
+    if form.success?
+      redirect_to repositories_path, notice: "Repository #{form.result.title} is created"
     else
-      redirect_to new_repository_path, alert: service_call.errors
+      redirect_to new_repository_path, alert: form.errors
     end
   end
 

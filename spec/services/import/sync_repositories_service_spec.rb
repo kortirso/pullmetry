@@ -7,13 +7,14 @@ describe Import::SyncRepositoriesService, type: :service do
         sync_pull_requests_service: sync_pull_requests_service,
         sync_comments_service: sync_comments_service,
         sync_reviews_service: sync_reviews_service,
-        generate_insights_service: generate_insights_service
+        generate_repository_insights_service: generate_repository_insights_service,
+        generate_company_insights_service: generate_company_insights_service
       )
       .call(company: company)
   }
 
   let!(:company) { create :company, accessable: true }
-  let!(:repository) { create :repository, company: company, accessable: false }
+  let!(:repository) { create :repository, company: company, accessable: false, pull_requests_count: 3 }
   let!(:pull_request1) { create :pull_request, repository: repository }
   let!(:pull_request2) { create :pull_request, repository: repository, pull_closed_at: 1.minute.ago }
   let(:sync_pull_requests_service) { double(Import::SyncPullRequestsService) }
@@ -22,7 +23,8 @@ describe Import::SyncRepositoriesService, type: :service do
   let(:comments_service) { double }
   let(:sync_reviews_service) { double(Import::SyncReviewsService) }
   let(:reviews_service) { double }
-  let(:generate_insights_service) { double(Insights::GenerateService) }
+  let(:generate_repository_insights_service) { double(Insights::Generate::RepositoryService) }
+  let(:generate_company_insights_service) { double(Insights::Generate::CompanyService) }
   let(:mailer) { double }
 
   before do
@@ -34,7 +36,8 @@ describe Import::SyncRepositoriesService, type: :service do
     allow(comments_service).to receive(:call)
     allow(sync_reviews_service).to receive(:new).and_return(reviews_service)
     allow(reviews_service).to receive(:call)
-    allow(generate_insights_service).to receive(:call)
+    allow(generate_company_insights_service).to receive(:call)
+    allow(generate_repository_insights_service).to receive(:call)
     allow(Users::NotificationMailer).to receive(:repository_access_error_email).and_return(mailer)
     allow(mailer).to receive(:deliver_now)
   end
@@ -47,8 +50,10 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(sync_reviews_service).to have_received(:new).with(pull_request: pull_request1)
     expect(sync_comments_service).not_to have_received(:new).with(pull_request: pull_request2)
     expect(sync_reviews_service).not_to have_received(:new).with(pull_request: pull_request2)
-    expect(generate_insights_service).not_to have_received(:call)
+    expect(generate_company_insights_service).not_to have_received(:call)
+    expect(generate_repository_insights_service).not_to have_received(:call)
     expect(repository.reload.synced_at).not_to be_nil
+    expect(repository.pull_requests_count).to eq 2
     expect(company.reload.accessable).to be_falsy
     expect(company.not_accessable_ticks).to eq 1
     expect(service_call.success?).to be_truthy
@@ -75,8 +80,8 @@ describe Import::SyncRepositoriesService, type: :service do
     it 'calls insights services and updates repository', :aggregate_failures do
       service_call
 
-      expect(generate_insights_service).to have_received(:call).with(insightable: repository)
-      expect(generate_insights_service).to have_received(:call).with(insightable: company)
+      expect(generate_repository_insights_service).to have_received(:call).with(insightable: repository)
+      expect(generate_company_insights_service).to have_received(:call).with(insightable: company)
       expect(repository.reload.synced_at).not_to be_nil
       expect(company.reload.accessable).to be_truthy
       expect(company.not_accessable_ticks).to eq 0
