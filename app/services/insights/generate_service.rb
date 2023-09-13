@@ -22,6 +22,7 @@ module Insights
         remove_old_insights(previous_insight_date)
         entity_ids.each do |entity_id|
           generate_previous_insight(entity_id, previous_insight_date)
+
           # update actual insight information for current period
           insight = @insightable.insights.actual.find_or_initialize_by(entity_id: entity_id)
           insight.update!(insight_attributes(entity_id))
@@ -124,61 +125,16 @@ module Insights
     def comments_count(...) = raise NotImplementedError
 
     # this method returns { entity_id => reviews_count }
-    def reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
-      @reviews_count ||= {}
-
-      @reviews_count.fetch("#{date_from},#{date_to}") do |key|
-        @reviews_count[key] =
-          @insightable
-            .pull_requests_reviews
-            .approved
-            .joins(:pull_request)
-            .where(
-              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-              beginning_of_date('from', date_from),
-              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-            )
-            .group(:entity_id).count
-      end
-    end
+    def reviews_count(...) = raise NotImplementedError
 
     # this method returns { entity_id => required_reviews_count }
-    def required_reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
-      @required_reviews_count ||= {}
-
-      @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
-        @required_reviews_count[key] =
-          @insightable
-            .pull_requests_reviews
-            .required
-            .joins(:pull_request)
-            .where(
-              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-              beginning_of_date('from', date_from),
-              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-            )
-            .group(:entity_id).count
-      end
-    end
+    def required_reviews_count(...) = raise NotImplementedError
 
     # this method returns { entity_id => review_involving }
-    # rubocop: disable Metrics/AbcSize
-    def review_involving(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
-      @review_involving ||= {}
+    def review_involving(...) = raise NotImplementedError
 
-      @review_involving.fetch("#{date_from},#{date_to}") do |key|
-        @review_involving[key] =
-          entity_ids.each_with_object({}) do |entity_id, acc|
-            other_user_pulls = open_pull_requests_count(date_from, date_to).except(entity_id).values.sum
-            return 0 if other_user_pulls.zero?
-
-            commented_pulls = pulls_with_user_comments(date_from, date_to)[entity_id].to_i
-            reviewed_pulls = reviews_count(date_from, date_to)[entity_id].to_i
-            acc[entity_id] = 100 * (commented_pulls + reviewed_pulls) / other_user_pulls
-          end
-      end
-    end
-    # rubocop: enable Metrics/AbcSize
+    # this method returns { entity_id => open_pull_requests_count }
+    def open_pull_requests_count(...) = raise NotImplementedError
 
     def pulls_with_user_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
       @pulls_with_user_comments ||= {}
@@ -199,23 +155,6 @@ module Insights
                 .pluck(:id)
                 .uniq
             }.tally
-      end
-    end
-
-    # this method returns { entity_id => open_pull_requests_count }
-    def open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
-      @open_pull_requests_count ||= {}
-
-      @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
-        @open_pull_requests_count[key] =
-          @insightable
-            .pull_requests
-            .where(
-              'pull_created_at > ? AND pull_created_at < ?',
-              beginning_of_date('from', date_from),
-              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-            )
-            .group(:entity_id).count
       end
     end
 
@@ -258,12 +197,10 @@ module Insights
             beginning_of_date('from', date_from),
             date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
           )
-          .each_with_object({}) { |pull_request, acc|
-            entity_id = pull_request.entity_id
-            next if entity_id.nil?
-
-            comments_count = pull_request.pull_requests_comments_count
-            acc[entity_id] ? acc[entity_id].push(comments_count) : (acc[entity_id] = [comments_count])
+          .hashable_pluck(:entity_id, :pull_requests_comments_count)
+          .each_with_object({}) { |element, acc|
+            acc[element[:entity_id]] ||= []
+            acc[element[:entity_id]].push(element[:pull_requests_comments_count])
           }
     end
 
