@@ -10,6 +10,7 @@ module Entities
       relation.where(pull_requests_comments: { pull_request_id: insightable.pull_requests })
         .or(relation.where(pull_requests_reviews: { pull_request_id: insightable.pull_requests }))
         .or(Entity.where(id: insightable.pull_requests.select(:entity_id)))
+        .distinct
     end
   end
 end

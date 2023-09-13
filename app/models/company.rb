@@ -10,7 +10,7 @@ class Company < ApplicationRecord
 
   has_many :repositories, dependent: :destroy
   has_many :pull_requests, through: :repositories
-  has_many :pull_requests_entities, class_name: '::PullRequests::Entity', through: :repositories
+  # has_many :pull_requests_entities, class_name: '::PullRequests::Entity', through: :repositories
   has_many :pull_requests_comments, class_name: '::PullRequests::Comment', through: :repositories
   has_many :pull_requests_reviews, class_name: '::PullRequests::Review', through: :repositories
 

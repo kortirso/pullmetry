@@ -27,4 +27,6 @@ class Insight < ApplicationRecord
   belongs_to :entity
 
   scope :of_type, ->(type) { where(insightable_type: type) }
+  scope :previous, -> { where.not(previous_date: nil) }
+  scope :actual, -> { where(previous_date: nil) }
 end

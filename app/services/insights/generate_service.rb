@@ -16,10 +16,14 @@ module Insights
 
     def call(insightable:)
       @insightable = insightable
+      previous_insight_date = Insight::DOUBLE_FETCH_DAYS_PERIOD.days.ago.to_date.to_s
+
       ActiveRecord::Base.transaction do
-        remove_old_insights
+        remove_old_insights(previous_insight_date)
         entity_ids.each do |entity_id|
-          insight = @insightable.insights.find_or_initialize_by(entity_id: entity_id)
+          generate_previous_insight(entity_id, previous_insight_date)
+          # update actual insight information for current period
+          insight = @insightable.insights.actual.find_or_initialize_by(entity_id: entity_id)
           insight.update!(insight_attributes(entity_id))
         end
       end
@@ -31,74 +35,93 @@ module Insights
       @entity_ids ||= Entities::ForInsightableQuery.resolve(insightable: @insightable).pluck(:id)
     end
 
-    def remove_old_insights
+    def remove_old_insights(previous_insight_date)
       @insightable.insights.where.not(entity_id: entity_ids).destroy_all
+      @insightable.insights.previous.where.not(previous_date: previous_insight_date).destroy_all
+    end
+
+    def generate_previous_insight(entity_id, previous_insight_date)
+      # update insight information for previous period
+      return @previous_insight = nil if !premium || !configuration.insight_ratio
+
+      # create previous insight for date only once per entity
+      @previous_insight = @insightable.insights.find_by(entity_id: entity_id, previous_date: previous_insight_date)
+      return unless @previous_insight.nil?
+
+      # commento: insights.previous_date
+      @previous_insight = @insightable.insights.find_or_initialize_by(
+        entity_id: entity_id,
+        previous_date: previous_insight_date
+      )
+      @previous_insight.update!(insight_attributes(entity_id, true))
     end
 
     # this method generates insight attributes based on available insight_fields
-    def insight_attributes(entity_id)
-      insight_fields.inject({}) do |acc, insight_field|
+    # rubocop: disable Style/OptionalBooleanParameter
+    def insight_attributes(entity_id, previous=false)
+      active_fields(previous).inject({}) do |acc, insight_field|
         field_value =
           if insight_field.ends_with?('ratio')
             method_name = configuration.insight_ratio_type == 'ratio' ? :ratio : :change
             send(method_name, insight_field[0..-7], entity_id)
           else
-            value = send(insight_field)[entity_id]
+            value = find_insight_field_value(insight_field, entity_id, previous)
             Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value.to_i
           end
 
         acc.merge({ insight_field.to_sym => field_value })
       end
     end
+    # rubocop: enable Style/OptionalBooleanParameter
+
+    def active_fields(previous)
+      previous ? previous_insight_fields : insight_fields
+    end
+
+    def find_insight_field_value(insight_field, entity_id, previous)
+      return send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id] if previous
+
+      send(insight_field)[entity_id]
+    end
 
     # selecting insight attributes based on company configuration
     def insight_fields
       @insight_fields ||= begin
-        list =
-          if premium && configuration.insight_fields.present?
-            @insightable.selected_insight_fields
-          else
-            Insight::DEFAULT_ATTRIBUTES
-          end
-
+        list = previous_insight_fields
         if premium && configuration.insight_ratio
           list = list.flat_map { |insight_field| [insight_field, "#{insight_field}_ratio"] }
         end
-
         list
       end
     end
 
+    # selecting previous insight attributes based on company configuration
+    def previous_insight_fields
+      @previous_insight_fields ||=
+        if premium && configuration.insight_fields.present?
+          @insightable.selected_insight_fields
+        else
+          Insight::DEFAULT_ATTRIBUTES
+        end
+    end
+
     def ratio(insight_field, entity_id)
-      previous_period =
-        send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id].to_i
+      return 0 if @previous_insight.nil?
+
+      previous_period = @previous_insight[insight_field].to_i
       return 0 if previous_period.zero?
 
       (send(insight_field)[entity_id].to_i - previous_period) * 100 / previous_period
     end
 
     def change(insight_field, entity_id)
-      previous_period = send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id]
-      send(insight_field)[entity_id].to_i - previous_period.to_i
+      return 0 if @previous_insight.nil?
+
+      send(insight_field)[entity_id].to_i - @previous_insight[insight_field].to_i
     end
 
-    # this method returns { entity_id => comments_count }
-    def comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
-      @comments_count ||= {}
-
-      @comments_count.fetch("#{date_from},#{date_to}") do |key|
-        @comments_count[key] =
-          @insightable
-            .pull_requests_comments
-            .joins(:pull_request)
-            .where(
-              'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-              date_from.days.ago,
-              date_to.days.ago
-            )
-            .group(:entity_id).count
-      end
-    end
+    # this method returns { entity_id => comments_count_by_entity }
+    def comments_count(...) = raise NotImplementedError
 
     # this method returns { entity_id => reviews_count }
     def reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
@@ -112,8 +135,8 @@ module Insights
             .joins(:pull_request)
             .where(
               'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-              date_from.days.ago,
-              date_to.days.ago
+              beginning_of_date('from', date_from),
+              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
             )
             .group(:entity_id).count
       end
@@ -131,8 +154,8 @@ module Insights
             .joins(:pull_request)
             .where(
               'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-              date_from.days.ago,
-              date_to.days.ago
+              beginning_of_date('from', date_from),
+              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
             )
             .group(:entity_id).count
       end
@@ -166,8 +189,8 @@ module Insights
             .pull_requests
             .where(
               'pull_created_at > ? AND pull_created_at < ?',
-              date_from.days.ago,
-              date_to.days.ago
+              beginning_of_date('from', date_from),
+              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
             )
             .flat_map { |pull|
               Entity
@@ -189,8 +212,8 @@ module Insights
             .pull_requests
             .where(
               'pull_created_at > ? AND pull_created_at < ?',
-              date_from.days.ago,
-              date_to.days.ago
+              beginning_of_date('from', date_from),
+              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
             )
             .group(:entity_id).count
       end
@@ -232,8 +255,8 @@ module Insights
         .pull_requests
           .where(
             'pull_created_at > ? AND pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
+            beginning_of_date('from', date_from),
+            date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
           )
           .each_with_object({}) { |pull_request, acc|
             entity_id = pull_request.entity_id
@@ -250,6 +273,14 @@ module Insights
 
     def configuration
       @configuration ||= @insightable.configuration
+    end
+
+    def beginning_of_date(type, value)
+      @beginning_of_date ||= {}
+
+      @beginning_of_date.fetch("#{type},#{value}") do |key|
+        @beginning_of_date[key] = value.days.ago.beginning_of_day
+      end
     end
   end
 end

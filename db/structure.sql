@@ -533,7 +533,8 @@ CREATE TABLE public.insights (
     average_open_pr_comments numeric(6,2),
     average_open_pr_comments_ratio integer,
     review_involving integer,
-    review_involving_ratio integer
+    review_involving_ratio integer,
+    previous_date character varying
 );
 
 
@@ -1850,6 +1851,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230912175713'),
 ('20230912182023'),
 ('20230912195115'),
-('20230912200254');
+('20230912200254'),
+('20230913074316');
 
 

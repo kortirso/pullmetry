@@ -5,21 +5,24 @@ module Insights
     class ForReviewService < BasisService
       prepend ApplicationService
 
+      # rubocop: disable Metrics/AbcSize
       def call(insightable:, date_from: Insight::FETCH_DAYS_PERIOD, date_to: 0)
         @insightable = insightable
         @result = {}
+
         PullRequests::Review
-          .includes(:pull_request)
           .approved
+          .includes(:pull_request)
           .where(
             'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
+            date_from.days.ago.beginning_of_day,
+            date_to.zero? ? DateTime.now : date_to.days.ago.beginning_of_day
           )
           .where(pull_requests: { repository: insightable.is_a?(Repository) ? insightable : insightable.repositories })
           .find_each { |review| handle_review(review) }
         update_result_with_average_time
       end
+      # rubocop: enable Metrics/AbcSize
 
       private
 

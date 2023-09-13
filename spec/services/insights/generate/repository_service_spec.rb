@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Insights::GenerateService, type: :service do
+describe Insights::Generate::RepositoryService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
@@ -62,11 +62,7 @@ describe Insights::GenerateService, type: :service do
         expect(last_insight.comments_count_ratio).to be_nil
         expect(last_insight.open_pull_requests_count).to eq 1
         expect(last_insight.average_merge_seconds).to eq 0
-      end
-
-      it 'updates existing insight' do
-        service_call
-
+        # updates existing insight
         expect(insight.reload.comments_count).to eq 1
       end
 
@@ -79,9 +75,9 @@ describe Insights::GenerateService, type: :service do
 
         context 'without PRs at previous period' do
           it 'insight has default list of attributes', :aggregate_failures do
-            expect { service_call }.to change(insightable.insights, :count).by(1)
+            expect { service_call }.to change(insightable.insights, :count).by(3)
 
-            last_insight = Insight.last
+            last_insight = Insight.actual.last
 
             expect(last_insight.required_reviews_count).to eq 0
             expect(last_insight.reviews_count).to eq 1
@@ -127,9 +123,9 @@ describe Insights::GenerateService, type: :service do
 
           context 'with default insight attributes' do
             it 'insight has default list of attributes', :aggregate_failures do
-              expect { service_call }.to change(insightable.insights, :count).by(1)
+              expect { service_call }.to change(insightable.insights, :count).by(3)
 
-              last_insight = Insight.last
+              last_insight = Insight.actual.last
 
               expect(last_insight.required_reviews_count).to eq 0
               expect(last_insight.reviews_count).to eq 1
@@ -165,9 +161,9 @@ describe Insights::GenerateService, type: :service do
             end
 
             it 'insight has full list of attributes', :aggregate_failures do
-              expect { service_call }.to change(insightable.insights, :count).by(1)
+              expect { service_call }.to change(insightable.insights, :count).by(3)
 
-              last_insight = Insight.last
+              last_insight = Insight.actual.last
 
               expect(last_insight.required_reviews_count).to eq 1
               expect(last_insight.required_reviews_count_ratio).to eq(0)
@@ -194,9 +190,9 @@ describe Insights::GenerateService, type: :service do
               end
 
               it 'insight has full list of attributes', :aggregate_failures do
-                expect { service_call }.to change(insightable.insights, :count).by(1)
+                expect { service_call }.to change(insightable.insights, :count).by(3)
 
-                last_insight = Insight.last
+                last_insight = Insight.actual.last
 
                 expect(last_insight.required_reviews_count_ratio).to eq(1)
                 expect(last_insight.reviews_count_ratio).to eq 0
@@ -209,34 +205,6 @@ describe Insights::GenerateService, type: :service do
             end
           end
         end
-      end
-    end
-
-    it 'succeeds' do
-      expect(service_call.success?).to be_truthy
-    end
-  end
-
-  context 'for company insightable' do
-    let(:insightable) { repository.company }
-
-    context 'for unexisting insights' do
-      it 'creates 2 insights' do
-        expect { service_call }.to change(insightable.insights, :count).by(2)
-      end
-    end
-
-    context 'for existing insight' do
-      let!(:insight) { create :insight, insightable: insightable, entity: entity1, comments_count: 0 }
-
-      it 'creates 1 insight' do
-        expect { service_call }.to change(insightable.insights, :count).by(1)
-      end
-
-      it 'updates existing insight' do
-        service_call
-
-        expect(insight.reload.comments_count).to eq 1
       end
     end
 

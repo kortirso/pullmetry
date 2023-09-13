@@ -5,20 +5,23 @@ module Insights
     class ForMergeService < BasisService
       prepend ApplicationService
 
+      # rubocop: disable Metrics/AbcSize
       def call(insightable:, date_from: Insight::FETCH_DAYS_PERIOD, date_to: 0)
         @insightable = insightable
         @result = {}
+
         PullRequest
           .where(
             'pull_created_at > ? AND pull_created_at < ?',
-            date_from.days.ago,
-            date_to.days.ago
+            date_from.days.ago.beginning_of_day,
+            date_to.zero? ? DateTime.now : date_to.days.ago.beginning_of_day
           )
           .where(repository: insightable.is_a?(Repository) ? insightable : insightable.repositories)
           .where.not(pull_merged_at: nil)
           .find_each { |pull_request| handle_entity(pull_request) }
         update_result_with_average_time
       end
+      # rubocop: enable Metrics/AbcSize
 
       private
 
