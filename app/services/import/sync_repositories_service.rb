@@ -10,14 +10,16 @@ module Import
       sync_pull_requests_service: SyncPullRequestsService,
       sync_comments_service: SyncCommentsService,
       sync_reviews_service: SyncReviewsService,
-      generate_insights_service: Insights::GenerateService,
+      generate_repository_insights_service: Insights::Generate::RepositoryService,
+      generate_company_insights_service: Insights::Generate::CompanyService,
       update_repository_service: Repositories::UpdateService.new,
       update_company_service: Companies::UpdateService
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
       @sync_reviews_service = sync_reviews_service
-      @generate_insights_service = generate_insights_service
+      @generate_repository_insights_service = generate_repository_insights_service
+      @generate_company_insights_service = generate_company_insights_service
       @update_repository_service = update_repository_service
       @update_company_service = update_company_service
 
@@ -35,7 +37,7 @@ module Import
           @sync_reviews_service.new(pull_request: pull_request).call
         end
         update_repository(repository)
-        @generate_insights_service.call(insightable: repository) if repository.accessable
+        @generate_repository_insights_service.call(insightable: repository) if repository.accessable
       end
 
       finalize_sync(company)
@@ -53,7 +55,9 @@ module Import
       not_accessable_count = company.repositories.where(accessable: false).count
 
       update_company_accessable(company, not_accessable_count.zero?)
-      @generate_insights_service.call(insightable: company) if company.repositories_count != not_accessable_count
+      return if company.repositories_count == not_accessable_count
+
+      @generate_company_insights_service.call(insightable: company)
     end
 
     def update_company_accessable(company, accessable)

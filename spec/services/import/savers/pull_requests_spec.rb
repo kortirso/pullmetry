@@ -13,7 +13,7 @@ describe Import::Savers::PullRequests, type: :service do
         pull_closed_at: nil,
         pull_merged_at: nil,
         author: {
-          external_id: 1,
+          external_id: '1',
           provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif',
@@ -21,14 +21,14 @@ describe Import::Savers::PullRequests, type: :service do
         },
         reviewers: [
           {
-            external_id: 1,
+            external_id: '1',
             provider: Providerable::GITHUB,
             login: 'octocat',
             avatar_url: 'https://github.com/images/error/octocat_happy.gif',
             html_url: 'https://github.com/octocat'
           },
           {
-            external_id: 2,
+            external_id: '2',
             provider: Providerable::GITHUB,
             login: 'octocat2',
             avatar_url: 'https://github.com/images/error/octocat_happy.gif',
@@ -42,7 +42,7 @@ describe Import::Savers::PullRequests, type: :service do
         pull_closed_at: '2011-04-10T20:09:31Z',
         pull_merged_at: '2011-04-10T20:09:31Z',
         author: {
-          external_id: 1,
+          external_id: '1',
           provider: Providerable::GITHUB,
           login: 'octocat',
           avatar_url: 'https://github.com/images/error/octocat_happy.gif',
@@ -69,8 +69,8 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(Entity, :count).by(2)
     end
 
-    it 'creates 2 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity, :count).by(2)
+    it 'creates 2 PR reviews' do
+      expect { service_call }.to change(PullRequests::Review, :count).by(2)
     end
 
     context 'for receiving PRs with changing state from draft to open for review' do
@@ -134,8 +134,8 @@ describe Import::Savers::PullRequests, type: :service do
         expect(entity.reload.login).to eq 'octocat'
       end
 
-      it 'creates 2 PR entity' do
-        expect { service_call }.to change(PullRequests::Entity, :count).by(2)
+      it 'creates 2 PR reviews' do
+        expect { service_call }.to change(PullRequests::Review, :count).by(2)
       end
     end
   end
@@ -157,17 +157,19 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to change(Entity, :count).by(2)
     end
 
-    it 'creates 2 reviewer PR entity' do
-      expect { service_call }.to change(PullRequests::Entity, :count).by(2)
+    it 'creates 2 PR reviews' do
+      expect { service_call }.to change(PullRequests::Review, :count).by(2)
     end
 
     context 'when there is 1 PR entity' do
-      let!(:entity) { create :entity, external_id: '1' }
+      before { create :entity, external_id: '1' }
 
-      before { create :pull_requests_entity, entity: entity, pull_request: pull_request }
+      it 'creates 1 new entity' do
+        expect { service_call }.to change(Entity, :count).by(1)
+      end
 
-      it 'creates 2 reviewer PR entity' do
-        expect { service_call }.to change(PullRequests::Entity, :count).by(2)
+      it 'creates 2 PR reviews' do
+        expect { service_call }.to change(PullRequests::Review, :count).by(2)
       end
     end
   end

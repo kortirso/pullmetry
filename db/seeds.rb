@@ -169,9 +169,9 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # approves
         if [true, false].sample
           approve_entity = Entity.where.not(id: entity.id).sample
-          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: approve_entity)
           PullRequests::Review.create!(
-            pull_requests_entity: pre,
+            pull_request: pull_request,
+            entity: approve_entity,
             external_id: SecureRandom.uuid,
             review_created_at: (index - 40).days.ago + rand(120).minutes
           )
@@ -179,9 +179,9 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # comments
         rand(5).times do
           comment_entity = Entity.where.not(id: entity.id).sample
-          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: comment_entity)
           PullRequests::Comment.create!(
-            pull_requests_entity: pre,
+            pull_request: pull_request,
+            entity: comment_entity,
             external_id: SecureRandom.uuid,
             comment_created_at: (index - 40).days.ago + rand(60).minutes
           )
@@ -198,9 +198,9 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # approves
         if [true, false].sample
           approve_entity = Entity.where.not(id: entity.id).sample
-          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: approve_entity)
           PullRequests::Review.create!(
-            pull_requests_entity: pre,
+            pull_request: pull_request,
+            entity: approve_entity,
             external_id: SecureRandom.uuid,
             review_created_at: (index + 1).days.ago + rand(120).minutes
           )
@@ -208,9 +208,9 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # comments
         rand(5).times do
           comment_entity = Entity.where.not(id: entity.id).sample
-          pre = PullRequests::Entity.find_or_create_by(pull_request: pull_request, entity: comment_entity)
           PullRequests::Comment.create!(
-            pull_requests_entity: pre,
+            pull_request: pull_request,
+            entity: comment_entity,
             external_id: SecureRandom.uuid,
             comment_created_at: (index + 1).days.ago + rand(60).minutes
           )

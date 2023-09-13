@@ -13,17 +13,15 @@ describe Insights::AverageTime::ForReviewService, type: :service do
   let!(:pr2) { create :pull_request, repository: repository, pull_created_at: first_monday + 12.hours }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
-  let!(:pre1) { create :pull_requests_entity, pull_request: pr1, entity: entity1 }
-  let!(:pre2) { create :pull_requests_entity, pull_request: pr2, entity: entity2 }
   let!(:prr1) {
-    create :pull_requests_review, pull_requests_entity: pre1, review_created_at: first_monday + 2.days
+    create :pull_requests_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 2.days
   }
   let!(:prr3) {
-    create :pull_requests_review, pull_requests_entity: pre2, review_created_at: first_monday + 13.hours
+    create :pull_requests_review, pull_request: pr2, entity: entity2, review_created_at: first_monday + 13.hours
   }
 
   before do
-    create :pull_requests_review, pull_requests_entity: pre1, review_created_at: first_monday + 1.day + 14.hours
+    create :pull_requests_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 1.day + 14.hours
   end
 
   context 'for repository insightable' do

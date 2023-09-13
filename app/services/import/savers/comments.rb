@@ -6,10 +6,6 @@ module Import
       prepend ApplicationService
       include Concerns::FindOrCreateEntity
 
-      def initialize
-        @pr_entities = {}
-      end
-
       def call(pull_request:, data:)
         @pull_request = pull_request
         ActiveRecord::Base.transaction do
@@ -25,8 +21,7 @@ module Import
             entity_id = @author_entities[payload.dig(:author, :external_id)]
             next unless entity_id
 
-            pr_entity = @pr_entities[entity_id] || find_or_create_pr_entity(entity_id)
-            create_comment(pr_entity, payload)
+            create_comment(entity_id, payload)
           end
         end
       end
@@ -53,22 +48,14 @@ module Import
       def existing_comments
         @existing_comments ||=
           @pull_request
-          .pull_requests_comments
-          .pluck(:external_id)
+            .pull_requests_comments
+            .pluck(:external_id)
       end
 
-      def find_or_create_pr_entity(entity)
-        result =
-          @pull_request
-          .pull_requests_entities
-          .find_or_create_by!(entity_id: entity)
-
-        @pr_entities[entity] = result
-        result
-      end
-
-      def create_comment(pr_entity, payload)
-        pr_entity.pull_requests_comments.create!(payload.slice(:external_id, :comment_created_at))
+      def create_comment(entity_id, payload)
+        @pull_request.pull_requests_comments.create!(
+          payload.slice(:external_id, :comment_created_at).merge(entity_id: entity_id)
+        )
       end
     end
   end
