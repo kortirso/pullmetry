@@ -47,8 +47,14 @@ module Import
     private
 
     def update_repository(repository)
-      # commento: repositories.synced_at
-      @update_repository_service.call(repository: repository, params: { synced_at: DateTime.now })
+      # commento: repositories.synced_at, repositories.pull_requests_count
+      @update_repository_service.call(
+        repository: repository,
+        params: {
+          synced_at: DateTime.now,
+          pull_requests_count: repository.pull_requests.actual.count
+        }
+      )
     end
 
     def finalize_sync(company)

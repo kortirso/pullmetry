@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Modified
 - skip using PullRequests::Entity model
 - calculating company insights by using repository insights
+- updating pull_requests_count counter after import
 
 ### Fixed
 - calculate insight ratios for average_open_pr_comments field
