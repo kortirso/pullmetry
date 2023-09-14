@@ -694,7 +694,6 @@ COMMENT ON COLUMN public.pull_requests.changed_loc IS 'Lines Of Code changed in 
 
 CREATE TABLE public.pull_requests_comments (
     id bigint NOT NULL,
-    pull_requests_entity_id bigint,
     external_id character varying NOT NULL,
     comment_created_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -724,39 +723,6 @@ ALTER SEQUENCE public.pull_requests_comments_id_seq OWNED BY public.pull_request
 
 
 --
--- Name: pull_requests_entities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.pull_requests_entities (
-    id bigint NOT NULL,
-    pull_request_id bigint NOT NULL,
-    entity_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    pull_requests_comments_count integer DEFAULT 0 NOT NULL
-);
-
-
---
--- Name: pull_requests_entities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.pull_requests_entities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pull_requests_entities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.pull_requests_entities_id_seq OWNED BY public.pull_requests_entities.id;
-
-
---
 -- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -781,7 +747,6 @@ ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 
 CREATE TABLE public.pull_requests_reviews (
     id bigint NOT NULL,
-    pull_requests_entity_id bigint,
     external_id character varying,
     review_created_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1167,13 +1132,6 @@ ALTER TABLE ONLY public.pull_requests_comments ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- Name: pull_requests_entities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pull_requests_entities ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_entities_id_seq'::regclass);
-
-
---
 -- Name: pull_requests_reviews id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1331,14 +1289,6 @@ ALTER TABLE ONLY public.kudos_users_achievements
 
 ALTER TABLE ONLY public.pull_requests_comments
     ADD CONSTRAINT pull_requests_comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: pull_requests_entities pull_requests_entities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pull_requests_entities
-    ADD CONSTRAINT pull_requests_entities_pkey PRIMARY KEY (id);
 
 
 --
@@ -1620,13 +1570,6 @@ CREATE INDEX index_pull_requests_comments_on_external_id ON public.pull_requests
 
 
 --
--- Name: index_pull_requests_entities_on_pull_request_id_and_entity_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pull_requests_entities_on_pull_request_id_and_entity_id ON public.pull_requests_entities USING btree (pull_request_id, entity_id);
-
-
---
 -- Name: index_pull_requests_on_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1858,6 +1801,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230912200254'),
 ('20230913074316'),
 ('20230913201840'),
-('20230914071959');
+('20230914071959'),
+('20230914184514');
 
 

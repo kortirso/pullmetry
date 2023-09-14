@@ -12,7 +12,6 @@ class Entity < ApplicationRecord
 
   belongs_to :identity, optional: true
 
-  # has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
   has_many :pull_requests, dependent: :destroy
   has_many :pull_requests_comments, class_name: 'PullRequests::Comment', dependent: :destroy
   has_many :pull_requests_reviews, class_name: 'PullRequests::Review', dependent: :destroy

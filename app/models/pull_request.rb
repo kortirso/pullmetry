@@ -6,8 +6,6 @@ class PullRequest < ApplicationRecord
   belongs_to :repository
   belongs_to :entity
 
-  # has_many :pull_requests_entities, class_name: 'PullRequests::Entity', dependent: :destroy
-  # has_many :entities, through: :pull_requests_entities
   has_many :pull_requests_comments, class_name: 'PullRequests::Comment', dependent: :destroy
   has_many :pull_requests_reviews, class_name: 'PullRequests::Review', dependent: :destroy
 

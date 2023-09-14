@@ -9,7 +9,6 @@ class Repository < ApplicationRecord
   belongs_to :company, counter_cache: true
 
   has_many :pull_requests, dependent: :destroy
-  # has_many :pull_requests_entities, -> { distinct }, class_name: '::PullRequests::Entity', through: :pull_requests
   has_many :pull_requests_comments, -> { distinct }, class_name: '::PullRequests::Comment', through: :pull_requests
   has_many :pull_requests_reviews, -> { distinct }, class_name: '::PullRequests::Review', through: :pull_requests
 
