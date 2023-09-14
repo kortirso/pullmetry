@@ -8,13 +8,13 @@ class AddEntityIdToCommentsAndReviews < ActiveRecord::Migration[7.0]
     PullRequests::Comment.find_each do |comment|
       pre = PullRequests::Entity.find_by(id: comment.pull_requests_entity_id)
 
-      comment.update!(pull_request_id: pre.pull_request_id, entity_id: pre.entity_id)
+      comment.update_columns(pull_request_id: pre.pull_request_id, entity_id: pre.entity_id)
     end
 
     PullRequests::Review.find_each do |review|
       pre = PullRequests::Entity.find_by(id: review.pull_requests_entity_id)
 
-      review.update!(pull_request_id: pre.pull_request_id, entity_id: pre.entity_id)
+      review.update_columns(pull_request_id: pre.pull_request_id, entity_id: pre.entity_id)
     end
   end
 end
