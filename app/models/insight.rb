@@ -20,8 +20,8 @@ class Insight < ApplicationRecord
     open_pull_requests_count: 'Open pulls',
     average_merge_seconds: 'Avg merge time',
     average_open_pr_comments: 'Avg received comments',
-    changed_loc: 'Reviewed LOC',
-    average_changed_loc: 'Avg review LOC'
+    changed_loc: 'Changed LOC',
+    average_changed_loc: 'Avg changed LOC'
   }.freeze
 
   FETCH_DAYS_PERIOD = 30
