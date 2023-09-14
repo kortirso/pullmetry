@@ -33,6 +33,7 @@ coverage
 commento
 
 .DS_Store
+dump.rdb
 
 /app/assets/builds/*
 !/app/assets/builds/.keep

@@ -64,6 +64,7 @@ module Import
       not_accessable_count = company.repositories.where(accessable: false).count
 
       update_company_accessable(company, not_accessable_count.zero?)
+      refresh_entities_cache(company)
       return if company.repositories_count == not_accessable_count
 
       @generate_company_insights_service.call(insightable: company)
@@ -82,6 +83,18 @@ module Import
       return if not_accessable_ticks != NOT_ACCESSABLE_LIMIT_TICKS
 
       Users::NotificationMailer.repository_access_error_email(id: company.user_id).deliver_now
+    end
+
+    def refresh_entities_cache(company)
+      Entities::ForInsightableQuery
+        .resolve(insightable: company)
+        .hashable_pluck(:id, :html_url, :avatar_url, :login)
+        .each do |payload|
+          Rails.cache.write(
+            "entity_payload_#{payload.delete(:id)}_v1",
+            payload.symbolize_keys
+          )
+        end
     end
   end
 end

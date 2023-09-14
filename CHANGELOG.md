@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - rendering robots file for text/html request
 - rendering sitemap zgip file
 
+### Modified
+- cache store from memcached to redis
+
 ## [1.3.7] - 2023-09-06
 ### Added
 - Emailbutler integration for tracking email delivery
