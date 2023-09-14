@@ -7,6 +7,7 @@ describe Import::SyncRepositoriesService, type: :service do
         sync_pull_requests_service: sync_pull_requests_service,
         sync_comments_service: sync_comments_service,
         sync_reviews_service: sync_reviews_service,
+        sync_files_service: sync_files_service,
         generate_repository_insights_service: generate_repository_insights_service,
         generate_company_insights_service: generate_company_insights_service
       )
@@ -23,6 +24,8 @@ describe Import::SyncRepositoriesService, type: :service do
   let(:comments_service) { double }
   let(:sync_reviews_service) { double(Import::SyncReviewsService) }
   let(:reviews_service) { double }
+  let(:sync_files_service) { double(Import::SyncFilesService) }
+  let(:files_service) { double }
   let(:generate_repository_insights_service) { double(Insights::Generate::RepositoryService) }
   let(:generate_company_insights_service) { double(Insights::Generate::CompanyService) }
   let(:mailer) { double }
@@ -36,6 +39,8 @@ describe Import::SyncRepositoriesService, type: :service do
     allow(comments_service).to receive(:call)
     allow(sync_reviews_service).to receive(:new).and_return(reviews_service)
     allow(reviews_service).to receive(:call)
+    allow(sync_files_service).to receive(:new).and_return(files_service)
+    allow(files_service).to receive(:call)
     allow(generate_company_insights_service).to receive(:call)
     allow(generate_repository_insights_service).to receive(:call)
     allow(Users::NotificationMailer).to receive(:repository_access_error_email).and_return(mailer)
@@ -48,8 +53,10 @@ describe Import::SyncRepositoriesService, type: :service do
     expect(sync_pull_requests_service).to have_received(:new).with(repository: repository)
     expect(sync_comments_service).to have_received(:new).with(pull_request: pull_request1)
     expect(sync_reviews_service).to have_received(:new).with(pull_request: pull_request1)
+    expect(sync_files_service).to have_received(:new).with(pull_request: pull_request1)
     expect(sync_comments_service).not_to have_received(:new).with(pull_request: pull_request2)
     expect(sync_reviews_service).not_to have_received(:new).with(pull_request: pull_request2)
+    expect(sync_files_service).not_to have_received(:new).with(pull_request: pull_request2)
     expect(generate_company_insights_service).not_to have_received(:call)
     expect(generate_repository_insights_service).not_to have_received(:call)
     expect(repository.reload.synced_at).not_to be_nil

@@ -524,17 +524,13 @@ CREATE TABLE public.insights (
     open_pull_requests_count integer DEFAULT 0,
     average_review_seconds integer DEFAULT 0,
     average_merge_seconds integer DEFAULT 0,
-    comments_count_ratio integer,
-    reviews_count_ratio integer,
-    required_reviews_count_ratio integer,
-    open_pull_requests_count_ratio integer,
-    average_review_seconds_ratio integer,
-    average_merge_seconds_ratio integer,
     average_open_pr_comments numeric(6,2),
-    average_open_pr_comments_ratio integer,
     review_involving integer,
-    review_involving_ratio integer,
-    previous_date character varying
+    previous_date character varying,
+    reviewed_loc integer,
+    average_reviewed_loc integer,
+    changed_loc integer,
+    average_changed_loc integer
 );
 
 
@@ -680,8 +676,16 @@ CREATE TABLE public.pull_requests (
     pull_closed_at timestamp(6) without time zone,
     pull_merged_at timestamp(6) without time zone,
     entity_id bigint NOT NULL,
-    pull_requests_comments_count integer DEFAULT 0 NOT NULL
+    pull_requests_comments_count integer DEFAULT 0 NOT NULL,
+    changed_loc integer DEFAULT 0 NOT NULL
 );
+
+
+--
+-- Name: COLUMN pull_requests.changed_loc; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.pull_requests.changed_loc IS 'Lines Of Code changed in pull request';
 
 
 --
@@ -1852,6 +1856,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230912182023'),
 ('20230912195115'),
 ('20230912200254'),
-('20230913074316');
+('20230913074316'),
+('20230913201840'),
+('20230914071959');
 
 

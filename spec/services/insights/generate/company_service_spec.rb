@@ -14,8 +14,16 @@ describe Insights::Generate::CompanyService, type: :service do
     create :pull_requests_comment, pull_request: pr1, entity: entity2
     create :pull_requests_comment, pull_request: pr2, entity: entity1
 
-    create :insight, insightable: repository, entity: entity1, comments_count: 1
-    create :insight, insightable: repository, entity: entity2, comments_count: 2
+    create :insight, insightable: repository, entity: entity1, comments_count: 1, changed_loc: 11, reviewed_loc: 3
+    create :insight, insightable: repository, entity: entity2, comments_count: 2, changed_loc: 2
+
+    create :subscription, user: insightable.user
+    insightable.configuration.insight_fields = {
+      comments_count: true,
+      changed_loc: true,
+      reviewed_loc: true
+    }
+    insightable.save!
   end
 
   context 'for unexisting insights' do
@@ -26,11 +34,15 @@ describe Insights::Generate::CompanyService, type: :service do
   end
 
   context 'for existing insight' do
-    let!(:insight) { create :insight, insightable: insightable, entity: entity1, comments_count: 0 }
+    let!(:insight) {
+      create :insight, insightable: insightable, entity: entity1, comments_count: 0, changed_loc: 0, reviewed_loc: 0
+    }
 
     it 'creates 1 insight and updates existing insight', :aggregate_failures do
       expect { service_call }.to change(insightable.insights, :count).by(1)
       expect(insight.reload.comments_count).to eq 1
+      expect(insight.changed_loc).to eq 11
+      expect(insight.reviewed_loc).to eq 3
       expect(service_call.success?).to be_truthy
     end
   end

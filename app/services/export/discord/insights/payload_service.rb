@@ -37,6 +37,7 @@ module Export
           ::Insights::VisibleQuery
             .new(relation: @insightable.insights)
             .resolve(insightable: @insightable)
+            .actual
             .joins(:entity)
             .hashable_pluck(:comments_count, :reviews_count, :average_review_seconds, 'entities.login')
         end

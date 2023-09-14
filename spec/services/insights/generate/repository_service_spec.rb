@@ -4,14 +4,16 @@ describe Insights::Generate::RepositoryService, type: :service do
   subject(:service_call) { described_class.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
-  let!(:pr2) { create :pull_request, repository: repository, entity: entity1 }
-  let!(:pr3) { create :pull_request, repository: repository, pull_merged_at: 10.seconds.after, entity: entity2 }
+  let!(:pr2) { create :pull_request, repository: repository, entity: entity1, changed_loc: 13 }
+  let!(:pr3) {
+    create :pull_request, repository: repository, pull_merged_at: 10.seconds.after, entity: entity2, changed_loc: 11
+  }
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
   let(:insightable) { repository }
 
   before do
-    create :pull_request, repository: repository, entity: entity1
+    create :pull_request, repository: repository, entity: entity1, changed_loc: 12
     create :pull_requests_comment, entity: entity1, pull_request: pr3
     create :pull_requests_comment, entity: entity2, pull_request: pr2
 
@@ -54,10 +56,6 @@ describe Insights::Generate::RepositoryService, type: :service do
       expect(last_insight.reviews_count).to eq 1
       expect(last_insight.average_review_seconds).not_to eq 0
       expect(last_insight.comments_count).to eq 1
-      expect(last_insight.required_reviews_count_ratio).to be_nil
-      expect(last_insight.reviews_count_ratio).to be_nil
-      expect(last_insight.average_review_seconds_ratio).to be_nil
-      expect(last_insight.comments_count_ratio).to be_nil
       expect(last_insight.open_pull_requests_count).to eq 1
       expect(last_insight.average_merge_seconds).to eq 0
       # updates existing insight
@@ -81,10 +79,6 @@ describe Insights::Generate::RepositoryService, type: :service do
           expect(last_insight.reviews_count).to eq 1
           expect(last_insight.average_review_seconds).not_to eq 0
           expect(last_insight.comments_count).to eq 1
-          expect(last_insight.required_reviews_count_ratio).to be_nil
-          expect(last_insight.reviews_count_ratio).to eq 0
-          expect(last_insight.average_review_seconds_ratio).to eq 0
-          expect(last_insight.comments_count_ratio).to eq 0
           expect(last_insight.open_pull_requests_count).to eq 1
           expect(last_insight.average_merge_seconds).to eq 0
         end
@@ -129,13 +123,8 @@ describe Insights::Generate::RepositoryService, type: :service do
             expect(last_insight.reviews_count).to eq 1
             expect(last_insight.average_review_seconds).not_to eq 0
             expect(last_insight.comments_count).to eq 1
-            expect(last_insight.required_reviews_count_ratio).to be_nil
-            expect(last_insight.reviews_count_ratio).to eq 0
-            expect(last_insight.average_review_seconds_ratio).to eq(-99)
-            expect(last_insight.comments_count_ratio).to eq(-50)
             expect(last_insight.open_pull_requests_count).to eq 1
             expect(last_insight.review_involving).to be_nil
-            expect(last_insight.review_involving_ratio).to be_nil
           end
         end
 
@@ -153,7 +142,10 @@ describe Insights::Generate::RepositoryService, type: :service do
               average_open_pr_comments: true,
               average_review_seconds: true,
               average_merge_seconds: true,
-              review_involving: true
+              review_involving: true,
+              changed_loc: true,
+              average_changed_loc: true,
+              average_reviewed_loc: true
             }
             repository.company.save!
           end
@@ -164,42 +156,16 @@ describe Insights::Generate::RepositoryService, type: :service do
             last_insight = Insight.actual.last
 
             expect(last_insight.required_reviews_count).to eq 1
-            expect(last_insight.required_reviews_count_ratio).to eq(0)
             expect(last_insight.reviews_count).to eq 1
-            expect(last_insight.reviews_count_ratio).to eq 0
             expect(last_insight.average_review_seconds).not_to eq 0
-            expect(last_insight.average_review_seconds_ratio).to eq(-99)
             expect(last_insight.comments_count).to eq 1
-            expect(last_insight.comments_count_ratio).to eq(-50)
             expect(last_insight.open_pull_requests_count).to eq 1
-            expect(last_insight.open_pull_requests_count_ratio).to eq 0
             expect(last_insight.average_merge_seconds).to eq 10
-            expect(last_insight.average_merge_seconds_ratio).to eq(-99)
             expect(last_insight.average_open_pr_comments).to eq 3
-            expect(last_insight.average_open_pr_comments_ratio).to eq 200
             expect(last_insight.review_involving).to eq 100
-            expect(last_insight.review_involving_ratio).to eq 0
-          end
-
-          context 'with absolute changes for ratios' do
-            before do
-              repository.company.configuration.insight_ratio_type = 'change'
-              repository.company.save!
-            end
-
-            it 'insight has full list of attributes', :aggregate_failures do
-              expect { service_call }.to change(insightable.insights, :count).by(3)
-
-              last_insight = Insight.actual.last
-
-              expect(last_insight.required_reviews_count_ratio).to eq(1)
-              expect(last_insight.reviews_count_ratio).to eq 0
-              expect(last_insight.comments_count_ratio).to eq(-1)
-              expect(last_insight.average_review_seconds_ratio).to eq(-86_390)
-              expect(last_insight.open_pull_requests_count_ratio).to eq 0
-              expect(last_insight.average_merge_seconds_ratio).to eq(-431_990)
-              expect(last_insight.review_involving_ratio).to eq 0
-            end
+            expect(last_insight.changed_loc).to eq 11
+            expect(last_insight.average_changed_loc).to eq 11
+            expect(last_insight.average_reviewed_loc).to eq 13
           end
         end
       end

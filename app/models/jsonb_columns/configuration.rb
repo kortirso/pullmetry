@@ -29,9 +29,13 @@ module JsonbColumns
            reviews_count
            average_review_seconds
            review_involving
+           reviewed_loc
+           average_reviewed_loc
            open_pull_requests_count
            average_merge_seconds
            average_open_pr_comments
+           changed_loc
+           average_changed_loc
          ],
          default: :comments_count
     # TODO: configuration field for repository

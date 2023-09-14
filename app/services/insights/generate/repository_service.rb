@@ -11,13 +11,7 @@ module Insights
         @comments_count.fetch("#{date_from},#{date_to}") do |key|
           @comments_count[key] =
             PullRequests::Comment
-              .joins(:pull_request)
-              .where(pull_requests: { repository_id: @insightable.id })
-              .where(
-                'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-                beginning_of_date('from', date_from),
-                date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-              )
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
         end
       end
@@ -29,13 +23,7 @@ module Insights
           @reviews_count[key] =
             PullRequests::Review
               .approved
-              .joins(:pull_request)
-              .where(pull_requests: { repository_id: @insightable.id })
-              .where(
-                'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-                beginning_of_date('from', date_from),
-                date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-              )
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
         end
       end
@@ -47,13 +35,7 @@ module Insights
           @required_reviews_count[key] =
             PullRequests::Review
               .required
-              .joins(:pull_request)
-              .where(pull_requests: { repository_id: @insightable.id })
-              .where(
-                'pull_requests.pull_created_at > ? AND pull_requests.pull_created_at < ?',
-                beginning_of_date('from', date_from),
-                date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-              )
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
         end
       end
@@ -63,13 +45,8 @@ module Insights
 
         @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
           @open_pull_requests_count[key] =
-            @insightable
-              .pull_requests
-              .where(
-                'pull_created_at > ? AND pull_created_at < ?',
-                beginning_of_date('from', date_from),
-                date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-              )
+            PullRequest
+              .where(id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
         end
       end
@@ -91,6 +68,37 @@ module Insights
         end
       end
       # rubocop: enable Metrics/AbcSize
+
+      def changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+        @changed_loc ||= {}
+
+        @changed_loc.fetch("#{date_from},#{date_to}") do |key|
+          @changed_loc[key] =
+            pull_requests_stats(date_from, date_to)
+              .each_with_object({}) do |element, acc|
+                next if element[:changed_loc].nil?
+
+                acc[element[:entity_id]] ||= 0
+                acc[element[:entity_id]] += element[:changed_loc]
+              end
+        end
+      end
+
+      def reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+        @reviewed_loc ||= {}
+
+        @reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
+          @reviewed_loc[key] =
+            PullRequests::Review
+              .approved
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
+              .includes(:pull_request)
+              .group_by(&:entity_id)
+              .transform_values do |reviews|
+                reviews.sum { |review| review.pull_request.changed_loc }
+              end
+        end
+      end
     end
   end
 end
