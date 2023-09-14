@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 1a71e5ad186f6f2c495ee17b3af156c9c36cf6c4
+  revision: 5164635d3dddb48b003d2441a9aa1c1ac3f131f9
   branch: main
   specs:
     bullet (7.0.7)
@@ -28,7 +28,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    action_policy (0.6.6)
+    action_policy (0.6.7)
       ruby-next-core (>= 0.14.0)
     actioncable (7.0.8)
       actionpack (= 7.0.8)
@@ -182,7 +182,8 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (2.7.10)
+    faraday (2.7.11)
+      base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
@@ -369,7 +370,7 @@ GEM
     rubocop-performance (1.19.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    rubocop-rails (2.21.0)
+    rubocop-rails (2.21.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
@@ -424,7 +425,7 @@ GEM
       sshkit (~> 1.8)
     store_model (2.1.1)
       activerecord (>= 5.2)
-    strong_migrations (1.6.1)
+    strong_migrations (1.6.2)
       activerecord (>= 5.2)
     thor (1.2.2)
     tilt (2.2.0)
