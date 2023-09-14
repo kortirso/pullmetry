@@ -10,6 +10,7 @@ module Import
       sync_pull_requests_service: SyncPullRequestsService,
       sync_comments_service: SyncCommentsService,
       sync_reviews_service: SyncReviewsService,
+      sync_files_service: SyncFilesService,
       generate_repository_insights_service: Insights::Generate::RepositoryService,
       generate_company_insights_service: Insights::Generate::CompanyService,
       update_repository_service: Repositories::UpdateService.new,
@@ -18,6 +19,7 @@ module Import
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
       @sync_reviews_service = sync_reviews_service
+      @sync_files_service = sync_files_service
       @generate_repository_insights_service = generate_repository_insights_service
       @generate_company_insights_service = generate_company_insights_service
       @update_repository_service = update_repository_service
@@ -35,6 +37,7 @@ module Import
         repository.pull_requests.opened_before(@import_time).each do |pull_request|
           @sync_comments_service.new(pull_request: pull_request).call
           @sync_reviews_service.new(pull_request: pull_request).call
+          @sync_files_service.new(pull_request: pull_request).call
         end
         update_repository(repository)
         @generate_repository_insights_service.call(insightable: repository) if repository.accessable

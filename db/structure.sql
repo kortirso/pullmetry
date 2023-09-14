@@ -676,8 +676,16 @@ CREATE TABLE public.pull_requests (
     pull_closed_at timestamp(6) without time zone,
     pull_merged_at timestamp(6) without time zone,
     entity_id bigint NOT NULL,
-    pull_requests_comments_count integer DEFAULT 0 NOT NULL
+    pull_requests_comments_count integer DEFAULT 0 NOT NULL,
+    changed_loc integer DEFAULT 0 NOT NULL
 );
+
+
+--
+-- Name: COLUMN pull_requests.changed_loc; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.pull_requests.changed_loc IS 'Lines Of Code changed in pull request';
 
 
 --
@@ -1849,6 +1857,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230912195115'),
 ('20230912200254'),
 ('20230913074316'),
-('20230913201840');
+('20230913201840'),
+('20230914071959');
 
 
