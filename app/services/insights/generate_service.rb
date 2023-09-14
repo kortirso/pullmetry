@@ -100,18 +100,19 @@ module Insights
     # this method returns { entity_id => open_pull_requests_count }
     def open_pull_requests_count(...) = raise NotImplementedError
 
+    # this method returns { entity_id => changed LOC in entity PRs }
+    def changed_loc(...) = raise NotImplementedError
+
+    # this method returns { entity_id => changed LOC in reviewed PRs }
+    def reviewed_loc(...) = raise NotImplementedError
+
     def pulls_with_user_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
       @pulls_with_user_comments ||= {}
 
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
         @pulls_with_user_comments[key] =
-          @insightable
-            .pull_requests
-            .where(
-              'pull_created_at > ? AND pull_created_at < ?',
-              beginning_of_date('from', date_from),
-              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-            )
+          PullRequest
+            .where(id: pull_requests_ids(date_from, date_to))
             .flat_map { |pull|
               Entity
                 .joins(:pull_requests_comments)
@@ -147,25 +148,66 @@ module Insights
 
       @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
         @average_open_pr_comments[key] =
-          sum_comments_in_open_prs(date_from, date_to).transform_values { |value|
+          comments_in_open_prs(date_from, date_to).transform_values { |value|
             @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
           }
       end
     end
 
-    def sum_comments_in_open_prs(date_from, date_to)
-      @insightable
-        .pull_requests
-          .where(
-            'pull_created_at > ? AND pull_created_at < ?',
-            beginning_of_date('from', date_from),
-            date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
-          )
-          .hashable_pluck(:entity_id, :pull_requests_comments_count)
-          .each_with_object({}) { |element, acc|
-            acc[element[:entity_id]] ||= []
-            acc[element[:entity_id]].push(element[:pull_requests_comments_count])
+    # this method returns { entity_id => average changed LOC in entity PRs }
+    def average_changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      @average_changed_loc ||= {}
+
+      @average_changed_loc.fetch("#{date_from},#{date_to}") do |key|
+        @average_changed_loc[key] =
+          changed_loc_in_open_prs(date_from, date_to).transform_values { |value|
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
           }
+      end
+    end
+
+    # this method returns { entity_id => average changed LOC in reviewed PRs }
+    def average_reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      @average_reviewed_loc ||= {}
+
+      @average_reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
+        @average_reviewed_loc[key] =
+          reviewed_loc_in_open_prs(date_from, date_to).transform_values { |value|
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
+          }
+      end
+    end
+
+    def reviewed_loc_in_open_prs(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      @reviewed_loc_in_open_prs ||= {}
+
+      @reviewed_loc_in_open_prs.fetch("#{date_from},#{date_to}") do |key|
+        @reviewed_loc_in_open_prs[key] =
+          PullRequests::Review
+            .approved
+            .where(pull_request_id: pull_requests_ids(date_from, date_to))
+            .includes(:pull_request)
+            .group_by(&:entity_id)
+            .transform_values do |reviews|
+              reviews.map { |review| review.pull_request.changed_loc }
+            end
+      end
+    end
+
+    def changed_loc_in_open_prs(date_from, date_to)
+      pull_requests_stats(date_from, date_to)
+        .each_with_object({}) { |element, acc|
+          acc[element[:entity_id]] ||= []
+          acc[element[:entity_id]].push(element[:changed_loc])
+        }
+    end
+
+    def comments_in_open_prs(date_from, date_to)
+      pull_requests_stats(date_from, date_to)
+        .each_with_object({}) { |element, acc|
+          acc[element[:entity_id]] ||= []
+          acc[element[:entity_id]].push(element[:pull_requests_comments_count])
+        }
     end
 
     def premium
@@ -181,6 +223,33 @@ module Insights
 
       @beginning_of_date.fetch("#{type},#{value}") do |key|
         @beginning_of_date[key] = value.days.ago.beginning_of_day
+      end
+    end
+
+    def pull_requests_ids(date_from, date_to)
+      @pull_requests_ids ||= {}
+
+      @pull_requests_ids.fetch("#{date_from},#{date_to}") do |key|
+        @pull_requests_ids[key] =
+          @insightable
+            .pull_requests
+            .where(
+              'pull_created_at > ? AND pull_created_at < ?',
+              beginning_of_date('from', date_from),
+              date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
+            )
+            .ids
+      end
+    end
+
+    def pull_requests_stats(date_from, date_to)
+      @pull_requests_stats ||= {}
+
+      @pull_requests_stats.fetch("#{date_from},#{date_to}") do |key|
+        @pull_requests_stats[key] =
+          PullRequest
+            .where(id: pull_requests_ids(date_from, date_to))
+            .hashable_pluck(:entity_id, :pull_requests_comments_count, :changed_loc)
       end
     end
   end

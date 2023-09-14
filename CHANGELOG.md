@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - previous insights calculated 1 time per day for faster insight ratio calculations
 - LOC insights attributes
 - importing LOC data from Github
+- generating LOC data for insights
 
 ### Modified
 - skip using PullRequests::Entity model

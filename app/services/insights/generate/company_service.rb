@@ -45,6 +45,22 @@ module Insights
         end
       end
 
+      def changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+        @changed_loc ||= {}
+
+        @changed_loc.fetch("#{date_from},#{date_to}") do |key|
+          @changed_loc[key] = sum_insights_attribute(date_to, :changed_loc)
+        end
+      end
+
+      def reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+        @reviewed_loc ||= {}
+
+        @reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
+          @reviewed_loc[key] = sum_insights_attribute(date_to, :reviewed_loc)
+        end
+      end
+
       def sum_insights_attribute(date_to, attribute_name)
         insights_data(date_to)
           .each_with_object({}) do |element, acc|
@@ -70,7 +86,9 @@ module Insights
                 :reviews_count,
                 :required_reviews_count,
                 :open_pull_requests_count,
-                :review_involving
+                :review_involving,
+                :changed_loc,
+                :reviewed_loc
               )
           end
         end
