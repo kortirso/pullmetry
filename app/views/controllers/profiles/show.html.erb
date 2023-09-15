@@ -19,7 +19,7 @@
           <% end %>
         </div>
         <div class="half-container">
-          <p class="line-height">Here you can see information about your subscriptions.</p>
+          <p class="line-height">Here you can see information about your active subscriptions.<%= @used_trial_subscription ? '' : " You can activate trial subscription for #{Subscription::TRIAL_PERIOD_DAYS} days without any credit card." %></p>
         </div>
       </div>
     </div>
