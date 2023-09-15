@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Auth::LoginUserService, type: :service do
+describe Auth::LoginUserOperation, type: :service do
   subject(:service_call) { described_class.call(auth: oauth) }
 
   let(:oauth) {

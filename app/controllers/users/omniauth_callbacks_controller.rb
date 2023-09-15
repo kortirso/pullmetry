@@ -14,7 +14,7 @@ module Users
 
     def create
       if user
-        session[:pullmetry_token] = ::Auth::GenerateTokenService.call(user: user).result
+        session[:pullmetry_token] = ::Auth::GenerateTokenOperation.call(user: user).result
         redirect_to companies_path, notice: 'Successful login'
       else
         redirect_to root_path, flash: { manifesto_username: true }
@@ -22,7 +22,7 @@ module Users
     end
 
     def destroy
-      Auth::FetchUserService.call(token: session[:pullmetry_token]).session&.destroy
+      Auth::FetchUserOperation.call(token: session[:pullmetry_token]).session&.destroy
       session[:pullmetry_token] = nil
       redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
     end
@@ -40,9 +40,9 @@ module Users
     def user
       @user ||=
         if current_user.nil?
-          ::Auth::LoginUserService.call(auth: auth).result
+          ::Auth::LoginUserOperation.call(auth: auth).result
         else
-          ::Auth::AttachUserService.new.call(user: current_user, auth: auth)
+          ::Auth::AttachIdentityOperation.new.call(user: current_user, auth: auth)
           current_user
         end
     end

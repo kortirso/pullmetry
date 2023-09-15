@@ -12,7 +12,7 @@ module Authentication
   def set_current_user
     return unless session[:pullmetry_token]
 
-    auth_call = Auth::FetchUserService.call(token: session[:pullmetry_token])
+    auth_call = Auth::FetchUserOperation.call(token: session[:pullmetry_token])
     return if auth_call.failure?
 
     Current.user ||= auth_call.result

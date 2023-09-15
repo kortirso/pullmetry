@@ -92,7 +92,7 @@ module Views
 
       def value_sign(value, reverse_attribute)
         return '' if value.zero?
-        return '+' if value.positive? && !reverse_attribute || value.negative? && reverse_attribute
+        return '+' if (value.positive? && !reverse_attribute) || (value.negative? && reverse_attribute)
 
         '-'
       end

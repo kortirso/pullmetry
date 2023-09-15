@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Auth::AttachUserService, type: :service do
+describe Auth::AttachIdentityOperation, type: :service do
   subject(:service_call) { described_class.new.call(user: user, auth: oauth) }
 
   let!(:user) { create :user }

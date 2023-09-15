@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Auth
-  class LoginUserService
+  class LoginUserOperation
     prepend ApplicationService
 
     def call(auth:)
@@ -13,10 +13,7 @@ module Auth
 
       @result = User.find_or_create_by!(email: email)
       # commento: identities.uid, identities.provider, identities.email, identities.login
-      Identities::CreateForm.call(
-        user: @result,
-        params: { uid: auth[:uid], provider: auth[:provider], email: email, login: auth[:login] }
-      )
+      Identities::CreateForm.call(user: @result, params: auth)
     end
   end
 end

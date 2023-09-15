@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Auth::GenerateTokenService do
+describe Auth::GenerateTokenOperation do
   subject(:service_call) { described_class.call(user: user) }
 
   let!(:user) { create :user }

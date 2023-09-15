@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Auth::FetchUserService do
+describe Auth::FetchUserOperation do
   subject(:service_call) { described_class.call(token: token) }
 
   context 'for valid token' do
