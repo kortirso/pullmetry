@@ -73,7 +73,7 @@ module Views
         value = multiple_value(ratio_value, reverse_attribute, change_type)
         value_for_rendering = time_attribute && change_type ? convert_seconds(value.abs) : value.abs
 
-        " (<span class='#{span_class(ratio_value, reverse_attribute)}'>#{value_sign(value)}#{value_for_rendering}#{change_type ? '' : '%'}</span>)"
+        "<sup class='#{span_class(ratio_value, reverse_attribute)}'>#{value_sign(value, reverse_attribute)}#{value_for_rendering}#{change_type ? '' : '%'}</sup>"
       end
       # rubocop: enable Layout/LineLength
 
@@ -90,11 +90,11 @@ module Views
         ratio_value
       end
 
-      def value_sign(value)
-        return '+' if value.positive?
-        return '-' if value.negative?
+      def value_sign(value, reverse_attribute)
+        return '' if value.zero?
+        return '+' if value.positive? && !reverse_attribute || value.negative? && reverse_attribute
 
-        ''
+        '-'
       end
 
       def ratio_value(insight, attribute)
