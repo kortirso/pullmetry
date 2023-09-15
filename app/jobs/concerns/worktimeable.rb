@@ -12,8 +12,8 @@ module Worktimeable
     configuration = company.configuration
     value_minutes = minutes_of_day(current_time)
 
-    return false if value_minutes < minutes_of_day(configuration.work_start_time)
-    return false if value_minutes > minutes_of_day(configuration.work_end_time)
+    return false if value_minutes <= minutes_of_day(configuration.work_start_time)
+    return false if value_minutes >= minutes_of_day(configuration.work_end_time)
 
     true
   end
