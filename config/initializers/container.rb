@@ -7,6 +7,14 @@ module Pullmetry
   class Container
     extend Dry::Container::Mixin
 
+    DEFAULT_OPTIONS = { memoize: true }.freeze
+
+    class << self
+      def register(key)
+        super(key, DEFAULT_OPTIONS)
+      end
+    end
+
     register('math.find_average') { Math::FindAverage.new }
 
     # contracts
