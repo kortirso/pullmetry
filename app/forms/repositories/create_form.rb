@@ -31,6 +31,6 @@ module Repositories
         .exists?(['insights.updated_at > ?', HOURS_FOR_OLD_INSIGHTS.hours.ago])
     end
 
-    def validator = RepositoryValidator
+    def validator = Pullmetry::Container['validators.repository']
   end
 end

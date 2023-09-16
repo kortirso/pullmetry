@@ -2,8 +2,6 @@
 
 module Companies
   class CreateValidator < ApplicationValidator
-    def initialize(contract: Companies::CreateContract)
-      @contract = contract
-    end
+    include Deps[contract: 'contracts.companies.create']
   end
 end

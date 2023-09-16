@@ -7,7 +7,7 @@ module Insights
     def initialize(
       average_review_time_service: AverageTime::ForReviewService,
       average_merge_time_service: AverageTime::ForMergeService,
-      find_average_service: Math::Average.new
+      find_average_service: Pullmetry::Container['math.find_average']
     )
       @average_review_time_service = average_review_time_service
       @average_merge_time_service = average_merge_time_service
@@ -149,7 +149,7 @@ module Insights
       @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
         @average_open_pr_comments[key] =
           comments_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
           }
       end
     end
@@ -161,7 +161,7 @@ module Insights
       @average_changed_loc.fetch("#{date_from},#{date_to}") do |key|
         @average_changed_loc[key] =
           changed_loc_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
           }
       end
     end
@@ -173,7 +173,7 @@ module Insights
       @average_reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
         @average_reviewed_loc[key] =
           reviewed_loc_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round: 2)
+            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
           }
       end
     end

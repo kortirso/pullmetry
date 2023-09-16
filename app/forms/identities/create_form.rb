@@ -23,6 +23,6 @@ module Identities
         .update_all(identity_id: @result.id)
     end
 
-    def validator = IdentityValidator
+    def validator = Pullmetry::Container['validators.identity']
   end
 end

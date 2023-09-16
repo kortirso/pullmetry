@@ -3,16 +3,14 @@
 module Insights
   module AverageTime
     class BasisService
+      include Deps[find_average: 'math.find_average']
+
       SECONDS_IN_DAY = 86_400
       MINUTES_IN_DAY = 1_440
       MINUTES_IN_HOUR = 60
       SECONDS_IN_MINUTE = 60
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
       DEFAULT_WORK_TIME_ZONE = 'UTC'
-
-      def initialize(find_average_service: Math::Average.new)
-        @find_average_service = find_average_service
-      end
 
       private
 
@@ -158,7 +156,7 @@ module Insights
 
       def update_result_with_average_time
         @result.transform_values! do |value|
-          @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+          find_average.call(values: value, type: @insightable.configuration.average_type)
         end
       end
 

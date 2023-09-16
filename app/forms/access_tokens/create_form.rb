@@ -16,6 +16,6 @@ module AccessTokens
 
     private
 
-    def validator = AccessTokenValidator
+    def validator = Pullmetry::Container['validators.access_token']
   end
 end

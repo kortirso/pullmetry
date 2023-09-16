@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
 class AccessTokenValidator < ApplicationValidator
-  def initialize(contract: AccessTokenContract)
-    @contract = contract
-  end
+  include Deps[contract: 'contracts.access_token']
 end

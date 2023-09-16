@@ -30,7 +30,9 @@ gem 'bcrypt', '~> 3.1'
 # A ruby implementation of the RFC 7519 OAuth JSON Web Token (JWT) standard
 gem 'jwt', '~> 2.5'
 
-# validations
+# dry-rb system
+gem 'dry-auto_inject', '~> 1.0'
+gem 'dry-container', '~> 0.11.0'
 gem 'dry-validation', '~> 1.10'
 
 # Catch unsafe migrations in development

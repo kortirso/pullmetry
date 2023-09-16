@@ -13,6 +13,6 @@ module Companies
 
     private
 
-    def validator = Companies::CreateValidator
+    def validator = Pullmetry::Container['validators.companies.create']
   end
 end

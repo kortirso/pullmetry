@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
 class IdentityValidator < ApplicationValidator
-  def initialize(contract: IdentityContract)
-    @contract = contract
-  end
+  include Deps[contract: 'contracts.identity']
 end
