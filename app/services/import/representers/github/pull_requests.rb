@@ -18,6 +18,8 @@ module Import
               pull_merged_at: payload[:merged_at],
               author: @entity_representer.call(data: payload[:user]),
               reviewers: payload[:requested_reviewers].map { |element| @entity_representer.call(data: element) }
+              # TODO: issue 149, company avatar can be saved
+              # company_avatar_url: payload.dig('base', 'repo', 'owner', 'avatar_url')
             }
           end
         end
