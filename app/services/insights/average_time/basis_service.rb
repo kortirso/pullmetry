@@ -16,6 +16,20 @@ module Insights
 
       attr_reader :work_start_time, :work_end_time
 
+      def calculate_merge_seconds(pull_request, from, till, vacations=nil)
+        # if PR merge was made before PR changed state from draft to open
+        # in such cases time spend for merge is 1 second
+        return 1 if from >= till
+        return till.to_i - from.to_i unless @insightable.with_work_time?
+
+        find_using_work_time(pull_request)
+        seconds_between_times(
+          convert_time(from, true),
+          convert_time(till, false),
+          vacations
+        )
+      end
+
       # working time can be based on company working time
       # or at user's
       def find_using_work_time(pull_request)
@@ -152,12 +166,6 @@ module Insights
 
       def update_result_with_total_review_time(entity_id, review_seconds)
         @result[entity_id] = @result.key?(entity_id) ? @result[entity_id].push(review_seconds) : [review_seconds]
-      end
-
-      def update_result_with_average_time
-        @result.transform_values! do |value|
-          find_average.call(values: value, type: @insightable.configuration.average_type)
-        end
       end
 
       def work_start_time_minutes

@@ -14,8 +14,8 @@ describe Insights::Generate::RepositoryService, type: :service do
 
   before do
     create :pull_request, repository: repository, entity: entity1, changed_loc: 12
-    create :pull_requests_comment, entity: entity1, pull_request: pr3
-    create :pull_requests_comment, entity: entity2, pull_request: pr2
+    create :pull_requests_comment, entity: entity1, pull_request: pr3, comment_created_at: 1.minute.after
+    create :pull_requests_comment, entity: entity2, pull_request: pr2, comment_created_at: 2.minutes.after
 
     create :pull_requests_review,
            entity: entity2,
@@ -27,6 +27,10 @@ describe Insights::Generate::RepositoryService, type: :service do
   context 'for unexisting insights' do
     it 'creates 2 insights' do
       expect { service_call }.to change(insightable.insights, :count).by(2)
+    end
+
+    it 'creates 1 repository insight' do
+      expect { service_call }.to change(insightable.repository_insights, :count).by(1)
     end
   end
 
@@ -81,6 +85,24 @@ describe Insights::Generate::RepositoryService, type: :service do
           expect(last_insight.comments_count).to eq 1
           expect(last_insight.open_pull_requests_count).to eq 1
           expect(last_insight.average_merge_seconds).to eq 0
+        end
+
+        it 'creates repository insights', :aggregate_failures do
+          expect { service_call }.to change(insightable.repository_insights, :count).by(2)
+
+          last_insight = Repositories::Insight.actual.last
+
+          expect(last_insight.open_pull_requests_count).to eq 3
+          expect(last_insight.commented_pull_requests_count).to eq 2
+          expect(last_insight.reviewed_pull_requests_count).to eq 1
+          expect(last_insight.merged_pull_requests_count).to eq 1
+          expect(last_insight.average_comment_time).to eq 35
+          expect(last_insight.average_review_time).to eq 10
+          expect(last_insight.average_merge_time).to eq 10
+          expect(last_insight.comments_count).to eq 2
+          expect(last_insight.average_comments_count).to eq 0.67
+          expect(last_insight.changed_loc).to eq 36
+          expect(last_insight.average_changed_loc).to eq 12
         end
       end
 

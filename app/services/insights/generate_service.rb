@@ -5,23 +5,22 @@ module Insights
     prepend ApplicationService
 
     def initialize(
+      average_comment_time_service: AverageTime::ForCommentService,
       average_review_time_service: AverageTime::ForReviewService,
       average_merge_time_service: AverageTime::ForMergeService,
       find_average_service: Pullmetry::Container['math.find_average']
     )
+      @average_comment_time_service = average_comment_time_service
       @average_review_time_service = average_review_time_service
       @average_merge_time_service = average_merge_time_service
       @find_average_service = find_average_service
     end
 
-    def call(insightable:)
-      @insightable = insightable
-      previous_insight_date = Insight::DOUBLE_FETCH_DAYS_PERIOD.days.ago.to_date.to_s
-
+    def call
       ActiveRecord::Base.transaction do
-        remove_old_insights(previous_insight_date)
+        remove_old_insights
         entity_ids.each do |entity_id|
-          generate_previous_insight(entity_id, previous_insight_date)
+          generate_previous_insight(entity_id)
 
           # update actual insight information for current period
           insight = @insightable.insights.actual.find_or_initialize_by(entity_id: entity_id)
@@ -36,24 +35,21 @@ module Insights
       @entity_ids ||= Entities::ForInsightableQuery.resolve(insightable: @insightable).pluck(:id)
     end
 
-    def remove_old_insights(previous_insight_date)
+    def remove_old_insights
       @insightable.insights.where.not(entity_id: entity_ids).destroy_all
       @insightable.insights.previous.where.not(previous_date: previous_insight_date).destroy_all
     end
 
-    def generate_previous_insight(entity_id, previous_insight_date)
+    def generate_previous_insight(entity_id)
       # update insight information for previous period
       return @previous_insight = nil if !premium || !configuration.insight_ratio
 
       # create previous insight for date only once per entity
       @previous_insight = @insightable.insights.find_by(entity_id: entity_id, previous_date: previous_insight_date)
-      return unless @previous_insight.nil?
+      return if @previous_insight.present?
 
       # commento: insights.previous_date
-      @previous_insight = @insightable.insights.find_or_initialize_by(
-        entity_id: entity_id,
-        previous_date: previous_insight_date
-      )
+      @previous_insight = @insightable.insights.new(entity_id: entity_id, previous_date: previous_insight_date)
       @previous_insight.update!(insight_attributes(entity_id, true))
     end
 
@@ -129,7 +125,12 @@ module Insights
 
       @average_review_seconds.fetch("#{date_from},#{date_to}") do |key|
         @average_review_seconds[key] =
-          @average_review_time_service.call(insightable: @insightable, date_from: date_from, date_to: date_to).result
+          @average_review_time_service
+            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))
+            .result
+            .transform_values! do |value|
+              @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+            end
       end
     end
 
@@ -139,7 +140,12 @@ module Insights
 
       @average_merge_seconds.fetch("#{date_from},#{date_to}") do |key|
         @average_merge_seconds[key] =
-          @average_merge_time_service.call(insightable: @insightable, date_from: date_from, date_to: date_to).result
+          @average_merge_time_service
+            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))
+            .result
+            .transform_values! do |value|
+              @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+            end
       end
     end
 
@@ -186,7 +192,6 @@ module Insights
           PullRequests::Review
             .approved
             .where(pull_request_id: pull_requests_ids(date_from, date_to))
-            .includes(:pull_request)
             .group_by(&:entity_id)
             .transform_values do |reviews|
               reviews.map { |review| review.pull_request.changed_loc }
@@ -216,6 +221,10 @@ module Insights
 
     def configuration
       @configuration ||= @insightable.configuration
+    end
+
+    def previous_insight_date
+      @previous_insight_date ||= Insight::DOUBLE_FETCH_DAYS_PERIOD.days.ago.to_date.to_s
     end
 
     def beginning_of_date(type, value)
