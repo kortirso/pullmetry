@@ -15,6 +15,7 @@ class PullRequest < ApplicationRecord
     where('pull_closed_at is NULL OR pull_closed_at > :time OR created_at > :time', { time: time })
   }
   scope :closed, -> { where.not(pull_closed_at: nil) }
+  scope :created, -> { where.not(pull_created_at: nil) }
   scope :actual, -> { where('pull_created_at > ?', Insight::FETCH_DAYS_PERIOD.days.ago) }
 
   def open?

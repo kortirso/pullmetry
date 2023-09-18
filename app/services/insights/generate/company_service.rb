@@ -3,6 +3,12 @@
 module Insights
   module Generate
     class CompanyService < Insights::GenerateService
+      def call(insightable:)
+        @insightable = insightable
+
+        super()
+      end
+
       private
 
       def comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)

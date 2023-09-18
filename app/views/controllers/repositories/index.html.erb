@@ -17,10 +17,7 @@
               <% end %>
             </h2>
             <p>Last synced at: <%= repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data' %></p>
-            <p>PRs count - <%= repository.pull_requests.size %></p>
-            <p>
-              <%= link_to "Repository's external link", repository.link %>
-            </p>
+            <p><%= link_to "Repository's external link", repository.link %></p>
           </div>
           <% if allowed_to?(:update?, repository) %>
             <div class="insightable-actions">

@@ -1,4 +1,26 @@
-<h2>Insights</h2>
+<% if @insightable.is_a?(Repository) && repository_insights.any? %>
+  <h2>Repository insights</h2>
+  <div id="repository-insights" class="flex flex-row">
+    <div class="flex-1 p-4">
+      <p>Open pull requests - <%= render_repository_insight(:open_pull_requests_count) %></p>
+      <p>Commented pull requests - <%= render_repository_insight(:commented_pull_requests_count) %></p>
+      <p>Reviewed pull requests - <%= render_repository_insight(:reviewed_pull_requests_count) %></p>
+      <p>Merged pull requests - <%= render_repository_insight(:merged_pull_requests_count) %></p>
+    </div>
+    <div class="flex-1 p-4">
+      <p>Avg comment time - <%= render_repository_insight(:average_comment_time) %></p>
+      <p>Avg review time - <%= render_repository_insight(:average_review_time) %></p>
+      <p>Avg merge time - <%= render_repository_insight(:average_merge_time) %></p>
+    </div>
+    <div class="flex-1 p-4">
+      <p>Comments - <%= render_repository_insight(:comments_count) %></p>
+      <p>Avg comments - <%= render_repository_insight(:average_comments_count) %></p>
+      <p>Changed LOC - <%= render_repository_insight(:changed_loc) %></p>
+      <p>Avg changed LOC - <%= render_repository_insight(:average_changed_loc) %></p>
+    </div>
+  </div>
+<% end %>
+<h2>Developer insights</h2>
 <% if actual_insights.size.positive? %>
   <table class="table" cellSpacing="0">
     <thead>

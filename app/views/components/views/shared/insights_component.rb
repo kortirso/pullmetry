@@ -14,6 +14,18 @@ module Views
         super()
       end
 
+      def repository_insights
+        @repository_insights ||= @insightable.repository_insights.to_a
+      end
+
+      def actual_repository_insight
+        @actual_repository_insight ||= repository_insights.find(&:actual?)
+      end
+
+      def previous_repository_insight
+        @previous_repository_insight ||= repository_insights.reject(&:actual?).first
+      end
+
       def visible_insights
         @visible_insights ||=
           Insights::VisibleQuery
@@ -40,6 +52,12 @@ module Views
       end
 
       # rubocop: disable Rails/OutputSafety
+      def render_repository_insight(attribute)
+        result = convert_repository_insight_field(actual_repository_insight, attribute).to_s
+        result += repository_insight_ratio_value(actual_repository_insight, attribute) if @insight_ratio
+        result.html_safe
+      end
+
       def render_insight_field(insight, attribute)
         result = convert_insight_field(insight, attribute.to_sym).to_s
         result += insight_ratio_value(insight, attribute.to_sym) if @insight_ratio && result != '-'
@@ -48,6 +66,13 @@ module Views
       # rubocop: enable Rails/OutputSafety
 
       private
+
+      def convert_repository_insight_field(insight, insight_field)
+        return convert_seconds(insight[insight_field]) if Repositories::Insight::TIME_ATTRIBUTES.include?(insight_field)
+        return insight[insight_field].to_f if Repositories::Insight::DECIMAL_ATTRIBUTES.include?(insight_field)
+
+        insight[insight_field].to_i
+      end
 
       def convert_insight_field(insight, insight_field)
         return convert_seconds(insight[insight_field]) if Insight::TIME_ATTRIBUTES.include?(insight_field)
@@ -61,21 +86,39 @@ module Views
         @seconds_converter.call(value: value)
       end
 
-      # rubocop: disable Layout/LineLength
-      def insight_ratio_value(insight, attribute)
+      # TODO: refactoring is required
+      # rubocop: disable Layout/LineLength, Metrics/AbcSize
+      def repository_insight_ratio_value(insight, attribute)
         return '' if insight[attribute].nil?
 
-        time_attribute = Insight::TIME_ATTRIBUTES.include?(attribute)
-        reverse_attribute = Insight::REVERSE_ORDER_ATTRIBUTES.include?(attribute)
+        time_attribute = Repositories::Insight::TIME_ATTRIBUTES.include?(attribute)
+        reverse_attribute = Repositories::Insight::REVERSE_ORDER_ATTRIBUTES.include?(attribute)
         change_type = @insightable.configuration.insight_ratio_type == 'change'
-        ratio_value = change_type ? change_value(insight, attribute) : ratio_value(insight, attribute)
+
+        ratio_value = change_type ? change_value(insight, previous_repository_insight, attribute) : ratio_value(insight, previous_repository_insight, attribute)
 
         value = multiple_value(ratio_value, reverse_attribute, change_type)
         value_for_rendering = time_attribute && change_type ? convert_seconds(value.abs) : value.abs
 
         "<sup class='#{span_class(ratio_value, reverse_attribute)}'>#{value_sign(value, reverse_attribute)}#{value_for_rendering}#{change_type ? '' : '%'}</sup>"
       end
-      # rubocop: enable Layout/LineLength
+
+      def insight_ratio_value(insight, attribute)
+        return '' if insight[attribute].nil?
+
+        time_attribute = Insight::TIME_ATTRIBUTES.include?(attribute)
+        reverse_attribute = Insight::REVERSE_ORDER_ATTRIBUTES.include?(attribute)
+        change_type = @insightable.configuration.insight_ratio_type == 'change'
+
+        previous_insight = previous_insights.find { |previous_insight| previous_insight.entity_id == insight.entity_id }
+        ratio_value = change_type ? change_value(insight, previous_insight, attribute) : ratio_value(insight, previous_insight, attribute)
+
+        value = multiple_value(ratio_value, reverse_attribute, change_type)
+        value_for_rendering = time_attribute && change_type ? convert_seconds(value.abs) : value.abs
+
+        "<sup class='#{span_class(ratio_value, reverse_attribute)}'>#{value_sign(value, reverse_attribute)}#{value_for_rendering}#{change_type ? '' : '%'}</sup>"
+      end
+      # rubocop: enable Layout/LineLength, Metrics/AbcSize
 
       def span_class(ratio_value, reverse_attribute)
         return 'negative' if ratio_value.negative? && !reverse_attribute
@@ -97,8 +140,7 @@ module Views
         '-'
       end
 
-      def ratio_value(insight, attribute)
-        previous_insight = previous_insights.find { |previous_insight| previous_insight.entity_id == insight.entity_id }
+      def ratio_value(insight, previous_insight, attribute)
         return 0 if previous_insight.nil?
 
         previous_period = previous_insight[attribute].to_f
@@ -107,9 +149,8 @@ module Views
         ((insight[attribute].to_f - previous_period) * 100 / previous_period).to_i
       end
 
-      def change_value(insight, insight_field)
+      def change_value(insight, previous_insight, insight_field)
         method_name = insight_field == 'average_open_pr_comments' ? :to_f : :to_i
-        previous_insight = previous_insights.find { |previous_insight| previous_insight.entity_id == insight.entity_id }
         return insight[attribute].send(method_name) if previous_insight.nil?
 
         insight[attribute].send(method_name) - previous_insight[insight_field].send(method_name)

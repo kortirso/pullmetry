@@ -56,6 +56,36 @@
     .list-element-insights {
       overflow-x: scroll;
 
+      #repository-insights {
+        margin-bottom: 2rem;
+
+        div {
+          border: 1px solid $green200;
+          margin-right: 2rem;
+          border-radius: .25rem;
+
+          &:nth-of-type(3) {
+            margin-right: 0;
+          }
+        }
+
+        p {
+          margin-bottom: .25rem;
+        }
+
+        sup {
+          margin-left: .25rem;
+
+          &.negative {
+            color: $red500;
+          }
+
+          &.positive {
+            color: $green500;
+          }
+        }
+      }
+
       .table {
         border-collapse: collapse;
         font-size: .9rem;

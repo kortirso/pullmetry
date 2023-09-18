@@ -865,6 +865,49 @@ ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 
 
 --
+-- Name: repositories_insights; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.repositories_insights (
+    id bigint NOT NULL,
+    repository_id bigint NOT NULL,
+    previous_date character varying,
+    open_pull_requests_count integer DEFAULT 0 NOT NULL,
+    commented_pull_requests_count integer DEFAULT 0 NOT NULL,
+    reviewed_pull_requests_count integer DEFAULT 0 NOT NULL,
+    merged_pull_requests_count integer DEFAULT 0 NOT NULL,
+    average_comment_time integer DEFAULT 0 NOT NULL,
+    average_review_time integer DEFAULT 0 NOT NULL,
+    average_merge_time integer DEFAULT 0 NOT NULL,
+    comments_count integer DEFAULT 0 NOT NULL,
+    average_comments_count numeric(6,2) DEFAULT 0.0 NOT NULL,
+    changed_loc integer DEFAULT 0 NOT NULL,
+    average_changed_loc numeric(8,2) DEFAULT 0.0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: repositories_insights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.repositories_insights_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: repositories_insights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.repositories_insights_id_seq OWNED BY public.repositories_insights.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1153,6 +1196,13 @@ ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: repositories_insights id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repositories_insights ALTER COLUMN id SET DEFAULT nextval('public.repositories_insights_id_seq'::regclass);
+
+
+--
 -- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1329,6 +1379,14 @@ ALTER TABLE ONLY public.que_lockers
 
 ALTER TABLE ONLY public.que_values
     ADD CONSTRAINT que_values_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: repositories_insights repositories_insights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.repositories_insights
+    ADD CONSTRAINT repositories_insights_pkey PRIMARY KEY (id);
 
 
 --
@@ -1598,6 +1656,13 @@ CREATE INDEX index_pull_requests_reviews_on_external_id ON public.pull_requests_
 
 
 --
+-- Name: index_repositories_insights_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_insights_on_repository_id ON public.repositories_insights USING btree (repository_id);
+
+
+--
 -- Name: index_repositories_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1802,6 +1867,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230913074316'),
 ('20230913201840'),
 ('20230914071959'),
-('20230914184514');
+('20230914184514'),
+('20230918101006');
 
 
