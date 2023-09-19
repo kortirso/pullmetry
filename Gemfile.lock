@@ -198,6 +198,8 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    jsbundling-rails (1.2.1)
+      railties (>= 6.0.0)
     json (2.6.3)
     json_spec (1.1.5)
       multi_json (~> 1.0)
@@ -477,6 +479,7 @@ DEPENDENCIES
   factory_bot_rails (= 6.2.0)
   faraday (~> 2.0)
   foreman
+  jsbundling-rails (~> 1.0)
   json_spec (= 1.1.5)
   jwt (~> 2.5)
   kudos
