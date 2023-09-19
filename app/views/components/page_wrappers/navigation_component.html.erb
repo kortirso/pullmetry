@@ -8,11 +8,13 @@
   </div>
   <div>
     <% if Current.user %>
+      <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path %>
       <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
       <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path %>
       <%= link_to t('components.page_wrappers.page_component.logout'), logout_path %>
     <% else %>
       <p id="auth-links">
+        <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path %>
         <span>Login with</span>
         <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github', class: 'auth-icon' %>
         <%= link_to image_tag('gitlab.svg', width: 20, height: 20, alt: 'gitlab'), omniauth_link(:gitlab), 'aria-label': 'Login with Gitlab', class: 'auth-icon' %>

@@ -4,6 +4,7 @@ ru:
       page_component:
         companies: Компании
         repositories: Репозитории
+        how_it_works: Как работает
         profile: Аккаунт
         achievements: Достижения
         logout: Выход
