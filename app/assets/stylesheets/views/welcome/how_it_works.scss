@@ -1,6 +1,10 @@
-#privacy-box {
+#how-it-works {
+  h2 {
+    margin-top: 2rem;
+  }
+
   p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   ul {
@@ -9,6 +13,7 @@
 
     li {
       margin-bottom: .5rem;
+      line-height: 1.5rem;
     }
   }
 }

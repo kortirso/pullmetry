@@ -8,4 +8,6 @@ class WelcomeController < ApplicationController
   def privacy; end
 
   def sources; end
+
+  def how_it_works; end
 end
