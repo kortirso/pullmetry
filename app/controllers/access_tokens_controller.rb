@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class AccessTokensController < ApplicationController
-  before_action :find_tokenable
+  before_action :find_company
+  before_action :find_repository
 
   def new
     authorize! @tokenable, to: :update?
@@ -13,29 +14,39 @@ class AccessTokensController < ApplicationController
     # commento: access_tokens.value
     form = AccessTokens::CreateForm.call(tokenable: @tokenable, params: access_token_params)
     if form.success?
-      redirect_to redirect_path, notice: 'Access token is created'
+      redirect_to success_redirect_path, notice: 'Access token is created'
     else
-      redirect_to(
-        new_access_token_path(tokenable_uuid: @tokenable.uuid, tokenable_type: @tokenable.class.name),
-        alert: form.errors
-      )
+      redirect_to fail_redirect_path, alert: form.errors
     end
   end
 
   private
 
-  def find_tokenable
-    @tokenable =
-      case params[:tokenable_type]
-      when 'Company' then current_user.companies.find_by!(uuid: params[:tokenable_uuid])
-      when 'Repository' then current_user.repositories.find_by!(uuid: params[:tokenable_uuid])
-      end
+  def find_company
+    return unless params[:company_id]
 
-    redirect_to companies_path, alert: 'Valid tokenable for access token is not found' unless @tokenable
+    @tokenable = current_user.companies.find_by!(uuid: params[:company_id])
+    redirect_to companies_path, alert: 'Valid company for access token is not found' unless @tokenable
   end
 
-  def redirect_path
-    @tokenable.is_a?(Company) ? companies_path : repositories_path
+  def find_repository
+    return if @tokenable
+    return unless params[:repository_id]
+
+    @tokenable = current_user.repositories.find_by!(uuid: params[:repository_id])
+    redirect_to companies_path, alert: 'Valid repository for access token is not found' unless @tokenable
+  end
+
+  def success_redirect_path
+    return companies_path if @tokenable.is_a?(Company)
+
+    repositories_path
+  end
+
+  def fail_redirect_path
+    return new_company_access_token_path(@tokenable.uuid) if @tokenable.is_a?(Company)
+
+    new_repository_access_token_path(@tokenable.uuid)
   end
 
   def access_token_params

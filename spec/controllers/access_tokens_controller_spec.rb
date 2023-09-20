@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe AccessTokensController do
-  let(:type) { 'unexisting' }
   let!(:company) { create :company }
   let!(:repository) { create :repository, company: company }
 
@@ -11,20 +10,10 @@ describe AccessTokensController do
     context 'for logged users' do
       sign_in_user
 
-      context 'for unexisting type' do
-        it 'redirects to companies_path' do
-          do_request
-
-          expect(response).to redirect_to companies_path
-        end
-      end
-
       context 'for company type' do
-        let(:type) { 'Company' }
-
         context 'for unexisting company' do
           it 'renders 404 page' do
-            get :new, params: { tokenable_type: 'Company', tokenable_uuid: company.uuid, locale: 'en' }
+            do_request
 
             expect(response).to render_template 'shared/404'
           end
@@ -34,7 +23,7 @@ describe AccessTokensController do
           before { company.update!(user: @current_user) }
 
           it 'renders new template' do
-            get :new, params: { tokenable_type: 'Company', tokenable_uuid: company.uuid, locale: 'en' }
+            get :new, params: { company_id: company.uuid, locale: 'en' }
 
             expect(response).to render_template :new
           end
@@ -42,11 +31,9 @@ describe AccessTokensController do
       end
 
       context 'for repository type' do
-        let(:type) { 'Repository' }
-
         context 'for unexisting repository' do
           it 'renders 404 page' do
-            get :new, params: { tokenable_type: 'Repository', tokenable_uuid: repository.uuid, locale: 'en' }
+            get :new, params: { repository_id: 'unexisting', locale: 'en' }
 
             expect(response).to render_template 'shared/404'
           end
@@ -56,7 +43,7 @@ describe AccessTokensController do
           before { company.update!(user: @current_user) }
 
           it 'renders new template' do
-            get :new, params: { tokenable_type: 'Repository', tokenable_uuid: repository.uuid, locale: 'en' }
+            get :new, params: { repository_id: repository.uuid, locale: 'en' }
 
             expect(response).to render_template :new
           end
@@ -65,7 +52,7 @@ describe AccessTokensController do
     end
 
     def do_request
-      get :new, params: { tokenable_type: type, tokenable_uuid: '2', locale: 'en' }
+      get :new, params: { company_id: 'unexisting', locale: 'en' }
     end
   end
 
@@ -75,16 +62,7 @@ describe AccessTokensController do
     context 'for logged users' do
       sign_in_user
 
-      context 'for unexisting type' do
-        it 'does not create access token and redirects', :aggregate_failures do
-          expect { do_request }.not_to change(AccessToken, :count)
-          expect(response).to redirect_to companies_path
-        end
-      end
-
       context 'for company type' do
-        let(:type) { 'Company' }
-
         context 'for unexisting company' do
           it 'does not create access token and redirects', :aggregate_failures do
             expect { do_request }.not_to change(AccessToken, :count)
@@ -97,24 +75,18 @@ describe AccessTokensController do
 
           context 'for invalid params' do
             let(:request) {
-              post :create, params: {
-                tokenable_type: 'Company', tokenable_uuid: company.uuid, access_token: { value: '' }, locale: 'en'
-              }
+              post :create, params: { company_id: company.uuid, access_token: { value: '' }, locale: 'en' }
             }
 
             it 'does not create access token and redirects', :aggregate_failures do
               expect { request }.not_to change(AccessToken, :count)
-              expect(response).to(
-                redirect_to(new_access_token_path(tokenable_uuid: company.uuid, tokenable_type: 'Company'))
-              )
+              expect(response).to redirect_to(new_company_access_token_path(company.uuid))
             end
           end
 
           context 'for valid params' do
             let(:request) {
-              post :create, params: {
-                tokenable_type: 'Company', tokenable_uuid: company.uuid, access_token: { value: '1' }, locale: 'en'
-              }
+              post :create, params: { company_id: company.uuid, access_token: { value: '1' }, locale: 'en' }
             }
 
             it 'creates access token and redirects', :aggregate_failures do
@@ -128,46 +100,34 @@ describe AccessTokensController do
       end
 
       context 'for repository type' do
-        let(:type) { 'Repository' }
+        let(:request) {
+          post :create, params: { repository_id: repository_id, access_token: { value: '' }, locale: 'en' }
+        }
 
         context 'for unexisting repository' do
-          it 'does not create access token' do
+          let(:repository_id) { 'unexisting' }
+
+          it 'does not create access token', :aggregate_failures do
             expect { do_request }.not_to change(AccessToken, :count)
-          end
-
-          it 'renders 404 page' do
-            do_request
-
             expect(response).to render_template 'shared/404'
           end
         end
 
         context 'for existing repository' do
+          let(:repository_id) { repository.uuid }
+
           before { company.update!(user: @current_user) }
 
           context 'for invalid params' do
-            let(:request) {
-              post :create, params: {
-                tokenable_type: 'Repository', tokenable_uuid: repository.uuid, access_token: { value: '' }, locale: 'en'
-              }
-            }
-
             it 'does not create access token and redirects', :aggregate_failures do
               expect { request }.not_to change(AccessToken, :count)
-              expect(response).to(
-                redirect_to(new_access_token_path(tokenable_uuid: repository.uuid, tokenable_type: 'Repository'))
-              )
+              expect(response).to redirect_to(new_repository_access_token_path(repository.uuid))
             end
           end
 
           context 'for valid params' do
             let(:request) {
-              post :create, params: {
-                tokenable_type: 'Repository',
-                tokenable_uuid: repository.uuid,
-                access_token: { value: '1' },
-                locale: 'en'
-              }
+              post :create, params: { repository_id: repository_id, access_token: { value: '1' }, locale: 'en' }
             }
 
             context 'without other tokens' do
@@ -195,7 +155,7 @@ describe AccessTokensController do
     end
 
     def do_request
-      post :create, params: { tokenable_type: type, tokenable_uuid: '2', access_token: { value: '' }, locale: 'en' }
+      post :create, params: { company_id: 'unexisting', access_token: { value: '' }, locale: 'en' }
     end
   end
 end

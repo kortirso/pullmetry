@@ -12,9 +12,13 @@ Rails.application.routes.draw do
 
   resources :companies, except: %i[show edit update] do
     resource :configuration, only: %i[edit update], module: 'companies'
+    resources :repositories, only: %i[index new], module: 'companies'
+    resources :access_tokens, only: %i[new create]
   end
-  resources :repositories, only: %i[index new create destroy]
-  resources :access_tokens, only: %i[new create]
+  resources :repositories, only: %i[index new create destroy] do
+    resources :access_tokens, only: %i[new create]
+  end
+
   resource :profile, only: %i[show update destroy]
   resource :achievements, only: %i[show]
   resources :vacations, only: %i[new create destroy]

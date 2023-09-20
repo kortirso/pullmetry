@@ -4,7 +4,7 @@
     <%= form_with model: @repository, url: repositories_path, method: :post, class: 'form-block' do |form| %>
       <div class="form-field">
         <%= form.label :company_uuid, 'Company', class: 'form-label' %>
-        <%= form.select :company_uuid, options_for_select(@companies), {}, { class: 'form-value' } %>
+        <%= form.select :company_uuid, options_for_select(@companies, @company&.uuid), {}, { class: 'form-value' } %>
       </div>
       <div class="form-field">
         <%= form.label :title, 'Title', class: 'form-label' %>

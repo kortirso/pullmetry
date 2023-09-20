@@ -28,14 +28,6 @@ describe RepositoriesController do
 
           expect(response).to render_template :index
         end
-
-        context 'for specific company' do
-          it 'renders index page' do
-            get :index, params: { company_id: company.uuid, locale: 'en' }
-
-            expect(response).to render_template :index
-          end
-        end
       end
     end
 

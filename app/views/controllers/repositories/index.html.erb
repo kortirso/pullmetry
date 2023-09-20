@@ -2,7 +2,7 @@
   <div class="list-title flex justify-between items-center">
     <h1>Repositories</h1>
     <% if allowed_to?(:create_repository?, Current.user) %>
-      <%= link_to 'Create repository', new_repository_path, class: 'button' %>
+      <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'button' %>
     <% end %>
   </div>
   <section class="list">
@@ -21,7 +21,7 @@
           </div>
           <% if allowed_to?(:update?, repository) %>
             <div class="insightable-actions">
-              <%= link_to (repository.access_token ? 'Refresh access token' : 'Add access token'), new_access_token_path(tokenable_uuid: repository.uuid, tokenable_type: 'Repository'), class: 'button small' %>
+              <%= link_to (repository.access_token ? 'Refresh access token' : 'Add access token'), new_repository_access_token_path(repository.uuid), class: 'button small' %>
               <%= button_to 'Destroy repository', repository_path(repository.uuid), class: 'button danger small', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')" %>
             </div>
           <% end %>
