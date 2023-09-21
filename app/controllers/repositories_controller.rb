@@ -6,8 +6,6 @@ class RepositoriesController < ApplicationController
   PER_PAGE = 5
 
   before_action :find_repositories, only: %i[index]
-  before_action :filter_repositories, only: %i[index]
-  before_action :paginate_repositories, only: %i[index]
   before_action :find_company, only: %i[create]
   before_action :find_repository, only: %i[destroy]
 
@@ -39,18 +37,13 @@ class RepositoriesController < ApplicationController
   private
 
   def find_repositories
-    @repositories =
-      authorized_scope(Repository.order(id: :desc)).includes(:access_token, company: %i[user access_token])
-  end
-
-  def filter_repositories
-    return unless params[:company_id]
-
-    @repositories = @repositories.where(company_id: Company.find_by(uuid: params[:company_id]))
-  end
-
-  def paginate_repositories
-    @pagy, @repositories = pagy(@repositories, items: PER_PAGE)
+    @pagy, @repositories =
+      pagy(
+        authorized_scope(
+          Repository.order(id: :desc)
+        ).includes(:access_token, :repository_insights, company: %i[user access_token]),
+        items: PER_PAGE
+      )
   end
 
   def find_company

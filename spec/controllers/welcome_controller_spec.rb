@@ -24,4 +24,12 @@ describe WelcomeController do
       expect(response).to render_template :sources
     end
   end
+
+  describe 'GET#how_it_works' do
+    it 'renders how_it_works template' do
+      get :how_it_works, params: { locale: 'en' }
+
+      expect(response).to render_template :how_it_works
+    end
+  end
 end

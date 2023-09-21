@@ -4,7 +4,7 @@
     <section id="welcome-box" class="global-container main-container">
       <div class="half-container flex flex-col justify-center">
         <h1>Pull requests relevant statistic</h1>
-        <p>Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests.</p>
+        <p>Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
         <% unless Current.user %>
           <p>
             <%= link_to 'Login with Github', omniauth_link(:github), class: 'button small' %>
@@ -13,7 +13,7 @@
         <% end %>
       </div>
       <div class="half-container">
-        <%= image_tag 'screenshot.webp', width: 616, height: 223, alt: 'interface-example' %>
+        <%= image_tag 'screenshot.webp', width: 616, height: 407, alt: 'interface-example' %>
       </div>
     </section>
     <section id="benefits-box">
@@ -21,7 +21,7 @@
       <div id="benefits-list">
         <div>
           <h3>Reviewer statistics</h3>
-          <p>Calculated the up-to-date reviewer statistics (reviews, comments, average review time) separately for each repository and for the whole company</p>
+          <p>Calculated the up-to-date reviewer statistics (reviews, comments, average review time and more) separately for each repository and for the whole company, and repository statistics</p>
         </div>
         <div>
           <h3>Customize calculations</h3>
@@ -29,7 +29,7 @@
         </div>
         <div>
           <h3>Comparing data</h3>
-          <p>Compareable data with previous periods for better understanding development changes</p>
+          <p>Compareable data with previous periods for better understanding development improvements</p>
         </div>
         <div>
           <h3>Exclude vacations</h3>
