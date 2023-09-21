@@ -24,7 +24,7 @@ module Companies
     private
 
     def find_company
-      @company = current_user.companies.find_by!(uuid: params[:company_id])
+      @company = authorized_scope(Company.all).find_by!(uuid: params[:company_id])
     end
 
     def find_repositories

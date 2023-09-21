@@ -17,6 +17,20 @@ describe Companies::RepositoriesController do
         end
       end
 
+      context 'for existing company where user has insights' do
+        before do
+          identity = create :identity, user: @current_user
+          entity = create :entity, identity: identity
+          create :insight, insightable: company, entity: entity
+        end
+
+        it 'renders index page' do
+          get :index, params: { company_id: company.uuid, locale: 'en' }
+
+          expect(response).to render_template 'repositories/index'
+        end
+      end
+
       context 'for existing company' do
         before { company.update!(user: @current_user) }
 
@@ -59,6 +73,20 @@ describe Companies::RepositoriesController do
           do_request
 
           expect(response).to render_template 'shared/404'
+        end
+      end
+
+      context 'for existing company where user has insights' do
+        before do
+          identity = create :identity, user: @current_user
+          entity = create :entity, identity: identity
+          create :insight, insightable: company, entity: entity
+        end
+
+        it 'renders new page' do
+          get :new, params: { company_id: company.uuid, locale: 'en' }
+
+          expect(response).to render_template 'repositories/new'
         end
       end
 
