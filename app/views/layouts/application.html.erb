@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="text-sm font-light m-0 p-0 min-h-screen">
   <head>
     <title>Pull requests statistics, review time | PullKeeper</title>
     <meta charset="utf-8">
@@ -8,10 +8,11 @@
     <meta name="Description" content="PullKeeper - Monitor pull requests for your repositories and get relevant statistics for review time and commenting on pull requests, get summary statistics for whole company, share statistics with your team">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'tailwind', 'inter-font' %>
     <%= stylesheet_link_tag 'application' %>
     <%= javascript_include_tag 'application' %>
   </head>
-  <body>
+  <body class="relative flex flex-col m-0 p-0 min-h-screen">
     <%= render Views::Shared::FlashComponent.new %>
     <%= yield %>
   </body>

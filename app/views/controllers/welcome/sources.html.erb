@@ -1,12 +1,8 @@
-<div class="page-container">
-  <%= render PageWrappers::NavigationComponent.new %>
-  <div class="page-content welcome-page">
-    <section id="sources-box" class="global-container">
-      <h1>Source code</h1>
-      <p class="line-height">You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer">Github repository</a>.</p>
-      <p class="line-height">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer">Github issues</a>.</p>
-      <p class="line-height">You can fork repository, run it locally or even run it on your own production server.</p>
-    </section>
-  </div>
-  <%= render 'shared/footer' %>
-</div>
+<%= render PageWrappers::GuestComponent.new do %>
+  <section class="mx-auto my-24">
+    <h1 class="heading-1">Source code</h1>
+    <p class="paragraph">You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer">Github repository</a>.</p>
+    <p class="paragraph">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer">Github issues</a>.</p>
+    <p class="paragraph">You can fork repository, run it locally or even run it on your own production server.</p>
+  </section>
+<% end %>

@@ -8,15 +8,6 @@ GIT
       uniform_notifier (~> 1.11)
 
 GIT
-  remote: https://github.com/rails/sprockets
-  revision: 5b040f3bec503ded8a98c0c911c7a77dd1f5bf1b
-  branch: main
-  specs:
-    sprockets (4.2.1)
-      concurrent-ruby (~> 1.0)
-      rack (>= 2.2.4, < 4)
-
-GIT
   remote: https://github.com/seuros/capistrano-puma.git
   revision: 2cc11846540489edda10d83e026c9bea04e6fab1
   specs:
@@ -421,6 +412,9 @@ GEM
       tilt (~> 2.0)
     skylight (6.0.1)
       activesupport (>= 5.2.0)
+    sprockets (4.2.1)
+      concurrent-ruby (~> 1.0)
+      rack (>= 2.2.4, < 4)
     sprockets-rails (3.4.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -434,6 +428,12 @@ GEM
       activerecord (>= 5.2)
     strong_migrations (1.6.3)
       activerecord (>= 5.2)
+    tailwindcss-rails (2.0.30-arm64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.30-x86_64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.30-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.2)
     tilt (2.3.0)
     timeout (0.4.0)
@@ -501,14 +501,14 @@ DEPENDENCIES
   rubocop-rails (~> 2.15)
   rubocop-rspec (~> 2.12)
   ruby_event_store-rspec
-  sassc-rails
   shoulda-matchers (~> 5.0)
   simplecov
   skylight
-  sprockets!
+  sprockets-rails
   sshkit-sudo
   store_model
   strong_migrations (~> 1.4)
+  tailwindcss-rails
   view_component (~> 3.0)
   whenever
 

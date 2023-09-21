@@ -18,8 +18,8 @@ gem 'puma', '~> 6.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem 'sassc-rails'
-gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'main'
+gem 'tailwindcss-rails'
+gem 'sprockets-rails'
 
 # A framework for building view components
 gem 'view_component', '~> 3.0', require: 'view_component/engine'

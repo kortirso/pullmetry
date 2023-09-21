@@ -1,59 +1,55 @@
-<div class="page-container">
-  <%= render PageWrappers::NavigationComponent.new %>
-  <div class="page-content welcome-page">
-    <section id="welcome-box" class="global-container main-container">
-      <div class="half-container flex flex-col justify-center">
-        <h1>Pull requests relevant statistic</h1>
-        <p>Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
-        <% unless Current.user %>
-          <p>
-            <%= link_to 'Login with Github', omniauth_link(:github), class: 'button small' %>
-            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'button small' %>
-          </p>
-        <% end %>
+<%= render PageWrappers::GuestComponent.new do %>
+  <section class="grid grid-cols-2 gap-8 mx-auto my-24">
+    <div class="flex-1 flex flex-col justify-center">
+      <h1 class="heading-1">Pull requests relevant statistic</h1>
+      <p class="text-lg leading-8 mb-4">Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
+      <% unless Current.user %>
+        <div>
+          <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small' %>
+          <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="flex-1">
+      <%= image_tag 'screenshot.webp', width: 616, height: 407, alt: 'interface-example' %>
+    </div>
+  </section>
+  <section class="mx-auto my-24">
+    <h2 class="heading-2 text-center mb-8">What features you get from the PullKeeper</h2>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Reviewer statistics</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">Calculated the up-to-date reviewer statistics (reviews, comments, average review time and more) separately for each repository and for the whole company, and repository statistics</p>
       </div>
-      <div class="half-container">
-        <%= image_tag 'screenshot.webp', width: 616, height: 407, alt: 'interface-example' %>
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Customize calculations</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
       </div>
-    </section>
-    <section id="benefits-box">
-      <h2>What features you get from the PullKeeper</h2>
-      <div id="benefits-list">
-        <div>
-          <h3>Reviewer statistics</h3>
-          <p>Calculated the up-to-date reviewer statistics (reviews, comments, average review time and more) separately for each repository and for the whole company, and repository statistics</p>
-        </div>
-        <div>
-          <h3>Customize calculations</h3>
-          <p>Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
-        </div>
-        <div>
-          <h3>Comparing data</h3>
-          <p>Compareable data with previous periods for better understanding development improvements</p>
-        </div>
-        <div>
-          <h3>Exclude vacations</h3>
-          <p>Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges</p>
-        </div>
-        <div>
-          <h3>Github and Gitlab API</h3>
-          <p>Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer">Gitlab API</a></p>
-        </div>
-        <div>
-          <h3>Achievements system</h3>
-          <p>PullKeeper has achievements system for representing and comparing developer success</p>
-        </div>
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Comparing data</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">Compareable data with previous periods for better understanding development improvements</p>
       </div>
-    </section>
-    <section id="slack-box" class="global-container main-container">
-      <div class="half-container">
-        <%= image_tag 'insights.webp', width: 616, height: 223, alt: 'interface-example' %>
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Exclude vacations</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges</p>
       </div>
-      <div class="half-container flex flex-col justify-center">
-        <h2>Slack and Discord integration</h2>
-        <p>Receive notifications to Slack and/or Discord with latest insights of your companies and repositories.</p>
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Github and Gitlab API</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer">Gitlab API</a></p>
       </div>
-    </section>
-  </div>
-  <%= render 'shared/footer' %>
-</div>
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="heading-3 text-center">Achievements system</h3>
+        <p class="text-center text-gray-500 text-lg leading-8">PullKeeper has achievements system for representing and comparing developer success</p>
+      </div>
+    </div>
+  </section>
+  <section class="flex mx-auto my-24">
+    <div class="flex-1">
+      <%= image_tag 'insights.webp', width: 616, height: 223, alt: 'interface-example' %>
+    </div>
+    <div class="flex-1 flex flex-col justify-center">
+      <h2 class="heading-2">Slack and Discord integration</h2>
+      <p class="text-lg leading-8">Receive notifications to Slack and/or Discord with latest insights of your companies and repositories.</p>
+    </div>
+  </section>
+<% end %>
