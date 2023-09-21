@@ -430,7 +430,7 @@ GEM
       sshkit (~> 1.8)
     store_model (2.1.1)
       activerecord (>= 5.2)
-    strong_migrations (1.6.2)
+    strong_migrations (1.6.3)
       activerecord (>= 5.2)
     thor (1.2.2)
     tilt (2.3.0)

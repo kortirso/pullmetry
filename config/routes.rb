@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   get 'privacy', to: 'welcome#privacy'
   get 'sources', to: 'welcome#sources'
-  get 'how_it_works', to: 'welcome#how_it_works'
+  get 'how-it-works', to: 'welcome#how_it_works'
 
   get 'sitemap', to: 'sitemaps#index'
   get 'robots', to: 'robots#index'
