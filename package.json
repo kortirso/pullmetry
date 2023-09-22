@@ -2,7 +2,7 @@
   "name": "pullkeeper",
   "private": "false",
   "scripts": {
-    "build": "esbuild app/javascript/application.js --bundle --sourcemap --outdir=app/assets/builds",
+    "build": "esbuild app/javascript/application.jsx --bundle --sourcemap --outdir=app/assets/builds",
     "format": "prettier --write 'app/javascript/**/*.{js,jsx,json}'",
     "lint": "eslint -c .eslintrc.json app/javascript --ext .js,.jsx"
   },
@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@types/react": "^18.2.20",

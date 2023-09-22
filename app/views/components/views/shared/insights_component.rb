@@ -26,41 +26,10 @@ module Views
         @previous_repository_insight ||= repository_insights.reject(&:actual?).first
       end
 
-      def visible_insights
-        @visible_insights ||=
-          Insights::VisibleQuery
-            .new(relation: @insightable.insights)
-            .resolve(insightable: @insightable)
-            .load
-      end
-
-      def actual_insights
-        @actual_insights ||= visible_insights.select(&:actual?)
-      end
-
-      def previous_insights
-        @previous_insights ||= visible_insights.reject(&:actual?)
-      end
-
-      def insight_fields
-        @insight_fields ||=
-          if @premium && @insightable.configuration.insight_fields.present?
-            @insightable.selected_insight_fields
-          else
-            Insight::DEFAULT_ATTRIBUTES
-          end
-      end
-
       # rubocop: disable Rails/OutputSafety
       def render_repository_insight(attribute)
         result = convert_repository_insight_field(actual_repository_insight, attribute).to_s
         result += repository_insight_ratio_value(actual_repository_insight, attribute) if @insight_ratio
-        result.html_safe
-      end
-
-      def render_insight_field(insight, attribute)
-        result = convert_insight_field(insight, attribute.to_sym).to_s
-        result += insight_ratio_value(insight, attribute.to_sym) if @insight_ratio && result != '-'
         result.html_safe
       end
       # rubocop: enable Rails/OutputSafety
@@ -70,14 +39,6 @@ module Views
       def convert_repository_insight_field(insight, insight_field)
         return convert_seconds(insight[insight_field]) if Repositories::Insight::TIME_ATTRIBUTES.include?(insight_field)
         return insight[insight_field].to_f if Repositories::Insight::DECIMAL_ATTRIBUTES.include?(insight_field)
-
-        insight[insight_field].to_i
-      end
-
-      def convert_insight_field(insight, insight_field)
-        return convert_seconds(insight[insight_field]) if Insight::TIME_ATTRIBUTES.include?(insight_field)
-        return insight[insight_field].to_f if Insight::DECIMAL_ATTRIBUTES.include?(insight_field)
-        return "#{insight[insight_field].to_i}%" if Insight::PERCENTILE_ATTRIBUTES.include?(insight_field)
 
         insight[insight_field].to_i
       end
@@ -96,22 +57,6 @@ module Views
         change_type = @insightable.configuration.insight_ratio_type == 'change'
 
         ratio_value = change_type ? change_value(insight, previous_repository_insight, attribute) : ratio_value(insight, previous_repository_insight, attribute)
-
-        value = multiple_value(ratio_value, reverse_attribute, change_type)
-        value_for_rendering = time_attribute && change_type ? convert_seconds(value.abs) : value.abs
-
-        "<sup class='#{span_class(ratio_value, reverse_attribute)}'>#{value_sign(value, reverse_attribute)}#{value_for_rendering}#{change_type ? '' : '%'}</sup>"
-      end
-
-      def insight_ratio_value(insight, attribute)
-        return '' if insight[attribute].nil?
-
-        time_attribute = Insight::TIME_ATTRIBUTES.include?(attribute)
-        reverse_attribute = Insight::REVERSE_ORDER_ATTRIBUTES.include?(attribute)
-        change_type = @insightable.configuration.insight_ratio_type == 'change'
-
-        previous_insight = previous_insights.find { |previous_insight| previous_insight.entity_id == insight.entity_id }
-        ratio_value = change_type ? change_value(insight, previous_insight, attribute) : ratio_value(insight, previous_insight, attribute)
 
         value = multiple_value(ratio_value, reverse_attribute, change_type)
         value_for_rendering = time_attribute && change_type ? convert_seconds(value.abs) : value.abs

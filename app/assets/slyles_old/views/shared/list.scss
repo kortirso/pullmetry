@@ -85,53 +85,6 @@
           }
         }
       }
-
-      .table {
-        border-collapse: collapse;
-        font-size: .9rem;
-
-        th, td {
-          border: 1px solid $gray300;
-          padding: .5rem .75rem;
-        }
-
-        tr {
-          th {
-            font-weight: 400;
-          }
-        }
-
-        td {
-          white-space: nowrap;
-
-          sup {
-            margin-left: .25rem;
-          }
-        }
-
-        tbody {
-          tr {
-            &:nth-of-type(2n) {
-              background: $gray100;
-            }
-          }
-        }
-
-        td.image {
-          img {
-            width: 1.4rem;
-            height: 1.4rem;
-          }
-        }
-
-        .negative {
-          color: $red500;
-        }
-
-        .positive {
-          color: $green500;
-        }
-      }
     }
   }
 }

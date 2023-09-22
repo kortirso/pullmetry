@@ -1,4 +1,4 @@
-<%= render PageWrappers::PageComponent.new do %>
+<%= render PageWrappers::UserComponent.new do %>
   <h1>New vacation</h1>
   <section class="list-form">
     <%= form_with model: @vacation, url: vacations_path, method: :post, class: 'form-block' do |form| %>

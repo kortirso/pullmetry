@@ -1,35 +1,24 @@
-<%= render PageWrappers::PageComponent.new do %>
-  <div class="list-title flex justify-between items-center">
-    <h1>Repositories</h1>
+<%= render PageWrappers::UserComponent.new do %>
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="m-0">Repositories</h1>
     <% if allowed_to?(:create_repository?, Current.user) %>
-      <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'button' %>
+      <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'btn-primary' %>
     <% end %>
   </div>
-  <section class="list">
+  <section>
     <% @repositories.each do |repository| %>
-      <div class="list-element form-block">
-        <div class="list-element-header flex justify-between">
-          <div>
-            <h2 class="flex items-center">
-              <%= repository.title %>
-              <% if repository.fetch_access_token && !repository.accessable %>
-                <span class="unaccessable">Repository access error</span>
-              <% end %>
-            </h2>
-            <p>Last synced at: <%= repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data' %></p>
-            <p><%= link_to "Repository's external link", repository.link %></p>
-          </div>
-          <% if allowed_to?(:update?, repository) %>
-            <div class="insightable-actions">
-              <%= link_to (repository.access_token ? 'Refresh access token' : 'Add access token'), new_repository_access_token_path(repository.uuid), class: 'button small' %>
-              <%= button_to 'Destroy repository', repository_path(repository.uuid), class: 'button danger small', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')" %>
-            </div>
-          <% end %>
-        </div>
-        <div class="list-element-insights">
-          <%= render Views::Shared::InsightsComponent.new(insightable: repository) %>
-        </div>
-      </div>
+      <%=
+        react_component 'Repository',
+          uuid: repository.uuid,
+          title: repository.title,
+          synced_at: repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data',
+          repository_url: repository.link,
+          unaccessable: repository.fetch_access_token && !repository.accessable,
+          edit_links: allowed_to?(:update?, repository) ? {
+            access_token: link_to((repository.access_token ? 'Refresh access token' : 'Add access token'), new_repository_access_token_path(repository.uuid), class: 'button small'),
+            destroy: button_to('Destroy repository', repository_path(repository.uuid), class: 'button danger small', method: :delete, onclick: "return confirm('Are you sure you wish to delete repository?')")
+          } : nil
+      %>
     <% end %>
     <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
   </section>

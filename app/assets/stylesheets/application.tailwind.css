@@ -4,6 +4,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;600&display=swap');
 
 @layer components {
+  h1 {
+    @apply text-4xl leading-10 mb-4;
+  }
+
+  h2 {
+    @apply text-3xl leading-8 mb-4;
+  }
+
+  h3 {
+    @apply text-2xl leading-6 mb-4;
+  }
+
+  p {
+    @apply leading-6;
+  }
+
+  ul {
+    @apply list-disc pl-4 mb-6;
+  }
+
+  li {
+    @apply mb-2 leading-6;
+  }
+
   .btn-primary {
     @apply inline-block bg-zinc-800 hover:bg-zinc-600 text-white py-2 px-4 rounded leading-8;
   }
@@ -12,28 +36,52 @@
     @apply py-1 px-2 text-sm leading-8;
   }
 
-  .heading-1 {
-    @apply text-4xl leading-10 mb-4;
+  .user-navigation-link {
+    @apply inline-block p-4 pl-12 text-white;
   }
 
-  .heading-2 {
-    @apply text-3xl leading-8 mb-4;
+  .table th, .table td {
+    @apply border border-gray-200 py-2 px-3 text-sm;
   }
 
-  .heading-3 {
-    @apply text-2xl leading-6 mb-4;
+  .table tr th {
+    @apply font-normal;
   }
 
-  .paragraph {
-    @apply leading-6;
+  .table tbody tr:nth-of-type(2n) {
+    @apply bg-gray-100;
   }
 
-  .ul {
-    @apply list-disc pl-4 mb-6;
+  .form-block {
+    @apply p-6 mb-6;
   }
 
-  .li {
-    @apply mb-2 leading-6;
+  .form-field {
+    @apply mb-4;
+  }
+
+  .form-field .form-label {
+    @apply block mb-1 leading-6;
+  }
+
+  .form-field .form-value {
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 leading-8;
+  }
+
+  .form-field .form-value:focus {
+    @apply border-sky-400;
+  }
+
+  .form-field .form-value.full {
+    @apply w-full;
+  }
+
+  .form-field select {
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4;
+  }
+
+  .achievement-name {
+    @apply relative text-center bg-green-600 text-white py-2 px-16;
   }
 }
 

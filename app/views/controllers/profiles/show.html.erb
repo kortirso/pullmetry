@@ -1,7 +1,5 @@
-<%= render PageWrappers::PageComponent.new do %>
-  <div class="list-title flex justify-between items-center">
-    <h1>Profile <%= Current.user.uuid %></h1>
-  </div>
+<%= render PageWrappers::UserComponent.new do %>
+  <h1>Profile <%= Current.user.uuid %></h1>
   <section id="profile">
     <div class="profile-block form-block">
       <div id="subscriptions" class="with-action flex justify-between items-center">

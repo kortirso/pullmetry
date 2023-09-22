@@ -41,7 +41,7 @@ class RepositoriesController < ApplicationController
       pagy(
         authorized_scope(
           Repository.order(id: :desc)
-        ).includes(:access_token, :repository_insights, company: %i[user access_token]),
+        ).includes(:access_token, :repository_insights, company: %i[access_token]),
         items: PER_PAGE
       )
   end
