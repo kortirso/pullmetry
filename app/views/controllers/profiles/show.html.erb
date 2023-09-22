@@ -1,46 +1,46 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1>Profile <%= Current.user.uuid %></h1>
-  <section id="profile">
-    <div class="profile-block form-block">
-      <div id="subscriptions" class="with-action flex justify-between items-center">
+  <section >
+    <div class="form-block">
+      <div id="subscriptions" class="flex justify-between items-center">
         <h2>Premium account</h2>
         <% unless @used_trial_subscription %>
-          <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'button' %>
+          <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'btn-primary mt-4' %>
         <% end %>
       </div>
-      <div class="main-container">
-        <div class="half-container">
+      <div class="grid grid-cols-2 gap-8">
+        <div>
           <% if @end_time %>
-            <p class="line-height">Your premium subscription ends at <%= @end_time %></p>
+            <p>Your premium subscription ends at <%= @end_time %></p>
           <% else %>
-            <p class="line-height">You don't have active subscription.</p>
+            <p>You don't have active subscription.</p>
           <% end %>
         </div>
-        <div class="half-container">
-          <p class="line-height">Here you can see information about your active subscriptions.<%= @used_trial_subscription ? '' : " You can activate trial subscription for #{Subscription::TRIAL_PERIOD_DAYS} days without any credit card." %></p>
+        <div>
+          <p>Here you can see information about your active subscriptions.<%= @used_trial_subscription ? '' : " You can activate trial subscription for #{Subscription::TRIAL_PERIOD_DAYS} days without any credit card." %></p>
         </div>
       </div>
     </div>
     <div class="profile-block form-block">
       <div class="with-action flex justify-between items-center">
         <h2>Vacations</h2>
-        <%= link_to 'Add vacation time', new_vacation_path, class: 'button' %>
+        <%= link_to 'Add vacation time', new_vacation_path, class: 'btn-primary' %>
       </div>
-      <div class="main-container">
-        <div id="vacations-list" class="half-container">
+      <div class="grid grid-cols-2 gap-8">
+        <div id="vacations-list">
           <% if @vacations.load.blank? %>
-            <p class="line-height">You didn't specify any vacations yet.</p>
+            <p>You didn't specify any vacations yet.</p>
           <% else %>
             <% @vacations.each do |vacation| %>
               <div class="vacation flex justify-between items-center">
                 <p><%= vacation.start_time.strftime('%Y-%m-%d') %> - <%= vacation.end_time.strftime('%Y-%m-%d') %></p>
-                <%= button_to 'X', vacation_path(vacation), class: 'button small danger', method: :delete %>
+                <%= button_to 'X', vacation_path(vacation), class: 'btn-primary btn-small', method: :delete %>
               </div>
             <% end %>
           <% end %>
         </div>
-        <div class="half-container">
-          <p class="line-height">Here you can specify your vacations, and for any of your company this time will be reduced from time spending for reviews for better calculating average times.</p>
+        <div>
+          <p>Here you can specify your vacations, and for any of your company this time will be reduced from time spending for reviews for better calculating average times.</p>
         </div>
       </div>
     </div>
@@ -48,10 +48,10 @@
       <%= form_with model: Current.user, url: profile_path, method: :patch do |form| %>
         <div class="with-action flex justify-between items-center">
           <h2>User settings</h2>
-          <%= form.submit 'Update user settings', class: 'button' %>
+          <%= form.submit 'Update user settings', class: 'btn-primary' %>
         </div>
-        <div class="main-container mb-4">
-          <div class="half-container">
+        <div class="grid grid-cols-2 gap-8 mb-4">
+          <div>
             <%= form.label :use_work_time, 'Use work time', class: 'form-label' %>
             <%= form.check_box :use_work_time, checked: Current.user.with_work_time? %>
             <div id="work-times">
@@ -71,34 +71,34 @@
               </div>
             </div>
           </div>
-          <div class="half-container">
-            <p class="line-height">You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
+          <div>
+            <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
           </div>
         </div>
-        <div class="main-container">
-          <div class="half-container">
+        <div class="grid grid-cols-2 gap-8">
+          <div>
             <%= form.label :access_error, 'Repository access error notifications', class: 'form-label' %>
             <%= form.check_box :access_error, checked: Current.user.notifications.access_error.first&.value %>
           </div>
-          <div class="half-container">
-            <p class="line-height">You can select email notifications you would like to receive.</p>
+          <div>
+            <p>You can select email notifications you would like to receive.</p>
           </div>
         </div>
       <% end %>
     </div>
     <div class="profile-block form-block">
       <h2>Identities</h2>
-      <div class="main-container">
-        <div class="half-container">
+      <div class="grid grid-cols-2 gap-8">
+        <div>
           <% @identities.each do |identity| %>
             <div class="identity flex justify-between items-center">
-              <p class="line-height">
+              <p>
                 <%= identity.provider.capitalize %> identity is created at <%= identity.created_at.strftime('%H:%M %Y-%m-%d') %>
               </p>
             </div>
           <% end %>
           <% if @need_identities.present? %>
-            <p class="line-height mt-4 flex items-center">
+            <p class="mt-4 flex items-center">
               <span class="mr-4">Add more identities</span>
               <% @need_identities.each do |provider| %>
                 <%= link_to image_tag("#{provider}.svg", width: 20, height: 20, alt: provider), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
@@ -106,15 +106,15 @@
             </p>
           <% end %>
         </div>
-        <div class="half-container">
-          <p class="line-height">Here you can see your connected identities. You can add more or delete existing.</p>
+        <div>
+          <p>Here you can see your connected identities. You can add more or delete existing.</p>
         </div>
       </div>
     </div>
     <div class="profile-block form-block">
       <h2 class="warning">Delete account</h2>
-      <p class="line-height">You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery. Only information about your subscriptions will be saved.</p>
-      <%= button_to 'Delete account', profile_path, class: 'button danger', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
+      <p >You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery. Only information about your subscriptions will be saved.</p>
+      <%= button_to 'Delete account', profile_path, class: 'btn-primary', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
     </div>
   </section>
 <% end %>

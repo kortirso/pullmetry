@@ -3,7 +3,7 @@
 class CompaniesController < ApplicationController
   include Pagy::Backend
 
-  PER_PAGE = 5
+  PER_PAGE = 6
 
   before_action :find_companies, only: %i[index]
   before_action :find_company, only: %i[destroy]

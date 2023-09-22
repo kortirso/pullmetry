@@ -4,7 +4,7 @@ class RepositoryPolicy < ApplicationPolicy
   relation_scope do |relation|
     next relation if user.admin?
 
-    user.available_repositories
+    relation.where(id: user.available_repositories.select(:id))
   end
 
   def update?

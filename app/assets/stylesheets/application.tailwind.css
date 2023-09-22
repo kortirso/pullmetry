@@ -83,5 +83,47 @@
   .achievement-name {
     @apply relative text-center bg-green-600 text-white py-2 px-16;
   }
+
+  #jsonb_columns_configuration_work_time_zone {
+    @apply w-full;
+  }
+
+  #user_work_time_zone {
+    @apply w-full;
+  }
+
+  #jsonb_columns_configuration_use_work_time,
+  #jsonb_columns_configuration_insight_ratio,
+  #user_use_work_time {
+    @apply mb-4;
+  }
+
+  #jsonb_columns_configuration_use_work_time+#work-times,
+  #jsonb_columns_configuration_insight_ratio+#insight-ratio-types,
+  #user_use_work_time+#work-times {
+    display: none;
+  }
+
+  #jsonb_columns_configuration_use_work_time:checked+#work-times,
+  #jsonb_columns_configuration_insight_ratio:checked+#insight-ratio-types,
+  #user_use_work_time:checked+#work-times {
+    @apply block;
+  }
+
+  .pagination {
+    @apply mb-4;
+  }
+
+  .pagination .page {
+    @apply py-2 px-3 bg-green-200;
+  }
+
+  .pagination .page a {
+    @apply text-black;
+  }
+
+  .pagination .page.active {
+    @apply bg-green-300;
+  }
 }
 

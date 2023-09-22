@@ -68,8 +68,8 @@ export const Repository = ({ uuid, title, synced_at, repository_url, unaccessabl
         </a>
       </div>
       {pageState.expanded ? (
-        <div className="p-4">
-          <h2 className="mb-4">Developer insights</h2>
+        <div className="p-4 border border-top-0 border-gray-200">
+          <h3 className="mb-4">Developer insights</h3>
           {renderInsightsData()}
         </div>
       ) : null}
