@@ -47,7 +47,7 @@ export const Company = ({ uuid, title, repositories_count, repositories_url, una
 
   return (
     <div className="mb-4 bg-white">
-      <div className="cursor-pointer p-8 pr-12 flex justify-between items-center" onClick={() => toggle()}>
+      <div className="cursor-pointer p-8 flex justify-between items-center" onClick={() => toggle()}>
         <div>
           <h2 className="flex items-center">
             {title}

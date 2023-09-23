@@ -16,7 +16,7 @@ class InsightSerializer < ApplicationSerializer
     params[:ratio_enabled] ? params[:ratio_type] : nil
   end
 
-  attribute :entity do |object|
-    Rails.cache.read("entity_payload_#{object.entity_id}_v1") || Entity::EMPTY_PAYLOAD
+  attribute :entity do |object, params|
+    params[:no_entity] ? nil : (Rails.cache.read("entity_payload_#{object.entity_id}_v1") || Entity::EMPTY_PAYLOAD)
   end
 end

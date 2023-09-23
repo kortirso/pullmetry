@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       end
       resources :repositories, only: %i[] do
         resources :insights, only: %i[index]
+        resources :repository_insights, only: %i[index], module: 'repositories'
       end
     end
   end
