@@ -41,6 +41,8 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
         </td>
         <td>{data.entity.login}</td>
         {insightTypes.map((insightType) => {
+          if (data.values[insightType].value === null) return <td key={`data-${data.entity.login}-${insightType}`}>-</td>;
+
           return (
             <td key={`data-${data.entity.login}-${insightType}`}>
               {renderInsight(data.values[insightType].value, insightType)}

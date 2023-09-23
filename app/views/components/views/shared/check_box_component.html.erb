@@ -1,0 +1,12 @@
+<div class="flex items-center">
+  <%= @position == :left ? @form.label(@field, @label, class: 'form-label mr-2') : nil %>
+  <div class="toggle">
+    <%= @form.check_box @field, checked: @checked, class: 'toggle-checkbox' %>
+    <label
+      for="<%= @field %>"
+      role="switch"
+      class="toggle-label"
+    />
+  </div>
+  <%= @position == :right ? @form.label(@field, @label, class: 'form-label ml-2') : nil %>
+</div>

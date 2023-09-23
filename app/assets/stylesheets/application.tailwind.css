@@ -52,10 +52,6 @@
     @apply bg-gray-100;
   }
 
-  .form-block {
-    @apply p-6 mb-6;
-  }
-
   .form-field {
     @apply mb-4;
   }
@@ -77,7 +73,9 @@
   }
 
   .form-field select {
-    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4;
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 text-sm;
+
+    min-width: 60px;
   }
 
   .achievement-name {
@@ -90,24 +88,6 @@
 
   #user_work_time_zone {
     @apply w-full;
-  }
-
-  #jsonb_columns_configuration_use_work_time,
-  #jsonb_columns_configuration_insight_ratio,
-  #user_use_work_time {
-    @apply mb-4;
-  }
-
-  #jsonb_columns_configuration_use_work_time+#work-times,
-  #jsonb_columns_configuration_insight_ratio+#insight-ratio-types,
-  #user_use_work_time+#work-times {
-    display: none;
-  }
-
-  #jsonb_columns_configuration_use_work_time:checked+#work-times,
-  #jsonb_columns_configuration_insight_ratio:checked+#insight-ratio-types,
-  #user_use_work_time:checked+#work-times {
-    @apply block;
   }
 
   .pagination {
@@ -124,6 +104,56 @@
 
   .pagination .page.active {
     @apply bg-green-300;
+  }
+
+  .toggle {
+    @apply relative inline-block select-none;
+
+    width: 40px;
+  }
+
+  .toggle .toggle-checkbox {
+    @apply transition-all absolute block cursor-pointer appearance-none rounded-full bg-white border-none;
+
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .toggle .toggle-checkbox:checked {
+    @apply bg-white;
+
+    left: calc(100% - 22px);
+  }
+
+  .toggle .toggle-label {
+    @apply block cursor-pointer overflow-hidden rounded-full border-2;
+
+    width: 40px;
+    height: 24px;
+  }
+
+  .toggle .toggle-checkbox:not([disabled]) + .toggle-label {
+    @apply bg-gray-300 border-gray-300;
+    @apply transition-colors;
+  }
+
+  .toggle:hover .toggle-checkbox:not([disabled]) + .toggle-label {
+    @apply border-gray-500;
+  }
+
+  .toggle .toggle-checkbox:checked + .toggle-label {
+    @apply bg-green-500 border-green-500;
+  }
+
+  .toggle:hover .toggle-checkbox:checked + .toggle-label {
+    @apply border-green-700;
+  }
+
+  .toggle .toggle-checkbox:disabled + .toggle-label,
+  .toggle:hover .toggle-checkbox:disabled + .toggle-label {
+    @apply bg-gray-400 border-gray-400;
   }
 }
 

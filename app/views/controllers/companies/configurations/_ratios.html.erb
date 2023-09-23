@@ -1,0 +1,29 @@
+<div class="py-6 px-8">
+  <div class="grid grid-cols-2 gap-8">
+    <div>
+      <% if @company.premium? %>
+        <%=
+          render Views::Shared::CheckBoxComponent.new(
+            form: form,
+            label: 'Calculate insight ratios',
+            field: :insight_ratio,
+            checked: @company.configuration.insight_ratio
+          )
+        %>
+        <div class="mt-4">
+          <div class="flex flex-row">
+            <div class="flex-1 form-field">
+              <%= form.label :insight_ratio_type, 'Insight ratio type', class: 'form-label' %>
+              <%= form.select :insight_ratio_type, options_for_select(@insight_ratio_type_values, @company.configuration.insight_ratio_type), {}, { class: 'form-value' } %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <p>This configuration is available for premium accounts.</p>
+      <% end %>
+    </div>
+    <div>
+      <p>If this configuration enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
+    </div>
+  </div>
+</div>

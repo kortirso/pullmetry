@@ -1,0 +1,19 @@
+<div class="py-6 px-8">
+  <div id="subscriptions" class="flex justify-between items-center">
+    <% unless @used_trial_subscription %>
+      <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'btn-primary mt-4' %>
+    <% end %>
+  </div>
+  <div class="grid grid-cols-2 gap-8">
+    <div>
+      <% if @end_time %>
+        <p>Your premium subscription ends at <%= @end_time %></p>
+      <% else %>
+        <p>You don't have active subscription.</p>
+      <% end %>
+    </div>
+    <div>
+      <p>Here you can see information about your active subscriptions.<%= @used_trial_subscription ? '' : " You can activate trial subscription for #{Subscription::TRIAL_PERIOD_DAYS} days without any credit card." %></p>
+    </div>
+  </div>
+</div>

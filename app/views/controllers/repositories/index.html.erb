@@ -1,5 +1,5 @@
 <%= render PageWrappers::UserComponent.new do %>
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Repositories</h1>
     <% if allowed_to?(:create_repository?, Current.user) %>
       <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'btn-primary' %>
