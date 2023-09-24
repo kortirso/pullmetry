@@ -4,7 +4,11 @@ module Helpers
   module Insight
     def compare_with_previous_period(object, insight_field, params)
       previous_insight =
-        params[:previous_insights].is_a?(Array) ? params[:previous_insights].find { |previous_insight| previous_insight.entity_id == object.entity_id } : params[:previous_insights]
+        if params[:previous_insights].is_a?(Array)
+          params[:previous_insights].find { |previous_insight| previous_insight.entity_id == object.entity_id }
+        else
+          params[:previous_insights]
+        end
       return change_value(object, previous_insight, insight_field) if params[:ratio_type] == 'change'
 
       ratio_value(object, previous_insight, insight_field)

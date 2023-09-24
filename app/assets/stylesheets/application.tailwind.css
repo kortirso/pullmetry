@@ -16,16 +16,23 @@
     @apply text-2xl leading-6 mb-4;
   }
 
+  h4 {
+    @apply text-xl leading-4 mb-4;
+  }
+
   p {
     @apply leading-6;
   }
 
   ul {
-    @apply list-disc pl-4 mb-6;
+    @apply list-none mb-6;
   }
 
   li {
-    @apply mb-2 leading-6;
+    @apply relative mb-2 leading-6 pl-8 bg-no-repeat bg-left;
+
+    background-image: url('icons/chevron.svg');
+    background-size: 1.25rem 1.25rem;
   }
 
   .btn-primary {

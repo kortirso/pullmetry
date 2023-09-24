@@ -1,29 +1,41 @@
 <div class="w-64 bg-zinc-800 flex flex-col justify-between">
   <div class="flex flex-col">
-    <%= link_to root_path, class: 'user-navigation-link my-4' do %>
-      <%= image_tag '' %>
+    <%= link_to root_path, class: 'user-navigation-link my-4 text-xl' do %>
+      <%- image_tag '' %>
       <span>PullKeeper</span>
     <% end %>
     <%= link_to companies_path, class: 'user-navigation-link' do %>
-      <%= image_tag '' %>
+      <%- image_tag '' %>
       <span><%= t('components.page_wrappers.page_component.companies') %></span>
     <% end %>
     <%= link_to repositories_path, class: 'user-navigation-link' do %>
-      <%= image_tag '' %>
+      <%- image_tag '' %>
       <span><%= t('components.page_wrappers.page_component.repositories') %></span>
     <% end %>
     <%= link_to achievements_path, class: 'user-navigation-link' do %>
-      <%= image_tag '' %>
+      <%- image_tag '' %>
       <span><%= t('components.page_wrappers.page_component.achievements') %></span>
     <% end %>
-  </div>
-  <div class="flex flex-col">
     <%= link_to profile_path, class: 'user-navigation-link' do %>
-      <%= image_tag '' %>
+      <%- image_tag '' %>
       <span><%= t('components.page_wrappers.page_component.profile') %></span>
     <% end %>
+  </div>
+  <div class="flex flex-col pb-8">
+    <%= link_to how_it_works_path, class: 'user-navigation-link' do %>
+      <%- image_tag '' %>
+      <span>How it works</span>
+    <% end %>
+    <%= link_to sources_path, class: 'user-navigation-link' do %>
+      <%- image_tag '' %>
+      <span>Source code</span>
+    <% end %>
+    <%= link_to privacy_path, class: 'user-navigation-link' do %>
+      <%- image_tag '' %>
+      <span>Privacy policy</span>
+    <% end %>
     <%= link_to logout_path, class: 'user-navigation-link' do %>
-      <%= image_tag '' %>
+      <%- image_tag '' %>
       <span><%= t('components.page_wrappers.page_component.logout') %></span>
     <% end %>
   </div>

@@ -1,6 +1,6 @@
 <%= render PageWrappers::UserComponent.new do %>
-  <h1>New Company</h1>
-  <section class="list-form">
+  <h1 class="mb-8">New Company</h1>
+  <section class="inline-block p-4 bg-white rounded shadow">
     <%= form_with model: @company, url: companies_path, method: :post, class: 'form-block' do |form| %>
       <div class="form-field">
         <%= form.label :title, 'Title', class: 'form-label' %>

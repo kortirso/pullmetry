@@ -14,14 +14,12 @@ const SHORT_INSIGHT_NAMES = {
   changed_loc: 'Changed LOC',
   average_changed_loc: 'Avg changed LOC',
 };
-
 const TIME_ATTRIBUTES = ['average_review_seconds', 'average_merge_seconds'];
 const REVERSE_ORDER_ATTRIBUTES = [
   'average_review_seconds',
   'average_merge_seconds',
   'average_open_pr_comments',
 ];
-// const DECIMAL_ATTRIBUTES = ['average_open_pr_comments']
 const PERCENTILE_ATTRIBUTES = ['review_involving'];
 
 const SECONDS_IN_MINUTE = 60;
@@ -41,7 +39,8 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
         </td>
         <td>{data.entity.login}</td>
         {insightTypes.map((insightType) => {
-          if (data.values[insightType].value === null) return <td key={`data-${data.entity.login}-${insightType}`}>-</td>;
+          if (data.values[insightType].value === null)
+            return <td key={`data-${data.entity.login}-${insightType}`}>-</td>;
 
           return (
             <td key={`data-${data.entity.login}-${insightType}`}>

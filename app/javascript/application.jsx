@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (Component) {
       const props = dataset['props'] ? JSON.parse(dataset['props']) : {};
-      const childrenData = mountPoint.firstChild?.data ? JSON.parse(mountPoint.firstChild?.data) : null;
+      const childrenData = mountPoint.firstChild?.data
+        ? JSON.parse(mountPoint.firstChild?.data)
+        : null;
       const root = ReactDOMClient.createRoot(mountPoint);
       root.render(
         <QueryClientProvider client={queryClient}>
-          <Component {...props}>
-            { childrenData }
-          </Component>
+          <Component {...props}>{childrenData}</Component>
         </QueryClientProvider>,
       );
     }
