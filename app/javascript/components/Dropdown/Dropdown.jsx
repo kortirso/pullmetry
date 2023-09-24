@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Chevron } from '../../atoms';
+import { Chevron } from '../../icons';
 
 export const Dropdown = ({ title, children }) => {
   const [pageState, setPageState] = useState({
