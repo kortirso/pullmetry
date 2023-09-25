@@ -841,7 +841,8 @@ CREATE TABLE public.repositories (
     provider integer DEFAULT 0 NOT NULL,
     external_id character varying,
     synced_at timestamp(6) without time zone,
-    accessable boolean DEFAULT true NOT NULL
+    accessable boolean DEFAULT true NOT NULL,
+    owner_avatar_url character varying
 );
 
 
@@ -1868,6 +1869,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230913201840'),
 ('20230914071959'),
 ('20230914184514'),
-('20230918101006');
+('20230918101006'),
+('20230925093816');
 
 

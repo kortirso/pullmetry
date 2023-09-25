@@ -17,7 +17,8 @@ module Import
               pull_closed_at: payload[:closed_at],
               pull_merged_at: payload[:merged_at],
               author: @entity_representer.call(data: payload[:author]),
-              reviewers: payload[:reviewers].map { |element| @entity_representer.call(data: element) }
+              reviewers: payload[:reviewers].map { |element| @entity_representer.call(data: element) },
+              owner_avatar_url: nil
             }
           end
         end
