@@ -20,6 +20,8 @@
           } : nil
       %>
     <% end %>
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    <% if @pagy.pages > 1 %>
+      <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+    <% end %>
   </section>
 <% end %>

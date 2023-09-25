@@ -131,7 +131,7 @@ export const Company = ({
         <Chevron rotated={pageState.expanded} />
       </div>
       {pageState.expanded ? (
-        <div className="py-4 px-8">
+        <div className="pt-4 px-8 pb-8">
           <h3 className="mb-4">Developer insights</h3>
           {renderInsightsData()}
         </div>

@@ -36,7 +36,11 @@
   }
 
   .btn-primary {
-    @apply inline-block bg-zinc-800 hover:bg-zinc-600 text-white py-2 px-4 rounded leading-8;
+    @apply inline-block bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded leading-8 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply bg-red-400 hover:bg-red-500;
   }
 
   .btn-small {
@@ -97,20 +101,24 @@
     @apply w-full;
   }
 
-  .pagination {
-    @apply mb-4;
+  nav.pagination .page {
+    @apply inline-block;
   }
 
-  .pagination .page {
-    @apply py-2 px-3 bg-green-200;
+  nav.pagination .page.disabled, nav.pagination .page.active {
+    @apply py-2 px-3;
   }
 
-  .pagination .page a {
-    @apply text-black;
+  nav.pagination .page a {
+    @apply inline-block text-black py-2 px-3;
   }
 
-  .pagination .page.active {
+  nav.pagination .page, nav.pagination .page.disabled:hover {
     @apply bg-green-300;
+  }
+
+  nav.pagination .page.active, nav.pagination .page:hover {
+    @apply bg-green-400;
   }
 
   .toggle {
@@ -134,19 +142,14 @@
     left: calc(100% - 22px);
   }
 
-  .toggle .toggle-label {
-    @apply block cursor-pointer overflow-hidden rounded-full border-2;
+  .toggle .toggle-checkbox + .toggle-label {
+    @apply block cursor-pointer overflow-hidden rounded-full bg-gray-300 border-2 border-gray-300 transition-colors;
 
     width: 40px;
     height: 24px;
   }
 
-  .toggle .toggle-checkbox:not([disabled]) + .toggle-label {
-    @apply bg-gray-300 border-gray-300;
-    @apply transition-colors;
-  }
-
-  .toggle:hover .toggle-checkbox:not([disabled]) + .toggle-label {
+  .toggle:hover .toggle-checkbox + .toggle-label {
     @apply border-gray-500;
   }
 
@@ -156,11 +159,6 @@
 
   .toggle:hover .toggle-checkbox:checked + .toggle-label {
     @apply border-green-700;
-  }
-
-  .toggle .toggle-checkbox:disabled + .toggle-label,
-  .toggle:hover .toggle-checkbox:disabled + .toggle-label {
-    @apply bg-gray-400 border-gray-400;
   }
 }
 

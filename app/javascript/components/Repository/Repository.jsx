@@ -141,7 +141,7 @@ export const Repository = ({
         <Chevron rotated={pageState.expanded} />
       </div>
       {pageState.expanded ? (
-        <div className="py-4 px-8">
+        <div className="pt-4 px-8 pb-8">
           {pageState.insights !== undefined ? (
             <>
               <h3 className="mb-4">Repository insights</h3>

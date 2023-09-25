@@ -2,12 +2,12 @@
   <% flash.each do |key, message| %>
     <% if message.is_a?(Array) %>
       <% message.each do |value| %>
-        <div class="mb-2 px-4 py-2 rounded opacity-75 <%= key == 'alert' ? 'bg-red-400' : 'bg-green-400' %>">
+        <div class="mb-2 px-4 py-2 rounded <%= key == 'alert' ? 'bg-red-400' : 'bg-green-400' %>">
           <p class="m-0 mb-2"><%= value %></p>
         </div>
       <% end %>
     <% else %>
-      <div class="mb-2 px-4 py-2 rounded opacity-75 <%= key == 'alert' ? 'bg-red-400' : 'bg-green-400' %>">
+      <div class="mb-2 px-4 py-2 rounded <%= key == 'alert' ? 'bg-red-400' : 'bg-green-400' %>">
         <%= message %>
       </div>
     <% end %>

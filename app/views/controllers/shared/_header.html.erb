@@ -8,8 +8,8 @@
     <% if Current.user %>
       <%= link_to t('components.page_wrappers.page_component.companies'), companies_path %>
       <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path %>
-      <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
       <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path %>
+      <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
       <%= link_to t('components.page_wrappers.page_component.logout'), logout_path %>
     <% else %>
       <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path %>

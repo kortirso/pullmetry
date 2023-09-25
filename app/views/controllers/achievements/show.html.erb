@@ -6,10 +6,10 @@
   <section class="flex p-4 bg-white rounded shadow">
     <div class="w-72 flex flex-col p-4 pt-0">
       <p class="text-center mb-4">Total points - <%= @achievements_points %></p>
-      <%= link_to t('controllers.achievements.show.summary'), achievements_path, class: "py-2 px-4 bg-green-200 hover:bg-green-400 rounded mb-2 text-black #{'bg-green-600 text-white' if params[:group].blank?}" %>
-      <%= link_to t('controllers.achievements.show.pull_requests'), achievements_path(group: 4), class: "py-2 px-4 bg-green-200 hover:bg-green-400 rounded mb-2 text-black #{'bg-green-600 text-white' if params[:group] == '4'}" %>
-      <%= link_to t('controllers.achievements.show.reviews'), achievements_path(group: 3), class: "py-2 px-4 bg-green-200 hover:bg-green-400 rounded mb-2 text-black #{'bg-green-600 text-white' if params[:group] == '3'}" %>
-      <%= link_to t('controllers.achievements.show.comments'), achievements_path(group: 2), class: "py-2 px-4 bg-green-200 hover:bg-green-400 rounded mb-2 text-black #{'bg-green-600 text-white' if params[:group] == '2'}" %>
+      <%= link_to t('controllers.achievements.show.summary'), achievements_path, class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group].blank?}" %>
+      <%= link_to t('controllers.achievements.show.pull_requests'), achievements_path(group: 4), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '4'}" %>
+      <%= link_to t('controllers.achievements.show.reviews'), achievements_path(group: 3), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '3'}" %>
+      <%= link_to t('controllers.achievements.show.comments'), achievements_path(group: 2), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '2'}" %>
     </div>
     <div class="flex-1">
       <% @achievements.each do |achievement| %>

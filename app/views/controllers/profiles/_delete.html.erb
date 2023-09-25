@@ -1,4 +1,4 @@
 <div class="py-6 px-8">
   <p>You can delete your account. This is an irreversible action. All your identities, companies, repositories, access tokens and statistics will be destroyed with no chance of recovery. Only information about your subscriptions will be saved.</p>
-  <%= button_to 'Delete account', profile_path, class: 'btn-primary mt-4', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
+  <%= button_to 'Delete account', profile_path, class: 'btn-primary btn-danger mt-4', method: :delete, onclick: "return confirm('Are you sure you wish to delete account?')" %>
 </div>

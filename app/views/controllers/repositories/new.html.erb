@@ -1,6 +1,6 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1 class="mb-8">New Repository</h1>
-  <section class="inline-block p-4 bg-white rounded shadow">
+  <section class="inline-block p-4 bg-white rounded shadow w-96">
     <%= form_with model: @repository, url: repositories_path, method: :post, class: 'form-block' do |form| %>
       <div class="form-field">
         <%= form.label :company_uuid, 'Company', class: 'form-label' %>
@@ -8,11 +8,11 @@
       </div>
       <div class="form-field">
         <%= form.label :title, 'Title', class: 'form-label' %>
-        <%= form.text_field :title, required: true, placeholder: "Repository's title", class: 'form-value' %>
+        <%= form.text_field :title, required: true, placeholder: "Repository's title", class: 'form-value w-full' %>
       </div>
       <div class="form-field">
         <%= form.label :link, 'Link', class: 'form-label' %>
-        <%= form.text_field :link, required: true, placeholder: 'https://github.com/company_name/repo_name', class: 'form-value' %>
+        <%= form.text_field :link, required: true, placeholder: 'https://github.com/company_name/repo_name', class: 'form-value w-full' %>
       </div>
       <div class="form-field">
         <%= form.label :provider, 'Provider', class: 'form-label' %>
@@ -20,7 +20,7 @@
       </div>
       <div class="form-field">
         <%= form.label :external_id, 'External id', class: 'form-label' %>
-        <%= form.text_field :external_id, placeholder: 'External id', class: 'form-value' %>
+        <%= form.text_field :external_id, placeholder: 'External id', class: 'form-value w-full' %>
       </div>
       <%= form.submit 'Create repository', class: 'btn-primary' %>
     <% end %>
