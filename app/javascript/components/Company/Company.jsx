@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { Insights } from '../../atoms';
-import { Chevron, Delete, Edit, Key } from '../../icons';
+import { Chevron, Delete, Edit, Key } from '../../svg';
 
 import { insightsRequest } from './requests/insightsRequest';
 
