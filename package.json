@@ -14,8 +14,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.0",
