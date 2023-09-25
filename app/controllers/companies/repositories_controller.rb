@@ -32,7 +32,7 @@ module Companies
         pagy(
           authorized_scope(
             @company.repositories.order(id: :desc)
-          ).includes(:access_token, :repository_insights, company: %i[user access_token]),
+          ).includes(:access_token),
           items: PER_PAGE
         )
     end

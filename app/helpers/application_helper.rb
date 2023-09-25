@@ -25,4 +25,16 @@ module ApplicationHelper
   def value(provider_oauth, key)
     Rails.application.credentials.dig(provider_oauth, Rails.env.to_sym, key)
   end
+
+  def react_component(component_name, **props)
+    content_tag(
+      'div',
+      id: props[:component_id],
+      class: props[:component_class],
+      data: {
+        react_component: component_name,
+        props: props.except(:component_id, :component_class, :children).to_json
+      }
+    ) { props[:children]&.to_json || '' }
+  end
 end

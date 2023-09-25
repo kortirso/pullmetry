@@ -1,38 +1,26 @@
-<%= render PageWrappers::PageComponent.new do %>
-  <div class="list-title flex justify-between items-center">
-    <h1>Companies</h1>
-    <%= link_to 'Create company', new_company_path, class: 'button' %>
+<%= render PageWrappers::UserComponent.new do %>
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="m-0">Companies</h1>
+    <%= link_to 'Create company', new_company_path, class: 'btn-primary' %>
   </div>
-  <section class="list">
+  <section>
     <% @companies.each do |company| %>
-      <div class="list-element form-block">
-        <div class="list-element-header flex justify-between">
-          <div>
-            <h2 class="flex items-center">
-              <%= company.title %>
-              <% if company.access_token && !company.accessable %>
-                <span class="unaccessable">Company has repositories with access error</span>
-              <% end %>
-            </h2>
-            <p>
-              Repositories count - <%= link_to company.repositories.size, company_repositories_path(company_id: company.uuid) %>
-            </p>
-          </div>
-          <% if allowed_to?(:update?, company) %>
-            <div class="insightable-actions">
-              <%= link_to (company.access_token ? 'Refresh access token' : 'Add access token'), new_company_access_token_path(company.uuid), class: 'button small' %>
-
-              <%= link_to 'Edit configuration', edit_company_configuration_path(company.uuid), class: 'button small' %>
-
-              <%= button_to 'Destroy company', company_path(company.uuid), class: 'button danger small', method: :delete, onclick: "return confirm('Are you sure you wish to delete company?')" %>
-            </div>
-          <% end %>
-        </div>
-        <div class="list-element-insights">
-          <%= render Views::Shared::InsightsComponent.new(insightable: company) %>
-        </div>
-      </div>
+      <%=
+        react_component 'Company',
+          uuid: company.uuid,
+          title: company.title,
+          repositories_count: company.repositories.size,
+          repositories_url: company_repositories_path(company_id: company.uuid),
+          unaccessable: company.access_token && !company.accessable,
+          edit_links: allowed_to?(:update?, company) ? {
+            access_token: new_company_access_token_path(company.uuid),
+            configuration: edit_company_configuration_path(company.uuid),
+            destroy: company_path(company.uuid)
+          } : nil
+      %>
     <% end %>
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    <% if @pagy.pages > 1 %>
+      <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+    <% end %>
   </section>
 <% end %>

@@ -18,8 +18,8 @@ gem 'puma', '~> 6.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem 'sassc-rails'
-gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'main'
+gem 'sprockets-rails'
+gem 'tailwindcss-rails'
 
 # A framework for building view components
 gem 'view_component', '~> 3.0', require: 'view_component/engine'
@@ -85,6 +85,12 @@ gem 'commento'
 
 # email tracking system
 gem 'emailbutler'
+
+# jsbundling
+gem 'jsbundling-rails', '~> 1.0'
+
+# api serializer
+gem 'jsonapi-serializer', '2.2.0'
 
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'

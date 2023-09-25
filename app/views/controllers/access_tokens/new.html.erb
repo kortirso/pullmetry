@@ -1,28 +1,28 @@
-<%= render PageWrappers::PageComponent.new do %>
-  <div class="main-container">
-    <div class="half-container">
+<%= render PageWrappers::UserComponent.new do %>
+  <div class="flex">
+    <div class="flex-1">
       <h1>New access token</h1>
-      <section class="list-form">
-        <%= form_with model: @access_token, url: @tokenable.is_a?(Company) ? company_access_tokens_path(@tokenable.uuid) : repository_access_tokens_path(@tokenable.uuid), method: :post, class: 'form-block' do |form| %>
+      <section class="inline-block p-4 bg-white rounded shadow">
+        <%= form_with model: @access_token, url: @tokenable.is_a?(Company) ? company_access_tokens_path(@tokenable.uuid) : repository_access_tokens_path(@tokenable.uuid), method: :post, class: 'form-block inline-block' do |form| %>
           <div class="form-field">
             <%= form.label :value, 'Value', class: 'form-label' %>
             <%= form.text_field :value, required: true, placeholder: "Access token's value", class: 'form-value' %>
           </div>
-          <%= form.submit 'Create access token', class: 'button' %>
+          <%= form.submit 'Create access token', class: 'btn-primary' %>
         <% end %>
       </section>
     </div>
-    <div id="token-description-box" class="half-container">
+    <div class="flex-1">
       <h1>Permissions for access token</h1>
-      <p>For fetching pull requests data from Github your company or repository must have attached Personal Access Token (PAT).</p>
-      <p class="ul-header">For creating this PAT you need:</p>
+      <p class="mb-4">For fetching pull requests data from Github your company or repository must have attached Personal Access Token (PAT).</p>
+      <p class="mb-2">For creating this PAT you need:</p>
       <ul>
-        <li>- visit <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener noreferrer">Github token generating page</a>, or <a href="https://gitlab.com/-/profile/personal_access_tokens" target="_blank" rel="noopener noreferrer">Gitlab token generating page</a></li>
-        <li>- for Github select for which repositories you want to create token,</li>
-        <li>- select required repository permissions, they must be only <strong>READ-ONLY</strong> for <strong>Pull requests</strong>.</li>
+        <li>visit <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">Github token generating page</a>, or <a href="https://gitlab.com/-/profile/personal_access_tokens" target="_blank" rel="noopener noreferrer" class="underline text-blue-600">Gitlab token generating page</a></li>
+        <li>for Github select for which repositories you want to create token,</li>
+        <li>select required repository permissions, they must be only <strong class="text-red-600">READ-ONLY</strong> for <strong class="text-red-600">Pull requests</strong>.</li>
       </ul>
-      <%= image_tag 'permissions.webp', width: 616 %>
-      <p>If you create access token for repository - select only 1 repository for your PAT.</p>
+      <%= image_tag 'permissions.webp', width: 616, alt: 'permissions' %>
+      <p class="mt-4">If you create access token for repository - select only 1 repository for your PAT.</p>
       <p>If you create access token for company - you can select many repositories, all repositories of this company will use the same access token.</p>
     </div>
   </div>

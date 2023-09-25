@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;600&display=swap');
+
+@layer components {
+  h1 {
+    @apply text-4xl leading-10 mb-4;
+  }
+
+  h2 {
+    @apply text-3xl leading-8 mb-4;
+  }
+
+  h3 {
+    @apply text-2xl leading-6 mb-4;
+  }
+
+  h4 {
+    @apply text-xl leading-4 mb-4;
+  }
+
+  p {
+    @apply leading-6;
+  }
+
+  ul {
+    @apply list-none mb-6;
+  }
+
+  li {
+    @apply relative mb-2 leading-6 pl-8 bg-no-repeat bg-left;
+
+    background-image: url('icons/chevron.svg');
+    background-size: 1.25rem 1.25rem;
+  }
+
+  .btn-primary {
+    @apply inline-block bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded leading-8 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply bg-red-400 hover:bg-red-500;
+  }
+
+  .btn-small {
+    @apply py-1 px-2 text-sm leading-8;
+  }
+
+  .user-navigation-link {
+    @apply inline-block p-4 pl-12 text-white;
+  }
+
+  .table th, .table td {
+    @apply border border-gray-200 py-2 px-3 text-sm;
+  }
+
+  .table tr th {
+    @apply font-normal;
+  }
+
+  .table tbody tr:nth-of-type(2n) {
+    @apply bg-gray-100;
+  }
+
+  .form-field {
+    @apply mb-4;
+  }
+
+  .form-field .form-label {
+    @apply block mb-1 leading-6;
+  }
+
+  .form-field .form-value {
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 leading-8;
+  }
+
+  .form-field .form-value:focus {
+    @apply border-sky-400;
+  }
+
+  .form-field .form-value.full {
+    @apply w-full;
+  }
+
+  .form-field select {
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 text-sm;
+
+    min-width: 60px;
+  }
+
+  .achievement-name {
+    @apply relative text-center bg-green-600 text-white py-2 px-16;
+  }
+
+  #jsonb_columns_configuration_work_time_zone {
+    @apply w-full;
+  }
+
+  #user_work_time_zone {
+    @apply w-full;
+  }
+
+  nav.pagination .page {
+    @apply inline-block;
+  }
+
+  nav.pagination .page.disabled, nav.pagination .page.active {
+    @apply py-2 px-3;
+  }
+
+  nav.pagination .page a {
+    @apply inline-block text-black py-2 px-3;
+  }
+
+  nav.pagination .page, nav.pagination .page.disabled:hover {
+    @apply bg-green-300;
+  }
+
+  nav.pagination .page.active, nav.pagination .page:hover {
+    @apply bg-green-400;
+  }
+
+  .toggle {
+    @apply relative inline-block select-none;
+
+    width: 40px;
+  }
+
+  .toggle .toggle-checkbox {
+    @apply transition-all absolute block cursor-pointer appearance-none rounded-full bg-white border-none;
+
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .toggle .toggle-checkbox:checked {
+    @apply bg-white;
+
+    left: calc(100% - 22px);
+  }
+
+  .toggle .toggle-checkbox + .toggle-label {
+    @apply block cursor-pointer overflow-hidden rounded-full bg-gray-300 border-2 border-gray-300 transition-colors;
+
+    width: 40px;
+    height: 24px;
+  }
+
+  .toggle:hover .toggle-checkbox + .toggle-label {
+    @apply border-gray-500;
+  }
+
+  .toggle .toggle-checkbox:checked + .toggle-label {
+    @apply bg-green-500 border-green-500;
+  }
+
+  .toggle:hover .toggle-checkbox:checked + .toggle-label {
+    @apply border-green-700;
+  }
+}
+

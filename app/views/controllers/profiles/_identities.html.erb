@@ -1,0 +1,24 @@
+<div class="py-6 px-8">
+  <div class="grid grid-cols-2 gap-8">
+    <div>
+      <% @identities.each do |identity| %>
+        <div class="flex justify-between items-center">
+          <p>
+            <%= identity[:provider].capitalize %> identity is created at <%= identity[:created_at].strftime('%H:%M %Y-%m-%d') %>
+          </p>
+        </div>
+      <% end %>
+      <% if @need_identities.present? %>
+        <p class="mt-4 flex items-center">
+          <span class="mr-4">Add more identities</span>
+          <% @need_identities.each do |provider| %>
+            <%= link_to image_tag("#{provider}.svg", width: 20, height: 20, alt: provider), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+    <div>
+      <p>Here you can see your connected identities. You can add more or delete existing.</p>
+    </div>
+  </div>
+</div>

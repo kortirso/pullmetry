@@ -1,0 +1,23 @@
+<header class="flex justify-between items-center p-8 border-b border-gray-200">
+  <div>
+    <%= link_to root_path, class: 'text-2xl font-normal tracking-tighter' do %>
+      pull<span class="text-violet-600">keeper</span>
+    <% end %>
+  </div>
+  <div class="flex grid-x gap-8">
+    <% if Current.user %>
+      <%= link_to t('components.page_wrappers.page_component.companies'), companies_path %>
+      <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path %>
+      <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path %>
+      <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
+      <%= link_to t('components.page_wrappers.page_component.logout'), logout_path %>
+    <% else %>
+      <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path %>
+      <div class="flex">
+        <span class="mr-4">Login with</span>
+        <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github', class: 'flex justify-center mr-4' %>
+        <%= link_to image_tag('gitlab.svg', width: 20, height: 20, alt: 'gitlab'), omniauth_link(:gitlab), 'aria-label': 'Login with Gitlab', class: 'flex justify-center' %>
+      </div>
+    <% end %>
+  </div>
+</header>

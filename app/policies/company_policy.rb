@@ -4,7 +4,7 @@ class CompanyPolicy < ApplicationPolicy
   relation_scope do |relation|
     next relation if user.admin?
 
-    user.available_companies
+    relation.where(id: user.available_companies.select(:id))
   end
 
   def update?

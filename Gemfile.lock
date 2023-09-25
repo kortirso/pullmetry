@@ -8,15 +8,6 @@ GIT
       uniform_notifier (~> 1.11)
 
 GIT
-  remote: https://github.com/rails/sprockets
-  revision: 5b040f3bec503ded8a98c0c911c7a77dd1f5bf1b
-  branch: main
-  specs:
-    sprockets (4.2.1)
-      concurrent-ruby (~> 1.0)
-      rack (>= 2.2.4, < 4)
-
-GIT
   remote: https://github.com/seuros/capistrano-puma.git
   revision: 2cc11846540489edda10d83e026c9bea04e6fab1
   specs:
@@ -99,7 +90,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     aggregate_root (2.12.1)
       ruby_event_store (= 2.12.1)
-    airbrussh (1.4.2)
+    airbrussh (1.5.0)
       sshkit (>= 1.6.1, != 1.7.0)
     arkency-command_bus (0.4.1)
       concurrent-ruby
@@ -192,16 +183,20 @@ GEM
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
-    ffi (1.15.5)
+    ffi (1.16.1)
     foreman (0.87.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    jsbundling-rails (1.2.1)
+      railties (>= 6.0.0)
     json (2.6.3)
     json_spec (1.1.5)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.7.1)
     kudos (0.1.3)
       rails (> 6.0.0)
@@ -379,7 +374,7 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
-    rubocop-rspec (2.24.0)
+    rubocop-rspec (2.24.1)
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
@@ -419,6 +414,9 @@ GEM
       tilt (~> 2.0)
     skylight (6.0.1)
       activesupport (>= 5.2.0)
+    sprockets (4.2.1)
+      concurrent-ruby (~> 1.0)
+      rack (>= 2.2.4, < 4)
     sprockets-rails (3.4.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -432,6 +430,12 @@ GEM
       activerecord (>= 5.2)
     strong_migrations (1.6.3)
       activerecord (>= 5.2)
+    tailwindcss-rails (2.0.30-arm64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.30-x86_64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.30-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.2)
     tilt (2.3.0)
     timeout (0.4.0)
@@ -477,7 +481,9 @@ DEPENDENCIES
   factory_bot_rails (= 6.2.0)
   faraday (~> 2.0)
   foreman
+  jsbundling-rails (~> 1.0)
   json_spec (= 1.1.5)
+  jsonapi-serializer (= 2.2.0)
   jwt (~> 2.5)
   kudos
   letter_opener
@@ -498,14 +504,14 @@ DEPENDENCIES
   rubocop-rails (~> 2.15)
   rubocop-rspec (~> 2.12)
   ruby_event_store-rspec
-  sassc-rails
   shoulda-matchers (~> 5.0)
   simplecov
   skylight
-  sprockets!
+  sprockets-rails
   sshkit-sudo
   store_model
   strong_migrations (~> 1.4)
+  tailwindcss-rails
   view_component (~> 3.0)
   whenever
 
