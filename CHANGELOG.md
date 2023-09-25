@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Modified
 - design with tailwind and react
+- render source logo as link to repository
 
 ### Fixed
 - bug with rendering repositories for not user companies

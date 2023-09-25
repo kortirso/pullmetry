@@ -13,6 +13,7 @@
           avatar_url: repository.owner_avatar_url,
           title: repository.title,
           synced_at: repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data',
+          provider: repository.provider,
           repository_url: repository.link,
           unaccessable: repository.fetch_access_token && !repository.accessable,
           edit_links: allowed_to?(:update?, repository) ? {

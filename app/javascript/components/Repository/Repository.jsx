@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { Insights, RepositoryInsights } from '../../atoms';
-import { Chevron, Delete, Key } from '../../icons';
+import { Chevron, Delete, Github, Gitlab, Key } from '../../icons';
 
 import { insightsRequest } from './requests/insightsRequest';
 import { repositoryInsightsRequest } from './requests/repositoryInsightsRequest';
@@ -11,6 +11,7 @@ export const Repository = ({
   avatar_url,
   title,
   synced_at,
+  provider,
   repository_url,
   unaccessable,
   edit_links,
@@ -77,6 +78,12 @@ export const Repository = ({
     );
   };
 
+  const renderRepositoryProviderLogo = () => {
+    if (provider === 'gitlab') return <Gitlab />;
+
+    return <Github />;
+  };
+
   return (
     <div className="mb-4 bg-white rounded shadow">
       <div
@@ -99,18 +106,20 @@ export const Repository = ({
               </span>
             ) : null}
           </h2>
-          <p>Last synced at: {synced_at}</p>
-          <a
-            href={repository_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-blue-600"
-            onClick={(event) => event.stopPropagation()}
-          >
-            Repository's external link
-          </a>
+          <p className="flex items center">
+            <a
+              href={repository_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="mr-2"
+            >
+              {renderRepositoryProviderLogo()}
+            </a>
+            <span>Last synced at: {synced_at}</span>
+          </p>
           {edit_links ? (
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-4">
               {edit_links.access_token ? (
                 <a
                   href={edit_links.access_token}
