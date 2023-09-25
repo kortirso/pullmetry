@@ -8,6 +8,7 @@ import { repositoryInsightsRequest } from './requests/repositoryInsightsRequest'
 
 export const Repository = ({
   uuid,
+  avatar_url,
   title,
   synced_at,
   repository_url,
@@ -84,6 +85,13 @@ export const Repository = ({
       >
         <div>
           <h2 className="flex items-center">
+            {avatar_url !== null ? (
+              <img
+                src={avatar_url}
+                alt="repository owner avatar"
+                className="w-8 h-8 rounded-sm mr-2"
+              />
+            ) : null}
             {title}
             {unaccessable ? (
               <span className="text-sm px-2 py-1 bg-red-400 border border-red-600 text-white ml-4 rounded">

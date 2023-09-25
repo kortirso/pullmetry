@@ -23,6 +23,7 @@ module Import
             save_pull_request(payload, find_entity_by_id(payload.dig(:author, :external_id)))
             save_requested_reviewers(find_reviewers_entities(payload[:reviewers]))
           end
+          update_repository(data)
         end
       end
 
@@ -67,7 +68,7 @@ module Import
           payload[:pull_created_at] = DateTime.now
         end
 
-        @pull_request.update!(payload.except(:author, :reviewers).merge(entity_id: author_entity))
+        @pull_request.update!(payload.except(:author, :reviewers, :owner_avatar_url).merge(entity_id: author_entity))
       end
 
       def save_requested_reviewers(reviewer_entities)
@@ -80,6 +81,10 @@ module Import
           }
         end
         ::PullRequests::Review.upsert_all(result) if result.any?
+      end
+
+      def update_repository(data)
+        @repository.update!(owner_avatar_url: data.pluck(:owner_avatar_url).uniq.compact.first)
       end
     end
   end
