@@ -29,10 +29,11 @@
   }
 
   li {
-    @apply relative mb-2 leading-6 pl-8 bg-no-repeat bg-left;
+    @apply relative mb-2 leading-6 pl-8 bg-no-repeat;
 
     background-image: url('icons/chevron.svg');
     background-size: 1.25rem 1.25rem;
+    background-position: left top;
   }
 
   .btn-primary {
