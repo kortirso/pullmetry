@@ -17,7 +17,8 @@ gem 'puma', '~> 6.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+# Js and css
+gem 'jsbundling-rails', '~> 1.0'
 gem 'sprockets-rails'
 gem 'tailwindcss-rails'
 
@@ -85,9 +86,6 @@ gem 'commento'
 
 # email tracking system
 gem 'emailbutler'
-
-# jsbundling
-gem 'jsbundling-rails', '~> 1.0'
 
 # api serializer
 gem 'jsonapi-serializer', '2.2.0'

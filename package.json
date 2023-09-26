@@ -2,7 +2,7 @@
   "name": "pullkeeper",
   "private": "false",
   "scripts": {
-    "build": "esbuild app/javascript/application.jsx --bundle --sourcemap --outdir=app/assets/builds",
+    "build": "esbuild app/javascript/application.jsx --bundle --minify --sourcemap --outdir=app/assets/builds",
     "format": "prettier --write 'app/javascript/**/*.{js,jsx,json}'",
     "lint": "eslint -c .eslintrc.json app/javascript --ext .js,.jsx"
   },
