@@ -2,30 +2,31 @@
 
 module Vacations
   class CreateForm
-    prepend ApplicationService
-
     def call(user:, params:)
-      @params = params
-      return if convert_time && validate_time && failure?
+      converted_time = convert_time(params)
+      error = validate_time(converted_time)
+      return { errors: [error] } if error.present?
 
-      user.vacations.create!(@params.slice(:start_time, :end_time))
+      { result: user.vacations.create!(converted_time) }
     end
 
     private
 
-    def convert_time
-      @params[:start_time] = DateTime.new(time(:start, 1), time(:start, 2), time(:start, 3))
-      @params[:end_time] = DateTime.new(time(:end, 1), time(:end, 2), time(:end, 3))
+    def convert_time(params)
+      {
+        start_time: DateTime.new(time(params, :start, 1), time(params, :start, 2), time(params, :start, 3)),
+        end_time: DateTime.new(time(params, :end, 1), time(params, :end, 2), time(params, :end, 3))
+      }
     end
 
-    def time(name, index)
-      @params["#{name}_time(#{index}i)"].to_i
+    def time(params, name, index)
+      params["#{name}_time(#{index}i)"].to_i
     end
 
-    def validate_time
-      return if @params[:start_time] < @params[:end_time]
+    def validate_time(params)
+      return if params[:start_time] < params[:end_time]
 
-      fail!('Start time must be before end time')
+      'Start time must be before end time'
     end
   end
 end

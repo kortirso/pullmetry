@@ -8,7 +8,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
   let(:send_service) { double(Export::Slack::Insights::SendService) }
   let(:date) {
     value = DateTime.now
-    value = value.change(day: value.day + 2) if value.wday.in?([0, 6])
+    value = value.change(day: value.day + (2 * (value < 29 ? 1 : -1))) if value.wday.in?([0, 6])
     value
   }
 

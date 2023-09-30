@@ -6,6 +6,6 @@ module Boolable
   private
 
   def to_bool(value)
-    ActiveModel::Type::Boolean.new.cast(value)
+    ActiveModel::Type::Boolean.new.cast(value) || false
   end
 end

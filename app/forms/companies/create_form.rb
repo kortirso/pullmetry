@@ -2,17 +2,13 @@
 
 module Companies
   class CreateForm
-    prepend ApplicationService
-    include Validateable
+    include Deps[validator: 'validators.companies.create']
 
     def call(user:, params:)
-      return if validate_with(validator, params) && failure?
+      errors = validator.call(params: params)
+      return { errors: errors } if errors.any?
 
-      @result = user.companies.create!(params)
+      { result: user.companies.create!(params) }
     end
-
-    private
-
-    def validator = Pullmetry::Container['validators.companies.create']
   end
 end

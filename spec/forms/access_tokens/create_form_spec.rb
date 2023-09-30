@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
 describe AccessTokens::CreateForm, type: :service do
-  subject(:form) { described_class.call(tokenable: company, params: params) }
+  subject(:form) { instance.call(tokenable: company, params: params) }
 
+  let!(:instance) { described_class.new }
   let!(:company) { create :company }
 
   context 'for invalid params' do
     let(:params) { { value: '' } }
 
-    it 'does not create access token and fails', :aggregate_failures do
+    it 'does not create access token and fails' do
       expect { form }.not_to change(AccessToken, :count)
-      expect(form.failure?).to be_truthy
     end
   end
 
   context 'for valid params' do
     let(:params) { { value: 'valid' } }
 
-    it 'creates access token and succeeds', :aggregate_failures do
+    it 'creates access token and succeeds' do
       form
 
       expect(AccessToken.where(tokenable: company).size).to eq 1
-      expect(form.success?).to be_truthy
     end
 
     context 'when access token already exist' do
@@ -31,7 +30,6 @@ describe AccessTokens::CreateForm, type: :service do
         form
 
         expect(AccessToken.where(tokenable: company).size).to eq 1
-        expect(form.success?).to be_truthy
         expect(AccessToken.find_by(id: access_token.id)).to be_nil
       end
     end

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-module JwtEncoder
-  module_function
-
+class JwtEncoder
   HMAC_SECRET = Rails.application.secret_key_base
   EXPIRATION_SECONDS = 86_400
 

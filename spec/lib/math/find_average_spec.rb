@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 describe Math::FindAverage, type: :service do
-  subject(:service_call) { described_class.new.call(values: values, type: type, round_digits: round_digits) }
+  subject(:service_call) { instance.call(values: values, type: type, round_digits: round_digits) }
 
+  let!(:instance) { described_class.new }
   let(:round_digits) { 0 }
 
   context 'for ariphmetic mean' do

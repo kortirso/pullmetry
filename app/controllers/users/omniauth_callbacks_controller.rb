@@ -2,6 +2,13 @@
 
 module Users
   class OmniauthCallbacksController < ApplicationController
+    include Deps[
+      attach_identity: 'services.auth.attach_identity',
+      fetch_session: 'services.auth.fetch_session',
+      generate_token: 'services.auth.generate_token',
+      login_user: 'services.auth.login_user'
+    ]
+
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate, only: %i[create]
     before_action :validate_provider, only: %i[create]
@@ -14,7 +21,7 @@ module Users
 
     def create
       if user
-        session[:pullmetry_token] = ::Auth::GenerateTokenOperation.call(user: user).result
+        session[:pullmetry_token] = generate_token.call(user: user)[:result]
         redirect_to companies_path, notice: 'Successful login'
       else
         redirect_to root_path, flash: { manifesto_username: true }
@@ -22,7 +29,7 @@ module Users
     end
 
     def destroy
-      Auth::FetchUserOperation.call(token: session[:pullmetry_token]).session&.destroy
+      fetch_session.call(token: session[:pullmetry_token])[:result]&.destroy
       session[:pullmetry_token] = nil
       redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
     end
@@ -40,9 +47,9 @@ module Users
     def user
       @user ||=
         if current_user.nil?
-          ::Auth::LoginUserOperation.call(auth: auth).result
+          login_user.call(auth: auth)[:result]
         else
-          ::Auth::AttachIdentityOperation.new.call(user: current_user, auth: auth)
+          attach_identity.call(user: current_user, auth: auth)
           current_user
         end
     end

@@ -2,20 +2,16 @@
 
 module AccessTokens
   class CreateForm
-    prepend ApplicationService
-    include Validateable
+    include Deps[validator: 'validators.access_token']
 
     def call(tokenable:, params:)
-      return if validate_with(validator, params) && failure?
+      errors = validator.call(params: params)
+      return { errors: errors } if errors.any?
 
       ActiveRecord::Base.transaction do
         tokenable.access_token&.destroy
-        @result = tokenable.create_access_token!(params)
+        tokenable.create_access_token!(params)
       end
     end
-
-    private
-
-    def validator = Pullmetry::Container['validators.access_token']
   end
 end

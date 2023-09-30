@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController
+  include Deps[create_form: 'forms.companies.create']
   include Pagy::Backend
 
   PER_PAGE = 5
@@ -16,11 +17,9 @@ class CompaniesController < ApplicationController
 
   def create
     # commento: companies.title
-    form = Companies::CreateForm.call(user: current_user, params: company_params)
-    if form.success?
-      redirect_to companies_path, notice: "Company #{form.result.title} is created"
-    else
-      redirect_to new_company_path, alert: form.errors
+    case create_form.call(user: current_user, params: company_params)
+    in { errors: errors } then redirect_to new_company_path, alert: errors
+    in { result: result } then redirect_to companies_path, notice: "Company #{result.title} is created"
     end
   end
 

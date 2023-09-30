@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
-describe Auth::FetchUserOperation do
-  subject(:service_call) { described_class.call(token: token) }
+describe Auth::FetchSessionService do
+  subject(:service_call) { instance.call(token: token) }
+
+  let!(:instance) { described_class.new }
 
   context 'for valid token' do
-    let(:token) { JwtEncoder.encode(uuid: session_uuid) }
+    let(:token) { JwtEncoder.new.encode(uuid: session_uuid) }
 
     context 'for unexisted session' do
       let(:session_uuid) { 'random uuid' }
 
       it 'does not assign user and fails', :aggregate_failures do
-        expect(service_call.result).to be_nil
-        expect(service_call.failure?).to be_truthy
+        expect(service_call[:result]).to be_nil
+        expect(service_call[:errors]).not_to be_blank
       end
     end
 
@@ -20,8 +22,8 @@ describe Auth::FetchUserOperation do
       let(:session_uuid) { users_session.uuid }
 
       it 'assigns user and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq users_session.user
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq users_session
+        expect(service_call[:errors]).to be_blank
       end
     end
   end
@@ -30,8 +32,8 @@ describe Auth::FetchUserOperation do
     let(:token) { 'random uuid' }
 
     it 'does not assign user and fails', :aggregate_failures do
-      expect(service_call.result).to be_nil
-      expect(service_call.failure?).to be_truthy
+      expect(service_call[:result]).to be_nil
+      expect(service_call[:errors]).not_to be_blank
     end
   end
 end

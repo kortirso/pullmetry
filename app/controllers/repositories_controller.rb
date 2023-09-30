@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RepositoriesController < ApplicationController
+  include Deps[create_form: 'forms.repositories.create']
   include Pagy::Backend
 
   PER_PAGE = 5
@@ -20,11 +21,9 @@ class RepositoriesController < ApplicationController
   def create
     authorize! Current.user, to: :create_repository?
     # commento: repositories.title, repositories.link, repositories.provider, repositories.external_id
-    form = Repositories::CreateForm.call(company: @company, params: repository_params)
-    if form.success?
-      redirect_to repositories_path, notice: "Repository #{form.result.title} is created"
-    else
-      redirect_to new_repository_path, alert: form.errors
+    case create_form.call(company: @company, params: repository_params)
+    in { errors: errors } then redirect_to new_repository_path, alert: errors
+    in { result: result } then redirect_to repositories_path, notice: "Repository #{result.title} is created"
     end
   end
 

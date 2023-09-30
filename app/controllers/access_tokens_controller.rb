@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AccessTokensController < ApplicationController
+  include Deps[create_form: 'forms.access_tokens.create']
+
   before_action :find_company
   before_action :find_repository
 
@@ -12,11 +14,9 @@ class AccessTokensController < ApplicationController
   def create
     authorize! @tokenable, to: :update?
     # commento: access_tokens.value
-    form = AccessTokens::CreateForm.call(tokenable: @tokenable, params: access_token_params)
-    if form.success?
-      redirect_to success_redirect_path, notice: 'Access token is created'
-    else
-      redirect_to fail_redirect_path, alert: form.errors
+    case create_form.call(tokenable: @tokenable, params: access_token_params)
+    in { errors: errors } then redirect_to fail_redirect_path, alert: errors
+    else redirect_to success_redirect_path, notice: 'Access token is created'
     end
   end
 

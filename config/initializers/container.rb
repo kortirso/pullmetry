@@ -16,6 +16,7 @@ module Pullmetry
     end
 
     register('math.find_average') { Math::FindAverage.new }
+    register('jwt_encoder') { JwtEncoder.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }
@@ -28,6 +29,19 @@ module Pullmetry
     register('validators.access_token') { AccessTokenValidator.new }
     register('validators.identity') { IdentityValidator.new }
     register('validators.repository') { RepositoryValidator.new }
+
+    # forms
+    register('forms.companies.create') { Companies::CreateForm.new }
+    register('forms.access_tokens.create') { AccessTokens::CreateForm.new }
+    register('forms.identities.create') { Identities::CreateForm.new }
+    register('forms.repositories.create') { Repositories::CreateForm.new }
+    register('forms.vacations.create') { Vacations::CreateForm.new }
+
+    # services
+    register('services.auth.attach_identity') { Auth::AttachIdentityService.new }
+    register('services.auth.fetch_session') { Auth::FetchSessionService.new }
+    register('services.auth.generate_token') { Auth::GenerateTokenService.new }
+    register('services.auth.login_user') { Auth::LoginUserService.new }
   end
 end
 

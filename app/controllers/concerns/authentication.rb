@@ -13,10 +13,10 @@ module Authentication
     access_token = session[:pullmetry_token].presence || params[:auth_token].presence
     return unless access_token
 
-    auth_call = Auth::FetchUserOperation.call(token: access_token)
-    return if auth_call.failure?
+    auth_call = Pullmetry::Container['services.auth.fetch_session'].call(token: access_token)
+    return if auth_call[:errors].present?
 
-    Current.user ||= auth_call.result
+    Current.user ||= auth_call[:result].user
   end
 
   def current_user

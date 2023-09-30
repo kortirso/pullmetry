@@ -5,7 +5,7 @@ describe Api::V1::InsightsController do
     context 'for logged users' do
       let!(:company) { create :company }
       let!(:user) { create :user }
-      let(:access_token) { Auth::GenerateTokenOperation.call(user: user).result }
+      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
 
       context 'for companies' do
         before { create :insight, insightable: company, comments_count: 1 }

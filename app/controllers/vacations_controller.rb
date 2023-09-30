@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class VacationsController < ApplicationController
+  include Deps[create_form: 'forms.vacations.create']
+
   before_action :find_vacation, only: %i[destroy]
 
   def new
@@ -8,11 +10,9 @@ class VacationsController < ApplicationController
   end
 
   def create
-    service_call = Vacations::CreateForm.call(user: current_user, params: vacation_params)
-    if service_call.success?
-      redirect_to profile_path, notice: 'Vacation is added'
-    else
-      redirect_to new_vacation_path, alert: service_call.errors
+    case create_form.call(user: current_user, params: vacation_params)
+    in { errors: errors } then redirect_to new_vacation_path, alert: errors
+    else redirect_to profile_path, notice: 'Vacation is added'
     end
   end
 

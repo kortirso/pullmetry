@@ -6,7 +6,7 @@ describe Api::V1::Repositories::RepositoryInsightsController do
       let!(:company) { create :company }
       let!(:repository) { create :repository, company: company }
       let!(:user) { create :user }
-      let(:access_token) { Auth::GenerateTokenOperation.call(user: user).result }
+      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
 
       before { create :repositories_insight, repository: repository, comments_count: 2 }
 

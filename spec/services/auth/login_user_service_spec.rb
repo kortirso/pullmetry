@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-describe Auth::LoginUserOperation, type: :service do
-  subject(:service_call) { described_class.call(auth: oauth) }
+describe Auth::LoginUserService, type: :service do
+  subject(:service_call) { instance.call(auth: oauth) }
 
+  let!(:instance) { described_class.new }
   let(:oauth) {
     {
       uid: '1234567890',
@@ -13,16 +14,13 @@ describe Auth::LoginUserOperation, type: :service do
   }
 
   context 'for unexisted user and identity' do
-    it 'creates new User' do
-      expect { service_call }.to change(User, :count).by(1)
-    end
-
-    it 'creates new Identity' do
-      expect { service_call }.to change(Identity, :count).by(1)
-    end
-
     it 'new Identity has params from oauth and belongs to new User', :aggregate_failures do
-      user = service_call.result
+      expect { service_call }.to(
+        change(User, :count).by(1)
+          .and(change(Identity, :count).by(1))
+      )
+
+      user = service_call[:result]
 
       identity = Identity.last
 
@@ -39,16 +37,12 @@ describe Auth::LoginUserOperation, type: :service do
       expect { service_call }.not_to change(User, :count)
     end
 
-    it 'creates new Identity' do
-      expect { service_call }.to change(Identity, :count).by(1)
-    end
-
     it 'new Identity has params from oauth and belongs to existed user', :aggregate_failures do
-      service_call
+      expect { service_call }.to change(Identity, :count).by(1)
 
       identity = Identity.last
 
-      expect(service_call.result).to eq user
+      expect(service_call[:result]).to eq user
       expect(identity.uid).to eq oauth[:uid]
       expect(identity.provider).to eq oauth[:provider]
       expect(identity.user).to eq user
@@ -62,7 +56,7 @@ describe Auth::LoginUserOperation, type: :service do
 
     it 'does not create new User', :aggregate_failures do
       expect { service_call }.not_to change(User, :count)
-      expect(service_call.result).to eq user
+      expect(service_call[:result]).to eq user
     end
 
     it 'does not create new Identity' do

@@ -2,27 +2,28 @@
 
 module Identities
   class CreateForm
-    prepend ApplicationService
-    include Validateable
+    include Deps[validator: 'validators.identity']
 
     def call(user:, params:)
-      return if validate_with(validator, params) && failure?
+      errors = validator.call(params: params)
+      return { errors: errors } if errors.any?
 
-      ActiveRecord::Base.transaction do
-        @result = user.identities.create!(params)
-        attach_entities
+      result = ActiveRecord::Base.transaction do
+        identity = user.identities.create!(params)
+        attach_entities(identity)
+        identity
       end
+
+      { result: result }
     end
 
     private
 
-    def attach_entities
+    def attach_entities(identity)
       # commento: entities.identity_id
       Entity
-        .where(identity_id: nil, provider: @result.provider, login: @result.login)
-        .update_all(identity_id: @result.id)
+        .where(identity_id: nil, provider: identity.provider, login: identity.login)
+        .update_all(identity_id: identity.id)
     end
-
-    def validator = Pullmetry::Container['validators.identity']
   end
 end
