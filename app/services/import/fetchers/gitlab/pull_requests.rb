@@ -10,22 +10,22 @@ module Import
 
         PER_PAGE = 25
 
-        def initialize(repository:, fetch_client: GitlabApi::Client, duration_days: Insight::FETCH_DAYS_PERIOD)
-          @repository = repository
-          @fetch_client = fetch_client.new(url: base_url(repository), repository: repository)
-          @started_at_limit = (DateTime.now - duration_days.days).beginning_of_day
+        # rubocop: disable Metrics/AbcSize
+        def call(repository:, fetch_client: GitlabApi::Client)
+          @started_at_limit = (DateTime.now - Insight::FETCH_DAYS_PERIOD.days).beginning_of_day
           @result = []
-        end
 
-        def call
+          fetch_client = fetch_client.new(url: base_url(repository))
+          request_params = find_default_request_params(repository)
           page = 1
           loop do
             # default sorting is desc by created_at attribute
             # first comes newest PRs
-            result = @fetch_client.pull_requests(params: { per_page: PER_PAGE, page: page })
-            break if !result[:success] && mark_repository_as_unaccessable
+            request_params[:params] = { per_page: PER_PAGE, page: page }
+            result = fetch_client.pull_requests(request_params)
+            break if !result[:success] && mark_repository_as_unaccessable(repository)
 
-            mark_repository_as_accessable unless @repository.accessable
+            mark_repository_as_accessable(repository) unless repository.accessable
             body = filter_result(result[:body])
             break if body.blank?
 
@@ -33,6 +33,7 @@ module Import
             page += 1
           end
         end
+        # rubocop: enable Metrics/AbcSize
 
         private
 
@@ -45,6 +46,13 @@ module Import
 
             true
           end
+        end
+
+        def find_default_request_params(repository)
+          {
+            external_id: repository.external_id,
+            access_token: repository.fetch_access_token&.value
+          }
         end
       end
     end

@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Github::Reviews, type: :service do
-  subject(:service_call) { described_class.new(pull_request: pull_request, fetch_client: fetch_client).call }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, fetch_client: fetch_client) }
 
   let!(:repository) { create :repository, provider: Providerable::GITHUB }
   let!(:pull_request) { create :pull_request, repository: repository }
   let(:fetch_client) { double }
-  let(:fetch_service) { double }
   let(:data) {
     [
       {
@@ -43,10 +42,14 @@ describe Import::Fetchers::Github::Reviews, type: :service do
   }
 
   before do
-    allow(fetch_client).to receive(:new).and_return(fetch_service)
-    allow(fetch_service).to(
+    allow(fetch_client).to(
       receive(:pull_request_reviews)
-        .with(pull_number: 1, params: { per_page: 50, page: 1 })
+        .with({
+          repository_link: 'https://github.com/company_name/repo_name',
+          access_token: nil,
+          pull_number: 1,
+          params: { per_page: 50, page: 1 }
+        })
         .and_return({ success: true, body: data })
     )
   end

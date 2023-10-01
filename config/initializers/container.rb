@@ -17,6 +17,10 @@ module Pullmetry
 
     register('math.find_average') { Math::FindAverage.new }
     register('jwt_encoder') { JwtEncoder.new }
+    register('api.github.auth_client') { GithubAuthApi::Client.new }
+    register('api.github.client') { GithubApi::Client.new }
+    register('api.gitlab.auth_client') { GitlabAuthApi::Client.new }
+    register('api.gitlab.client') { GitlabApi::Client.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }
@@ -42,6 +46,8 @@ module Pullmetry
     register('services.auth.fetch_session') { Auth::FetchSessionService.new }
     register('services.auth.generate_token') { Auth::GenerateTokenService.new }
     register('services.auth.login_user') { Auth::LoginUserService.new }
+    register('services.auth.providers.github') { Auth::Providers::Github.new }
+    register('services.auth.providers.gitlab') { Auth::Providers::Gitlab.new }
   end
 end
 

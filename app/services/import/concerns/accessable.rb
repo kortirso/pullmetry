@@ -5,14 +5,14 @@ module Import
     module Accessable
       private
 
-      def mark_repository_as_unaccessable
+      def mark_repository_as_unaccessable(repository)
         Repositories::UpdateService.new
-          .call(repository: @repository, params: { accessable: false })
+          .call(repository: repository, params: { accessable: false })
       end
 
-      def mark_repository_as_accessable
+      def mark_repository_as_accessable(repository)
         Repositories::UpdateService.new
-          .call(repository: @repository, params: { accessable: true })
+          .call(repository: repository, params: { accessable: true })
       end
     end
   end

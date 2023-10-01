@@ -8,19 +8,28 @@ module Import
         include Concerns::Urlable
         include Import::Concerns::Accessable
 
-        def initialize(pull_request:, fetch_client: GitlabApi::Client)
-          @repository = pull_request.repository
-          @fetch_client = fetch_client.new(url: base_url(@repository), repository: @repository)
-          @pull_number = pull_request.pull_number
+        def call(pull_request:, fetch_client: GitlabApi::Client)
           @result = []
+
+          repository = pull_request.repository
+          fetch_client = fetch_client.new(url: base_url(repository))
+          result = fetch_client.pull_request_reviews(
+            find_default_request_params(repository, pull_request.pull_number)
+          )
+          return if !result[:success] && mark_repository_as_unaccessable(repository)
+
+          mark_repository_as_accessable(repository) unless repository.accessable
+          @result = result[:body]
         end
 
-        def call
-          result = @fetch_client.pull_request_reviews(pull_number: @pull_number)
-          return if !result[:success] && mark_repository_as_unaccessable
+        private
 
-          mark_repository_as_accessable unless @repository.accessable
-          @result = result[:body]
+        def find_default_request_params(repository, pull_number)
+          {
+            external_id: repository.external_id,
+            access_token: repository.fetch_access_token&.value,
+            pull_number: pull_number
+          }
         end
       end
     end

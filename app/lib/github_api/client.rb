@@ -12,21 +12,8 @@ module GithubApi
     BASE_URL = 'https://api.github.com'
 
     option :url, default: proc { BASE_URL }
-    option :repository, optional: true
 
     private
-
-    def repository_path
-      URI(@repository.link).path
-    end
-
-    def repository_access_token
-      @repository.fetch_access_token&.value
-    end
-
-    def fetch_data(path, params)
-      get(path: path, params: params, headers: headers(repository_access_token))
-    end
 
     def headers(access_token)
       {

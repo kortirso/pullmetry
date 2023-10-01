@@ -9,23 +9,22 @@ module Import
 
         PER_PAGE = 100
 
-        def initialize(repository:, fetch_client: GithubApi::Client, duration_days: Insight::FETCH_DAYS_PERIOD)
-          @repository = repository
-          @fetch_client = fetch_client.new(repository: repository)
-          @started_at_limit = (DateTime.now - (duration_days.days * (repository.premium? ? 2 : 1))).beginning_of_day
-          # @start_from_pull_number = repository.configuration.start_from_pull_number.to_i
+        # rubocop: disable Metrics/AbcSize
+        def call(repository:, fetch_client: Pullmetry::Container['api.github.client'])
+          @started_at_limit =
+            (DateTime.now - (Insight::FETCH_DAYS_PERIOD.days * (repository.premium? ? 2 : 1))).beginning_of_day
           @result = []
-        end
 
-        def call
+          request_params = find_default_request_params(repository)
           page = 1
           loop do
             # default sorting is desc by created_at attribute
             # first comes newest PRs
-            result = @fetch_client.pull_requests(params: { state: 'all', per_page: PER_PAGE, page: page })
-            break if !result[:success] && mark_repository_as_unaccessable
+            request_params[:params] = { state: 'all', per_page: PER_PAGE, page: page }
+            result = fetch_client.pull_requests(request_params)
+            break if !result[:success] && mark_repository_as_unaccessable(repository)
 
-            mark_repository_as_accessable unless @repository.accessable
+            mark_repository_as_accessable(repository) unless repository.accessable
             body = filter_result(result[:body])
             break if body.blank?
 
@@ -35,6 +34,7 @@ module Import
             page += 1
           end
         end
+        # rubocop: enable Metrics/AbcSize
 
         private
 
@@ -47,6 +47,13 @@ module Import
 
             true
           end
+        end
+
+        def find_default_request_params(repository)
+          {
+            repository_link: repository.link,
+            access_token: repository.fetch_access_token&.value
+          }
         end
       end
     end

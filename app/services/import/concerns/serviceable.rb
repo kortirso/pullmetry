@@ -6,7 +6,7 @@ module Import
       private
 
       def fetch_service
-        "Import::Fetchers::#{@provider}::#{@service_name}".constantize
+        "Import::Fetchers::#{@provider}::#{@service_name}".constantize.new
       end
 
       def represent_service

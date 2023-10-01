@@ -12,7 +12,7 @@ module Import
     end
 
     def call
-      fetch_data = fetch_service.new(repository: @repository).call
+      fetch_data = fetch_service.call(repository: @repository)
       return unless @repository.accessable?
 
       represent_service.new.call(data: fetch_data.result)

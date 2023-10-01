@@ -2,12 +2,15 @@
 
 describe GithubApi::Client, type: :client do
   let(:headers) { { 'Content-Type' => 'application/json' } }
-  let(:client) { described_class.new(connection: connection, repository: repository) }
+  let(:client) { described_class.new(connection: connection) }
 
   let!(:repository) { create :repository }
+  let!(:access_token) { create :access_token, tokenable: repository }
 
   describe '.pull_requests' do
-    subject(:client_request) { client.pull_requests }
+    subject(:client_request) do
+      client.pull_requests(repository_link: repository.link, access_token: access_token.value)
+    end
 
     before do
       stubs.get('/repos/company_name/repo_name/pulls') { [status, headers, body.to_json] }
@@ -36,7 +39,9 @@ describe GithubApi::Client, type: :client do
   end
 
   describe '.pull_request_reviews' do
-    subject(:client_request) { client.pull_request_reviews(pull_number: 1) }
+    subject(:client_request) do
+      client.pull_request_reviews(repository_link: repository.link, access_token: access_token.value, pull_number: 1)
+    end
 
     before do
       stubs.get('/repos/company_name/repo_name/pulls/1/reviews') { [status, headers, body.to_json] }
@@ -65,7 +70,9 @@ describe GithubApi::Client, type: :client do
   end
 
   describe '.pull_request_comments' do
-    subject(:client_request) { client.pull_request_comments(pull_number: 1) }
+    subject(:client_request) do
+      client.pull_request_comments(repository_link: repository.link, access_token: access_token.value, pull_number: 1)
+    end
 
     before do
       stubs.get('/repos/company_name/repo_name/pulls/1/comments') { [status, headers, body.to_json] }
@@ -94,7 +101,9 @@ describe GithubApi::Client, type: :client do
   end
 
   describe '.pull_request_files' do
-    subject(:client_request) { client.pull_request_files(pull_number: 1) }
+    subject(:client_request) do
+      client.pull_request_files(repository_link: repository.link, access_token: access_token.value, pull_number: 1)
+    end
 
     before do
       stubs.get('/repos/company_name/repo_name/pulls/1/files') { [status, headers, body.to_json] }

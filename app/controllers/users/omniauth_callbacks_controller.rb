@@ -6,18 +6,15 @@ module Users
       attach_identity: 'services.auth.attach_identity',
       fetch_session: 'services.auth.fetch_session',
       generate_token: 'services.auth.generate_token',
-      login_user: 'services.auth.login_user'
+      login_user: 'services.auth.login_user',
+      github_provider: 'services.auth.providers.github',
+      gitlab_provider: 'services.auth.providers.gitlab'
     ]
 
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate, only: %i[create]
     before_action :validate_provider, only: %i[create]
     before_action :validate_auth, only: %i[create]
-
-    PROVIDERS = {
-      Providerable::GITHUB => ::Auth::Providers::Github,
-      Providerable::GITLAB => ::Auth::Providers::Gitlab
-    }.freeze
 
     def create
       if user
@@ -55,7 +52,14 @@ module Users
     end
 
     def auth
-      @auth ||= PROVIDERS[params[:provider]].call(code: params[:code]).result
+      @auth ||= provider_service(params[:provider]).call(code: params[:code])[:result]
+    end
+
+    def provider_service(provider)
+      case provider
+      when Providerable::GITHUB then github_provider
+      when Providerable::GITLAB then gitlab_provider
+      end
     end
   end
 end

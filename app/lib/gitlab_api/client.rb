@@ -10,21 +10,8 @@ module GitlabApi
     BASE_URL = 'https://gitlab.com'
 
     option :url, default: proc { BASE_URL }
-    option :repository, optional: true
 
     private
-
-    def repository_id
-      @repository.external_id
-    end
-
-    def repository_access_token
-      @repository.fetch_access_token&.value
-    end
-
-    def fetch_data(path, params)
-      get(path: path, params: params, headers: headers(repository_access_token))
-    end
 
     def headers(access_token)
       {

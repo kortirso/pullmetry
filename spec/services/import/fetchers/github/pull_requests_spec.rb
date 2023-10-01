@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Github::PullRequests, type: :service do
-  subject(:service_call) { described_class.new(repository: repository, fetch_client: fetch_client).call }
+  subject(:service_call) { described_class.new.call(repository: repository, fetch_client: fetch_client) }
 
   let(:repository) { create :repository, accessable: false }
   let(:fetch_client) { double }
-  let(:fetch_service) { double }
   let(:valid_date) { (Date.current - 25.days).strftime('%Y-%m-%d') }
   let(:invalid_date) { (Date.current - 35.days).strftime('%Y-%m-%d') }
   let(:data) {
@@ -47,10 +46,13 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
   }
 
   before do
-    allow(fetch_client).to receive(:new).and_return(fetch_service)
-    allow(fetch_service).to(
+    allow(fetch_client).to(
       receive(:pull_requests)
-        .with(params: { state: 'all', per_page: 100, page: 1 })
+        .with({
+          repository_link: 'https://github.com/company_name/repo_name',
+          access_token: nil,
+          params: { state: 'all', per_page: 100, page: 1 }
+        })
         .and_return({ success: true, body: data })
     )
   end

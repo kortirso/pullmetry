@@ -18,7 +18,7 @@ module Import
     def call
       return if ALLOWED_PROVIDERS.exclude?(@provider)
 
-      fetch_data = fetch_service.new(pull_request: @pull_request).call
+      fetch_data = fetch_service.call(pull_request: @pull_request)
       return unless @pull_request.repository.accessable?
 
       represent_service.new.call(data: fetch_data.result)

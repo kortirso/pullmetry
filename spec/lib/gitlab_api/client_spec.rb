@@ -2,16 +2,19 @@
 
 describe GitlabApi::Client, type: :client do
   let(:headers) { { 'Content-Type' => 'application/json' } }
-  let(:client) { described_class.new(connection: connection, repository: repository, url: url) }
+  let(:client) { described_class.new(connection: connection, url: url) }
 
   let!(:repository) { create :repository, external_id: 2 }
+  let!(:access_token) { create :access_token, tokenable: repository }
   let(:url) {
     link = URI(repository.link)
     "#{link.scheme}://#{link.host}"
   }
 
   describe '.pull_requests' do
-    subject(:client_request) { client.pull_requests }
+    subject(:client_request) do
+      client.pull_requests(external_id: repository.external_id, access_token: access_token.value)
+    end
 
     before do
       stubs.get('/api/v4/projects/2/merge_requests') { [status, headers, body.to_json] }
@@ -40,7 +43,9 @@ describe GitlabApi::Client, type: :client do
   end
 
   describe '.pull_request_reviews' do
-    subject(:client_request) { client.pull_request_reviews(pull_number: 1) }
+    subject(:client_request) do
+      client.pull_request_reviews(external_id: repository.external_id, access_token: access_token.value, pull_number: 1)
+    end
 
     before do
       stubs.get('/api/v4/projects/2/merge_requests/1/approvals') { [status, headers, body.to_json] }
@@ -69,7 +74,13 @@ describe GitlabApi::Client, type: :client do
   end
 
   describe '.pull_request_comments' do
-    subject(:client_request) { client.pull_request_comments(pull_number: 1) }
+    subject(:client_request) do
+      client.pull_request_comments(
+        external_id: repository.external_id,
+        access_token: access_token.value,
+        pull_number: 1
+      )
+    end
 
     before do
       stubs.get('/api/v4/projects/2/merge_requests/1/notes') { [status, headers, body.to_json] }

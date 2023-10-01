@@ -48,6 +48,8 @@ describe Export::SendInsightsNotificationJob, type: :service do
       context 'with current time inside working time' do
         before do
           allow(DateTime).to receive(:now).and_return(DateTime.new(date.year, date.month, date.day, 10, 0))
+
+          create :subscription, user: user, start_time: date - 10.days, end_time: date + 10.days
         end
 
         it 'calls service' do

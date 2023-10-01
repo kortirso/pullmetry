@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Gitlab::Reviews, type: :service do
-  subject(:service_call) { described_class.new(pull_request: pull_request, fetch_client: fetch_client).call }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, fetch_client: fetch_client) }
 
   let!(:repository) { create :repository, provider: Providerable::GITLAB }
   let!(:pull_request) { create :pull_request, repository: repository }

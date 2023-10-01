@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Gitlab::Comments, type: :service do
-  subject(:service_call) { described_class.new(pull_request: pull_request, fetch_client: fetch_client).call }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, fetch_client: fetch_client) }
 
   let!(:repository) { create :repository, provider: Providerable::GITLAB }
   let!(:pull_request) { create :pull_request, repository: repository }
@@ -43,12 +43,12 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
       receive(:pull_request_comments)
-        .with(pull_number: 1, params: { per_page: 25, page: 1 })
+        .with({ external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 1 } })
         .and_return({ success: true, body: data })
     )
     allow(fetch_service).to(
       receive(:pull_request_comments)
-        .with(pull_number: 1, params: { per_page: 25, page: 2 })
+        .with({ external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 2 } })
         .and_return({ success: true, body: [] })
     )
   end

@@ -25,17 +25,16 @@ describe Users::OmniauthCallbacksController do
       end
 
       context 'for present code' do
-        let!(:auth_service) { double }
         let(:code) { 'code' }
 
         before do
-          allow(Auth::Providers::Github).to receive(:call).and_return(auth_service)
+          allow(Pullmetry::Container.resolve('services.auth.providers.github')).to(
+            receive(:call).and_return(github_auth_result)
+          )
         end
 
         context 'for invalid code' do
-          before do
-            allow(auth_service).to receive(:result).and_return(nil)
-          end
+          let(:github_auth_result) { { result: nil } }
 
           it 'redirects to root path', :aggregate_failures do
             expect { request }.not_to change(User, :count)
@@ -44,9 +43,7 @@ describe Users::OmniauthCallbacksController do
         end
 
         context 'for valid code' do
-          before do
-            allow(auth_service).to receive(:result).and_return(auth_payload)
-          end
+          let(:github_auth_result) { { result: auth_payload } }
 
           context 'for not logged user' do
             context 'for invalid payload' do

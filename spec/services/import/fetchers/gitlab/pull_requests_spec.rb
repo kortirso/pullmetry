@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Gitlab::PullRequests, type: :service do
-  subject(:service_call) { described_class.new(repository: repository, fetch_client: fetch_client).call }
+  subject(:service_call) { described_class.new.call(repository: repository, fetch_client: fetch_client) }
 
   let(:repository) { create :repository, provider: Providerable::GITLAB }
   let(:fetch_client) { double }
@@ -47,11 +47,13 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
       receive(:pull_requests)
-        .with(params: { per_page: 25, page: 1 }).and_return({ success: true, body: data })
+        .with({ external_id: nil, access_token: nil, params: { per_page: 25, page: 1 } })
+        .and_return({ success: true, body: data })
     )
     allow(fetch_service).to(
       receive(:pull_requests)
-        .with(params: { per_page: 25, page: 2 }).and_return({ success: true, body: [] })
+        .with({ external_id: nil, access_token: nil, params: { per_page: 25, page: 2 } })
+        .and_return({ success: true, body: [] })
     )
   end
 
