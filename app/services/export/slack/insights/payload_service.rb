@@ -6,7 +6,7 @@ module Export
       class PayloadService
         prepend ApplicationService
 
-        def initialize(time_representer: Converters::SecondsToTextService.new)
+        def initialize(time_representer: Pullmetry::Container['services.converters.seconds_to_text'])
           @time_representer = time_representer
         end
 

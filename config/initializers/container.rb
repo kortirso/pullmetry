@@ -48,6 +48,14 @@ module Pullmetry
     register('services.auth.login_user') { Auth::LoginUserService.new }
     register('services.auth.providers.github') { Auth::Providers::Github.new }
     register('services.auth.providers.gitlab') { Auth::Providers::Gitlab.new }
+
+    register('services.persisters.companies.update') { Persisters::Companies::UpdateService.new }
+    register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }
+    register('services.persisters.subscriptions.add') { Persisters::Subscriptions::AddService.new }
+    register('services.persisters.users.destroy') { Persisters::Users::DestroyService.new }
+    register('services.persisters.users.refresh_achievements') { Persisters::Users::RefreshAchievementsService.new }
+
+    register('services.converters.seconds_to_text') { Converters::SecondsToTextService.new }
   end
 end
 

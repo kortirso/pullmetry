@@ -13,8 +13,8 @@ module Import
       sync_files_service: SyncFilesService,
       generate_repository_insights_service: Insights::Generate::RepositoryService,
       generate_company_insights_service: Insights::Generate::CompanyService,
-      update_repository_service: Repositories::UpdateService.new,
-      update_company_service: Companies::UpdateService
+      update_repository_service: Pullmetry::Container['services.persisters.repositories.update'],
+      update_company_service: Pullmetry::Container['services.persisters.companies.update']
     )
       @sync_pull_requests_service = sync_pull_requests_service
       @sync_comments_service = sync_comments_service
@@ -73,7 +73,7 @@ module Import
     def update_company_accessable(company, accessable)
       not_accessable_ticks = accessable ? 0 : (company.not_accessable_ticks + 1)
       # commento: companies.accessable, companies.not_accessable_ticks
-      @update_company_service.new.call(
+      @update_company_service.call(
         company: company,
         params: {
           accessable: accessable,

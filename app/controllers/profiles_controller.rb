@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ProfilesController < ApplicationController
+  include Deps[destroy_service: 'services.persisters.users.destroy']
   include Boolable
 
   before_action :find_used_trial_subscription, only: %i[show]
@@ -26,7 +27,7 @@ class ProfilesController < ApplicationController
   end
 
   def destroy
-    Users::DestroyService.new.call(user: current_user)
+    destroy_service.call(user: current_user)
     session[:pullmetry_token] = nil
     redirect_to root_path, notice: 'Your account is deleted'
   end

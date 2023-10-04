@@ -6,12 +6,12 @@ module Import
       private
 
       def mark_repository_as_unaccessable(repository)
-        Repositories::UpdateService.new
+        Pullmetry::Container['services.persisters.repositories.update']
           .call(repository: repository, params: { accessable: false })
       end
 
       def mark_repository_as_accessable(repository)
-        Repositories::UpdateService.new
+        Pullmetry::Container['services.persisters.repositories.update']
           .call(repository: repository, params: { accessable: true })
       end
     end

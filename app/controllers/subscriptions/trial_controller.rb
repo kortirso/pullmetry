@@ -2,12 +2,12 @@
 
 module Subscriptions
   class TrialController < ApplicationController
+    include Deps[add_service: 'services.persisters.subscriptions.add']
+
     def create
-      service_call = Subscriptions::AddService.call(user: current_user, trial: true)
-      if service_call.success?
-        redirect_to profile_path, notice: 'Subscription is added'
-      else
-        redirect_to profile_path, alert: service_call.errors
+      case add_service.call(user: current_user, trial: true)
+      in { errors: errors } then redirect_to profile_path, alert: errors
+      else redirect_to profile_path, notice: 'Subscription is added'
       end
     end
   end

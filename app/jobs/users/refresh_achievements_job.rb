@@ -5,7 +5,7 @@ module Users
     queue_as :default
 
     def perform
-      Users::RefreshAchievementsService.call
+      Pullmetry::Container['services.persisters.users.refresh_achievements'].call
     end
   end
 end

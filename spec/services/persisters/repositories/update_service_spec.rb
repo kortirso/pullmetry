@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Repositories::UpdateService, type: :service do
+describe Persisters::Repositories::UpdateService, type: :service do
   subject(:service_call) { described_class.new.call(repository: repository, params: params) }
 
   let!(:repository) { create :repository }
