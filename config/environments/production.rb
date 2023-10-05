@@ -67,6 +67,7 @@ Rails.application.configure do
     user_name: Rails.application.credentials.dig(:smtp, :username),
     password: Rails.application.credentials.dig(:smtp, :password)
   }
+  config.action_mailer.default_url_options = { protocol: 'https', host: 'pullkeeper.dev' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
