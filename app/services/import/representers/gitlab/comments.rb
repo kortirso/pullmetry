@@ -4,9 +4,7 @@ module Import
   module Representers
     module Gitlab
       class Comments
-        def initialize(entity_representer: Entity.new)
-          @entity_representer = entity_representer
-        end
+        include Deps[entity_representer: 'services.import.representers.gitlab.entity']
 
         def call(data:)
           data.map do |payload|
@@ -14,7 +12,7 @@ module Import
             {
               external_id: payload[:id].to_s,
               comment_created_at: payload[:created_at],
-              author: @entity_representer.call(data: payload[:author])
+              author: entity_representer.call(data: payload[:author])
             }
           end
         end

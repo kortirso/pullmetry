@@ -11,7 +11,7 @@ module Import
       return unless company
       return unless working_time?(company)
 
-      Import::SyncRepositoriesService.call(company: company)
+      Import::CompanyService.new.call(company: company)
     end
   end
 end

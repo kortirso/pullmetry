@@ -4,9 +4,7 @@ module Import
   module Representers
     module Gitlab
       class Reviews
-        def initialize(entity_representer: Entity.new)
-          @entity_representer = entity_representer
-        end
+        include Deps[entity_representer: 'services.import.representers.gitlab.entity']
 
         def call(data:)
           data['approved_by'].map do |payload|
@@ -14,7 +12,7 @@ module Import
             {
               external_id: payload.dig('user', 'id'),
               review_created_at: data[:updated_at],
-              author: @entity_representer.call(data: payload[:user])
+              author: entity_representer.call(data: payload[:user])
             }
           end
         end

@@ -4,9 +4,7 @@ module Import
   module Representers
     module Gitlab
       class PullRequests
-        def initialize(entity_representer: Entity.new)
-          @entity_representer = entity_representer
-        end
+        include Deps[entity_representer: 'services.import.representers.gitlab.entity']
 
         def call(data:)
           data.map do |payload|
@@ -16,8 +14,8 @@ module Import
               pull_created_at: payload[:draft] ? nil : payload[:created_at],
               pull_closed_at: payload[:closed_at],
               pull_merged_at: payload[:merged_at],
-              author: @entity_representer.call(data: payload[:author]),
-              reviewers: payload[:reviewers].map { |element| @entity_representer.call(data: element) },
+              author: entity_representer.call(data: payload[:author]),
+              reviewers: payload[:reviewers].map { |element| entity_representer.call(data: element) },
               owner_avatar_url: nil
             }
           end

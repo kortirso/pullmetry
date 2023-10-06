@@ -4,16 +4,15 @@ module Import
   module Fetchers
     module Github
       class PullRequests
-        prepend ApplicationService
+        include Deps[fetch_client: 'api.github.client']
         include Import::Concerns::Accessable
 
         PER_PAGE = 100
 
         # rubocop: disable Metrics/AbcSize
-        def call(repository:, fetch_client: Pullmetry::Container['api.github.client'])
-          @started_at_limit =
+        def call(repository:, result: [])
+          started_at_limit =
             (DateTime.now - (Insight::FETCH_DAYS_PERIOD.days * (repository.premium? ? 2 : 1))).beginning_of_day
-          @result = []
 
           request_params = find_default_request_params(repository)
           page = 1
@@ -21,29 +20,30 @@ module Import
             # default sorting is desc by created_at attribute
             # first comes newest PRs
             request_params[:params] = { state: 'all', per_page: PER_PAGE, page: page }
-            result = fetch_client.pull_requests(request_params)
-            break if !result[:success] && mark_repository_as_unaccessable(repository)
+            fetch_result = fetch_client.pull_requests(**request_params)
+            break if !fetch_result[:success] && mark_repository_as_unaccessable(repository)
 
             mark_repository_as_accessable(repository) unless repository.accessable
-            body = filter_result(result[:body])
+            body = filter_result(fetch_result[:body], started_at_limit)
             break if body.blank?
 
-            @result.concat(body)
+            result.concat(body)
             break if body.size != PER_PAGE
 
             page += 1
           end
+          { result: result }
         end
         # rubocop: enable Metrics/AbcSize
 
         private
 
-        def filter_result(body)
+        def filter_result(body, started_at_limit)
           body.select do |element|
             # TODO: add repository configuration
             # next false if element['number'] < @start_from_pull_number
             # TODO: in this place condition can be skipped if Company has unlimited PRs fetching
-            next false if Date.strptime(element['created_at'], '%Y-%m-%d') < @started_at_limit
+            next false if Date.strptime(element['created_at'], '%Y-%m-%d') < started_at_limit
 
             true
           end

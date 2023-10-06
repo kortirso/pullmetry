@@ -3,7 +3,6 @@
 module Import
   module Savers
     class PullRequests
-      prepend ApplicationService
       include Concerns::FindOrCreateEntity
 
       def initialize

@@ -43,18 +43,17 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
       receive(:pull_request_comments)
-        .with({ external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 1 } })
+        .with(external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 1 })
         .and_return({ success: true, body: data })
     )
     allow(fetch_service).to(
       receive(:pull_request_comments)
-        .with({ external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 2 } })
+        .with(external_id: nil, access_token: nil, pull_number: 1, params: { per_page: 25, page: 2 })
         .and_return({ success: true, body: [] })
     )
   end
 
-  it 'returns 3 objects and succeeds', :aggregate_failures do
-    expect(service_call.success?).to be_truthy
-    expect(service_call.result.size).to eq 3
+  it 'returns 3 objects' do
+    expect(service_call[:result].size).to eq 3
   end
 end

@@ -47,12 +47,12 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
     allow(fetch_client).to receive(:new).and_return(fetch_service)
     allow(fetch_service).to(
       receive(:pull_requests)
-        .with({ external_id: nil, access_token: nil, params: { per_page: 25, page: 1 } })
+        .with(external_id: nil, access_token: nil, params: { per_page: 25, page: 1 })
         .and_return({ success: true, body: data })
     )
     allow(fetch_service).to(
       receive(:pull_requests)
-        .with({ external_id: nil, access_token: nil, params: { per_page: 25, page: 2 } })
+        .with(external_id: nil, access_token: nil, params: { per_page: 25, page: 2 })
         .and_return({ success: true, body: [] })
     )
   end
@@ -60,9 +60,8 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
   context 'without start_from_pull_number at repository' do
     let(:start_from_pull_number) { nil }
 
-    it 'returns 2 objects and succeeds', :aggregate_failures do
-      expect(service_call.success?).to be_truthy
-      expect(service_call.result.size).to eq 2
+    it 'returns 2 objects' do
+      expect(service_call[:result].size).to eq 2
     end
   end
 end

@@ -3,7 +3,6 @@
 module Import
   module Savers
     class Reviews
-      prepend ApplicationService
       include Concerns::FindOrCreateEntity
 
       def call(pull_request:, data:)
