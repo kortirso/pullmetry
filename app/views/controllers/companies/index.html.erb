@@ -14,6 +14,7 @@
           unaccessable: company.access_token && !company.accessable,
           edit_links: allowed_to?(:update?, company) ? {
             access_token: new_company_access_token_path(company.uuid),
+            new_repository: new_company_repository_path(company.uuid),
             configuration: edit_company_configuration_path(company.uuid),
             destroy: company_path(company.uuid)
           } : nil

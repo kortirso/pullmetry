@@ -71,17 +71,27 @@ export const Company = ({
           <h2 className="flex items-center">
             {title}
             {unaccessable ? (
-              <span className="text-sm px-2 py-1 bg-red-400 border border-red-600 text-white ml-4 rounded">
+              <span className="text-sm px-2 py-1 bg-red-400 text-white ml-4 rounded shadow">
                 Company has repositories with access error
               </span>
             ) : null}
           </h2>
-          <span onClick={(event) => event.stopPropagation()}>
-            Repositories count -{' '}
-            <a href={repositories_url} className="underline text-blue-600">
-              {repositories_count}
+          {repositories_count > 0 ? (
+            <span onClick={(event) => event.stopPropagation()}>
+              Repositories count -{' '}
+              <a href={repositories_url} className="underline text-blue-600">
+                {repositories_count}
+              </a>
+            </span>
+          ) : (
+            <a
+              href={edit_links ? edit_links.new_repository : repositories_url}
+              className="inline-block text-sm px-2 py-1 bg-green-400 text-black rounded shadow mb-1"
+              onClick={(event) => event.stopPropagation()}
+            >
+              You need to create repository
             </a>
-          </span>
+          )}
           {edit_links ? (
             <div className="flex items-center mt-2">
               {edit_links.access_token ? (
