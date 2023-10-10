@@ -15,8 +15,10 @@ module Pullmetry
       end
     end
 
+    # lib
     register('math.find_average') { Math::FindAverage.new }
     register('jwt_encoder') { JwtEncoder.new }
+    register('dummy') { Dummy.new }
     register('api.github.auth_client') { GithubAuthApi::Client.new }
     register('api.github.client') { GithubApi::Client.new }
     register('api.gitlab.auth_client') { GitlabAuthApi::Client.new }
@@ -56,6 +58,34 @@ module Pullmetry
     register('services.persisters.users.refresh_achievements') { Persisters::Users::RefreshAchievementsService.new }
 
     register('services.converters.seconds_to_text') { Converters::SecondsToTextService.new }
+
+    register('services.import.fetchers.github.pull_requests') { Import::Fetchers::Github::PullRequests.new }
+    register('services.import.fetchers.github.comments') { Import::Fetchers::Github::Comments.new }
+    register('services.import.fetchers.github.reviews') { Import::Fetchers::Github::Reviews.new }
+    register('services.import.fetchers.github.files') { Import::Fetchers::Github::Files.new }
+    register('services.import.fetchers.gitlab.pull_requests') { Import::Fetchers::Gitlab::PullRequests.new }
+    register('services.import.fetchers.gitlab.comments') { Import::Fetchers::Gitlab::Comments.new }
+    register('services.import.fetchers.gitlab.reviews') { Import::Fetchers::Gitlab::Reviews.new }
+
+    register('services.import.representers.github.pull_requests') { Import::Representers::Github::PullRequests.new }
+    register('services.import.representers.github.comments') { Import::Representers::Github::Comments.new }
+    register('services.import.representers.github.reviews') { Import::Representers::Github::Reviews.new }
+    register('services.import.representers.github.files') { Import::Representers::Github::Files.new }
+    register('services.import.representers.github.entity') { Import::Representers::Github::Entity.new }
+    register('services.import.representers.gitlab.pull_requests') { Import::Representers::Gitlab::PullRequests.new }
+    register('services.import.representers.gitlab.comments') { Import::Representers::Gitlab::Comments.new }
+    register('services.import.representers.gitlab.reviews') { Import::Representers::Gitlab::Reviews.new }
+    register('services.import.representers.gitlab.entity') { Import::Representers::Gitlab::Entity.new }
+
+    register('services.import.synchronizers.repositories.github') { Import::Synchronizers::Repositories::Github.new }
+    register('services.import.synchronizers.pull_requests.github') { Import::Synchronizers::PullRequests::Github.new }
+    register('services.import.synchronizers.comments.github') { Import::Synchronizers::Comments::Github.new }
+    register('services.import.synchronizers.reviews.github') { Import::Synchronizers::Reviews::Github.new }
+    register('services.import.synchronizers.files.github') { Import::Synchronizers::Files::Github.new }
+    register('services.import.synchronizers.repositories.gitlab') { Import::Synchronizers::Repositories::Gitlab.new }
+    register('services.import.synchronizers.pull_requests.gitlab') { Import::Synchronizers::PullRequests::Gitlab.new }
+    register('services.import.synchronizers.comments.gitlab') { Import::Synchronizers::Comments::Gitlab.new }
+    register('services.import.synchronizers.reviews.gitlab') { Import::Synchronizers::Reviews::Gitlab.new }
   end
 end
 

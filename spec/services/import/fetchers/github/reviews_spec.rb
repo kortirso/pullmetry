@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 describe Import::Fetchers::Github::Reviews, type: :service do
-  subject(:service_call) { described_class.new.call(pull_request: pull_request, fetch_client: fetch_client) }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request) }
 
   let!(:repository) { create :repository, provider: Providerable::GITHUB }
   let!(:pull_request) { create :pull_request, repository: repository }
-  let(:fetch_client) { double }
   let(:data) {
     [
       {
@@ -42,7 +41,7 @@ describe Import::Fetchers::Github::Reviews, type: :service do
   }
 
   before do
-    allow(fetch_client).to(
+    allow(Pullmetry::Container.resolve('api.github.client')).to(
       receive(:pull_request_reviews)
         .with(
           repository_link: 'https://github.com/company_name/repo_name',
@@ -54,8 +53,7 @@ describe Import::Fetchers::Github::Reviews, type: :service do
     )
   end
 
-  it 'returns 2 objects', :aggregate_failures do
-    expect(service_call.success?).to be_truthy
-    expect(service_call.result.size).to eq 2
+  it 'returns 2 objects' do
+    expect(service_call[:result].size).to eq 2
   end
 end

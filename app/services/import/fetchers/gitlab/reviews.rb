@@ -4,22 +4,19 @@ module Import
   module Fetchers
     module Gitlab
       class Reviews
-        prepend ApplicationService
         include Concerns::Urlable
         include Import::Concerns::Accessable
 
         def call(pull_request:, fetch_client: GitlabApi::Client)
-          @result = []
-
           repository = pull_request.repository
           fetch_client = fetch_client.new(url: base_url(repository))
-          result = fetch_client.pull_request_reviews(
+          fetch_result = fetch_client.pull_request_reviews(
             **find_default_request_params(repository, pull_request.pull_number)
           )
-          return if !result[:success] && mark_repository_as_unaccessable(repository)
+          return if !fetch_result[:success] && mark_repository_as_unaccessable(repository)
 
           mark_repository_as_accessable(repository) unless repository.accessable
-          @result = result[:body]
+          { result: fetch_result[:body] }
         end
 
         private

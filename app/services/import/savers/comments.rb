@@ -3,7 +3,6 @@
 module Import
   module Savers
     class Comments
-      prepend ApplicationService
       include Concerns::FindOrCreateEntity
 
       def call(pull_request:, data:)

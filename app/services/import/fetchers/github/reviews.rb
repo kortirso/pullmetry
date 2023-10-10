@@ -4,15 +4,13 @@ module Import
   module Fetchers
     module Github
       class Reviews
-        prepend ApplicationService
+        include Deps[fetch_client: 'api.github.client']
         include Import::Concerns::Accessable
 
         PER_PAGE = 50
 
         # rubocop: disable Metrics/AbcSize
-        def call(pull_request:, fetch_client: Pullmetry::Container['api.github.client'])
-          @result = []
-
+        def call(pull_request:, result: [])
           repository = pull_request.repository
           request_params = find_default_request_params(repository, pull_request.pull_number)
           page = 1
@@ -20,18 +18,19 @@ module Import
             # default sorting is asc by id attribute
             # first comes oldest PRs
             request_params[:params] = { per_page: PER_PAGE, page: page }
-            result = fetch_client.pull_request_reviews(**request_params)
-            break if !result[:success] && mark_repository_as_unaccessable(repository)
+            fetch_result = fetch_client.pull_request_reviews(**request_params)
+            break if !fetch_result[:success] && mark_repository_as_unaccessable(repository)
 
             mark_repository_as_accessable(repository) unless repository.accessable
-            body = result[:body]
+            body = fetch_result[:body]
             break if body.blank?
 
-            @result.concat(body.select { |review| review['state'] == 'APPROVED' })
+            result.concat(body.select { |review| review['state'] == 'APPROVED' })
             break if body.size != PER_PAGE
 
             page += 1
           end
+          { result: result }
         end
         # rubocop: enable Metrics/AbcSize
 

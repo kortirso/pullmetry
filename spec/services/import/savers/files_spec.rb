@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Import::Savers::Files, type: :service do
-  subject(:service_call) { described_class.call(pull_request: pull_request, data: data) }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, data: data) }
 
   let!(:pull_request) { create :pull_request }
   let(:data) {
@@ -18,8 +18,7 @@ describe Import::Savers::Files, type: :service do
     ]
   }
 
-  it 'updates pull request and succeeds', :aggregate_failures do
+  it 'updates pull request' do
     expect { service_call }.to change(pull_request, :changed_loc).from(0).to(6)
-    expect(service_call.success?).to be_truthy
   end
 end

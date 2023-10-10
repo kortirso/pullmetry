@@ -4,16 +4,18 @@ describe Import::SyncRepositoriesJob, type: :service do
   subject(:job_call) { described_class.perform_now(id: company.id) }
 
   let!(:company) { create :company }
+  let(:import_object) { double }
 
   before do
-    allow(Import::SyncRepositoriesService).to receive(:call)
+    allow(Import::CompanyService).to receive(:new).and_return(import_object)
+    allow(import_object).to receive(:call)
   end
 
   context 'without working time' do
     it 'calls service' do
       job_call
 
-      expect(Import::SyncRepositoriesService).to have_received(:call).with(company: company)
+      expect(import_object).to have_received(:call).with(company: company)
     end
   end
 
@@ -34,7 +36,7 @@ describe Import::SyncRepositoriesJob, type: :service do
       it 'calls service' do
         job_call
 
-        expect(Import::SyncRepositoriesService).to have_received(:call).with(company: company)
+        expect(import_object).to have_received(:call).with(company: company)
       end
     end
 
@@ -46,7 +48,7 @@ describe Import::SyncRepositoriesJob, type: :service do
       it 'does not call service' do
         job_call
 
-        expect(Import::SyncRepositoriesService).not_to have_received(:call).with(company: company)
+        expect(import_object).not_to have_received(:call)
       end
     end
 
@@ -58,7 +60,7 @@ describe Import::SyncRepositoriesJob, type: :service do
       it 'does not call service' do
         job_call
 
-        expect(Import::SyncRepositoriesService).not_to have_received(:call).with(company: company)
+        expect(import_object).not_to have_received(:call)
       end
     end
   end

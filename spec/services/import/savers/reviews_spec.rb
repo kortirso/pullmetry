@@ -2,7 +2,7 @@
 
 # TODO: add tests for parallel request with creating similar entities
 describe Import::Savers::Reviews, type: :service do
-  subject(:service_call) { described_class.call(pull_request: pull_request, data: data) }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, data: data) }
 
   let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
@@ -46,11 +46,10 @@ describe Import::Savers::Reviews, type: :service do
 
   context 'when there are no reviews, no entities' do
     it 'creates 2 new entities' do
-      expect { service_call }.to change(Entity, :count).by(2)
-    end
-
-    it 'creates 2 reviews' do
-      expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(2)
+      expect { service_call }.to(
+        change(Entity, :count).by(2)
+        .and(change(pull_request.pull_requests_reviews, :count).by(2))
+      )
     end
 
     context 'when there are entities' do
@@ -96,9 +95,5 @@ describe Import::Savers::Reviews, type: :service do
         end
       end
     end
-  end
-
-  it 'succeeds' do
-    expect(service_call.success?).to be_truthy
   end
 end

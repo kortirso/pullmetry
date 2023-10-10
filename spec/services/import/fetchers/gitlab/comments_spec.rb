@@ -53,8 +53,7 @@ describe Import::Fetchers::Gitlab::Comments, type: :service do
     )
   end
 
-  it 'returns 3 objects and succeeds', :aggregate_failures do
-    expect(service_call.success?).to be_truthy
-    expect(service_call.result.size).to eq 3
+  it 'returns 3 objects' do
+    expect(service_call[:result].size).to eq 3
   end
 end

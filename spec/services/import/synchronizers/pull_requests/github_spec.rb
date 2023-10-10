@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-describe Import::SyncPullRequestsService, type: :service do
-  subject(:service_call) { described_class.new(repository: repository).call }
+describe Import::Synchronizers::PullRequests::Github, type: :service do
+  subject(:service_call) { instance.call(repository: repository) }
 
+  let!(:instance) { described_class.new }
   let!(:repository) { create :repository }
-  let(:fetcher) { double }
-  let(:fetch_data) { double }
   let(:data) {
     [
       {
@@ -44,9 +43,9 @@ describe Import::SyncPullRequestsService, type: :service do
   }
 
   before do
-    allow(Import::Fetchers::Github::PullRequests).to receive(:new).and_return(fetcher)
-    allow(fetcher).to receive(:call).and_return(fetch_data)
-    allow(fetch_data).to receive(:result).and_return(data)
+    allow(Pullmetry::Container.resolve('services.import.fetchers.github.pull_requests')).to(
+      receive(:call).and_return({ result: data })
+    )
   end
 
   context 'when there are no pull requests' do

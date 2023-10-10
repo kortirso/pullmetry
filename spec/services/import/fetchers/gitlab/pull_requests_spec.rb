@@ -60,9 +60,8 @@ describe Import::Fetchers::Gitlab::PullRequests, type: :service do
   context 'without start_from_pull_number at repository' do
     let(:start_from_pull_number) { nil }
 
-    it 'returns 2 objects and succeeds', :aggregate_failures do
-      expect(service_call.success?).to be_truthy
-      expect(service_call.result.size).to eq 2
+    it 'returns 2 objects' do
+      expect(service_call[:result].size).to eq 2
     end
   end
 end

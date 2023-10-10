@@ -2,7 +2,7 @@
 
 # TODO: add tests for parallel request with creating similar entities
 describe Import::Savers::Comments, type: :service do
-  subject(:service_call) { described_class.call(pull_request: pull_request, data: data) }
+  subject(:service_call) { described_class.new.call(pull_request: pull_request, data: data) }
 
   let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
@@ -46,11 +46,10 @@ describe Import::Savers::Comments, type: :service do
 
   context 'when there are no comments, no entities' do
     it 'creates 2 new entities' do
-      expect { service_call }.to change(Entity, :count).by(2)
-    end
-
-    it 'creates 2 comments' do
-      expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
+      expect { service_call }.to(
+        change(Entity, :count).by(2)
+          .and(change(pull_request.pull_requests_comments, :count).by(2))
+      )
     end
 
     context 'when there are identity' do
@@ -94,10 +93,6 @@ describe Import::Savers::Comments, type: :service do
     end
   end
 
-  it 'succeeds' do
-    expect(service_call.success?).to be_truthy
-  end
-
   context 'for stress testing' do
     let!(:identity) { create :identity, provider: Providerable::GITHUB, login: 'octocat_6' }
     let(:data) {
@@ -126,12 +121,11 @@ describe Import::Savers::Comments, type: :service do
     end
 
     it 'creates 94 new entities, attaches 1 entity to identity, creates 990 comments', :aggregate_failures do
-      result = service_call
+      service_call
 
       expect(Entity.count).to eq 100
       expect(identity.entities.size).to eq 1
       expect(pull_request.pull_requests_comments.count).to eq 990
-      expect(result.success?).to be_truthy
     end
   end
 end
