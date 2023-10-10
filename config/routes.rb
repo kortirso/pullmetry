@@ -41,8 +41,5 @@ Rails.application.routes.draw do
   get 'sources', to: 'welcome#sources'
   get 'how-it-works', to: 'welcome#how_it_works'
 
-  get 'sitemap', to: 'sitemaps#index'
-  get 'robots', to: 'robots#index'
-
   root 'welcome#index'
 end
