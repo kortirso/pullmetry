@@ -6,6 +6,7 @@ module Import
       class PullRequests
         include Deps[entity_representer: 'services.import.representers.github.entity']
 
+        # rubocop: disable Metrics/AbcSize
         def call(data:)
           data.map do |payload|
             payload = payload.with_indifferent_access
@@ -16,10 +17,15 @@ module Import
               pull_merged_at: payload[:merged_at],
               author: entity_representer.call(data: payload[:user]),
               reviewers: payload[:requested_reviewers].map { |element| entity_representer.call(data: element) },
-              owner_avatar_url: payload.dig('base', 'repo', 'owner', 'avatar_url')
+              owner_avatar_url: payload.dig('base', 'repo', 'owner', 'avatar_url'),
+              title: payload[:title],
+              description: payload[:body],
+              branch_name: payload.dig('head', 'ref'),
+              destination_branch_name: payload.dig('base', 'ref')
             }
           end
         end
+        # rubocop: enable Metrics/AbcSize
       end
     end
   end

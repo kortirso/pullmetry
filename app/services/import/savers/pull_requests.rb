@@ -5,6 +5,8 @@ module Import
     class PullRequests
       include Concerns::FindOrCreateEntity
 
+      ALLOWED_ATTRIBUTES = %i[pull_number pull_created_at pull_closed_at pull_merged_at].freeze
+
       def initialize
         @author_entities = {}
       end
@@ -67,7 +69,7 @@ module Import
           payload[:pull_created_at] = DateTime.now
         end
 
-        @pull_request.update!(payload.except(:author, :reviewers, :owner_avatar_url).merge(entity_id: author_entity))
+        @pull_request.update!(payload.slice(*ALLOWED_ATTRIBUTES).merge(entity_id: author_entity))
       end
 
       def save_requested_reviewers(reviewer_entities)
