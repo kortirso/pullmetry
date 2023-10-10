@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-describe Import::PullRequests::Github, type: :service do
-  subject(:service_call) { described_class.new.call(repository: repository) }
+describe Import::Synchronizers::PullRequests::Github, type: :service do
+  subject(:service_call) { instance.call(repository: repository) }
 
+  let!(:instance) { described_class.new }
   let!(:repository) { create :repository }
   let(:data) {
     [

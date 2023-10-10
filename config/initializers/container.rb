@@ -77,15 +77,15 @@ module Pullmetry
     register('services.import.representers.gitlab.reviews') { Import::Representers::Gitlab::Reviews.new }
     register('services.import.representers.gitlab.entity') { Import::Representers::Gitlab::Entity.new }
 
-    register('services.import.repositories.github') { Import::Repositories::Github.new }
-    register('services.import.pull_requests.github') { Import::PullRequests::Github.new }
-    register('services.import.comments.github') { Import::Comments::Github.new }
-    register('services.import.reviews.github') { Import::Reviews::Github.new }
-    register('services.import.files.github') { Import::Files::Github.new }
-    register('services.import.repositories.gitlab') { Import::Repositories::Gitlab.new }
-    register('services.import.pull_requests.gitlab') { Import::PullRequests::Gitlab.new }
-    register('services.import.comments.gitlab') { Import::Comments::Gitlab.new }
-    register('services.import.reviews.gitlab') { Import::Reviews::Gitlab.new }
+    register('services.import.synchronizers.repositories.github') { Import::Synchronizers::Repositories::Github.new }
+    register('services.import.synchronizers.pull_requests.github') { Import::Synchronizers::PullRequests::Github.new }
+    register('services.import.synchronizers.comments.github') { Import::Synchronizers::Comments::Github.new }
+    register('services.import.synchronizers.reviews.github') { Import::Synchronizers::Reviews::Github.new }
+    register('services.import.synchronizers.files.github') { Import::Synchronizers::Files::Github.new }
+    register('services.import.synchronizers.repositories.gitlab') { Import::Synchronizers::Repositories::Gitlab.new }
+    register('services.import.synchronizers.pull_requests.gitlab') { Import::Synchronizers::PullRequests::Gitlab.new }
+    register('services.import.synchronizers.comments.gitlab') { Import::Synchronizers::Comments::Gitlab.new }
+    register('services.import.synchronizers.reviews.gitlab') { Import::Synchronizers::Reviews::Gitlab.new }
   end
 end
 

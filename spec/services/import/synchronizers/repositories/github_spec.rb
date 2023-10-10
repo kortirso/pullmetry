@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-describe Import::Repositories::Github, type: :service do
-  subject(:service_call) { described_class.new.call(repository: repository) }
+describe Import::Synchronizers::Repositories::Github, type: :service do
+  subject(:service_call) { instance.call(repository: repository) }
 
+  let!(:instance) { described_class.new }
   let!(:repository) { create :repository, accessable: false, pull_requests_count: 3 }
   let(:insights_service) { double }
 
@@ -10,10 +11,10 @@ describe Import::Repositories::Github, type: :service do
     create :pull_request, repository: repository
     create :pull_request, repository: repository, pull_closed_at: 1.minute.ago
 
-    allow(Pullmetry::Container.resolve('services.import.pull_requests.github')).to receive(:call)
-    allow(Pullmetry::Container.resolve('services.import.comments.github')).to receive(:call)
-    allow(Pullmetry::Container.resolve('services.import.reviews.github')).to receive(:call)
-    allow(Pullmetry::Container.resolve('services.import.files.github')).to receive(:call)
+    allow(Pullmetry::Container.resolve('services.import.synchronizers.pull_requests.github')).to receive(:call)
+    allow(Pullmetry::Container.resolve('services.import.synchronizers.comments.github')).to receive(:call)
+    allow(Pullmetry::Container.resolve('services.import.synchronizers.reviews.github')).to receive(:call)
+    allow(Pullmetry::Container.resolve('services.import.synchronizers.files.github')).to receive(:call)
 
     allow(Insights::Generate::RepositoryService).to receive(:new).and_return(insights_service)
     allow(insights_service).to receive(:call)

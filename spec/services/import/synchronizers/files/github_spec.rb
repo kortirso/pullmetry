@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Import::Files::Github, type: :service do
+describe Import::Synchronizers::Files::Github, type: :service do
   subject(:service_call) { described_class.new.call(pull_request: pull_request) }
 
   let!(:pull_request) { create :pull_request }

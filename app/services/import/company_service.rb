@@ -5,8 +5,8 @@ module Import
     NOT_ACCESSABLE_LIMIT_TICKS = 10
 
     def initialize(
-      sync_repository_from_github: Pullmetry::Container['services.import.repositories.github'],
-      sync_repository_from_gitlab: Pullmetry::Container['services.import.repositories.gitlab'],
+      sync_repository_from_github: Pullmetry::Container['services.import.synchronizers.repositories.github'],
+      sync_repository_from_gitlab: Pullmetry::Container['services.import.synchronizers.repositories.gitlab'],
       generate_insights_service: Insights::Generate::CompanyService.new,
       update_service: Pullmetry::Container['services.persisters.companies.update']
     )

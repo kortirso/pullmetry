@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-describe Import::Reviews::Github, type: :service do
-  subject(:service_call) { described_class.new.call(pull_request: pull_request) }
+describe Import::Synchronizers::Reviews::Github, type: :service do
+  subject(:service_call) { instance.call(pull_request: pull_request) }
 
+  let!(:instance) { described_class.new }
   let!(:pull_request) { create :pull_request, entity: author_entity }
   let!(:author_entity) { create :entity, external_id: '10', provider: Providerable::GITHUB }
   let!(:entity) { create :entity }
