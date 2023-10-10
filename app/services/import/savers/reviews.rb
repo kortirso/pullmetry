@@ -38,13 +38,8 @@ module Import
       end
 
       def create_review(entity, payload)
-        @pull_request
-          .pull_requests_reviews
-          .where(external_id: nil)
-          .find_or_create_by(entity_id: entity) do |review|
-            review.external_id = payload[:external_id]
-            review.review_created_at = payload[:review_created_at]
-          end
+        review = @pull_request.pull_requests_reviews.where(external_id: nil).find_or_initialize_by(entity_id: entity)
+        review.update!(external_id: payload[:external_id], review_created_at: payload[:review_created_at])
       end
     end
   end

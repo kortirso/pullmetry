@@ -7,15 +7,6 @@ GIT
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
 
-GIT
-  remote: https://github.com/seuros/capistrano-puma.git
-  revision: 2cc11846540489edda10d83e026c9bea04e6fab1
-  specs:
-    capistrano3-puma (6.0.0.beta.1)
-      capistrano (~> 3.7)
-      capistrano-bundler
-      puma (>= 5.1, < 7.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -424,9 +415,7 @@ GEM
     sshkit (1.21.5)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    sshkit-sudo (0.1.0)
-      sshkit (~> 1.8)
-    store_model (2.1.1)
+    store_model (2.1.2)
       activerecord (>= 5.2)
     strong_migrations (1.6.3)
       activerecord (>= 5.2)
@@ -471,7 +460,6 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails (~> 1.6)
   capistrano-rvm
-  capistrano3-puma!
   commento
   database_cleaner (~> 2.0)
   dry-auto_inject (~> 1.0)
@@ -508,7 +496,6 @@ DEPENDENCIES
   simplecov
   skylight
   sprockets-rails
-  sshkit-sudo
   store_model
   strong_migrations (~> 1.4)
   tailwindcss-rails

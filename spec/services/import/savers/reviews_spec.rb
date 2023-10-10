@@ -66,8 +66,8 @@ describe Import::Savers::Reviews, type: :service do
 
       context 'when there are existing reviews without external_id' do
         before do
-          create :pull_requests_review, entity: entity1, pull_request: pull_request
-          create :pull_requests_review, entity: entity2, pull_request: pull_request
+          create :pull_requests_review, entity: entity1, pull_request: pull_request, external_id: nil
+          create :pull_requests_review, entity: entity2, pull_request: pull_request, external_id: nil
         end
 
         it 'does not create new reviews and updates existing', :aggregate_failures do

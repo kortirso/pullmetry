@@ -15,6 +15,7 @@ Commento.configure do |config|
     que_lockers
     que_values
     que_jobs
+    emailbutler_messages
   ]
   config.skip_column_names = %w[
     id

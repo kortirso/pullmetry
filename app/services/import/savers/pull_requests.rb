@@ -83,6 +83,7 @@ module Import
       end
 
       def update_repository(data)
+        # commento: repositories.owner_avatar_url
         @repository.update!(owner_avatar_url: data.pluck(:owner_avatar_url).uniq.compact.first)
       end
     end

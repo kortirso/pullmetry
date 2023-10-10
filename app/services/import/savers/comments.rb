@@ -52,6 +52,7 @@ module Import
       end
 
       def create_comment(entity_id, payload)
+        # commento: pull_requests_comments.external_id, pull_requests_comments.comment_created_at
         @pull_request.pull_requests_comments.create!(
           payload.slice(:external_id, :comment_created_at).merge(entity_id: entity_id)
         )

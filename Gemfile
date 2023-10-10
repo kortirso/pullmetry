@@ -106,11 +106,9 @@ group :development do
   # gem 'rack-mini-profiler', '>= 2.3.3'
 
   gem 'capistrano', '~> 3.17', require: false
-  gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', '~> 1.6', require: false
   gem 'capistrano-rvm', require: false
-  gem 'sshkit-sudo'
 
   # email previews
   gem 'letter_opener'

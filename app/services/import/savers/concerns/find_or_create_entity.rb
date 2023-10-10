@@ -16,6 +16,7 @@ module Import
         def find_or_create_entity(payload)
           entity = ::Entity.find_or_initialize_by(payload.slice(*ENTITY_FIND_ATTRIBUTES))
           entity.identity = matched_identity(payload) if entity.new_record?
+          # commento: entities.provider, entities.external_id, entities.login, entities.avatar_url, entities.html_url
           entity.update!(payload.except(*ENTITY_FIND_ATTRIBUTES))
           entity.id
         end
