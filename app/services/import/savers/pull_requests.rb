@@ -16,7 +16,7 @@ module Import
         ActiveRecord::Base.transaction do
           destroy_old_pull_requests(data)
           # proceed only open pull requests
-          data.reject! { |payload| payload[:pull_number].in?(existing_closed_pull_requests) }
+          data.reject! { |payload| reject_pull_request?(payload) }
           # select uniq authors
           # find_create entities for all authors
           find_or_create_author_entities(data.pluck(:author, :reviewers))
@@ -45,6 +45,20 @@ module Import
           .destroy_all
       end
 
+      def reject_pull_request?(payload)
+        return true if payload[:pull_number].in?(existing_closed_pull_requests)
+        return true if attribute_in_exclude_rules?(payload, :title)
+        return true if attribute_in_exclude_rules?(payload, :description)
+        return true if attribute_in_exclude_rules?(payload, :branch_name)
+        return true if attribute_in_exclude_rules?(payload, :destination_branch_name)
+
+        false
+      end
+
+      def attribute_in_exclude_rules?(payload, attribute)
+        exclude_rules[attribute]&.any? { |rule| payload[attribute]&.include?(rule) }
+      end
+
       def find_or_create_author_entities(authors)
         authors.flatten.each { |payload| @author_entities[payload[:external_id]] ||= find_or_create_entity(payload) }
       end
@@ -52,9 +66,14 @@ module Import
       def existing_closed_pull_requests
         @existing_closed_pull_requests ||=
           @repository
-          .pull_requests
-          .closed
-          .pluck(:pull_number)
+            .pull_requests
+            .closed
+            .pluck(:pull_number)
+      end
+
+      # { title: [], description: [], branch_name: [], destination_branch_name: ['master'] }
+      def exclude_rules
+        @exclude_rules ||= JSON.parse(@repository.configuration.pull_request_exclude_rules || '{}').symbolize_keys
       end
 
       def save_pull_request(payload, author_entity)

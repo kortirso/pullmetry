@@ -4,7 +4,10 @@
 describe Import::Savers::PullRequests, type: :service do
   subject(:service_call) { described_class.new.call(repository: repository, data: data) }
 
-  let!(:repository) { create :repository }
+  let!(:company) {
+    create :company, configuration: { pull_request_exclude_rules: { destination_branch_name: ['master'] }.to_json }
+  }
+  let!(:repository) { create :repository, company: company }
   let(:data) {
     [
       {
@@ -49,6 +52,21 @@ describe Import::Savers::PullRequests, type: :service do
           html_url: 'https://github.com/octocat'
         },
         reviewers: []
+      },
+      {
+        pull_number: 12,
+        pull_created_at: '2011-04-10T20:09:31Z',
+        pull_closed_at: '2011-04-10T20:09:31Z',
+        pull_merged_at: '2011-04-10T20:09:31Z',
+        author: {
+          external_id: '1',
+          provider: Providerable::GITHUB,
+          login: 'octocat',
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+          html_url: 'https://github.com/octocat'
+        },
+        reviewers: [],
+        destination_branch_name: 'master'
       }
     ]
   }
@@ -63,6 +81,18 @@ describe Import::Savers::PullRequests, type: :service do
 
       expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
       expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
+    end
+
+    context 'when configuration does not have exclude rules' do
+      before { company.update!(configuration: { pull_request_exclude_rules: nil }) }
+
+      it 'creates 2 new pull requests', :aggregate_failures do
+        expect { service_call }.to(
+          change(repository.pull_requests, :count).by(3)
+            .and(change(Entity, :count).by(2))
+            .and(change(PullRequests::Review, :count).by(2))
+        )
+      end
     end
 
     context 'for receiving PRs with changing state from draft to open for review' do

@@ -64,6 +64,7 @@ module Companies
           :work_end_time,
           :average_type,
           :main_attribute,
+          :pull_request_exclude_rules,
           insight_fields: {}
         )
     end

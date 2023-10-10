@@ -117,7 +117,11 @@ describe Companies::ConfigurationsController do
                   'comments_count' => 2
                 },
                 'insight_ratio' => '1',
-                'insight_ratio_type' => 'change'
+                'insight_ratio_type' => 'change',
+                'pull_request_exclude_rules' => {
+                  'destination_branch_name' => ['master', ''],
+                  'invalid_key' => 'main'
+                }.to_json
               },
               locale: 'en'
             }
@@ -134,6 +138,7 @@ describe Companies::ConfigurationsController do
               expect(configuration.insight_fields).to be_nil
               expect(configuration.insight_ratio).to be_nil
               expect(configuration.insight_ratio_type).to eq 'ratio'
+              expect(configuration.pull_request_exclude_rules).to eq({ destination_branch_name: ['master'] }.to_json)
               expect(response).to redirect_to companies_path
             end
           end

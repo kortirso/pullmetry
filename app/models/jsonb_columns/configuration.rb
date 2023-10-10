@@ -16,6 +16,7 @@ module JsonbColumns
     attribute :rows_limit, :integer
     # data fetching attributes
     attribute :fetch_period, :integer
+    attribute :pull_request_exclude_rules, :string
     # slack notifications
     attribute :insights_webhook_url, :string
     # discord notifications
