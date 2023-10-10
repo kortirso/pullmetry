@@ -37,11 +37,11 @@
   }
 
   .btn-primary {
-    @apply inline-block bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded leading-8 cursor-pointer;
+    @apply inline-block bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded shadow leading-8 cursor-pointer;
   }
 
   .btn-danger {
-    @apply bg-red-400 hover:bg-red-500;
+    @apply bg-red-400 hover:bg-red-500 border-red-500;
   }
 
   .btn-small {
@@ -103,7 +103,7 @@
   }
 
   nav.pagination .page {
-    @apply inline-block;
+    @apply inline-block rounded shadow;
   }
 
   nav.pagination .page.disabled, nav.pagination .page.active {
@@ -114,11 +114,17 @@
     @apply inline-block text-black py-2 px-3;
   }
 
-  nav.pagination .page, nav.pagination .page.disabled:hover {
+  nav.pagination .page {
     @apply bg-green-300;
   }
 
-  nav.pagination .page.active, nav.pagination .page:hover {
+  nav.pagination .page.disabled,
+  nav.pagination .page.disabled:hover {
+    @apply bg-green-200;
+  }
+
+  nav.pagination .page.active,
+  nav.pagination .page:hover {
     @apply bg-green-400;
   }
 
