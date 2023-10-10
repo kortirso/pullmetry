@@ -86,7 +86,7 @@ describe Import::Savers::PullRequests, type: :service do
     context 'when configuration does not have exclude rules' do
       before { company.update!(configuration: { pull_request_exclude_rules: nil }) }
 
-      it 'creates 2 new pull requests', :aggregate_failures do
+      it 'creates 3 new pull requests', :aggregate_failures do
         expect { service_call }.to(
           change(repository.pull_requests, :count).by(3)
             .and(change(Entity, :count).by(2))
