@@ -90,6 +90,14 @@
     min-width: 60px;
   }
 
+  .form-field .form-dropdown {
+    @apply absolute w-full border-r border-l border-gray-200;
+  }
+
+  .form-field .form-dropdown li {
+    @apply bg-none border-b border-gray-200 m-0;
+  }
+
   .achievement-name {
     @apply relative text-center bg-green-600 text-white py-2 px-16;
   }
