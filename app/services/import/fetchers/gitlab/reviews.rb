@@ -14,7 +14,7 @@ module Import
           repository = pull_request.repository
           fetch_client = fetch_client.new(url: base_url(repository))
           result = fetch_client.pull_request_reviews(
-            find_default_request_params(repository, pull_request.pull_number)
+            **find_default_request_params(repository, pull_request.pull_number)
           )
           return if !result[:success] && mark_repository_as_unaccessable(repository)
 

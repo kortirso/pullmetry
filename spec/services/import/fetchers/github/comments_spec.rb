@@ -41,12 +41,12 @@ describe Import::Fetchers::Github::Comments, type: :service do
   before do
     allow(fetch_client).to(
       receive(:pull_request_comments)
-        .with({
+        .with(
           repository_link: 'https://github.com/company_name/repo_name',
           access_token: nil,
           pull_number: 1,
           params: { per_page: 100, page: 1 }
-        })
+        )
         .and_return({ success: true, body: data })
     )
   end

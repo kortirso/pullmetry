@@ -48,11 +48,11 @@ describe Import::Fetchers::Github::PullRequests, type: :service do
   before do
     allow(fetch_client).to(
       receive(:pull_requests)
-        .with({
+        .with(
           repository_link: 'https://github.com/company_name/repo_name',
           access_token: nil,
           params: { state: 'all', per_page: 100, page: 1 }
-        })
+        )
         .and_return({ success: true, body: data })
     )
   end

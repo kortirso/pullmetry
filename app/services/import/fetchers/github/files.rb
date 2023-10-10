@@ -18,7 +18,7 @@ module Import
           page = 1
           loop do
             request_params[:params] = { per_page: PER_PAGE, page: page }
-            result = fetch_client.pull_request_files(request_params)
+            result = fetch_client.pull_request_files(**request_params)
             break if !result[:success] && mark_repository_as_unaccessable(repository)
 
             mark_repository_as_accessable(repository) unless repository.accessable
