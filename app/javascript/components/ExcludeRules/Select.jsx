@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { Chevron } from '../../svg';
+
 export const Select = ({ items, onSelect, selectedValue }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,8 +12,9 @@ export const Select = ({ items, onSelect, selectedValue }) => {
 
   return (
     <div className="relative cursor-pointer">
-      <div className="form-value" onClick={() => setIsOpen(!isOpen)}>
+      <div className="form-value flex justify-between items-center text-sm" onClick={() => setIsOpen(!isOpen)}>
         {selectedValue ? items[selectedValue] : ''}
+        <Chevron rotated={isOpen} />
       </div>
       {isOpen ? (
         <ul className="form-dropdown">

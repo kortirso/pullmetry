@@ -4,8 +4,8 @@
     <h2>Mandatory steps</h2>
     <ul>
       <li>First of all for using PullKeeper you need to login with your Github or Gitlab account.</li>
-      <li>Then you need to <%= link_to 'create Company', new_company_path %>. Company is just abstraction for group of repositories with similar configuration.</li>
-      <li>Then for any company you need to <%= link_to 'create Repository', new_repository_path %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
+      <li>Then you need to <%= link_to 'create Company', new_company_path, class: 'text-blue-500 underline' %>. Company is just abstraction for group of repositories with similar configuration.</li>
+      <li>Then for any company you need to <%= link_to 'create Repository', new_repository_path, class: 'text-blue-500 underline' %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
       <li>And finally, main part - you need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</li>
     </ul>
     <p class="mb-4">If you add access token for repository - only this repository will use it for fetching data, if you add it for company - repositories of this company will use it (during access token generation you can specify repositories with access permissions).</p>
@@ -16,7 +16,7 @@
     <ul>
       <li>At company configuration page you can specify work time of your company - this allows better calculations of average review time, because they will not count not-working time and weekends (without this setting they will count such not-working time). Ignore users work time checkbox allows to consider only company work time for such calculations.</li>
       <li>And at this page you can select what type of average calculation to use: arithmetic mean, geometric mean or median.</li>
-      <li>At <%= link_to 'profile page', profile_path %> you can activate trial subscription (no credit card required to get started, it applies to all your companies) and specify your work time and vacations (again, for better average review time calculations).</li>
+      <li>At <%= link_to 'profile page', profile_path, class: 'text-blue-500 underline' %> you can activate trial subscription (no credit card required to get started, it applies to all your companies) and specify your work time and vacations (again, for better average review time calculations).</li>
     </ul>
     <h2>Optional steps for premium account</h2>
     <ul>

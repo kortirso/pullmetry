@@ -36,16 +36,20 @@
     background-position: left top;
   }
 
+  .btn {
+    @apply inline-block py-2 px-4 rounded shadow leading-8 cursor-pointer text-black;
+  }
+
   .btn-primary {
-    @apply inline-block bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded shadow leading-8 cursor-pointer;
+    @apply btn bg-green-400 hover:bg-green-500;
   }
 
   .btn-danger {
-    @apply bg-red-400 hover:bg-red-500 border-red-500;
+    @apply btn bg-red-400 hover:bg-red-500 border border-red-500;
   }
 
   .btn-small {
-    @apply py-1 px-2 text-sm leading-8;
+    @apply btn py-1 px-2 text-sm leading-8;
   }
 
   .user-navigation-link {
@@ -85,7 +89,7 @@
   }
 
   .form-field select {
-    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 text-sm;
+    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 pl-4 pr-8 text-sm leading-8;
 
     min-width: 60px;
   }

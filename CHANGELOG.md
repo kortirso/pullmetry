@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Modified
 - more forms and services with container
 - import services structure
+- text for access token page
 
 ## [1.5.1] - 2023-09-26
 ### Added

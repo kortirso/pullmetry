@@ -81,7 +81,7 @@ export const ExcludeRules = ({ initialRules }) => {
           </div>
           <div className="form-field flex-1 mr-4">
             <input
-              className="form-value w-full"
+              className="form-value w-full text-sm"
               defaultValue={rule.value}
               onChange={(event) => updateExcludeRuleValue(rule, event.target.value)}
             />
@@ -106,7 +106,7 @@ export const ExcludeRules = ({ initialRules }) => {
       </div>
       {pageState.expanded ? (
         <div class="py-6 px-8">
-          <div class="grid grid-cols-2 gap-8">
+          <div class="grid lg:grid-cols-2 gap-8">
             <div>
               <input
                 name="jsonb_columns_configuration[pull_request_exclude_rules]"
@@ -114,16 +114,16 @@ export const ExcludeRules = ({ initialRules }) => {
                 value={pageState.rulesValue}
               />
               {renderExcludeRules()}
+              <span
+                className="btn-primary btn-small cursor-pointer"
+                onClick={addExcludeRule}
+              >Add exclude rule</span>
             </div>
             <div>
               <p>You can select rules for excluding pull requests from statistics calculations, usually it can be releases, hotfixes to master branch or synchronize pull requests from master branch.</p>
               <p className="mt-2">Pull request will be excluded if at least 1 rule is matched.</p>
             </div>
           </div>
-          <span
-            className="btn-primary btn-small mt-4 cursor-pointer"
-            onClick={addExcludeRule}
-          >Add exclude rule</span>
         </div>
       ) : null}
     </div>

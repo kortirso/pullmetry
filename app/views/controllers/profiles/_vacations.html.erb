@@ -1,5 +1,5 @@
 <div class="py-6 px-8">
-  <div class="grid grid-cols-2 gap-8">
+  <div class="grid lg:grid-cols-2 gap-8">
     <div>
       <% if @vacations.load.blank? %>
         <p>You didn't specify any vacations yet.</p>
@@ -7,14 +7,14 @@
         <% @vacations.each do |vacation| %>
           <div class="flex justify-between items-center">
             <p><%= vacation.start_time.strftime('%Y-%m-%d') %> - <%= vacation.end_time.strftime('%Y-%m-%d') %></p>
-            <%= button_to 'X', vacation_path(vacation), class: 'btn-primary btn-small', method: :delete %>
+            <%= button_to 'X', vacation_path(vacation), class: 'btn-danger btn-small rounded shadow', method: :delete %>
           </div>
         <% end %>
       <% end %>
+      <%= link_to 'Add vacation time', new_vacation_path, class: 'btn-primary mt-4' %>
     </div>
     <div>
       <p>Here you can specify your vacations, and for any of your company this time will be reduced from time spending for reviews for better calculating average times.</p>
     </div>
   </div>
-  <%= link_to 'Add vacation time', new_vacation_path, class: 'btn-primary mt-4' %>
 </div>

@@ -1,5 +1,5 @@
 <div class="py-6 px-8">
-  <div class="grid grid-cols-2 gap-8">
+  <div class="grid lg:grid-cols-2 gap-8">
     <div>
       <% if @company.premium? %>
         <%=
@@ -14,7 +14,7 @@
           <div class="flex flex-row">
             <div class="flex-1 form-field">
               <%= form.label :insight_ratio_type, 'Insight ratio type', class: 'form-label' %>
-              <%= form.select :insight_ratio_type, options_for_select(@insight_ratio_type_values, @company.configuration.insight_ratio_type), {}, { class: 'form-value' } %>
+              <%= form.select :insight_ratio_type, options_for_select(@insight_ratio_type_values, @company.configuration.insight_ratio_type), {} %>
             </div>
           </div>
         </div>
