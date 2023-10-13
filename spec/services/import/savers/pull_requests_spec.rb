@@ -37,7 +37,8 @@ describe Import::Savers::PullRequests, type: :service do
             avatar_url: 'https://github.com/images/error/octocat_happy.gif',
             html_url: 'https://github.com/octocat'
           }
-        ]
+        ],
+        owner_avatar_url: 'https://github.com/images/error/octocat_happy.gif'
       },
       {
         pull_number: 2,
@@ -81,6 +82,7 @@ describe Import::Savers::PullRequests, type: :service do
 
       expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
       expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
+      expect(repository.reload.owner_avatar_url).to eq 'https://github.com/images/error/octocat_happy.gif'
     end
 
     context 'when configuration does not have exclude rules' do
@@ -153,6 +155,17 @@ describe Import::Savers::PullRequests, type: :service do
         )
 
         expect(entity.reload.login).to eq 'octocat'
+      end
+    end
+
+    context 'when data is empty' do
+      let(:data) { [] }
+
+      before { repository.update!(owner_avatar_url: 'avatar_url') }
+
+      it 'does not update owner_avatar_url', :aggregate_failures do
+        expect { service_call }.not_to change(repository.pull_requests, :count)
+        expect(repository.reload.owner_avatar_url).to eq 'avatar_url'
       end
     end
   end

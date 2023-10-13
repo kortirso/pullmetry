@@ -24,7 +24,7 @@ module Import
             save_pull_request(payload, find_entity_by_id(payload.dig(:author, :external_id)))
             save_requested_reviewers(find_reviewers_entities(payload[:reviewers]))
           end
-          update_repository(data)
+          update_repository(data) if data.any?
         end
       end
 
