@@ -71,7 +71,7 @@ export const Company = ({
           <h2 className="flex items-center">
             {title}
             {unaccessable ? (
-              <span className="text-sm px-2 py-1 bg-red-400 text-white ml-4 rounded shadow">
+              <span className="badge-danger">
                 Company has repositories with access error
               </span>
             ) : null}
@@ -86,10 +86,10 @@ export const Company = ({
           ) : (
             <a
               href={edit_links ? edit_links.new_repository : repositories_url}
-              className="inline-block text-sm px-2 py-1 bg-green-400 text-black rounded shadow mb-1"
+              className="badge mb-1"
               onClick={(event) => event.stopPropagation()}
             >
-              You need to create repository
+              Need to create repository
             </a>
           )}
           {edit_links ? (

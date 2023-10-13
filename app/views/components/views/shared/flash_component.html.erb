@@ -3,7 +3,7 @@
     <% if message.is_a?(Array) %>
       <% message.each do |value| %>
         <div class="mb-2 px-4 py-2 rounded <%= key == 'alert' ? 'bg-red-400' : 'bg-green-400' %>">
-          <p class="m-0 mb-2"><%= value %></p>
+          <p class="m-0"><%= value %></p>
         </div>
       <% end %>
     <% else %>

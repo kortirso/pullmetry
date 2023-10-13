@@ -127,7 +127,11 @@ describe AccessTokensController do
 
           context 'for valid params' do
             let(:request) {
-              post :create, params: { repository_id: repository_id, access_token: { value: '1' }, locale: 'en' }
+              post :create, params: {
+                repository_id: repository_id,
+                access_token: { value: 'github_pat_****_******' },
+                locale: 'en'
+              }
             }
 
             context 'without other tokens' do
