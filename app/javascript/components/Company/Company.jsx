@@ -71,7 +71,7 @@ export const Company = ({
           <h2 className="flex items-center">
             {title}
             {unaccessable ? (
-              <span className="badge-danger">
+              <span className="badge-danger ml-4">
                 Company has repositories with access error
               </span>
             ) : null}
