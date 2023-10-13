@@ -13,7 +13,8 @@ export const Repository = ({
   synced_at,
   provider,
   repository_url,
-  unaccessable,
+  access_token_status,
+  accessable = true,
   edit_links,
 }) => {
   const [pageState, setPageState] = useState({
@@ -100,9 +101,14 @@ export const Repository = ({
               />
             ) : null}
             {title}
-            {unaccessable ? (
-              <span className="text-sm px-2 py-1 bg-red-400 border border-red-600 text-white ml-4 rounded">
+            {access_token_status === 'valid' && !accessable ? (
+              <span className="badge-danger ml-4">
                 Repository access error
+              </span>
+            ) : null}
+            {access_token_status === 'invalid' ? (
+              <span className="badge-danger ml-4">
+                Access token is invalid
               </span>
             ) : null}
           </h2>
@@ -112,11 +118,19 @@ export const Repository = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(event) => event.stopPropagation()}
-              className="mr-2"
+              className="mr-2 flex items-center"
             >
               {renderRepositoryProviderLogo()}
             </a>
-            <span>Last synced at: {synced_at}</span>
+            {access_token_status === 'empty' && edit_links ? (
+              <a
+                href={edit_links.access_token}
+                className="badge"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to add access token
+              </a>
+            ) : <span>Last synced at: {synced_at}</span>}
           </p>
           {edit_links ? (
             <div className="flex items-center mt-4">

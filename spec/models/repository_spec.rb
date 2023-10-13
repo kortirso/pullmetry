@@ -22,4 +22,32 @@ describe Repository do
       is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').through(:pull_requests)
     }
   end
+
+  describe '.access_token_status' do
+    let!(:repository) { create :repository }
+
+    context 'without access token' do
+      it 'returns empty' do
+        expect(repository.access_token_status).to eq 'empty'
+      end
+    end
+
+    context 'with access token' do
+      let!(:access_token) { create :access_token, tokenable: repository, value: 'random' }
+
+      context 'when invalid format' do
+        it 'returns invalid' do
+          expect(repository.access_token_status).to eq 'invalid'
+        end
+      end
+
+      context 'when valid format' do
+        it 'returns valid' do
+          access_token.update!(value: 'github_pat_****_******')
+
+          expect(repository.access_token_status).to eq 'valid'
+        end
+      end
+    end
+  end
 end

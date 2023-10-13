@@ -15,7 +15,8 @@
           synced_at: repository.synced_at ? repository.synced_at.strftime('%d.%m %H:%M') : 'no data',
           provider: repository.provider,
           repository_url: repository.link,
-          unaccessable: repository.fetch_access_token && !repository.accessable,
+          access_token_status: repository.access_token_status,
+          accessable: repository.accessable,
           edit_links: allowed_to?(:update?, repository) ? {
             access_token: new_repository_access_token_path(repository.uuid),
             destroy: repository_path(repository.uuid)

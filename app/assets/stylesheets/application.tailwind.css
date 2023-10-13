@@ -179,5 +179,13 @@
   .toggle:hover .toggle-checkbox:checked + .toggle-label {
     @apply border-green-700;
   }
+
+  .badge {
+    @apply inline-block text-xs px-2 py-1 bg-green-400 border border-green-500 text-black rounded shadow;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-400 border border-red-500;
+  }
 }
 
