@@ -6,13 +6,13 @@ module Export
 
     queue_as :default
 
-    def perform(send_service: Export::Slack::Insights::SendService.new)
+    def perform(delivery_service: InsightDelivery)
       Company
         .where(user_id: Subscription.active.select(:user_id))
         .find_each do |company|
           next unless working_time?(company)
 
-          send_service.call(insightable: company)
+          delivery_service.with(insightable: company).report.deliver_later
         end
     end
   end

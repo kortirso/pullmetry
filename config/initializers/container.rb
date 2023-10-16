@@ -23,6 +23,8 @@ module Pullmetry
     register('api.github.client') { GithubApi::Client.new }
     register('api.gitlab.auth_client') { GitlabAuthApi::Client.new }
     register('api.gitlab.client') { GitlabApi::Client.new }
+    register('api.slack.client') { SlackHooksApi::Client.new }
+    register('api.discord.client') { DiscordApi::Client.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }
@@ -42,6 +44,11 @@ module Pullmetry
     register('forms.identities.create') { Identities::CreateForm.new }
     register('forms.repositories.create') { Repositories::CreateForm.new }
     register('forms.vacations.create') { Vacations::CreateForm.new }
+
+    # notifiers
+    register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
+      SlackWebhooks::Admin::JobExecutionReportPayload.new
+    }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

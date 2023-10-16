@@ -5,7 +5,7 @@ module Monitorable
 
   included do
     after_perform do |job|
-      Export::Slack::Reports::Jobs::SendService.call(job: job)
+      AdminDelivery.with(job: job).job_execution_report.deliver_later
     end
   end
 end
