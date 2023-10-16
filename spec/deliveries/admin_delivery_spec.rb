@@ -5,7 +5,9 @@ describe AdminDelivery, type: :delivery do
 
   describe '#published' do
     before do
-      allow(Pullmetry::Application).to receive(:credentials).and_return({ reports_webhook_url: 'url' })
+      allow(Pullmetry::Application).to(
+        receive(:credentials).and_return({ reports_webhook_url: 'https://hooks.slack.com/services/T0/B0/G0' })
+      )
     end
 
     it 'delivers to slack_webhook' do
