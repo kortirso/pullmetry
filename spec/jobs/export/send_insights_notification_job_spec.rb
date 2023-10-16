@@ -5,7 +5,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
 
   let!(:user) { create :user }
   let!(:company) { create :company, user: user }
-  let(:send_service) { double(Export::Slack::Insights::SendService) }
+  let(:delivery_service) { double }
   let(:date) {
     value = DateTime.now
     value = value.change(day: value.day + (2 * (value < 29 ? 1 : -1))) if value.wday.in?([0, 6])
@@ -13,15 +13,16 @@ describe Export::SendInsightsNotificationJob, type: :service do
   }
 
   before do
-    allow(Export::Slack::Insights::SendService).to receive(:new).and_return(send_service)
-    allow(send_service).to receive(:call)
+    allow(InsightDelivery).to receive(:with).and_return(delivery_service)
+    allow(delivery_service).to receive(:report).and_return(delivery_service)
+    allow(delivery_service).to receive(:deliver_later)
   end
 
   context 'without active subscription' do
     it 'does not calls service' do
       job_call
 
-      expect(send_service).not_to have_received(:call)
+      expect(InsightDelivery).not_to have_received(:with)
     end
   end
 
@@ -32,7 +33,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
       it 'calls service' do
         job_call
 
-        expect(send_service).to have_received(:call).with(insightable: company)
+        expect(InsightDelivery).to have_received(:with).with(insightable: company)
       end
     end
 
@@ -55,7 +56,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
         it 'calls service' do
           job_call
 
-          expect(send_service).to have_received(:call).with(insightable: company)
+          expect(InsightDelivery).to have_received(:with).with(insightable: company)
         end
       end
 
@@ -67,7 +68,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
         it 'does not call service' do
           job_call
 
-          expect(send_service).not_to have_received(:call)
+          expect(InsightDelivery).not_to have_received(:with)
         end
       end
     end

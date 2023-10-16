@@ -57,6 +57,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_delivery (1.0.0)
+      ruby-next-core (>= 0.15.0)
     activejob (7.0.8)
       activesupport (= 7.0.8)
       globalid (>= 0.3.6)
@@ -450,6 +452,7 @@ PLATFORMS
 
 DEPENDENCIES
   action_policy
+  active_delivery
   awesome_print
   bcrypt (~> 3.1)
   bootsnap (>= 1.4.4)
