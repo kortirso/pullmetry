@@ -4,6 +4,10 @@ describe AdminDelivery, type: :delivery do
   let(:job) { double }
 
   describe '#published' do
+    before do
+      allow(Pullmetry::Application).to receive(:credentials).and_return({ reports_webhook_url: 'url' })
+    end
+
     it 'delivers to slack_webhook' do
       expect {
         described_class.with(job: job).job_execution_report.deliver_later
