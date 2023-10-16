@@ -3,19 +3,19 @@
 module SlackWebhooks
   module Admin
     class JobExecutionReportPayload
-      def call(job:)
-        { blocks: payload_block(job) }
+      def call(job_name:)
+        { blocks: payload_block(job_name) }
       end
 
       private
 
-      def payload_block(job)
+      def payload_block(job_name)
         [
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: "#{job.class.name} is run at #{DateTime.now}"
+              text: "#{job_name} is run at #{DateTime.now}"
             }
           }
         ]

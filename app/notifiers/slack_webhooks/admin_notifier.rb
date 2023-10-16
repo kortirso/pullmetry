@@ -7,12 +7,12 @@ module SlackWebhooks
     def job_execution_report
       notification(
         path: URI(Rails.application.credentials[:reports_webhook_url]).path,
-        body: payload_service.call(job: job)
+        body: payload_service.call(job_name: job_name)
       )
     end
 
     private
 
-    def job = params[:job]
+    def job_name = params[:job_name]
   end
 end

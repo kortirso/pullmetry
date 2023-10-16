@@ -5,7 +5,7 @@ module Monitorable
 
   included do
     after_perform do |job|
-      AdminDelivery.with(job: job).job_execution_report.deliver_later
+      AdminDelivery.with(job_name: job.class.name).job_execution_report.deliver_later
     end
   end
 end
