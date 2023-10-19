@@ -51,6 +51,19 @@ describe Import::SyncRepositoriesJob, type: :service do
 
         expect(import_object).to have_received(:call).with(company: company)
       end
+
+      context 'when company has blank work_time_zone' do
+        before do
+          company.configuration.assign_attributes(work_time_zone: nil)
+          company.save!
+        end
+
+        it 'does not call service' do
+          job_call
+
+          expect(import_object).not_to have_received(:call)
+        end
+      end
     end
 
     context 'with current time at weekend' do

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Fixed
 - bug with blank pull_request_exclude_rules
+- bug with blank work_time_zone for companies
 
 ## [1.5.5] - 2023-10-19
 ### Added

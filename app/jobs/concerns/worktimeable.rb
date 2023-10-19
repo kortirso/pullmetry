@@ -30,7 +30,9 @@ module Worktimeable
   end
 
   def offset_minutes(configuration)
-    ActiveSupport::TimeZone[configuration.work_time_zone].utc_offset / 60
+    ActiveSupport::TimeZone[
+      configuration.work_time_zone || Insights::AverageTime::BasisService::DEFAULT_WORK_TIME_ZONE
+    ].utc_offset / 60
   end
 
   def current_minutes
