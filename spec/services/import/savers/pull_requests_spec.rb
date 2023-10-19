@@ -97,6 +97,18 @@ describe Import::Savers::PullRequests, type: :service do
       end
     end
 
+    context 'when configuration has blank exclude rules' do
+      before { company.update!(configuration: { pull_request_exclude_rules: '' }) }
+
+      it 'creates 3 new pull requests', :aggregate_failures do
+        expect { service_call }.to(
+          change(repository.pull_requests, :count).by(3)
+            .and(change(Entity, :count).by(2))
+            .and(change(PullRequests::Review, :count).by(2))
+        )
+      end
+    end
+
     context 'for receiving PRs with changing state from draft to open for review' do
       let(:second_data) {
         [

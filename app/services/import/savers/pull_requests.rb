@@ -73,7 +73,8 @@ module Import
 
       # { title: [], description: [], branch_name: [], destination_branch_name: ['master'] }
       def exclude_rules
-        @exclude_rules ||= JSON.parse(@repository.configuration.pull_request_exclude_rules || '{}').symbolize_keys
+        @exclude_rules ||=
+          JSON.parse(@repository.configuration.pull_request_exclude_rules.presence || '{}').symbolize_keys
       end
 
       def save_pull_request(payload, author_entity)
