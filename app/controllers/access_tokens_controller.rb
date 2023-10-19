@@ -16,7 +16,7 @@ class AccessTokensController < ApplicationController
     # commento: access_tokens.value
     case create_form.call(tokenable: @tokenable, params: access_token_params)
     in { errors: errors } then redirect_to fail_redirect_path, alert: errors
-    else redirect_to success_redirect_path, notice: 'Access token is created'
+    else redirect_to success_redirect_path
     end
   end
 

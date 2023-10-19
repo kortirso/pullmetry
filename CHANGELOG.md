@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - frontend time formatting
 
+### Modified
+- welcome page formatting
+- rendering alerts
+
 ## [1.5.4] - 2023-10-19
 ### Added
 - notifications layer for export and emails

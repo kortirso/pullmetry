@@ -5,19 +5,19 @@
 
 @layer components {
   h1 {
-    @apply text-4xl leading-10 mb-4;
+    @apply text-4xl leading-12 mb-4;
   }
 
   h2 {
-    @apply text-3xl leading-8 mb-4;
+    @apply text-3xl leading-10 mb-4;
   }
 
   h3 {
-    @apply text-2xl leading-6 mb-4;
+    @apply text-2xl leading-8 mb-4;
   }
 
   h4 {
-    @apply text-xl leading-4 mb-4;
+    @apply text-xl leading-6 mb-4;
   }
 
   p {
@@ -34,6 +34,18 @@
     background-image: url('icons/chevron.svg');
     background-size: 1.25rem 1.25rem;
     background-position: left top;
+  }
+
+  .benefits-box {
+    @apply flex flex-col pr-12 mb-12;
+  }
+
+  .benefits-title {
+    @apply text-left mb-8;
+  }
+
+  .benefits-text {
+    @apply text-lg leading-8;
   }
 
   .btn {

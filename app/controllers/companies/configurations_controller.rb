@@ -22,7 +22,7 @@ module Companies
         use_work_time: to_bool(params[:jsonb_columns_configuration][:use_work_time])
       )
       if form.success?
-        redirect_to companies_path, notice: "Configuration for company #{@company.title} is updated"
+        redirect_to companies_path
       else
         redirect_to edit_company_configuration_path(@company.uuid), alert: form.errors
       end

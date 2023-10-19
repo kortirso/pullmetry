@@ -19,14 +19,14 @@ class CompaniesController < ApplicationController
     # commento: companies.title
     case create_form.call(user: current_user, params: company_params)
     in { errors: errors } then redirect_to new_company_path, alert: errors
-    in { result: result } then redirect_to companies_path, notice: "Company #{result.title} is created"
+    in { result: result } then redirect_to companies_path
     end
   end
 
   def destroy
     authorize! @company
     @company.destroy
-    redirect_to companies_path, notice: "Company #{@company.title} is destroyed"
+    redirect_to companies_path
   end
 
   private

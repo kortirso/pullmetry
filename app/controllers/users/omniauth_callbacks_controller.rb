@@ -19,7 +19,7 @@ module Users
     def create
       if user
         session[:pullmetry_token] = generate_token.call(user: user)[:result]
-        redirect_to companies_path, notice: 'Successful login'
+        redirect_to companies_path
       else
         redirect_to root_path, flash: { manifesto_username: true }
       end
@@ -28,7 +28,7 @@ module Users
     def destroy
       fetch_session.call(token: session[:pullmetry_token])[:result]&.destroy
       session[:pullmetry_token] = nil
-      redirect_to root_path, notice: t('controllers.users.sessions.success_destroy')
+      redirect_to root_path
     end
 
     private

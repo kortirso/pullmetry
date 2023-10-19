@@ -20,7 +20,7 @@ class ProfilesController < ApplicationController
       notification_params: notification_params.transform_values { |value| to_bool(value) }
     )
     if service_call.success?
-      redirect_to profile_path, notice: 'User is updated'
+      redirect_to profile_path
     else
       redirect_to profile_path, alert: service_call.errors
     end
@@ -29,7 +29,7 @@ class ProfilesController < ApplicationController
   def destroy
     destroy_service.call(user: current_user)
     session[:pullmetry_token] = nil
-    redirect_to root_path, notice: 'Your account is deleted'
+    redirect_to root_path
   end
 
   private

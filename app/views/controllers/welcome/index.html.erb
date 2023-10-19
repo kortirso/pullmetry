@@ -1,8 +1,8 @@
 <%= render PageWrappers::GuestComponent.new do %>
   <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:my-24">
     <div class="flex-1 flex flex-col justify-center">
-      <h1 class="text-center lg:text-left">Pull requests relevant statistic</h1>
-      <p class="text-lg leading-8 mb-4 text-center lg:text-left">Open source. Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
+      <h1 class="text-center lg:text-left">PullKeeper is open source pull requests analyzer</h1>
+      <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
       <% unless Current.user %>
         <div class="flex justify-center xl:justify-start">
           <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small mr-4' %>
@@ -15,31 +15,31 @@
     </div>
   </section>
   <section class="mx-auto my-8 xl:my-24">
-    <h2 class="text-center mb-8">What features you get from the PullKeeper</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Reviewer statistics</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">Calculated the up-to-date reviewer statistics (reviews, comments, average review time and more) separately for each repository and for the whole company, and repository statistics</p>
+    <h1 class="text-center mb-12">PullKeeper features</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div class="benefits-box">
+        <h3 class="benefits-title">Reviewer statistics</h3>
+        <p class="benefits-text">Calculated the up-to-date reviewer statistics (reviews, comments, average review time and more) separately for each repository and for the whole company, and repository statistics</p>
       </div>
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Customizable calculations</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Customizable calculations</h3>
+        <p class="benefits-text">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
       </div>
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Exclude rules</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, exclude rules for pull requests to avoid double counting</p>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Exclude rules</h3>
+        <p class="benefits-text">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, exclude rules for pull requests to avoid double counting</p>
       </div>
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Comparing data</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">Compareable data with previous periods for better understanding development improvements</p>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Comparing data</h3>
+        <p class="benefits-text">Compareable data with previous periods for better understanding development improvements</p>
       </div>
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Github and Gitlab API</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">Gitlab API</a></p>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Github and Gitlab API</h3>
+        <p class="benefits-text">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="underline text-blue-500">Gitlab API</a></p>
       </div>
-      <div class="p-5 flex flex-col items-center">
-        <h3 class="text-center">Achievements system</h3>
-        <p class="text-center text-gray-500 text-lg leading-8">PullKeeper has achievements system for representing and comparing developer success</p>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Achievements system</h3>
+        <p class="benefits-text">PullKeeper has achievements system for representing and comparing developer success</p>
       </div>
     </div>
   </section>

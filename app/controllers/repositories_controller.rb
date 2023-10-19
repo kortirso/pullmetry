@@ -23,14 +23,14 @@ class RepositoriesController < ApplicationController
     # commento: repositories.title, repositories.link, repositories.provider, repositories.external_id
     case create_form.call(company: @company, params: repository_params)
     in { errors: errors } then redirect_to new_repository_path, alert: errors
-    in { result: result } then redirect_to repositories_path, notice: "Repository #{result.title} is created"
+    in { result: result } then redirect_to repositories_path
     end
   end
 
   def destroy
     authorize! @repository
     @repository.destroy
-    redirect_to repositories_path, notice: "Repository #{@repository.title} is destroyed"
+    redirect_to repositories_path
   end
 
   private

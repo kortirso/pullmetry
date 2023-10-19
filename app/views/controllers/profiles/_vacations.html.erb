@@ -6,7 +6,7 @@
       <% else %>
         <% @vacations.each do |vacation| %>
           <div class="flex justify-between items-center">
-            <p><%= vacation.start_time.strftime('%Y-%m-%d') %> - <%= vacation.end_time.strftime('%Y-%m-%d') %></p>
+            <p><%= vacation.start_time.strftime('%d.%m.%Y') %> - <%= vacation.end_time.strftime('%d.%m.%Y') %></p>
             <%= button_to 'X', vacation_path(vacation), class: 'btn-danger btn-small rounded shadow', method: :delete %>
           </div>
         <% end %>

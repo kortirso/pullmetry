@@ -11,9 +11,6 @@ en:
   controllers:
     authentication:
       permission: You need to sign in
-    users:
-      sessions:
-        success_destroy: You are logged out
     achievements:
       show:
         summary: Summary

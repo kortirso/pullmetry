@@ -11,9 +11,6 @@ ru:
   controllers:
     authentication:
       permission: Необходимо войти
-    users:
-      sessions:
-        success_destroy: Вы вышли
     achievements:
       show:
         summary: Сводка

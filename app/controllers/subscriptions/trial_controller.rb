@@ -7,7 +7,7 @@ module Subscriptions
     def create
       case add_service.call(user: current_user, trial: true)
       in { errors: errors } then redirect_to profile_path, alert: errors
-      else redirect_to profile_path, notice: 'Subscription is added'
+      else redirect_to profile_path
       end
     end
   end

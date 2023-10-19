@@ -12,13 +12,13 @@ class VacationsController < ApplicationController
   def create
     case create_form.call(user: current_user, params: vacation_params)
     in { errors: errors } then redirect_to new_vacation_path, alert: errors
-    else redirect_to profile_path, notice: 'Vacation is added'
+    else redirect_to profile_path
     end
   end
 
   def destroy
     @vacation.destroy
-    redirect_to profile_path, notice: 'Vacation is deleted'
+    redirect_to profile_path
   end
 
   private
