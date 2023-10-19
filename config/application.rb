@@ -30,6 +30,8 @@ module Pullmetry
     I18n.available_locales = %i[en]
     config.i18n.default_locale = :en
 
+    config.time_zone = 'UTC'
+
     config.active_record.schema_format = :sql
 
     config.active_job.queue_adapter = :que

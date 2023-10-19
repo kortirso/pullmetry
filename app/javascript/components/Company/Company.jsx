@@ -64,7 +64,7 @@ export const Company = ({
   return (
     <div className="mb-4 bg-white rounded shadow">
       <div
-        className="cursor-pointer p-8 flex justify-between items-center"
+        className="relative cursor-pointer p-8 flex justify-between items-center"
         onClick={() => toggle()}
       >
         <div>
@@ -92,53 +92,53 @@ export const Company = ({
               Need to create repository
             </a>
           )}
-          {edit_links ? (
-            <div className="flex items-center mt-2">
-              {edit_links.access_token ? (
-                <a
-                  href={edit_links.access_token}
-                  onClick={(event) => event.stopPropagation()}
-                  className="mr-2"
-                >
-                  <Key />
-                </a>
-              ) : null}
-              {edit_links.configuration ? (
-                <a
-                  href={edit_links.configuration}
-                  onClick={(event) => event.stopPropagation()}
-                  className="mr-2"
-                >
-                  <Edit />
-                </a>
-              ) : null}
-              {edit_links.destroy ? (
-                <form
-                  ref={form}
-                  method="post"
-                  action={edit_links.destroy}
-                  className="w-6 h-6"
-                  onSubmit={(event) => handleConfirm(event)}
-                >
-                  <input type="hidden" name="_method" value="delete" autoComplete="off" />
-                  <input
-                    type="hidden"
-                    name="authenticity_token"
-                    value={
-                      document.querySelector("meta[name='csrf-token']")?.getAttribute('content') ||
-                      ''
-                    }
-                    autoComplete="off"
-                  />
-                  <button type="submit" onClick={(event) => event.stopPropagation()}>
-                    <Delete />
-                  </button>
-                </form>
-              ) : null}
-            </div>
-          ) : null}
         </div>
         <Chevron rotated={pageState.expanded} />
+        {edit_links ? (
+          <div className="absolute top-8 right-20 flex items-center">
+            {edit_links.access_token ? (
+              <a
+                href={edit_links.access_token}
+                onClick={(event) => event.stopPropagation()}
+                className="mr-2"
+              >
+                <Key />
+              </a>
+            ) : null}
+            {edit_links.configuration ? (
+              <a
+                href={edit_links.configuration}
+                onClick={(event) => event.stopPropagation()}
+                className="mr-2"
+              >
+                <Edit />
+              </a>
+            ) : null}
+            {edit_links.destroy ? (
+              <form
+                ref={form}
+                method="post"
+                action={edit_links.destroy}
+                className="w-6 h-6"
+                onSubmit={(event) => handleConfirm(event)}
+              >
+                <input type="hidden" name="_method" value="delete" autoComplete="off" />
+                <input
+                  type="hidden"
+                  name="authenticity_token"
+                  value={
+                    document.querySelector("meta[name='csrf-token']")?.getAttribute('content') ||
+                    ''
+                  }
+                  autoComplete="off"
+                />
+                <button type="submit" onClick={(event) => event.stopPropagation()}>
+                  <Delete />
+                </button>
+              </form>
+            ) : null}
+          </div>
+        ) : null}
       </div>
       {pageState.expanded ? (
         <div className="pt-4 px-8 pb-8">
