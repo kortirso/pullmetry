@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - frontend time formatting
+- js component for rendering alerts
 
 ### Modified
 - welcome page formatting
