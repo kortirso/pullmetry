@@ -2,13 +2,14 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { Company, Repository, Dropdown, ExcludeRules } from './components';
+import { Company, Repository, Dropdown, ExcludeRules, Flash } from './components';
 
 const components = {
   Company,
   Repository,
   Dropdown,
   ExcludeRules,
+  Flash,
 };
 const queryClient = new QueryClient();
 
