@@ -76,6 +76,7 @@ namespace :yarn do
   end
 end
 
+# rubocop: disable Layout/LineLength
 namespace :que do
   desc 'Start que worker'
   task :start do
@@ -99,6 +100,7 @@ namespace :que do
     end
   end
 end
+# rubocop: enable Layout/LineLength
 
 after 'bundler:install', 'yarn:install'
 after 'deploy:published', 'bundler:clean'
