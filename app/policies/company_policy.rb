@@ -8,7 +8,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    user.id == record.user_id
+    user.admin? || user.id == record.user_id
   end
 
   alias_rule :edit?, :destroy?, to: :update?

@@ -14,6 +14,14 @@ describe RepositoryPolicy do
       it 'returns false' do
         expect(policy_access).to be_falsy
       end
+
+      context 'when user is admin' do
+        before { user.update!(role: 'admin') }
+
+        it 'returns true' do
+          expect(policy_access).to be_truthy
+        end
+      end
     end
 
     context 'for user repository' do
