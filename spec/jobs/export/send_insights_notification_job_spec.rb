@@ -41,7 +41,8 @@ describe Export::SendInsightsNotificationJob, type: :service do
       before do
         company.configuration.assign_attributes(
           work_start_time: DateTime.new(date.year, date.month, date.day, 9, 0),
-          work_end_time: DateTime.new(date.year, date.month, date.day, 18, 0)
+          work_end_time: DateTime.new(date.year, date.month, date.day, 18, 0),
+          work_time_zone: 'UTC'
         )
         company.save!
       end

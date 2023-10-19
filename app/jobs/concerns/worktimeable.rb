@@ -10,12 +10,31 @@ module Worktimeable
     return false if current_time.wday.in?(Insights::AverageTime::BasisService::WEEKEND_DAYS_INDEXES)
 
     configuration = company.configuration
-    value_minutes = minutes_of_day(current_time)
+    return day_work_condition(configuration) if configuration.work_start_time <= configuration.work_end_time
 
-    return false if value_minutes < minutes_of_day(configuration.work_start_time)
-    return false if value_minutes >= minutes_of_day(configuration.work_end_time)
+    night_work_condition(configuration)
+  end
+
+  def day_work_condition(configuration)
+    return false if current_minutes < minutes_of_day(configuration.work_start_time) - offset_minutes(configuration)
+    return false if current_minutes >= minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
 
     true
+  end
+
+  def night_work_condition(configuration)
+    return true if current_minutes >= minutes_of_day(configuration.work_start_time) - offset_minutes(configuration)
+    return true if current_minutes < minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
+
+    false
+  end
+
+  def offset_minutes(configuration)
+    ActiveSupport::TimeZone[configuration.work_time_zone].utc_offset / 60
+  end
+
+  def current_minutes
+    @current_minutes ||= minutes_of_day(current_time)
   end
 
   def minutes_of_day(time)

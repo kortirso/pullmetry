@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - saving owner_avatar_url for repository
+- running job with including timezone offset
 
 ## [1.5.3] - 2023-10-13
 ### Added
