@@ -83,7 +83,7 @@ namespace :que do
     on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :bundle, 'exec que -l error ./config/environment.rb'
+          execute :bundle, 'exec que -l error -q default -q notifiers ./config/environment.rb'
         end
       end
     end
