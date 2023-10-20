@@ -15,15 +15,16 @@ module Worktimeable
     night_work_condition(configuration)
   end
 
+  # 60 means - start 1 hour before start time
   def day_work_condition(configuration)
-    return false if current_minutes < minutes_of_day(configuration.work_start_time) - offset_minutes(configuration)
+    return false if current_minutes < minutes_of_day(configuration.work_start_time) - offset_minutes(configuration) - 60
     return false if current_minutes >= minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
 
     true
   end
 
   def night_work_condition(configuration)
-    return true if current_minutes >= minutes_of_day(configuration.work_start_time) - offset_minutes(configuration)
+    return true if current_minutes >= minutes_of_day(configuration.work_start_time) - offset_minutes(configuration) - 60
     return true if current_minutes < minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
 
     false
@@ -32,7 +33,7 @@ module Worktimeable
   def offset_minutes(configuration)
     ActiveSupport::TimeZone[
       configuration.work_time_zone || Insights::AverageTime::BasisService::DEFAULT_WORK_TIME_ZONE
-    ].utc_offset / 60
+    ].utc_offset / Insights::AverageTime::BasisService::MINUTES_IN_HOUR
   end
 
   def current_minutes

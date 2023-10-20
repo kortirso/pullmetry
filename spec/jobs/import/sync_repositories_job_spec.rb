@@ -43,7 +43,7 @@ describe Import::SyncRepositoriesJob, type: :service do
 
     context 'with current time inside working time with timezone offset' do
       before do
-        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 8, 0))
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 7, 0))
       end
 
       it 'calls service' do
@@ -80,7 +80,7 @@ describe Import::SyncRepositoriesJob, type: :service do
 
     context 'with current time outside working time' do
       before do
-        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 5, 0))
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 4, 0))
       end
 
       it 'does not call service' do
