@@ -19,18 +19,22 @@ module Repositories
     private
 
     def validate_existing_link(user, link)
-      available_repositories = user.available_repositories
-      return 'User has access to repository with the same link' if available_repositories.exists?(link: link)
+      existing_repository = Repository.find_by(link: link)
+      return if existing_repository.nil?
 
-      'Repository with the same link exists' if repository_exists?(available_repositories, link)
+      if user.available_repositories.ids.include?(existing_repository.id)
+        return 'User has access to repository with the same link'
+      end
+
+      return 'Repository with the same link exists' if repository_with_insights_exists?(existing_repository)
+
+      nil if existing_repository.destroy
     end
 
-    def repository_exists?(available_repositories, link)
-      Repository
-        .where.not(id: available_repositories)
-        .where(link: link)
-        .where.associated(:insights)
-        .exists?(['insights.updated_at > ?', HOURS_FOR_OLD_INSIGHTS.hours.ago])
+    def repository_with_insights_exists?(existing_repository)
+      ::Insight
+        .where(insightable: existing_repository)
+        .exists?(['updated_at > ?', HOURS_FOR_OLD_INSIGHTS.hours.ago])
     end
   end
 end

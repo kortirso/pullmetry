@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Modified
 - running sync job 1 hour before work time start
+- creating repository with existing link
 
 ## [1.5.6] - 2023-10-19
 ### Fixed
