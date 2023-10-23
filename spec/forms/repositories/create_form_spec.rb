@@ -34,8 +34,11 @@ describe Repositories::CreateForm, type: :service do
     let!(:repository) { create :repository, link: 'link' }
     let(:params) { { title: 'Title', link: 'link', provider: 'github' } }
 
-    it 'creates repository and succeeds' do
-      expect { form }.to change(company.repositories, :count).by(1)
+    it 'creates repository and destroys old repository', :aggregate_failures do
+      form
+
+      expect(Repository.find_by(id: repository.id)).to be_nil
+      expect(company.repositories.count).to eq 1
     end
 
     context 'when user has access to repository with the same link' do
@@ -59,8 +62,11 @@ describe Repositories::CreateForm, type: :service do
           insight.save(touch: false)
         end
 
-        it 'creates repository and succeeds' do
-          expect { form }.to change(company.repositories, :count).by(1)
+        it 'creates repository and destroys old repository', :aggregate_failures do
+          form
+
+          expect(Repository.find_by(id: repository.id)).to be_nil
+          expect(company.repositories.count).to eq 1
         end
       end
     end
