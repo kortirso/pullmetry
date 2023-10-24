@@ -54,6 +54,7 @@ module Companies
       params
         .require(:jsonb_columns_configuration)
         .permit(
+          :private,
           :insight_ratio,
           :insight_ratio_type,
           :insights_webhook_url,

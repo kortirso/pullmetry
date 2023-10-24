@@ -24,7 +24,7 @@ module Insights
 
           # update actual insight information for current period
           insight = @insightable.insights.actual.find_or_initialize_by(entity_id: entity_id)
-          insight.update!(insight_attributes(entity_id))
+          insight.update!(insight_attributes(entity_id).merge(hidden: @insight_visibility))
         end
       end
     end

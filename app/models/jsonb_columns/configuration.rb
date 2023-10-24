@@ -4,6 +4,7 @@ module JsonbColumns
   class Configuration
     include StoreModel::Model
 
+    attribute :private, :boolean, default: false
     # insights calculation attributes
     attribute :ignore_users_work_time, :boolean
     attribute :work_time_zone, :string

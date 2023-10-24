@@ -1,6 +1,7 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1 class="mb-8">Edit configuration</h1>
   <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
+    <%= react_component 'Dropdown', title: 'Privacy', children: render(partial: 'access', locals: { form: form }).html_safe %>
     <%= react_component 'Dropdown', title: 'Work time', children: render(partial: 'work_time', locals: { form: form }).html_safe %>
     <%= react_component 'ExcludeRules', initialRules: JSON.parse(@company.configuration.pull_request_exclude_rules.presence || '{}') %>
     <%= react_component 'Dropdown', title: 'Insight attributes', children: render(partial: 'insights', locals: { form: form }).html_safe %>

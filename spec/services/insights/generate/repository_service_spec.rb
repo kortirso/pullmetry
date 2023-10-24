@@ -26,11 +26,22 @@ describe Insights::Generate::RepositoryService, type: :service do
 
   context 'for unexisting insights' do
     it 'creates 2 insights' do
-      expect { service_call }.to change(insightable.insights, :count).by(2)
+      expect { service_call }.to change(insightable.insights.visible, :count).by(2)
     end
 
     it 'creates 1 repository insight' do
       expect { service_call }.to change(insightable.repository_insights, :count).by(1)
+    end
+
+    context 'for private company' do
+      before do
+        insightable.company.configuration.private = true
+        insightable.company.save!
+      end
+
+      it 'creates 2 insights' do
+        expect { service_call }.to change(insightable.insights.hidden, :count).by(2)
+      end
     end
   end
 

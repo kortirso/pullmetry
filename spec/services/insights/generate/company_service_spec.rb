@@ -28,8 +28,20 @@ describe Insights::Generate::CompanyService, type: :service do
 
   context 'for unexisting insights' do
     it 'creates 2 insights', :aggregate_failures do
-      expect { service_call }.to change(insightable.insights, :count).by(2)
+      expect { service_call }.to change(insightable.insights.visible, :count).by(2)
       expect(service_call.success?).to be_truthy
+    end
+
+    context 'for private company' do
+      before do
+        insightable.configuration.private = true
+        insightable.save!
+      end
+
+      it 'creates 2 insights', :aggregate_failures do
+        expect { service_call }.to change(insightable.insights.hidden, :count).by(2)
+        expect(service_call.success?).to be_truthy
+      end
     end
   end
 
@@ -39,11 +51,25 @@ describe Insights::Generate::CompanyService, type: :service do
     }
 
     it 'creates 1 insight and updates existing insight', :aggregate_failures do
-      expect { service_call }.to change(insightable.insights, :count).by(1)
+      expect { service_call }.to change(insightable.insights.visible, :count).by(1)
       expect(insight.reload.comments_count).to eq 1
       expect(insight.changed_loc).to eq 11
       expect(insight.reviewed_loc).to eq 3
+      expect(insight.reload.hidden).to be_falsy
       expect(service_call.success?).to be_truthy
+    end
+
+    context 'for private company' do
+      before do
+        insightable.configuration.private = true
+        insightable.save!
+      end
+
+      it 'creates 2 insights', :aggregate_failures do
+        expect { service_call }.to change(insightable.insights.hidden, :count).by(2)
+        expect(insight.reload.hidden).to be_truthy
+        expect(service_call.success?).to be_truthy
+      end
     end
   end
 end

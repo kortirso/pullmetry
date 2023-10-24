@@ -11,6 +11,7 @@ export const Company = ({
   repositories_count,
   repositories_url,
   unaccessable,
+  is_private,
   edit_links,
 }) => {
   const [pageState, setPageState] = useState({
@@ -96,6 +97,11 @@ export const Company = ({
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (
           <div className="absolute top-8 right-20 flex items-center">
+            {is_private ? (
+              <span className="badge mr-4">
+                Private
+              </span>
+            ) : null}
             {edit_links.access_token ? (
               <a
                 href={edit_links.access_token}

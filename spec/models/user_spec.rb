@@ -46,12 +46,14 @@ describe User do
     let!(:user) { create :user }
     let!(:company1) { create :company, user: user }
     let!(:company2) { create :company }
+    let!(:company3) { create :company }
 
     before do
       create :company
       identity = create :identity, user: user
       entity = create :entity, identity: identity
       create :insight, insightable: company2, entity: entity
+      create :insight, insightable: company3, entity: entity, hidden: true
     end
 
     it 'return 2 available companies' do
@@ -69,7 +71,7 @@ describe User do
       create :repository
       identity = create :identity, user: user
       entity = create :entity, identity: identity
-      create :insight, insightable: repository2, entity: entity
+      create :insight, insightable: repository2.company, entity: entity
     end
 
     it 'return 2 available repositories' do

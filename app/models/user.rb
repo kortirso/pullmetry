@@ -34,19 +34,11 @@ class User < ApplicationRecord
     Company
       .where(user_id: id)
       .or(
-        Company
-        .where.not(user_id: id)
-        .where(id: insights.of_type('Company').select(:insightable_id))
+        Company.where(id: insights.actual.visible.of_type('Company').select(:insightable_id))
       )
   end
 
   def available_repositories
-    Repository
-      .of_user(id)
-      .or(
-        Repository
-        .not_of_user(id)
-        .where(id: insights.of_type('Repository').select(:insightable_id))
-      )
+    Repository.where(company_id: available_companies.select(:id))
   end
 end
