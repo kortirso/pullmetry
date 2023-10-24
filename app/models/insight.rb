@@ -17,6 +17,8 @@ class Insight < ApplicationRecord
   scope :of_type, ->(type) { where(insightable_type: type) }
   scope :previous, -> { where.not(previous_date: nil) }
   scope :actual, -> { where(previous_date: nil) }
+  scope :hidden, -> { where(hidden: true) }
+  scope :visible, -> { where(hidden: false) }
 
   def actual?
     previous_date.nil?

@@ -10,7 +10,7 @@ class Achievement < Kudos::Achievement
   }.freeze
 
   award_for :comment_create do |achievements, user|
-    count = user.insights.actual.of_type('Company').sum(:comments_count)
+    count = user.insights.actual.visible.of_type('Company').sum(:comments_count)
 
     achievements.each do |achievement|
       if !user.awarded?(achievement: achievement) && count >= DEFAULT_CREATE_RANKS[achievement.rank]
@@ -20,7 +20,7 @@ class Achievement < Kudos::Achievement
   end
 
   award_for :review_create do |achievements, user|
-    count = user.insights.actual.of_type('Company').sum(:reviews_count)
+    count = user.insights.actual.visible.of_type('Company').sum(:reviews_count)
 
     achievements.each do |achievement|
       if !user.awarded?(achievement: achievement) && count >= DEFAULT_CREATE_RANKS[achievement.rank]
@@ -30,7 +30,7 @@ class Achievement < Kudos::Achievement
   end
 
   award_for :pull_request_create do |achievements, user|
-    count = user.insights.actual.of_type('Company').sum(:open_pull_requests_count)
+    count = user.insights.actual.visible.of_type('Company').sum(:open_pull_requests_count)
 
     achievements.each do |achievement|
       if !user.awarded?(achievement: achievement) && count >= DEFAULT_CREATE_RANKS[achievement.rank]

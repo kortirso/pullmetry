@@ -530,8 +530,16 @@ CREATE TABLE public.insights (
     reviewed_loc integer,
     average_reviewed_loc integer,
     changed_loc integer,
-    average_changed_loc integer
+    average_changed_loc integer,
+    hidden boolean DEFAULT false NOT NULL
 );
+
+
+--
+-- Name: COLUMN insights.hidden; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.insights.hidden IS 'Flag for hiding insights, if true - available only for owner';
 
 
 --
@@ -1870,6 +1878,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230914071959'),
 ('20230914184514'),
 ('20230918101006'),
-('20230925093816');
+('20230925093816'),
+('20231024120000');
 
 

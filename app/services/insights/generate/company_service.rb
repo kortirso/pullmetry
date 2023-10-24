@@ -5,6 +5,7 @@ module Insights
     class CompanyService < Insights::GenerateService
       def call(insightable:)
         @insightable = insightable
+        @insight_visibility = insightable.configuration.private
 
         super()
       end

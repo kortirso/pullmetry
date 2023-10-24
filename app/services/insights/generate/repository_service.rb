@@ -5,6 +5,7 @@ module Insights
     class RepositoryService < Insights::GenerateService
       def call(insightable:)
         @insightable = insightable
+        @insight_visibility = insightable.company.configuration.private
 
         generate_specific_repository_insights
         super()
