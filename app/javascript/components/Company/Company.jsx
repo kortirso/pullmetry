@@ -72,27 +72,26 @@ export const Company = ({
           <h2 className="flex items-center">
             {title}
             {unaccessable ? (
-              <span className="badge-danger ml-4">
+              <span className="badge ml-4">
                 Company has repositories with access error
               </span>
             ) : null}
-          </h2>
-          {repositories_count > 0 ? (
-            <span onClick={(event) => event.stopPropagation()}>
-              Repositories count -{' '}
-              <a href={repositories_url} className="underline text-blue-600">
-                {repositories_count}
+            {repositories_count === 0 ? (
+              <a
+                href={edit_links ? edit_links.new_repository : repositories_url}
+                className="badge ml-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to create repository
               </a>
-            </span>
-          ) : (
-            <a
-              href={edit_links ? edit_links.new_repository : repositories_url}
-              className="badge mb-1"
-              onClick={(event) => event.stopPropagation()}
-            >
-              Need to create repository
+            ) : null}            
+          </h2>
+          <span onClick={(event) => event.stopPropagation()}>
+            Repositories count -{' '}
+            <a href={repositories_url} className="underline text-orange-500">
+              {repositories_count}
             </a>
-          )}
+          </span>
         </div>
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (

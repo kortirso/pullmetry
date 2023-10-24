@@ -53,7 +53,7 @@
   }
 
   .btn-primary {
-    @apply btn bg-green-400 hover:bg-green-500;
+    @apply btn bg-orange-400 hover:bg-orange-500;
   }
 
   .btn-danger {
@@ -61,11 +61,15 @@
   }
 
   .btn-small {
-    @apply btn py-1 px-2 text-sm leading-8;
+    @apply btn py-1 px-3 text-sm leading-8;
   }
 
   .user-navigation-link {
     @apply inline-block p-4 pl-12 text-white;
+  }
+
+  .simple-link {
+    @apply text-orange-500 underline;
   }
 
   .table th, .table td {
@@ -89,11 +93,11 @@
   }
 
   .form-field .form-value {
-    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 px-4 leading-8;
+    @apply bg-gray-200 border border-gray-300 rounded py-1 px-4 leading-8;
   }
 
   .form-field .form-value:focus {
-    @apply border-sky-400;
+    @apply border-gray-200;
   }
 
   .form-field .form-value.full {
@@ -101,7 +105,7 @@
   }
 
   .form-field select {
-    @apply bg-sky-200 border border-sky-300 rounded-sm py-1 pl-4 pr-8 text-sm leading-8;
+    @apply bg-gray-200 border border-gray-300 rounded py-1 pl-4 pr-8 text-sm leading-8;
 
     min-width: 60px;
   }
@@ -115,7 +119,7 @@
   }
 
   .achievement-name {
-    @apply relative text-center bg-green-600 text-white py-2 px-16;
+    @apply relative text-center bg-orange-600 text-white py-2 px-16;
   }
 
   #jsonb_columns_configuration_work_time_zone {
@@ -139,17 +143,17 @@
   }
 
   nav.pagination .page {
-    @apply bg-green-300;
+    @apply bg-orange-300;
   }
 
   nav.pagination .page.disabled,
   nav.pagination .page.disabled:hover {
-    @apply bg-green-200;
+    @apply bg-orange-200;
   }
 
   nav.pagination .page.active,
   nav.pagination .page:hover {
-    @apply bg-green-400;
+    @apply bg-orange-400;
   }
 
   .toggle {
@@ -185,19 +189,15 @@
   }
 
   .toggle .toggle-checkbox:checked + .toggle-label {
-    @apply bg-green-500 border-green-500;
+    @apply bg-orange-500 border-orange-500;
   }
 
   .toggle:hover .toggle-checkbox:checked + .toggle-label {
-    @apply border-green-700;
+    @apply border-orange-700;
   }
 
   .badge {
-    @apply inline-block text-xs px-2 py-1 bg-green-400 border border-green-500 text-black rounded shadow;
-  }
-
-  .badge-danger {
-    @apply badge bg-red-400 border border-red-500;
+    @apply inline-block text-xs px-2 py-1 bg-orange-200 border border-orange-300 text-black rounded shadow;
   }
 }
 

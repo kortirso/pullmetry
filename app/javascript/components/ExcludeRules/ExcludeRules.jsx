@@ -71,25 +71,27 @@ export const ExcludeRules = ({ initialRules }) => {
   const renderExcludeRules = () => {
     return pageState.rules.map((rule) => {
       return (
-        <div className="flex" key={rule.id}>
-          <div className="form-field flex-1 mr-4">
+        <div className="flex mb-4" key={rule.id}>
+          <div className="form-field flex-1 mr-4 mb-0">
             <Select
               items={ruleKeys}
               onSelect={(value) => updateExcludeRuleKey(rule, value)}
               selectedValue={rule.key}
             />
           </div>
-          <div className="form-field flex-1 mr-4">
+          <div className="form-field flex-1 mr-4 mb-0">
             <input
               className="form-value w-full text-sm"
               defaultValue={rule.value}
               onChange={(event) => updateExcludeRuleValue(rule, event.target.value)}
             />
           </div>
-          <span
-            className="btn-danger btn-small mb-4 rounded cursor-pointer"
-            onClick={() => removeExcludeRule(rule)}
-          >X</span>
+          <div className="flex items-center">
+            <span
+              className="bg-red-500 rounded-full py-1 px-2 text-sm text-white"
+              onClick={() => removeExcludeRule(rule)}
+            >X</span>
+          </div>
         </div>
       );
     });
@@ -115,7 +117,7 @@ export const ExcludeRules = ({ initialRules }) => {
               />
               {renderExcludeRules()}
               <span
-                className="btn-primary btn-small cursor-pointer"
+                className="btn-primary btn-small"
                 onClick={addExcludeRule}
               >Add exclude rule</span>
             </div>

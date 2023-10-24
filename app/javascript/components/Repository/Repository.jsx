@@ -109,14 +109,23 @@ export const Repository = ({
             ) : null}
             {title}
             {access_token_status === 'valid' && !accessable ? (
-              <span className="badge-danger ml-4">
+              <span className="badge ml-4">
                 Repository access error
               </span>
             ) : null}
             {access_token_status === 'invalid' ? (
-              <span className="badge-danger ml-4">
+              <span className="badge ml-4">
                 Access token is invalid
               </span>
+            ) : null}
+            {access_token_status === 'empty' && edit_links ? (
+              <a
+                href={edit_links.access_token}
+                className="badge ml-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to add access token
+              </a>
             ) : null}
           </h2>
           <p className="flex items center">
@@ -129,15 +138,7 @@ export const Repository = ({
             >
               {renderRepositoryProviderLogo()}
             </a>
-            {access_token_status === 'empty' && edit_links ? (
-              <a
-                href={edit_links.access_token}
-                className="badge"
-                onClick={(event) => event.stopPropagation()}
-              >
-                Need to add access token
-              </a>
-            ) : renderSyncedAt()}
+            {renderSyncedAt()}
           </p>
         </div>
         <Chevron rotated={pageState.expanded} />
