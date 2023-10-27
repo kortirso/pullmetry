@@ -188,7 +188,9 @@ export const Repository = ({
             </>
           ) : null}
           <h3 className="mb-4">Developer insights</h3>
-          {renderInsightsData()}
+          <div className="overflow-x-scroll">
+            {renderInsightsData()}
+          </div>
         </div>
       ) : null}
     </div>

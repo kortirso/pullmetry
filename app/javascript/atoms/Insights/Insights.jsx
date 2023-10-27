@@ -32,7 +32,7 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
   const renderEntity = (data) => {
     return (
       <tr key={data.entity.login}>
-        <td>
+        <td className="w-12">
           <a href={data.entity.html_url} target="_blank" rel="noopener noreferrer">
             <img src={data.entity.avatar_url} alt="entity" className="w-5 h-5" />
           </a>
@@ -44,8 +44,10 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
 
           return (
             <td key={`data-${data.entity.login}-${insightType}`}>
-              {renderInsight(data.values[insightType].value, insightType)}
-              {renderInsightRatio(data.values[insightType].ratio_value, insightType)}
+              <span className="whitespace-nowrap">
+                {renderInsight(data.values[insightType].value, insightType)}
+                {renderInsightRatio(data.values[insightType].ratio_value, insightType)}
+              </span>
             </td>
           );
         })}
