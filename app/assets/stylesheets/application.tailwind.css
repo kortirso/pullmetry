@@ -65,7 +65,7 @@
   }
 
   .user-navigation-link {
-    @apply inline-block p-4 pl-12 text-white;
+    @apply inline-block p-4 md:pl-12 text-white whitespace-nowrap;
   }
 
   .simple-link {
@@ -105,7 +105,7 @@
   }
 
   .form-field select {
-    @apply bg-gray-200 border border-gray-300 rounded py-1 pl-4 pr-8 text-sm leading-8;
+    @apply bg-gray-200 border border-gray-300 rounded py-1 pl-2 sm:pl-4 pr-8 text-sm leading-8;
 
     min-width: 60px;
   }

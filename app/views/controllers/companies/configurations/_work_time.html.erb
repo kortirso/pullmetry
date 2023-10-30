@@ -10,16 +10,16 @@
         )
       %>
       <div>
-        <div class="flex flex-row mt-4">
-          <div class="flex-1 form-field inline-block mr-8">
+        <div class="flex flex-col sm:flex-row mt-4">
+          <div class="flex-1 form-field inline-block mr-2 sm:mr-8">
             <%= form.label :work_start_time, 'Work start time', class: 'form-label' %>
             <%= form.time_select :work_start_time, class: 'form-value', minute_step: 15 %>
           </div>
-          <div class="flex-1 form-field inline-block mr-8">
+          <div class="flex-1 form-field inline-block mr-2 sm:mr-8">
             <%= form.label :work_end_time, 'Work end time', class: 'form-label' %>
             <%= form.time_select :work_end_time, class: 'form-value', minute_step: 15 %>
           </div>
-          <div class="flex-1 form-field inline-block mr-8">
+          <div class="flex-1 form-field inline-block mr-2 sm:mr-8">
             <%= form.label :work_time_zone, 'Work time zone', class: 'form-label' %>
             <%= form.time_zone_select :work_time_zone, nil, class: 'form-value', default: 'UTC' %>
           </div>

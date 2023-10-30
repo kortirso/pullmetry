@@ -2,7 +2,8 @@
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Repositories</h1>
     <% if allowed_to?(:create_repository?, Current.user) %>
-      <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'btn-primary' %>
+      <%= link_to 'Create repository', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'btn-primary hidden sm:block' %>
+      <%= link_to '+', @company ? new_company_repository_path(@company.uuid) : new_repository_path, class: 'btn-primary sm:hidden' %>
     <% end %>
   </div>
   <section>

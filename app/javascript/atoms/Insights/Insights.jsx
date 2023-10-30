@@ -32,9 +32,9 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
   const renderEntity = (data) => {
     return (
       <tr key={data.entity.login}>
-        <td className="w-12">
-          <a href={data.entity.html_url} target="_blank" rel="noopener noreferrer">
-            <img src={data.entity.avatar_url} alt="entity" className="w-5 h-5" />
+        <td>
+          <a href={data.entity.html_url} target="_blank" rel="noopener noreferrer" className="inline-block w-6 h-6">
+            <img src={data.entity.avatar_url} alt="entity" className="w-6 h-6" />
           </a>
         </td>
         <td>{data.entity.login}</td>

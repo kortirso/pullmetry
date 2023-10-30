@@ -10,7 +10,7 @@
             checked: Current.user.with_work_time?
           )
         %>
-        <div class="flex flex-row mt-4">
+        <div class="flex flex-col sm:flex-row mt-4">
           <div class="flex-1 form-field">
             <%= form.label :work_start_time, 'Work start time', class: 'form-label' %>
             <%= form.time_select :work_start_time, minute_step: 15 %>
@@ -29,7 +29,7 @@
         <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-8">
+    <div class="grid lg:grid-cols-2 gap-8 mt-8 lg:mt-0">
       <div>
         <%=
           render Views::Shared::CheckBoxComponent.new(
