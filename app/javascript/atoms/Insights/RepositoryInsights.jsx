@@ -71,7 +71,7 @@ export const RepositoryInsights = ({ insightTypes, insights, ratioType }) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-8 mb-8">
+    <div className="text-sm md:text-base grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
       <div className="p-4 rounded shadow">
         <h4 className="mb-4">Pull requests</h4>
         <p>Open pull requests - {renderRepositoryInsight('open_pull_requests_count')}</p>

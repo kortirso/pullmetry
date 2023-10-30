@@ -68,23 +68,23 @@ export const Company = ({
         className="relative cursor-pointer p-8 flex justify-between items-center"
         onClick={() => toggle()}
       >
-        <div>
-          <h2 className="flex items-center">
-            {title}
+        <div className="pr-4">
+          <h2 className="sm:flex sm:flex-row sm:items-center">
+            <div>{title}</div>
             {unaccessable ? (
-              <span className="badge ml-4">
+              <span className="badge mt-4 sm:mt-0 sm:ml-4">
                 Company has repositories with access error
               </span>
             ) : null}
             {repositories_count === 0 ? (
               <a
                 href={edit_links ? edit_links.new_repository : repositories_url}
-                className="badge ml-4"
+                className="badge mt-4 sm:mt-0 sm:ml-4"
                 onClick={(event) => event.stopPropagation()}
               >
                 Need to create repository
               </a>
-            ) : null}            
+            ) : null}
           </h2>
           <span onClick={(event) => event.stopPropagation()}>
             Repositories count -{' '}
@@ -95,7 +95,7 @@ export const Company = ({
         </div>
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (
-          <div className="absolute top-8 right-20 flex items-center">
+          <div className="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
             {is_private ? (
               <span className="badge mr-4">
                 Private

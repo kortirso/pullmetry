@@ -99,29 +99,31 @@ export const Repository = ({
         onClick={() => toggle()}
       >
         <div>
-          <h2 className="flex items-center">
-            {avatar_url !== null ? (
-              <img
-                src={avatar_url}
-                alt="repository owner avatar"
-                className="w-8 h-8 rounded-sm mr-2"
-              />
-            ) : null}
-            {title}
+          <h2 className="sm:flex sm:flex-row sm:items-center">
+            <div className="flex flex-row items-center">
+              {avatar_url !== null ? (
+                <img
+                  src={avatar_url}
+                  alt="repository owner avatar"
+                  className="w-8 h-8 rounded-sm mr-2"
+                />
+              ) : null}
+              {title}
+            </div>
             {access_token_status === 'valid' && !accessable ? (
-              <span className="badge ml-4">
+              <span className="badge mt-4 sm:mt-0 sm:ml-4">
                 Repository access error
               </span>
             ) : null}
             {access_token_status === 'invalid' ? (
-              <span className="badge ml-4">
+              <span className="badge mt-4 sm:mt-0 sm:ml-4">
                 Access token is invalid
               </span>
             ) : null}
             {access_token_status === 'empty' && edit_links ? (
               <a
                 href={edit_links.access_token}
-                className="badge ml-4"
+                className="badge mt-4 sm:mt-0 sm:ml-4"
                 onClick={(event) => event.stopPropagation()}
               >
                 Need to add access token
@@ -143,7 +145,7 @@ export const Repository = ({
         </div>
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (
-          <div className="absolute top-8 right-20 flex items-center">
+          <div className="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
             {edit_links.access_token ? (
               <a
                 href={edit_links.access_token}

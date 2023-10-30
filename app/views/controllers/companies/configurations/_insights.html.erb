@@ -5,7 +5,7 @@
         <div class="flex flex-wrap mb-4">
           <%= form.fields :insight_fields do |fields| %>
             <% JsonbColumns::Insight.attribute_names.each do |attribute_name| %>
-              <div class="w-1/2 mb-2">
+              <div class="w-full sm:w-1/2 mb-2">
                 <%=
                   render Views::Shared::CheckBoxComponent.new(
                     form: fields,

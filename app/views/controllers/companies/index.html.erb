@@ -1,7 +1,8 @@
 <%= render PageWrappers::UserComponent.new do %>
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Companies</h1>
-    <%= link_to 'Create company', new_company_path, class: 'btn-primary' %>
+    <%= link_to 'Create company', new_company_path, class: 'btn-primary hidden sm:block' %>
+    <%= link_to '+', new_company_path, class: 'btn-primary sm:hidden' %>
   </div>
   <section>
     <% @companies.each do |company| %>

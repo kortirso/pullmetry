@@ -4,15 +4,15 @@
       pull<span class="text-orange-600">keeper</span>
     <% end %>
   </div>
-  <div class="flex grid-x gap-8">
+  <div class="flex flex-row flex-wrap sm:flex-nowrap mt-4 sm:mt-0">
     <% if Current.user %>
-      <%= link_to t('components.page_wrappers.page_component.companies'), companies_path %>
-      <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path %>
-      <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path %>
-      <%= link_to t('components.page_wrappers.page_component.profile'), profile_path %>
-      <%= link_to t('components.page_wrappers.page_component.logout'), logout_path %>
+      <%= link_to t('components.page_wrappers.page_component.companies'), companies_path, class: 'mr-8 mb-4 sm:mb-0' %>
+      <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path, class: 'mr-8 mb-4 sm:mb-0' %>
+      <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path, class: 'mr-8 mb-4 sm:mb-0' %>
+      <%= link_to t('components.page_wrappers.page_component.profile'), profile_path, class: 'mr-8 mb-4 sm:mb-0' %>
+      <%= link_to t('components.page_wrappers.page_component.logout'), logout_path, class: 'mr-8 mb-4 sm:mb-0' %>
     <% else %>
-      <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path %>
+      <%= link_to t('components.page_wrappers.page_component.how_it_works'), how_it_works_path, class: 'mr-8 mb-4 sm:mb-0' %>
       <div class="flex">
         <span class="mr-4">Login with</span>
         <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github', class: 'flex justify-center mr-4' %>
