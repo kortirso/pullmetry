@@ -12,6 +12,7 @@ export const Company = ({
   repositories_url,
   unaccessable,
   is_private,
+  main_attribute,
   edit_links,
 }) => {
   const [pageState, setPageState] = useState({
@@ -58,6 +59,7 @@ export const Company = ({
         insightTypes={pageState.insightTypes}
         entities={pageState.entities}
         ratioType={pageState.ratioType}
+        mainAttribute={main_attribute}
       />
     );
   };

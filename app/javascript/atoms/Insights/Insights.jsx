@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+
+import { Arrow } from '../../svg';
 
 const SHORT_INSIGHT_NAMES = {
   required_reviews_count: 'Required reviews',
   comments_count: 'Comments',
   reviews_count: 'Reviews',
   review_involving: 'Involving',
-  average_review_seconds: 'Avg review time',
+  average_review_seconds: 'Review time',
   reviewed_loc: 'Reviewed LOC',
-  average_reviewed_loc: 'Avg review LOC',
+  average_reviewed_loc: 'Avg RLOC',
   open_pull_requests_count: 'Open pulls',
-  average_merge_seconds: 'Avg merge time',
-  average_open_pr_comments: 'Avg received comments',
+  average_merge_seconds: 'Merge time',
+  average_open_pr_comments: 'Avg commenting',
   changed_loc: 'Changed LOC',
-  average_changed_loc: 'Avg changed LOC',
+  average_changed_loc: 'Avg CLOC',
 };
 const TIME_ATTRIBUTES = ['average_review_seconds', 'average_merge_seconds'];
 const REVERSE_ORDER_ATTRIBUTES = [
@@ -28,7 +30,28 @@ const SECONDS_IN_DAY = 86_400;
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 
-export const Insights = ({ insightTypes, entities, ratioType }) => {
+export const Insights = ({ insightTypes, entities, ratioType, mainAttribute }) => {
+  const [pageState, setPageState] = useState({
+    sortBy: mainAttribute,
+    sortDirection: 'desc'
+  });
+
+  const changeSorting = (insightType) => {
+    if (pageState.sortBy === insightType) setPageState({ ...pageState, sortDirection: (pageState.sortDirection === 'asc' ? 'desc' : 'asc') })
+    else setPageState({ sortBy: insightType, sortDirection: 'desc' })
+  }
+
+  const sortedEntities = useMemo(() => {
+    return entities
+      .sort((a, b) => {
+        if (pageState.sortDirection === 'asc' && !REVERSE_ORDER_ATTRIBUTES.includes(pageState.sortBy) || pageState.sortDirection === 'desc' && REVERSE_ORDER_ATTRIBUTES.includes(pageState.sortBy)) {
+          return a.values[pageState.sortBy].value < b.values[pageState.sortBy].value ? -1 : 1;
+        } else {
+          return a.values[pageState.sortBy].value < b.values[pageState.sortBy].value ? 1 : -1;
+        }
+      });
+  }, [pageState, entities]);
+
   const renderEntity = (data) => {
     return (
       <tr key={data.entity.login}>
@@ -112,11 +135,28 @@ export const Insights = ({ insightTypes, entities, ratioType }) => {
           <th></th>
           <th>Developer</th>
           {insightTypes.map((insightType) => (
-            <th key={`header-${insightType}`}>{SHORT_INSIGHT_NAMES[insightType]}</th>
+            <th
+              className="cursor-pointer"
+              onClick={() => changeSorting(insightType)}
+              key={`header-${insightType}`}
+            >
+              <div className="flex flex-row items-center">
+                <span>{SHORT_INSIGHT_NAMES[insightType]}</span>
+                {pageState.sortBy === insightType ? (
+                  <span className="ml-2">
+                    <Arrow active rotated={pageState.sortDirection === 'asc'} />
+                  </span>
+                ) : (
+                  <span className="ml-2">
+                    <Arrow rotated={false} />
+                  </span>
+                )}
+              </div>
+            </th>
           ))}
         </tr>
       </thead>
-      <tbody>{entities.map((data) => renderEntity(data))}</tbody>
+      <tbody>{sortedEntities.map((data) => renderEntity(data))}</tbody>
     </table>
   );
 };
