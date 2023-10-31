@@ -18,7 +18,10 @@ module Users
 
     def create
       if user
-        session[:pullmetry_token] = generate_token.call(user: user)[:result]
+        cookies[:pullmetry_token] = {
+          value: generate_token.call(user: user)[:result],
+          expires: 1.week.from_now
+        }
         redirect_to companies_path
       else
         redirect_to root_path, flash: { manifesto_username: true }
@@ -26,8 +29,8 @@ module Users
     end
 
     def destroy
-      fetch_session.call(token: session[:pullmetry_token])[:result]&.destroy
-      session[:pullmetry_token] = nil
+      fetch_session.call(token: cookies[:pullmetry_token])[:result]&.destroy
+      cookies.delete(:pullmetry_token)
       redirect_to root_path
     end
 

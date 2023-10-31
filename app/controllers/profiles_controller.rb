@@ -28,7 +28,7 @@ class ProfilesController < ApplicationController
 
   def destroy
     destroy_service.call(user: current_user)
-    session[:pullmetry_token] = nil
+    cookies.delete(:pullmetry_token)
     redirect_to root_path
   end
 
