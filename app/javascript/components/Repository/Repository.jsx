@@ -16,6 +16,7 @@ export const Repository = ({
   repository_url,
   access_token_status,
   accessable = true,
+  main_attribute,
   edit_links,
 }) => {
   const [pageState, setPageState] = useState({
@@ -82,6 +83,7 @@ export const Repository = ({
         insightTypes={pageState.insightTypes}
         entities={pageState.entities}
         ratioType={pageState.ratioType}
+        mainAttribute={main_attribute}
       />
     );
   };

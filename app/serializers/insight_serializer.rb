@@ -5,8 +5,9 @@ class InsightSerializer < ApplicationSerializer
 
   attribute :values do |object, params|
     params[:insight_fields].index_with do |insight_field|
+      value = object[insight_field]
       {
-        value: object[insight_field],
+        value: Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value,
         ratio_value: params[:ratio_enabled] ? compare_with_previous_period(object, insight_field, params) : nil
       }
     end

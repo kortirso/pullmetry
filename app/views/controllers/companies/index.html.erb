@@ -14,6 +14,7 @@
           repositories_url: company_repositories_path(company_id: company.uuid),
           unaccessable: company.access_token && !company.accessable,
           is_private: !!company.configuration.private,
+          main_attribute: company.configuration.main_attribute,
           edit_links: allowed_to?(:update?, company) ? {
             access_token: new_company_access_token_path(company.uuid),
             new_repository: new_company_repository_path(company.uuid),
