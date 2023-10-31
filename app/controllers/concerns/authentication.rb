@@ -10,7 +10,7 @@ module Authentication
   private
 
   def set_current_user
-    access_token = session[:pullmetry_token].presence || params[:auth_token].presence
+    access_token = cookies[:pullmetry_token].presence || params[:auth_token].presence
     return unless access_token
 
     auth_call = Pullmetry::Container['services.auth.fetch_session'].call(token: access_token)
