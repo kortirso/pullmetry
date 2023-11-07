@@ -71,7 +71,7 @@ export const ExcludeRules = ({ initialRules }) => {
   const renderExcludeRules = () => {
     return pageState.rules.map((rule) => {
       return (
-        <div className="flex mb-4" key={rule.id}>
+        <div className="flex mb-2" key={rule.id}>
           <div className="form-field flex-1 mr-4 mb-0">
             <Select
               items={ruleKeys}
@@ -88,7 +88,7 @@ export const ExcludeRules = ({ initialRules }) => {
           </div>
           <div className="flex items-center">
             <span
-              className="bg-red-500 rounded-full py-1 px-2 text-sm text-black"
+              className="btn-danger btn-xs"
               onClick={() => removeExcludeRule(rule)}
             >X</span>
           </div>

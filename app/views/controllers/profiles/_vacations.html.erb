@@ -5,9 +5,9 @@
         <p>You didn't specify any vacations yet.</p>
       <% else %>
         <% @vacations.each do |vacation| %>
-          <div class="flex justify-between items-center py-2">
+          <div class="flex justify-between items-center py-1">
             <p><%= vacation.start_time.strftime('%d.%m.%Y') %> - <%= vacation.end_time.strftime('%d.%m.%Y') %></p>
-            <%= button_to 'X', vacation_path(vacation), class: 'bg-red-500 rounded-full py-1 px-2 text-sm text-black', method: :delete %>
+            <%= button_to 'X', vacation_path(vacation), class: 'btn-danger btn-xs', method: :delete %>
           </div>
         <% end %>
       <% end %>

@@ -57,11 +57,15 @@
   }
 
   .btn-danger {
-    @apply btn bg-red-400 hover:bg-red-500 border border-red-500;
+    @apply btn bg-orange-500 hover:bg-orange-600 border border-orange-600;
   }
 
   .btn-small {
     @apply btn py-1 px-3 text-sm leading-8;
+  }
+
+  .btn-xs {
+    @apply btn py-1 px-2 text-sm leading-6;
   }
 
   .user-navigation-link {
