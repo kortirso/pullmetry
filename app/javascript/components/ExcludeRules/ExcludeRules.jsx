@@ -88,7 +88,7 @@ export const ExcludeRules = ({ initialRules }) => {
           </div>
           <div className="flex items-center">
             <span
-              className="bg-red-500 rounded-full py-1 px-2 text-sm text-white"
+              className="bg-red-500 rounded-full py-1 px-2 text-sm text-black"
               onClick={() => removeExcludeRule(rule)}
             >X</span>
           </div>

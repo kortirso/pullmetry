@@ -11,6 +11,7 @@ module Persisters
           user.vacations.destroy_all
           user.kudos_users_achievements.destroy_all
           user.notifications.destroy_all
+          user.feedbacks.destroy_all
         end
       end
     end

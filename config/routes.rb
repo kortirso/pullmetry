@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   resource :profile, only: %i[show update destroy]
   resource :achievements, only: %i[show]
+  resource :feedback, only: %i[show create]
   resources :vacations, only: %i[new create destroy]
 
   post 'subscriptions/trial', to: 'subscriptions/trial#create'

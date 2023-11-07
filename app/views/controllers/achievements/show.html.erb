@@ -6,34 +6,34 @@
   <section class="flex flex-col sm:flex-row p-4 bg-white rounded shadow">
     <div class="sm:w-72 flex flex-col pb-4 sm:px-4 pt-0">
       <p class="text-center mb-4">Total points - <%= @achievements_points %></p>
-      <%= link_to t('controllers.achievements.show.summary'), achievements_path, class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group].blank?}" %>
-      <%= link_to t('controllers.achievements.show.pull_requests'), achievements_path(group: 4), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '4'}" %>
-      <%= link_to t('controllers.achievements.show.reviews'), achievements_path(group: 3), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '3'}" %>
-      <%= link_to t('controllers.achievements.show.comments'), achievements_path(group: 2), class: "py-2 px-4 bg-green-400 hover:bg-green-500 rounded mb-2 text-black #{'bg-green-600' if params[:group] == '2'}" %>
+      <%= link_to t('controllers.achievements.show.summary'), achievements_path, class: "py-2 px-4 bg-stone-400 hover:bg-stone-500 rounded mb-2 text-white #{'bg-stone-600' if params[:group].blank?}" %>
+      <%= link_to t('controllers.achievements.show.pull_requests'), achievements_path(group: 4), class: "py-2 px-4 bg-stone-400 hover:bg-stone-500 rounded mb-2 text-white #{'bg-stone-600' if params[:group] == '4'}" %>
+      <%= link_to t('controllers.achievements.show.reviews'), achievements_path(group: 3), class: "py-2 px-4 bg-stone-400 hover:bg-stone-500 rounded mb-2 text-white #{'bg-stone-600' if params[:group] == '3'}" %>
+      <%= link_to t('controllers.achievements.show.comments'), achievements_path(group: 2), class: "py-2 px-4 bg-stone-400 hover:bg-stone-500 rounded mb-2 text-white #{'bg-stone-600' if params[:group] == '2'}" %>
     </div>
     <div class="flex-1">
       <% @achievements.each do |achievement| %>
         <div class="rounded overflow-hidden relative mb-2">
-          <div class="relative text-center bg-green-600 text-white py-2 px-16">
+          <div class="relative text-center bg-stone-600 text-white py-2 px-16">
             <p class="text-xl"><%= achievement.title['en'] %></p>
             <span class="absolute top-2 right-16">
               <%= achievement.updated_at.strftime('%Y-%m-%d %H:%M') %>
             </span>
           </div>
-          <div class="text-center bg-green-200 py-2 px-16 text-sm">
+          <div class="text-center bg-stone-300 py-2 px-16 text-sm">
             <%= achievement.description['en'] %>
           </div>
-          <div class="absolute top-3 right-3 w-12 h-12 bg-orange-400 rounded flex justify-center items-center text-lg font-semibold">
+          <div class="absolute top-3 right-3 w-12 h-12 bg-amber-500 rounded flex justify-center items-center text-lg font-semibold">
             <%= achievement.points %>
           </div>
         </div>
       <% end %>
       <% @unreceived_achievements.each do |achievement| %>
         <div class="rounded overflow-hidden relative opacity-75 mb-2">
-          <div class="relative text-center bg-gray-400 text-white py-2 px-16">
+          <div class="relative text-center bg-stone-400 text-white py-2 px-16">
             <p class="text-xl"><%= achievement.title['en'] %></p>
           </div>
-          <div class="text-center bg-gray-200 py-2 px-16 text-sm">
+          <div class="text-center bg-stone-200 py-2 px-16 text-sm">
             <%= achievement.description['en'] %>
           </div>
           <div class="absolute top-3 right-3 w-12 h-12 bg-white rounded flex justify-center items-center text-lg font-semibold">

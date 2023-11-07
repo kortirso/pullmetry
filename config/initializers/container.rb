@@ -31,12 +31,14 @@ module Pullmetry
     register('contracts.access_token') { AccessTokenContract.new }
     register('contracts.identity') { IdentityContract.new }
     register('contracts.repository') { RepositoryContract.new }
+    register('contracts.feedback') { FeedbackContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
     register('validators.access_token') { AccessTokenValidator.new }
     register('validators.identity') { IdentityValidator.new }
     register('validators.repository') { RepositoryValidator.new }
+    register('validators.feedback') { FeedbackValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
@@ -44,10 +46,14 @@ module Pullmetry
     register('forms.identities.create') { Identities::CreateForm.new }
     register('forms.repositories.create') { Repositories::CreateForm.new }
     register('forms.vacations.create') { Vacations::CreateForm.new }
+    register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
       SlackWebhooks::Admin::JobExecutionReportPayload.new
+    }
+    register('notifiers.slack_webhooks.admin.feedback_created_payload') {
+      SlackWebhooks::Admin::FeedbackCreatedPayload.new
     }
 
     # services
