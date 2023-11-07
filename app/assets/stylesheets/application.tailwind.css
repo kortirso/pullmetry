@@ -49,11 +49,11 @@
   }
 
   .btn {
-    @apply inline-block py-2 px-4 rounded shadow leading-8 cursor-pointer text-black;
+    @apply inline-block py-2 px-4 rounded leading-8 cursor-pointer text-black;
   }
 
   .btn-primary {
-    @apply btn bg-orange-400 hover:bg-orange-500;
+    @apply btn bg-orange-300 hover:bg-orange-400 border border-orange-400;
   }
 
   .btn-danger {
@@ -69,7 +69,7 @@
   }
 
   .simple-link {
-    @apply text-orange-500 underline;
+    @apply text-orange-400 underline;
   }
 
   .table th, .table td {
@@ -118,10 +118,6 @@
     @apply bg-none border-b border-gray-200 m-0;
   }
 
-  .achievement-name {
-    @apply relative text-center bg-orange-600 text-white py-2 px-16;
-  }
-
   #jsonb_columns_configuration_work_time_zone {
     @apply w-full;
   }
@@ -131,7 +127,7 @@
   }
 
   nav.pagination .page {
-    @apply inline-block rounded shadow;
+    @apply inline-block rounded;
   }
 
   nav.pagination .page.disabled, nav.pagination .page.active {
@@ -143,7 +139,7 @@
   }
 
   nav.pagination .page {
-    @apply bg-orange-300;
+    @apply bg-orange-200 border border-orange-300;
   }
 
   nav.pagination .page.disabled,
@@ -153,7 +149,7 @@
 
   nav.pagination .page.active,
   nav.pagination .page:hover {
-    @apply bg-orange-400;
+    @apply bg-orange-300;
   }
 
   .toggle {
@@ -189,11 +185,11 @@
   }
 
   .toggle .toggle-checkbox:checked + .toggle-label {
-    @apply bg-orange-500 border-orange-500;
+    @apply bg-orange-300 border-orange-300;
   }
 
   .toggle:hover .toggle-checkbox:checked + .toggle-label {
-    @apply border-orange-700;
+    @apply border-orange-400;
   }
 
   .badge {

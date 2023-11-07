@@ -473,6 +473,39 @@ ALTER SEQUENCE public.event_store_events_in_streams_id_seq OWNED BY public.event
 
 
 --
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.feedbacks (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    title character varying,
+    description text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.feedbacks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
+
+
+--
 -- Name: identities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1135,6 +1168,13 @@ ALTER TABLE ONLY public.event_store_events_in_streams ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
+
+
+--
 -- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1300,6 +1340,14 @@ ALTER TABLE ONLY public.event_store_events_in_streams
 
 ALTER TABLE ONLY public.event_store_events
     ADD CONSTRAINT event_store_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.feedbacks
+    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1557,6 +1605,13 @@ CREATE INDEX index_event_store_events_on_event_type ON public.event_store_events
 --
 
 CREATE INDEX index_event_store_events_on_valid_at ON public.event_store_events USING btree (valid_at);
+
+
+--
+-- Name: index_feedbacks_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_feedbacks_on_user_id ON public.feedbacks USING btree (user_id);
 
 
 --
@@ -1879,6 +1934,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230914184514'),
 ('20230918101006'),
 ('20230925093816'),
-('20231024120000');
+('20231024120000'),
+('20231107124203');
 
 

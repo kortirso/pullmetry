@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_many :vacations, dependent: :destroy
 
+  has_many :feedbacks, dependent: :destroy
+
   enum role: { REGULAR => 0, ADMIN => 1 }
 
   def premium?

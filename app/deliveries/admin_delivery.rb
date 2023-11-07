@@ -6,6 +6,7 @@ class AdminDelivery < ApplicationDelivery
   before_notify :ensure_discord_webhook_enabled, on: :discord_webhook
 
   delivers :job_execution_report
+  delivers :feedback_created
 
   private
 
