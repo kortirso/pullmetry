@@ -20,6 +20,14 @@ describe FeedbacksController do
   end
 
   describe 'POST#create' do
+    let(:delivery_service) { double }
+
+    before do
+      allow(AdminDelivery).to receive(:with).and_return(delivery_service)
+      allow(delivery_service).to receive(:feedback_created).and_return(delivery_service)
+      allow(delivery_service).to receive(:deliver_later)
+    end
+
     it_behaves_like 'required auth'
 
     context 'for logged users' do
