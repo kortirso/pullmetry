@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 0a394470269b3ac54c287b90c628106cf3e1b568
+  revision: ebc943bdaa0eacc8fa491f1aa916817d6311bd95
   branch: main
   specs:
-    bullet (7.1.2)
+    bullet (7.1.3)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
 
@@ -89,7 +89,7 @@ GEM
       concurrent-ruby
     ast (2.4.2)
     awesome_print (1.9.2)
-    base64 (0.1.1)
+    base64 (0.2.0)
     bcrypt (3.1.19)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
@@ -121,7 +121,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.3)
+    date (3.3.4)
     diff-lcs (1.5.0)
     docile (1.4.0)
     dry-auto_inject (1.0.1)
@@ -428,12 +428,12 @@ GEM
       railties (>= 6.0.0)
     thor (1.3.0)
     tilt (2.3.0)
-    timeout (0.4.0)
+    timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
-    view_component (3.6.0)
+    view_component (3.7.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)

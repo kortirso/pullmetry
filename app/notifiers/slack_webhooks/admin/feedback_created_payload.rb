@@ -6,7 +6,11 @@ module SlackWebhooks
       def call(id:)
         feedback = Feedback.find_by(id: id)
 
-        { blocks: (user_block(feedback.user_id) + header_block(feedback.title) + text_block(feedback)).compact }
+        {
+          blocks: (
+            user_block(feedback.user_id) + header_block(feedback.title) + text_block(feedback.description)
+          ).compact
+        }
       end
 
       private
