@@ -42,6 +42,7 @@ export const CompanyForm = () => {
         onClose={() => setPageState({ ...pageState, isOpen: false })}
       >
         <h1 className="mb-8">New Company</h1>
+        <p className="mb-4">Company is just abstraction for collection of repositories belongs to one group with similar settings</p>
         <section className="inline-block w-full">
           <div className="form-field">
             <p className="flex flex-row">

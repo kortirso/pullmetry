@@ -80,7 +80,7 @@ export const Company = ({
             ) : null}
             {repositories_count === 0 ? (
               <a
-                href={edit_links ? edit_links.new_repository : repositories_url}
+                href={repositories_url}
                 className="badge mt-4 sm:mt-0 sm:ml-4"
                 onClick={(event) => event.stopPropagation()}
               >

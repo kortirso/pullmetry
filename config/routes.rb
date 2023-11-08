@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
       end
-      resources :repositories, only: %i[] do
+      resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
         resources :repository_insights, only: %i[index], module: 'repositories'
       end
@@ -25,10 +25,10 @@ Rails.application.routes.draw do
 
   resources :companies, only: %i[index destroy] do
     resource :configuration, only: %i[edit update], module: 'companies'
-    resources :repositories, only: %i[index new], module: 'companies'
+    resources :repositories, only: %i[index], module: 'companies'
     resources :access_tokens, only: %i[new create]
   end
-  resources :repositories, only: %i[index new create destroy] do
+  resources :repositories, only: %i[index destroy] do
     resources :access_tokens, only: %i[new create]
   end
 
