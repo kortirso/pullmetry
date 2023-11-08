@@ -4,8 +4,8 @@
     <h2>Mandatory steps</h2>
     <ul>
       <li>First of all for using PullKeeper you need to login with your Github or Gitlab account.</li>
-      <li>Then you need to <%= link_to 'create Company', new_company_path, class: 'simple-link' %>. Company is just abstraction for group of repositories with similar configuration.</li>
-      <li>Then for any company you need to <%= link_to 'create Repository', new_repository_path, class: 'simple-link' %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
+      <li>Then you need to <%= link_to 'create Company', companies_path, class: 'simple-link' %>. Company is just abstraction for group of repositories with similar configuration.</li>
+      <li>Then for any company you need to <%= link_to 'create Repository', repositories_path, class: 'simple-link' %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
       <li>And finally, main part - you need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</li>
     </ul>
     <p class="mb-4">If you add access token for repository - only this repository will use it for fetching data, if you add it for company - repositories of this company will use it (during access token generation you can specify repositories with access permissions).</p>
