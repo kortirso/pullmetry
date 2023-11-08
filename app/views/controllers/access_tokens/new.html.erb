@@ -2,7 +2,7 @@
   <div class="grid lg:grid-cols-2 gap-16">
     <div>
       <h1 class="mb-8">New access token</h1>
-      <section class="inline-block p-4 bg-white rounded shadow w-full">
+      <section class="inline-block p-4 bg-white rounded border border-stone-200 w-full">
         <%= form_with model: @access_token, url: @tokenable.is_a?(Company) ? company_access_tokens_path(@tokenable.uuid) : repository_access_tokens_path(@tokenable.uuid), method: :post, class: 'form-block inline-block w-full' do |form| %>
           <div class="form-field w-full">
             <%= form.label :value, 'Value', class: 'form-label' %>

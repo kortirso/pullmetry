@@ -95,7 +95,7 @@ export const Repository = ({
   };
 
   return (
-    <div className="mb-4 bg-white rounded shadow">
+    <div className="mb-4 bg-white rounded border border-stone-200">
       <div
         className="relative cursor-pointer p-8 flex justify-between items-center"
         onClick={() => toggle()}

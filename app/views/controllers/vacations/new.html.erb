@@ -1,6 +1,6 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1 class="mb-8">New vacation</h1>
-  <section class="inline-block p-4 bg-white rounded shadow">
+  <section class="inline-block p-4 bg-white rounded border border-stone-200">
     <%= form_with model: @vacation, url: vacations_path, method: :post, class: 'form-block' do |form| %>
       <div class="form-field">
         <%= form.label :start_time, 'Start time', class: 'form-label' %>

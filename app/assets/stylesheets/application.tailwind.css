@@ -197,7 +197,7 @@
   }
 
   .badge {
-    @apply inline-block text-xs px-2 py-1 bg-orange-200 border border-orange-300 text-black rounded shadow;
+    @apply inline-block text-xs px-2 py-1 bg-orange-200 border border-orange-300 text-black rounded;
   }
 }
 
