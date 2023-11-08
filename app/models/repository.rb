@@ -22,6 +22,6 @@ class Repository < ApplicationRecord
     token = fetch_access_token
     return 'empty' if token.nil?
 
-    token.value.starts_with?(AccessTokens::CreateForm::FORMAT_BY_PROVIDER[provider]) ? 'valid' : 'invalid'
+    token.value.starts_with?(AccessToken::FORMAT_BY_PROVIDER[provider]) ? 'valid' : 'invalid'
   end
 end
