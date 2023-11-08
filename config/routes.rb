@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :companies, only: %i[] do
+      resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
       end
       resources :repositories, only: %i[] do
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :companies, except: %i[show edit update] do
+  resources :companies, only: %i[index destroy] do
     resource :configuration, only: %i[edit update], module: 'companies'
     resources :repositories, only: %i[index new], module: 'companies'
     resources :access_tokens, only: %i[new create]
