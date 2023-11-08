@@ -6,19 +6,11 @@ module Companies
 
     PER_PAGE = 5
 
-    before_action :find_company
+    before_action :find_company, only: %i[index]
     before_action :find_repositories, only: %i[index]
 
     def index
       render template: 'repositories/index'
-    end
-
-    def new
-      authorize! Current.user, to: :create_repository?
-      @repository = @company.repositories.new
-      @companies = current_user.companies.pluck(:title, :uuid)
-
-      render template: 'repositories/new'
     end
 
     private

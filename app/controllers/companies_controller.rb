@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CompaniesController < ApplicationController
-  include Deps[create_form: 'forms.companies.create']
   include Pagy::Backend
 
   PER_PAGE = 5
@@ -10,18 +9,6 @@ class CompaniesController < ApplicationController
   before_action :find_company, only: %i[destroy]
 
   def index; end
-
-  def new
-    @company = Company.new
-  end
-
-  def create
-    # commento: companies.title
-    case create_form.call(user: current_user, params: company_params)
-    in { errors: errors } then redirect_to new_company_path, alert: errors
-    in { result: result } then redirect_to companies_path
-    end
-  end
 
   def destroy
     authorize! @company
@@ -38,9 +25,5 @@ class CompaniesController < ApplicationController
 
   def find_company
     @company = current_user.companies.find_by!(uuid: params[:id])
-  end
-
-  def company_params
-    params.require(:company).permit(:title)
   end
 end

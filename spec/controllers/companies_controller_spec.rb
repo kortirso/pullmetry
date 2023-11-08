@@ -34,54 +34,6 @@ describe CompaniesController do
     end
   end
 
-  describe 'GET#new' do
-    it_behaves_like 'required auth'
-
-    context 'for logged users' do
-      sign_in_user
-
-      it 'renders new template' do
-        do_request
-
-        expect(response).to render_template :new
-      end
-    end
-
-    def do_request
-      get :new, params: { locale: 'en' }
-    end
-  end
-
-  describe 'POST#create' do
-    it_behaves_like 'required auth'
-
-    context 'for logged users' do
-      sign_in_user
-
-      context 'for invalid params' do
-        let(:request) { do_request }
-
-        it 'does not create company and redirects', :aggregate_failures do
-          expect { request }.not_to change(Company, :count)
-          expect(response).to redirect_to new_company_path
-        end
-      end
-
-      context 'for valid params' do
-        let(:request) { post :create, params: { company: { title: 'Title' }, locale: 'en' } }
-
-        it 'creates company and redirects', :aggregate_failures do
-          expect { request }.to change(@current_user.companies, :count).by(1)
-          expect(response).to redirect_to companies_path
-        end
-      end
-    end
-
-    def do_request
-      post :create, params: { company: { title: '' }, locale: 'en' }
-    end
-  end
-
   describe 'DELETE#destroy' do
     it_behaves_like 'required auth'
 

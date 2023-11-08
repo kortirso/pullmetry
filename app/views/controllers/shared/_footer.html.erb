@@ -5,7 +5,7 @@
   <div class="flex grid-x gap-8 mb-4 sm:mb-0">
     <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer">Support in Telegram</a>
     <% if Current.user %>
-      <%= link_to 'Feedback', feedback_path %>
+      <%= react_component 'FeedbackForm', children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
     <% end %>
     <%= link_to 'How it works', how_it_works_path %>
     <%= link_to 'Source code', sources_path %>

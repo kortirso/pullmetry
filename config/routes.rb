@@ -12,28 +12,28 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :companies, only: %i[] do
+      resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
       end
-      resources :repositories, only: %i[] do
+      resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
         resources :repository_insights, only: %i[index], module: 'repositories'
       end
+      resource :feedback, only: %i[create]
     end
   end
 
-  resources :companies, except: %i[show edit update] do
+  resources :companies, only: %i[index destroy] do
     resource :configuration, only: %i[edit update], module: 'companies'
-    resources :repositories, only: %i[index new], module: 'companies'
+    resources :repositories, only: %i[index], module: 'companies'
     resources :access_tokens, only: %i[new create]
   end
-  resources :repositories, only: %i[index new create destroy] do
+  resources :repositories, only: %i[index destroy] do
     resources :access_tokens, only: %i[new create]
   end
 
   resource :profile, only: %i[show update destroy]
   resource :achievements, only: %i[show]
-  resource :feedback, only: %i[show create]
   resources :vacations, only: %i[new create destroy]
 
   post 'subscriptions/trial', to: 'subscriptions/trial#create'

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="text-sm font-light m-0 p-0 min-h-screen">
   <head>
-    <title>PullKeeper | open source pull requests analyzer</title>
+    <title>PullKeeper | Open source pull requests analyzer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="Keywords" content="pull requests, insights, review, comments, average review time, repository, github, gitlab, statistics, analyzer">
@@ -17,5 +17,6 @@
   <body class="relative flex flex-col m-0 p-0 min-h-screen">
     <%= react_component 'Flash', values: flash.to_h %>
     <%= yield %>
+    <div id="modal-root"></div>
   </body>
 </html>
