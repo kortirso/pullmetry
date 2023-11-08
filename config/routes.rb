@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resource :profile, only: %i[show update destroy]
   resource :achievements, only: %i[show]
   resources :vacations, only: %i[new create destroy]
+  resources :identities, only: %i[destroy]
 
   post 'subscriptions/trial', to: 'subscriptions/trial#create'
 

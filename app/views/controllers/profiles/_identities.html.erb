@@ -6,6 +6,9 @@
           <p>
             <%= identity[:provider].capitalize %> identity is created <%= identity[:created_at].strftime('%d.%m.%Y') %> at <%= identity[:created_at].strftime('%H:%M') %> UTC
           </p>
+          <% if @identities.size > 1 %>
+            <%= button_to 'X', identity_path(identity[:id]), class: 'btn-danger btn-xs', method: :delete %>
+          <% end %>
         </div>
       <% end %>
       <% if @need_identities.present? %>

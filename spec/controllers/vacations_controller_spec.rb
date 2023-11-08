@@ -99,7 +99,7 @@ describe VacationsController do
       let(:request) { delete :destroy, params: { id: vacation.id, locale: 'en' } }
 
       context 'for not user vacation' do
-        it 'destroys vacation and redirects', :aggregate_failures do
+        it 'does not destroy vacation and redirects', :aggregate_failures do
           expect { request }.not_to change(Vacation, :count)
           expect(response).to redirect_to profile_path
         end
