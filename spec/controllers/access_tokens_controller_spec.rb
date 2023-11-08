@@ -86,7 +86,9 @@ describe AccessTokensController do
 
           context 'for valid params' do
             let(:request) {
-              post :create, params: { company_id: company.uuid, access_token: { value: '1' }, locale: 'en' }
+              post :create, params: {
+                company_id: company.uuid, access_token: { value: 'github_pat_*****_******' }
+              }
             }
 
             it 'creates access token and redirects', :aggregate_failures do

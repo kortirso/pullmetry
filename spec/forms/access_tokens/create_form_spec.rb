@@ -13,18 +13,29 @@ describe AccessTokens::CreateForm, type: :service do
     context 'for invalid params' do
       let(:params) { { value: '' } }
 
-      it 'does not create access token and fails' do
+      it 'does not create access token', :aggregate_failures do
         expect { form }.not_to change(AccessToken, :count)
+        expect(form[:errors]).to eq ['Value must be filled']
+      end
+    end
+
+    context 'for invalid format' do
+      let(:params) { { value: 'glpat-*****-******' } }
+
+      it 'does not create access token', :aggregate_failures do
+        expect { form }.not_to change(AccessToken, :count)
+        expect(form[:errors]).to eq ['Invalid PAT token format']
       end
     end
 
     context 'for valid params' do
-      let(:params) { { value: 'valid' } }
+      let(:params) { { value: 'github_pat_*****_******' } }
 
-      it 'creates access token and succeeds' do
+      it 'creates access token and succeeds', :aggregate_failures do
         form
 
         expect(AccessToken.where(tokenable: company).size).to eq 1
+        expect(form[:errors]).to be_nil
       end
 
       context 'when access token already exist' do
@@ -35,6 +46,16 @@ describe AccessTokens::CreateForm, type: :service do
 
           expect(AccessToken.where(tokenable: company).size).to eq 1
           expect(AccessToken.find_by(id: access_token.id)).to be_nil
+          expect(form[:errors]).to be_nil
+        end
+      end
+
+      context 'when company has repositories with different providers' do
+        before { create :repository, company: company, provider: Providerable::GITLAB }
+
+        it 'does not create access token and fails', :aggregate_failures do
+          expect { form }.not_to change(AccessToken, :count)
+          expect(form[:errors]).to eq ['Company has repositories of multiple providers']
         end
       end
     end

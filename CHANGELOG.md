@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - removing identities
 - page with metrics description
 
+### Modified
+- validating access token for companies
+
 ## [1.5.9] - 2023-10-31
 ### Added
 - sorting for insights table
