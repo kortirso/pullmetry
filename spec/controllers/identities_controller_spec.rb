@@ -27,8 +27,6 @@ describe IdentitiesController do
           before { create :identity, provider: Providerable::GITLAB, user: @current_user }
 
           it 'destroys identity', :aggregate_failures do
-            ap Identity.all
-
             request
 
             expect(Identity.find_by(id: identity.id)).to be_nil
