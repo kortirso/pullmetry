@@ -24,11 +24,15 @@
     </div>
   </div>
   <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap lg:pb-8">
+    <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
     <%= link_to how_it_works_path, class: 'user-navigation-link' do %>
       <%- image_tag '' %>
       <span>How it works</span>
     <% end %>
-    <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
+    <%= link_to metrics_path, class: 'user-navigation-link' do %>
+      <%- image_tag '' %>
+      <span>Metrics</span>
+    <% end %>
     <%= link_to sources_path, class: 'user-navigation-link' do %>
       <%- image_tag '' %>
       <span>Source code</span>

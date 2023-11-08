@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get 'privacy', to: 'welcome#privacy'
   get 'sources', to: 'welcome#sources'
   get 'how-it-works', to: 'welcome#how_it_works'
+  get 'metrics', to: 'welcome#metrics'
 
   root 'welcome#index'
 end

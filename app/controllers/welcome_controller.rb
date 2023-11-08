@@ -10,4 +10,6 @@ class WelcomeController < ApplicationController
   def sources; end
 
   def how_it_works; end
+
+  def metrics; end
 end

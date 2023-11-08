@@ -8,6 +8,21 @@ class Insight < ApplicationRecord
   REVERSE_ORDER_ATTRIBUTES = %i[average_review_seconds average_merge_seconds average_open_pr_comments].freeze
   DECIMAL_ATTRIBUTES = %i[average_open_pr_comments].freeze
 
+  SHORT_ATTRIBUTE_NAMES = {
+    required_reviews_count: 'Required reviews',
+    comments_count: 'Comments count',
+    reviews_count: 'Reviews count',
+    review_involving: 'Review involving',
+    average_review_seconds: 'Avg review time',
+    reviewed_loc: 'Reviewed LOC',
+    average_reviewed_loc: 'Avg reviewed LOC',
+    open_pull_requests_count: 'Open pulls',
+    average_merge_seconds: 'Avg merge time',
+    average_open_pr_comments: 'Avg received comments',
+    changed_loc: 'Changed LOC',
+    average_changed_loc: 'Avg changed LOC'
+  }.freeze
+
   FETCH_DAYS_PERIOD = 30
   DOUBLE_FETCH_DAYS_PERIOD = 60
 
