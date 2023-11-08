@@ -49,7 +49,6 @@ export const CompanyForm = () => {
               <sup className="leading-4">*</sup>
             </p>
             <input
-              required
               className="form-value w-full"
               value={pageState.title}
               placeholder="Company's title"

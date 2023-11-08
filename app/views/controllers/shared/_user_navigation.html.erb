@@ -28,10 +28,7 @@
       <%- image_tag '' %>
       <span>How it works</span>
     <% end %>
-    <%= link_to feedback_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span>Feedback</span>
-    <% end %>
+    <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
     <%= link_to sources_path, class: 'user-navigation-link' do %>
       <%- image_tag '' %>
       <span>Source code</span>

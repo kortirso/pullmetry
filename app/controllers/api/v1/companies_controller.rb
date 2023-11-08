@@ -9,7 +9,7 @@ module Api
         # commento: companies.title
         case create_form.call(user: current_user, params: company_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
-        in { result: result } then render json: { redirect_path: companies_path }, status: :ok
+        else render json: { redirect_path: companies_path }, status: :ok
         end
       end
 
