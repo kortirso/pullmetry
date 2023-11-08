@@ -2,6 +2,14 @@
 
 describe Api::V1::FeedbacksController do
   describe 'POST#create' do
+    let(:delivery_service) { double }
+
+    before do
+      allow(AdminDelivery).to receive(:with).and_return(delivery_service)
+      allow(delivery_service).to receive(:feedback_created).and_return(delivery_service)
+      allow(delivery_service).to receive(:deliver_later)
+    end
+
     context 'for logged users' do
       let!(:user) { create :user }
       let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
