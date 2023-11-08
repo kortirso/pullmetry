@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - feedback form
 - modal component for simple forms
 - removing identities
+- page with metrics description
 
 ## [1.5.9] - 2023-10-31
 ### Added
