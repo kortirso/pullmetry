@@ -53,6 +53,7 @@ export const Company = ({
   const renderInsightsData = () => {
     if (pageState.entities === undefined) return <></>;
     if (pageState.entities.length === 0) return <p>There are no insights yet</p>;
+    if (pageState.insightTypes.length === 0) return <p>There are no selected insight attributes yet</p>;
 
     return (
       <Insights
