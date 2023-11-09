@@ -32,7 +32,7 @@ const HOURS_IN_DAY = 24;
 
 export const Insights = ({ insightTypes, entities, ratioType, mainAttribute }) => {
   const [pageState, setPageState] = useState({
-    sortBy: mainAttribute,
+    sortBy: insightTypes.includes(mainAttribute) ? mainAttribute : insightTypes[0],
     sortDirection: 'desc'
   });
 
