@@ -106,28 +106,26 @@ export const ExcludeRules = ({ initialRules }) => {
         <h2 className="m-0 text-xl">Pull requests</h2>
         <Chevron rotated={pageState.expanded} />
       </div>
-      {pageState.expanded ? (
-        <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8">
-            <div>
-              <input
-                name="jsonb_columns_configuration[pull_request_exclude_rules]"
-                type="hidden"
-                value={pageState.rulesValue}
-              />
-              {renderExcludeRules()}
-              <span
-                className="btn-primary btn-small"
-                onClick={addExcludeRule}
-              >Add exclude rule</span>
-            </div>
-            <div>
-              <p>You can select rules for excluding pull requests from statistics calculations, usually it can be releases, hotfixes to master branch or synchronize pull requests from master branch.</p>
-              <p className="mt-2">Pull request will be excluded if at least 1 rule is matched.</p>
-            </div>
+      <div class=`py-6 px-8 ${pageState.expanded ? 'block' : 'hidden'}`>
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div>
+            <input
+              name="jsonb_columns_configuration[pull_request_exclude_rules]"
+              type="hidden"
+              value={pageState.rulesValue}
+            />
+            {renderExcludeRules()}
+            <span
+              className="btn-primary btn-small"
+              onClick={addExcludeRule}
+            >Add exclude rule</span>
+          </div>
+          <div>
+            <p>You can select rules for excluding pull requests from statistics calculations, usually it can be releases, hotfixes to master branch or synchronize pull requests from master branch.</p>
+            <p className="mt-2">Pull request will be excluded if at least 1 rule is matched.</p>
           </div>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };

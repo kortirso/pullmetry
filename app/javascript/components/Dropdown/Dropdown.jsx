@@ -18,7 +18,11 @@ export const Dropdown = ({ title, children }) => {
         <h2 className="m-0 text-xl">{title}</h2>
         <Chevron rotated={pageState.expanded} />
       </div>
-      {pageState.expanded ? <div dangerouslySetInnerHTML={{ __html: children }}></div> : null}
+      <div
+        dangerouslySetInnerHTML={{ __html: children }}
+        className=`${pageState.expanded ? 'block' : 'hidden'}`
+      >
+      </div>
     </div>
   );
 };
