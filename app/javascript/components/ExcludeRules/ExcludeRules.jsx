@@ -106,7 +106,7 @@ export const ExcludeRules = ({ initialRules }) => {
         <h2 className="m-0 text-xl">Pull requests</h2>
         <Chevron rotated={pageState.expanded} />
       </div>
-      <div class=`py-6 px-8 ${pageState.expanded ? 'block' : 'hidden'}`>
+      <div class={`py-6 px-8 ${pageState.expanded ? 'block' : 'hidden'}`}>
         <div class="grid lg:grid-cols-2 gap-8">
           <div>
             <input

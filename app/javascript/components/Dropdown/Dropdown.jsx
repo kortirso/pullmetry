@@ -20,7 +20,7 @@ export const Dropdown = ({ title, children }) => {
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: children }}
-        className=`${pageState.expanded ? 'block' : 'hidden'}`
+        className={`${pageState.expanded ? 'block' : 'hidden'}`}
       >
       </div>
     </div>
