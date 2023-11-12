@@ -7,6 +7,15 @@ GIT
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
 
+PATH
+  remote: ../../packages/que-web_engine
+  specs:
+    que-web_engine (0.1.0)
+      pagy (> 4.0)
+      que (> 2.0)
+      rails (> 6.0.0)
+      sassc-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -483,6 +492,7 @@ DEPENDENCIES
   puma (~> 6.0)
   que (~> 2.2.0)
   que-web
+  que-web_engine!
   rails (~> 7.0)
   rails-controller-testing (= 1.0.5)
   rails_event_store

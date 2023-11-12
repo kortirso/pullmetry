@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'que/web'
+require 'que/web_engine'
 
 Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
   mount Emailbutler::Engine => '/emailbutler'
   mount Que::Web => '/que'
+  mount Que::WebEngine::Engine => '/que_web_engine'
 
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
   get 'logout', to: 'users/omniauth_callbacks#destroy'
