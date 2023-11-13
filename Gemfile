@@ -59,8 +59,7 @@ gem 'bugsnag'
 
 # background jobs
 gem 'que', '~> 2.2.0'
-gem 'que-web'
-gem 'que-web_engine', path: '~/web/myprojects/packages/que-web_engine'
+gem 'que-view', path: '~/web/myprojects/packages/que-view'
 gem 'whenever', require: false
 
 # authorization
