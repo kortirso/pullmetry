@@ -58,7 +58,7 @@ gem 'skylight'
 gem 'bugsnag'
 
 # background jobs
-gem 'que', '~> 2.2.0'
+gem 'que', '~> 2.3'
 gem 'que-view', path: '~/web/myprojects/packages/que-view'
 gem 'whenever', require: false
 
