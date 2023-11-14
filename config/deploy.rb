@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config valid for current version and patch releases of Capistrano
-lock '~> 3.17.1'
+lock '~> 3.18.0'
 
 set :application, 'pullmetry'
 set :repo_url, 'git@github.com:kortirso/pullmetry.git'
