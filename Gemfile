@@ -6,7 +6,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 7.0'
+gem 'rack', '~> 3.0'
+gem 'rack-session', '~> 2.0'
+gem 'rackup', '~> 2.1'
+gem 'rails', '~> 7.1'
+
+# cache store
+gem 'redis', '~> 5.0'
+gem 'redis-rack', git: 'https://github.com/redis-store/redis-rack', branch: 'master'
+gem 'redis-rails', git: 'https://github.com/redis-store/redis-rails', branch: 'master'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.4'
@@ -58,8 +66,8 @@ gem 'skylight'
 gem 'bugsnag'
 
 # background jobs
-gem 'que', '~> 2.2.0'
-gem 'que-web'
+gem 'que', '~> 2.3'
+gem 'que-view', '~> 0.1'
 gem 'whenever', require: false
 
 # authorization
@@ -67,10 +75,6 @@ gem 'action_policy'
 
 # Work with JSON-backed attributes
 gem 'store_model'
-
-# cache store
-gem 'redis', '~> 5.0'
-gem 'redis-rails'
 
 # achievements system
 gem 'kudos'

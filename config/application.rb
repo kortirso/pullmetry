@@ -25,7 +25,7 @@ Bundler.require(*Rails.groups)
 module Pullmetry
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     I18n.available_locales = %i[en]
     config.i18n.default_locale = :en

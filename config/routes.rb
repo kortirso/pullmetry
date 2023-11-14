@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'que/web'
+require 'que/view'
 
 Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
   mount Emailbutler::Engine => '/emailbutler'
-  mount Que::Web => '/que'
+  mount Que::View::Engine => '/que_view'
 
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
   get 'logout', to: 'users/omniauth_callbacks#destroy'
