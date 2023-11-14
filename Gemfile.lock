@@ -7,6 +7,24 @@ GIT
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
 
+GIT
+  remote: https://github.com/redis-store/redis-rack
+  revision: 15e12b33d222fe9e02f6dd030f974b95ef8df2e1
+  branch: master
+  specs:
+    redis-rack (2.1.4)
+      rack-session (>= 0.2.0)
+      redis-store (>= 1.2, < 2)
+
+GIT
+  remote: https://github.com/redis-store/redis-rails
+  revision: e5ca10851c83d7e7c594deac50f80881d699ca6c
+  branch: master
+  specs:
+    redis-rails (5.0.2)
+      redis-actionpack (>= 3.0, < 8)
+      redis-activesupport (>= 3.0, < 8)
+
 PATH
   remote: ../../packages/que-view
   specs:
@@ -271,14 +289,14 @@ GEM
       nio4r (~> 2.0)
     que (2.3.0)
     racc (1.7.3)
-    rack (2.2.8)
-    rack-session (1.0.1)
-      rack (< 3)
+    rack (3.0.8)
+    rack-session (2.0.0)
+      rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rackup (1.0.0)
-      rack (< 3)
-      webrick
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
     rails (7.1.2)
       actioncable (= 7.1.2)
       actionmailbox (= 7.1.2)
@@ -338,13 +356,6 @@ GEM
       redis-store (>= 1.3, < 2)
     redis-client (0.18.0)
       connection_pool
-    redis-rack (2.1.4)
-      rack (>= 2.0.8, < 3)
-      redis-store (>= 1.2, < 2)
-    redis-rails (5.0.2)
-      redis-actionpack (>= 5.0, < 6)
-      redis-activesupport (>= 5.0, < 6)
-      redis-store (>= 1.2, < 2)
     redis-store (1.10.0)
       redis (>= 4, < 6)
     regexp_parser (2.8.2)
@@ -510,11 +521,15 @@ DEPENDENCIES
   puma (~> 6.0)
   que (~> 2.3)
   que-view!
+  rack (~> 3.0)
+  rack-session (~> 2.0)
+  rackup (~> 2.1)
   rails (~> 7.1)
   rails-controller-testing (= 1.0.5)
   rails_event_store
   redis (~> 5.0)
-  redis-rails
+  redis-rack!
+  redis-rails!
   rspec-rails (~> 6.0)
   rubocop (~> 1.35)
   rubocop-performance (~> 1.14)
