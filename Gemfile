@@ -67,7 +67,7 @@ gem 'bugsnag'
 
 # background jobs
 gem 'que', '~> 2.3'
-gem 'que-view', path: '~/web/myprojects/packages/que-view'
+gem 'que-view', '~> 0.1'
 gem 'whenever', require: false
 
 # authorization

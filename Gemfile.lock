@@ -25,14 +25,6 @@ GIT
       redis-actionpack (>= 3.0, < 8)
       redis-activesupport (>= 3.0, < 8)
 
-PATH
-  remote: ../../packages/que-view
-  specs:
-    que-view (0.1.0)
-      que (> 2.0)
-      rails (> 6.0.0)
-      sassc-rails
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -288,6 +280,10 @@ GEM
     puma (6.3.0)
       nio4r (~> 2.0)
     que (2.3.0)
+    que-view (0.1.0)
+      que (> 2.0)
+      rails (> 6.0.0)
+      sassc-rails
     racc (1.7.3)
     rack (3.0.8)
     rack-session (2.0.0)
@@ -520,7 +516,7 @@ DEPENDENCIES
   pghero
   puma (~> 6.0)
   que (~> 2.3)
-  que-view!
+  que-view (~> 0.1)
   rack (~> 3.0)
   rack-session (~> 2.0)
   rackup (~> 2.1)
