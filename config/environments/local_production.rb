@@ -8,7 +8,7 @@ Rails.application.configure do
   config.i18n.fallbacks = false
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  config.enable_reloading = false
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
