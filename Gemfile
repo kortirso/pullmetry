@@ -123,7 +123,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'factory_bot_rails', '6.2.0'
+  gem 'factory_bot_rails', '~> 6.4'
   gem 'json_spec', '1.1.5'
   gem 'rails-controller-testing', '1.0.5'
   gem 'rspec-rails', '~> 6.0'
