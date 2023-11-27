@@ -1,0 +1,27 @@
+<table class="table zebra">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>UUID</th>
+      <th>Title</th>
+      <th>Repos</th>
+      <th>Access token</th>
+      <th>Premium?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.id %></td>
+        <td><%= company.uuid %></td>
+        <td><%= company.title %></td>
+        <td><%= link_to company.repositories.size, company_repositories_path(company_id: company.uuid), class: 'simple-link' %></td>
+        <td><%= company.access_token ? "#{company.access_token.value.first(16)}-****" : '' %></td>
+        <td><%= company.user.premium? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

@@ -16,8 +16,8 @@ describe CompanyPolicy do
       context 'when user is admin' do
         before { user.update!(role: 'admin') }
 
-        it 'returns true' do
-          expect(policy_access).to be_truthy
+        it 'returns false' do
+          expect(policy_access).to be_falsy
         end
       end
     end

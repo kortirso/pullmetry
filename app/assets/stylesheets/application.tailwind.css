@@ -88,6 +88,14 @@
     @apply bg-gray-100;
   }
 
+  .table.zebra {
+    @apply bg-white;
+  }
+
+  .table.zebra tbody it:nth-of-type(2n) {
+    @apply bg-stone-200;
+  }
+
   .form-field {
     @apply mb-4;
   }
