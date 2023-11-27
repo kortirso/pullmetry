@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
+  module Frontend
     module Repositories
-      class RepositoryInsightsController < Api::V1::BaseController
+      class RepositoryInsightsController < Api::Frontend::BaseController
         before_action :find_repository
 
         def index
@@ -27,7 +27,7 @@ module Api
 
         def find_repository
           @repository = authorized_scope(Repository.order(id: :desc)).find_by(uuid: params[:repository_id])
-          render json: {} unless @repository
+          page_not_found if @repository.nil?
         end
 
         def visible_insights

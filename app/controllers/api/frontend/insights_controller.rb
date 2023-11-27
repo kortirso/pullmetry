@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
-    class InsightsController < Api::V1::BaseController
+  module Frontend
+    class InsightsController < Api::Frontend::BaseController
       before_action :find_insightable
 
       def index
@@ -27,7 +27,7 @@ module Api
         find_company if params[:company_id]
         find_repository if params[:repository_id]
 
-        render json: {} unless @insightable
+        page_not_found unless @insightable
       end
 
       def find_company

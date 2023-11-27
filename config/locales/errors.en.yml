@@ -2,6 +2,7 @@ en:
   dry_validation:
     rules:
       external_id: External id
+      entity_value: Entity value
     errors:
       company:
         rules:
@@ -13,3 +14,7 @@ en:
         rules:
           external_id:
             empty: can't be blank
+      ignore:
+        rules:
+          entity_value:
+            filled?: must be filled

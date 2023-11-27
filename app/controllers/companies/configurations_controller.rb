@@ -9,6 +9,7 @@ module Companies
     def edit
       authorize! @company, to: :update?
 
+      find_ignores
       find_insight_ratio_type_values
       find_average_type_values
       find_main_attribute_values
@@ -32,6 +33,10 @@ module Companies
 
     def find_company
       @company = current_user.companies.find_by!(uuid: params[:company_id])
+    end
+
+    def find_ignores
+      @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
     end
 
     def find_insight_ratio_type_values

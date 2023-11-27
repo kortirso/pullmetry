@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   Company,
   CompanyForm,
+  CompanyConfiguration,
   FeedbackForm,
   Repository,
   RepositoryForm,
@@ -16,6 +17,7 @@ import {
 const components = {
   Company,
   CompanyForm,
+  CompanyConfiguration,
   FeedbackForm,
   Repository,
   RepositoryForm,

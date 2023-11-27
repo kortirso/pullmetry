@@ -199,5 +199,12 @@
   .badge {
     @apply inline-block text-xs px-2 py-1 bg-orange-200 border border-orange-300 text-black rounded;
   }
-}
 
+  .zebra-list .zebra-list-element {
+    @apply flex justify-between items-center py-1 px-2;
+  }
+
+  .zebra-list .zebra-list-element:nth-of-type(2n) {
+    @apply bg-stone-100;
+  }
+}

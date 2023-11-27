@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
+  module Frontend
     class BaseController < ApplicationController
       protect_from_forgery with: :null_session
 
@@ -15,11 +15,15 @@ module Api
       def authenticate_api
         return if current_user
 
-        render json: { errors: 'error' }, status: :unauthorized
+        render json: { errors: ['Unauthorized'] }, status: :unauthorized
       end
 
       def access_denied
-        render json: { errors: 'Unauthorized' }, status: :unauthorized
+        render json: { errors: ['Unauthorized'] }, status: :unauthorized
+      end
+
+      def page_not_found
+        render json: { errors: ['Not found'] }, status: :not_found
       end
     end
   end

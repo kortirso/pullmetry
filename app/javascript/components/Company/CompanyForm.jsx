@@ -12,7 +12,7 @@ export const CompanyForm = () => {
 
   const onSubmit = async () => {
     const result = await apiRequest({
-      url: '/api/v1/companies.json',
+      url: '/api/frontend/companies.json',
       options: {
         method: 'POST',
         headers: {

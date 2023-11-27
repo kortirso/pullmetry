@@ -16,7 +16,7 @@ export const RepositoryForm = ({ company_uuid, companies, providers }) => {
 
   const onSubmit = async () => {
     const result = await apiRequest({
-      url: '/api/v1/repositories.json',
+      url: '/api/frontend/repositories.json',
       options: {
         method: 'POST',
         headers: {

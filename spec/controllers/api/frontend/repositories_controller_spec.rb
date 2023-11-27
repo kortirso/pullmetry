@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Api::V1::RepositoriesController do
+describe Api::Frontend::RepositoriesController do
   describe 'POST#create' do
     context 'for logged users' do
       let!(:user) { create :user }
@@ -16,7 +16,7 @@ describe Api::V1::RepositoriesController do
 
         it 'does not create repository and redirects', :aggregate_failures do
           expect { request }.not_to change(Repository, :count)
-          expect(response).to have_http_status :ok
+          expect(response).to have_http_status :not_found
           expect(response.parsed_body['errors']).not_to be_nil
         end
       end
@@ -33,7 +33,7 @@ describe Api::V1::RepositoriesController do
 
           it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(Repository, :count)
-            expect(response).to have_http_status :ok
+            expect(response).to have_http_status :not_found
             expect(response.parsed_body['errors']).not_to be_nil
           end
         end
@@ -47,7 +47,7 @@ describe Api::V1::RepositoriesController do
 
           it 'does not create repository and redirects', :aggregate_failures do
             expect { request }.not_to change(Repository, :count)
-            expect(response).to have_http_status :ok
+            expect(response).to have_http_status :not_found
             expect(response.parsed_body['errors']).not_to be_nil
           end
         end

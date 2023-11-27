@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Api::V1::FeedbacksController do
+describe Api::Frontend::FeedbacksController do
   describe 'POST#create' do
     let(:delivery_service) { double }
 

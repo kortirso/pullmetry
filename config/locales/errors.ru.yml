@@ -4,6 +4,7 @@ ru:
       title: Заголовок
       name: Название
       external_id: Внешний ID
+      entity_value: Entity value
     errors:
       company:
         rules:
@@ -15,3 +16,7 @@ ru:
         rules:
           external_id:
             empty: не может быть пустым
+      ignore:
+        rules:
+          entity_value:
+            filled?: не может быть пустым

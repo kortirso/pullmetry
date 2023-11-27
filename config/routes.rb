@@ -11,15 +11,17 @@ Rails.application.routes.draw do
   get 'logout', to: 'users/omniauth_callbacks#destroy'
 
   namespace :api do
-    namespace :v1 do
+    namespace :frontend do
       resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
+        resources :ignores, only: %i[create]
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
         resources :repository_insights, only: %i[index], module: 'repositories'
       end
       resource :feedback, only: %i[create]
+      resources :ignores, only: %i[destroy]
     end
   end
 
