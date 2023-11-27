@@ -31,7 +31,8 @@ module Api
       end
 
       def find_ignore
-        @ignore = Ignore.find_by!(uuid: params[:id])
+        @ignore = Ignore.find_by(uuid: params[:id])
+        page_not_found if @ignore.nil?
       end
 
       def ignore_params
