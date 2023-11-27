@@ -3,19 +3,35 @@ import React, { useState, useMemo } from 'react';
 import { Arrow } from '../../svg';
 
 const SHORT_INSIGHT_NAMES = {
-  required_reviews_count: 'Required reviews',
+  required_reviews_count: 'Req reviews',
   comments_count: 'Comments',
   reviews_count: 'Reviews',
   review_involving: 'Involving',
   average_review_seconds: 'Review time',
-  reviewed_loc: 'Reviewed LOC',
-  average_reviewed_loc: 'Avg RLOC',
+  reviewed_loc: 'Rev LOC',
+  average_reviewed_loc: 'Avg rev LOC',
   open_pull_requests_count: 'Open pulls',
   average_merge_seconds: 'Merge time',
   average_open_pr_comments: 'Avg commenting',
   changed_loc: 'Changed LOC',
-  average_changed_loc: 'Avg CLOC',
+  average_changed_loc: 'Avg changed LOC',
 };
+
+const INSIGHT_TOOLTIPS = {
+  required_reviews_count: 'Required reviews',
+  comments_count: 'Total comments',
+  reviews_count: 'Total reviews',
+  review_involving: 'Review involving',
+  average_review_seconds: 'Avg review time',
+  reviewed_loc: 'Reviewed LOC',
+  average_reviewed_loc: 'Avg reviewed LOC',
+  open_pull_requests_count: 'Open pulls',
+  average_merge_seconds: 'Avg merge time',
+  average_open_pr_comments: 'Avg received comments',
+  changed_loc: 'Changed LOC',
+  average_changed_loc: 'Avg changed LOC',
+};
+
 const TIME_ATTRIBUTES = ['average_review_seconds', 'average_merge_seconds'];
 const REVERSE_ORDER_ATTRIBUTES = [
   'average_review_seconds',
@@ -136,12 +152,12 @@ export const Insights = ({ insightTypes, entities, ratioType, mainAttribute }) =
           <th>Developer</th>
           {insightTypes.map((insightType) => (
             <th
-              className="cursor-pointer"
+              className="cursor-pointer tooltip"
               onClick={() => changeSorting(insightType)}
               key={`header-${insightType}`}
             >
               <div className="flex flex-row items-center">
-                <span>{SHORT_INSIGHT_NAMES[insightType]}</span>
+                <span className="whitespace-nowrap">{SHORT_INSIGHT_NAMES[insightType]}</span>
                 {pageState.sortBy === insightType ? (
                   <span className="ml-2">
                     <Arrow active rotated={pageState.sortDirection === 'asc'} />
@@ -152,6 +168,7 @@ export const Insights = ({ insightTypes, entities, ratioType, mainAttribute }) =
                   </span>
                 )}
               </div>
+              <span className="tooltiptext">{INSIGHT_TOOLTIPS[insightType]}</span>
             </th>
           ))}
         </tr>

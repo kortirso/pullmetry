@@ -81,7 +81,7 @@
   }
 
   .table tr th {
-    @apply font-normal;
+    @apply font-normal text-xs;
   }
 
   .table tbody tr:nth-of-type(2n) {
@@ -206,5 +206,34 @@
 
   .zebra-list .zebra-list-element:nth-of-type(2n) {
     @apply bg-stone-100;
+  }
+
+  .tooltip {
+    @apply relative;
+  }
+
+  .tooltip .tooltiptext {
+    @apply w-32 invisible bg-stone-700 text-white text-xs text-center py-1 px-2 rounded;
+    @apply absolute z-10 opacity-0 transition-opacity delay-300;
+
+    bottom: 125%;
+    left: 50%;
+    margin-left: -3rem;
+  }
+
+  .tooltip .tooltiptext:after {
+    @apply absolute z-10;
+
+    content: "";
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #44403c transparent transparent transparent;
+  }
+
+  .tooltip:hover .tooltiptext {
+    @apply opacity-100 visible;
   }
 }

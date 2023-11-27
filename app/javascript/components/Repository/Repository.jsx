@@ -192,9 +192,11 @@ export const Repository = ({
               {renderRepositoryInsightsData()}
             </>
           ) : null}
-          <h3 className="mb-4">Developer insights</h3>
-          <div className="overflow-x-scroll">
-            {renderInsightsData()}
+          <div className="relative">
+            <h3 className="absolute top-0">Developer insights</h3>
+            <div className="overflow-x-scroll pt-14">
+              {renderInsightsData()}
+            </div>
           </div>
         </div>
       ) : null}
