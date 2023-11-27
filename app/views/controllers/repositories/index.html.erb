@@ -18,6 +18,7 @@
           avatar_url: repository.owner_avatar_url,
           title: repository.title,
           synced_at: repository.synced_at,
+          next_synced_at: (DateTime.now + 1.hour).beginning_of_hour,
           provider: repository.provider,
           repository_url: repository.link,
           access_token_status: repository.access_token_status,

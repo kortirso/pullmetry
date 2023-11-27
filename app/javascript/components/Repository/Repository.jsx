@@ -12,6 +12,7 @@ export const Repository = ({
   avatar_url,
   title,
   synced_at,
+  next_synced_at,
   provider,
   repository_url,
   access_token_status,
@@ -61,7 +62,7 @@ export const Repository = ({
   };
 
   const renderSyncedAt = () => {
-    if (synced_at === null) return <span>Waiting for synchronization</span>;
+    if (synced_at === null) return <span>Next synchronization at {convertTime(next_synced_at)}</span>;
 
     return <span>Last synced {convertDate(synced_at)} at {convertTime(synced_at)}</span>;
   }

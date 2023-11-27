@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - ignoring entities for Company
+- showing next sync time
 
 ## [1.6.1] - 2023-11-17
 ### Fixed

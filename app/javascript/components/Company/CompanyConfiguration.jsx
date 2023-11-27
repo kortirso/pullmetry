@@ -106,10 +106,10 @@ export const CompanyConfiguration = ({
       </Dropdown>
       <Dropdown title="Work time">{workTimeHtml}</Dropdown>
       <ExcludeRules initialRules={excludeRules} />
-      <Dropdown title="Insight attributes">{workTimeHtml}</Dropdown>
-      <Dropdown title="Average type">{workTimeHtml}</Dropdown>
-      <Dropdown title="Insights ratios">{workTimeHtml}</Dropdown>
-      <Dropdown title="Notifications">{workTimeHtml}</Dropdown>
+      <Dropdown title="Insight attributes">{insightAttributesHtml}</Dropdown>
+      <Dropdown title="Average type">{averageHtml}</Dropdown>
+      <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
+      <Dropdown title="Notifications">{notificationsHtml}</Dropdown>
       <Modal
         show={pageState.ingoreFormIsOpen}
         onClose={() => setPageState({ ...pageState, ingoreFormIsOpen: false })}
