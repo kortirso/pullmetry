@@ -8,7 +8,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || user.id == record.company.user_id
+    user.id == record.company.user_id
   end
 
   alias_rule :destroy?, to: :update?

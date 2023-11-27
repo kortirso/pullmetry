@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
   get 'logout', to: 'users/omniauth_callbacks#destroy'
 
+  namespace :admin do
+    get '', to: 'welcome#index'
+
+    resources :companies, only: %i[index]
+    resources :feedbacks, only: %i[index]
+  end
+
   namespace :api do
     namespace :frontend do
       resources :companies, only: %i[create] do

@@ -1,0 +1,18 @@
+<div class="flex flex-col lg:flex-row flex-1 max-h-screen">
+  <div class="w-full lg:w-64 bg-zinc-800 flex flex-col justify-between p-4 lg:p-0">
+    <div class="flex flex-col">
+      <%= link_to root_path, class: 'user-navigation-link lg:my-4 text-xl' do %>
+        <span>PullKeeper</span>
+      <% end %>
+      <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap">
+        <%= link_to 'Companies', admin_companies_path, class: 'user-navigation-link' %>
+      </div>
+      <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap">
+        <%= link_to 'Feedbacks', admin_feedbacks_path, class: 'user-navigation-link' %>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1 w-full p-8 lg:p-12 overflow-y-scroll bg-stone-100">
+    <%= content %>
+  </div>
+</div>

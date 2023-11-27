@@ -1,0 +1,27 @@
+<table class="table zebra">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>User ID</th>
+      <th>User email</th>
+      <th>Premium?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feedbacks.each do |feedback| %>
+      <tr>
+        <td><%= feedback.id %></td>
+        <td><%= feedback.title %></td>
+        <td><%= feedback.description %></td>
+        <td><%= feedback.user_id %></td>
+        <td><%= feedback.user.email %></td>
+        <td><%= feedback.user.premium? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>
