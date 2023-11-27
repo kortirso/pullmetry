@@ -6,7 +6,8 @@ module Import
       class Gitlab < Import::Synchronizers::PullRequestsService
         include Deps[
           fetch_service: 'services.import.fetchers.gitlab.pull_requests',
-          represent_service: 'services.import.representers.gitlab.pull_requests'
+          represent_service: 'services.import.representers.gitlab.pull_requests',
+          ignore_service: 'services.import.ignore'
         ]
 
         private

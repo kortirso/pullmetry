@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
-    class CompaniesController < Api::V1::BaseController
+  module Frontend
+    class CompaniesController < Api::Frontend::BaseController
       include Deps[create_form: 'forms.companies.create']
 
       def create

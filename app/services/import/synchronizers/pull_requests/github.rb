@@ -6,7 +6,8 @@ module Import
       class Github < Import::Synchronizers::PullRequestsService
         include Deps[
           fetch_service: 'services.import.fetchers.github.pull_requests',
-          represent_service: 'services.import.representers.github.pull_requests'
+          represent_service: 'services.import.representers.github.pull_requests',
+          ignore_service: 'services.import.ignore'
         ]
 
         private

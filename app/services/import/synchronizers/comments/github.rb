@@ -6,7 +6,8 @@ module Import
       class Github < Import::Synchronizers::PullRequestsDataService
         include Deps[
           fetch_service: 'services.import.fetchers.github.comments',
-          represent_service: 'services.import.representers.github.comments'
+          represent_service: 'services.import.representers.github.comments',
+          ignore_service: 'services.import.ignore'
         ]
 
         private

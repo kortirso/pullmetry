@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
-    class FeedbacksController < ApplicationController
+  module Frontend
+    class FeedbacksController < Api::Frontend::BaseController
       include Deps[create_form: 'forms.feedbacks.create']
 
       def create

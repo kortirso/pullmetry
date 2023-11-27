@@ -49,6 +49,14 @@ describe Import::Synchronizers::Reviews::Github, type: :service do
     it 'creates 2 new reviews' do
       expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(2)
     end
+
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: pull_request.repository.company, entity_value: 'octocat' }
+
+      it 'does not create new reviews' do
+        expect { service_call }.not_to change(pull_request.pull_requests_reviews, :count)
+      end
+    end
   end
 
   context 'when there is 1 existing review' do
@@ -56,6 +64,14 @@ describe Import::Synchronizers::Reviews::Github, type: :service do
 
     it 'creates 1 new review' do
       expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(1)
+    end
+
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: pull_request.repository.company, entity_value: 'octocat' }
+
+      it 'removes existing review' do
+        expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(-1)
+      end
     end
 
     context 'when repository is unaccessable' do

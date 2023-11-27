@@ -541,6 +541,40 @@ ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 
 
 --
+-- Name: ignores; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ignores (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    insightable_id bigint NOT NULL,
+    insightable_type character varying NOT NULL,
+    entity_value character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ignores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ignores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ignores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ignores_id_seq OWNED BY public.ignores.id;
+
+
+--
 -- Name: insights; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1182,6 +1216,13 @@ ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.i
 
 
 --
+-- Name: ignores id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ignores ALTER COLUMN id SET DEFAULT nextval('public.ignores_id_seq'::regclass);
+
+
+--
 -- Name: insights id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1359,6 +1400,14 @@ ALTER TABLE ONLY public.identities
 
 
 --
+-- Name: ignores ignores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ignores
+    ADD CONSTRAINT ignores_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: insights insights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1503,6 +1552,13 @@ ALTER TABLE ONLY public.vacations
 
 
 --
+-- Name: idx_on_insightable_id_insightable_type_entity_value_508616f247; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_insightable_id_insightable_type_entity_value_508616f247 ON public.ignores USING btree (insightable_id, insightable_type, entity_value);
+
+
+--
 -- Name: index_access_tokens_on_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1626,6 +1682,13 @@ CREATE UNIQUE INDEX index_identities_on_uid_and_provider ON public.identities US
 --
 
 CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
+
+
+--
+-- Name: index_ignores_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ignores_on_uuid ON public.ignores USING btree (uuid);
 
 
 --
@@ -1869,72 +1932,72 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20211101190000'),
-('20211101190250'),
-('20220817183402'),
-('20221026162239'),
-('20221108144820'),
-('20221229110331'),
-('20221229111144'),
-('20221229113504'),
-('20221229135528'),
-('20221230044750'),
-('20221230070121'),
-('20221230075113'),
-('20221230134024'),
-('20221230154819'),
-('20221230184649'),
-('20221231194301'),
-('20230101061815'),
-('20230101082827'),
-('20230101101434'),
-('20230101151400'),
-('20230102171638'),
-('20230102190258'),
-('20230102191844'),
-('20230103153335'),
-('20230103184140'),
-('20230105044303'),
-('20230106184328'),
-('20230107113744'),
-('20230107125130'),
-('20230109170258'),
-('20230119174641'),
-('20230119174916'),
-('20230120143333'),
-('20230120194630'),
-('20230121154845'),
-('20230121185501'),
-('20230125135040'),
-('20230127092045'),
-('20230222145138'),
-('20230222161252'),
-('20230224044112'),
-('20230225034617'),
-('20230225111223'),
-('20230228150952'),
-('20230429043024'),
-('20230602143731'),
-('20230606045228'),
-('20230606135138'),
-('20230609173154'),
-('20230612131612'),
-('20230617083913'),
-('20230627192841'),
-('20230904082413'),
-('20230904130559'),
-('20230906185155'),
-('20230912175713'),
-('20230912182023'),
-('20230912195115'),
-('20230912200254'),
-('20230913074316'),
-('20230913201840'),
-('20230914071959'),
-('20230914184514'),
-('20230918101006'),
-('20230925093816'),
+('20231126184938'),
+('20231107124203'),
 ('20231024120000'),
-('20231107124203');
-
+('20230925093816'),
+('20230918101006'),
+('20230914184514'),
+('20230914071959'),
+('20230913201840'),
+('20230913074316'),
+('20230912200254'),
+('20230912195115'),
+('20230912182023'),
+('20230912175713'),
+('20230906185155'),
+('20230904130559'),
+('20230904082413'),
+('20230627192841'),
+('20230617083913'),
+('20230612131612'),
+('20230609173154'),
+('20230606135138'),
+('20230606045228'),
+('20230602143731'),
+('20230429043024'),
+('20230228150952'),
+('20230225111223'),
+('20230225034617'),
+('20230224044112'),
+('20230222161252'),
+('20230222145138'),
+('20230127092045'),
+('20230125135040'),
+('20230121185501'),
+('20230121154845'),
+('20230120194630'),
+('20230120143333'),
+('20230119174916'),
+('20230119174641'),
+('20230109170258'),
+('20230107125130'),
+('20230107113744'),
+('20230106184328'),
+('20230105044303'),
+('20230103184140'),
+('20230103153335'),
+('20230102191844'),
+('20230102190258'),
+('20230102171638'),
+('20230101151400'),
+('20230101101434'),
+('20230101082827'),
+('20230101061815'),
+('20221231194301'),
+('20221230184649'),
+('20221230154819'),
+('20221230134024'),
+('20221230075113'),
+('20221230070121'),
+('20221230044750'),
+('20221229135528'),
+('20221229113504'),
+('20221229111144'),
+('20221229110331'),
+('20221108144820'),
+('20221026162239'),
+('20220817183402'),
+('20211101190250'),
+('20211101190000');
 

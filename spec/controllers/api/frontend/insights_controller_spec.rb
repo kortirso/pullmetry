@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Api::V1::InsightsController do
+describe Api::Frontend::InsightsController do
   describe 'GET#index' do
     context 'for logged users' do
       let!(:company) { create :company }

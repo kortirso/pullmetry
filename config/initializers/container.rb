@@ -32,6 +32,7 @@ module Pullmetry
     register('contracts.identity') { IdentityContract.new }
     register('contracts.repository') { RepositoryContract.new }
     register('contracts.feedback') { FeedbackContract.new }
+    register('contracts.ignore') { IgnoreContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
@@ -39,6 +40,7 @@ module Pullmetry
     register('validators.identity') { IdentityValidator.new }
     register('validators.repository') { RepositoryValidator.new }
     register('validators.feedback') { FeedbackValidator.new }
+    register('validators.ignore') { IgnoreValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
@@ -47,6 +49,7 @@ module Pullmetry
     register('forms.repositories.create') { Repositories::CreateForm.new }
     register('forms.vacations.create') { Vacations::CreateForm.new }
     register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
+    register('forms.ignores.create') { Ignores::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
@@ -99,6 +102,7 @@ module Pullmetry
     register('services.import.synchronizers.pull_requests.gitlab') { Import::Synchronizers::PullRequests::Gitlab.new }
     register('services.import.synchronizers.comments.gitlab') { Import::Synchronizers::Comments::Gitlab.new }
     register('services.import.synchronizers.reviews.gitlab') { Import::Synchronizers::Reviews::Gitlab.new }
+    register('services.import.ignore') { Import::IgnoreService.new }
   end
 end
 

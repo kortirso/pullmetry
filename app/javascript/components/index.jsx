@@ -1,5 +1,6 @@
 export * from './Company/Company';
 export * from './Company/CompanyForm';
+export * from './Company/CompanyConfiguration';
 export * from './Feedback/FeedbackForm';
 export * from './Dropdown/Dropdown';
 export * from './ExcludeRules/ExcludeRules';

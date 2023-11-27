@@ -50,6 +50,14 @@ describe Import::Synchronizers::Comments::Github, type: :service do
       expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
     end
 
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: pull_request.repository.company, entity_value: 'octocat' }
+
+      it 'does not create new comments' do
+        expect { service_call }.not_to change(pull_request.pull_requests_comments, :count)
+      end
+    end
+
     context 'when repository is unaccessable' do
       before { pull_request.repository.update!(accessable: false) }
 
@@ -64,6 +72,14 @@ describe Import::Synchronizers::Comments::Github, type: :service do
 
     it 'creates 1 new comment' do
       expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(1)
+    end
+
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: pull_request.repository.company, entity_value: 'octocat' }
+
+      it 'removes existing comment' do
+        expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(-1)
+      end
     end
   end
 

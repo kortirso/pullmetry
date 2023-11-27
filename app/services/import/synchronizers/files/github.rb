@@ -12,6 +12,7 @@ module Import
         private
 
         def save_service = Import::Savers::Files.new
+        def ignore_service = nil
       end
     end
   end

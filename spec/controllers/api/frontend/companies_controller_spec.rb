@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Api::V1::CompaniesController do
+describe Api::Frontend::CompaniesController do
   describe 'POST#create' do
     context 'for logged users' do
       let!(:user) { create :user }

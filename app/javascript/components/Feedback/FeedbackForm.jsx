@@ -13,7 +13,7 @@ export const FeedbackForm = ({ children }) => {
 
   const onSubmit = async () => {
     const result = await apiRequest({
-      url: '/api/v1/feedback.json',
+      url: '/api/frontend/feedback.json',
       options: {
         method: 'POST',
         headers: {

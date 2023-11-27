@@ -55,6 +55,14 @@ describe Import::Synchronizers::PullRequests::Github, type: :service do
       expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
     end
 
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: repository.company, entity_value: 'octocat' }
+
+      it 'does not create new pull requests' do
+        expect { service_call }.not_to change(repository.pull_requests, :count)
+      end
+    end
+
     context 'when repository is unaccessable' do
       before { repository.update!(accessable: false) }
 
@@ -70,6 +78,14 @@ describe Import::Synchronizers::PullRequests::Github, type: :service do
     it 'creates 1 new pull request and updates existing pull request', :aggregate_failures do
       expect { service_call }.to change(repository.pull_requests, :count).by(1)
       expect(pull_request.reload.open?).to be_falsy
+    end
+
+    context 'when entity is ignored' do
+      before { create :ignore, insightable: repository.company, entity_value: 'octocat' }
+
+      it 'removes existing pull request' do
+        expect { service_call }.to change(repository.pull_requests, :count).by(-1)
+      end
     end
   end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
-    class RepositoriesController < Api::V1::BaseController
+  module Frontend
+    class RepositoriesController < Api::Frontend::BaseController
       include Deps[create_form: 'forms.repositories.create']
 
       before_action :find_company, only: %i[create]
@@ -20,7 +20,7 @@ module Api
 
       def find_company
         @company = current_user.companies.find_by(uuid: params[:repository][:company_uuid])
-        render json: { errors: ['Company does not exist'] }, status: :ok unless @company
+        page_not_found if @company.nil?
       end
 
       def repository_params

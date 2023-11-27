@@ -8,6 +8,7 @@ module Import
         return unless repository.accessable?
 
         represent_service.call(data: fetch_data[:result])
+          .then { |represent_data| ignore_service.call(company: repository.company, data: represent_data) }
           .then { |represent_data| save_service.call(repository: repository, data: represent_data) }
       end
 
@@ -15,6 +16,7 @@ module Import
 
       def fetch_service = raise NotImplementedError
       def represent_service = raise NotImplementedError
+      def ignore_service = raise NotImplementedError
       def save_service = raise NotImplementedError
     end
   end
