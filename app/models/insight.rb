@@ -3,7 +3,8 @@
 class Insight < ApplicationRecord
   DEFAULT_ORDER_ATTRIBUTE = :comments_count
   DEFAULT_ATTRIBUTES = %i[
-    comments_count reviews_count average_review_seconds open_pull_requests_count average_reviewed_loc
+    comments_count reviews_count open_pull_requests_count
+    average_review_seconds average_reviewed_loc average_changed_loc
   ].freeze
   REVERSE_ORDER_ATTRIBUTES = %i[average_review_seconds average_merge_seconds average_open_pr_comments].freeze
   DECIMAL_ATTRIBUTES = %i[average_open_pr_comments].freeze

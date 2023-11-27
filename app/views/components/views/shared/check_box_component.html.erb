@@ -1,5 +1,5 @@
 <div class="flex items-center">
-  <%= @position == :left ? @form.label(@field, @label, class: 'form-label mr-2') : nil %>
+  <%= @position == :left ? @form.label(@field, @label, class: 'form-label cursor-pointer mr-2') : nil %>
   <div class="toggle">
     <%= @form.check_box @field, checked: @checked, class: 'toggle-checkbox' %>
     <label
@@ -8,5 +8,5 @@
       class="toggle-label"
     />
   </div>
-  <%= @position == :right ? @form.label(@field, @label, class: 'form-label ml-2') : nil %>
+  <%= @position == :right ? @form.label(@field, @label, class: 'form-label cursor-pointer ml-2') : nil %>
 </div>
