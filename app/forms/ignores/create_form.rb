@@ -14,6 +14,8 @@ module Ignores
       end
 
       { result: result }
+    rescue ActiveRecord::RecordNotUnique => _e
+      { errors: ['Ignore already exists'] }
     end
 
     private
