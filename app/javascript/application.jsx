@@ -11,7 +11,8 @@ import {
   RepositoryForm,
   Dropdown,
   ExcludeRules,
-  Flash
+  Flash,
+  ProfileConfiguration,
 } from './components';
 
 const components = {
@@ -24,6 +25,7 @@ const components = {
   Dropdown,
   ExcludeRules,
   Flash,
+  ProfileConfiguration,
 };
 const queryClient = new QueryClient();
 

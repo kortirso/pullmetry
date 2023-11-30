@@ -1,8 +1,11 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1 class="mb-8">Profile <%= Current.user.uuid %></h1>
-  <%= react_component 'Dropdown', title: 'Premium account', children: render(partial: 'premium').html_safe %>
-  <%= react_component 'Dropdown', title: 'Vacations', children: render(partial: 'vacations').html_safe %>
-  <%= react_component 'Dropdown', title: 'User settings', children: render(partial: 'user_settings').html_safe %>
-  <%= react_component 'Dropdown', title: 'Identities', children: render(partial: 'identities').html_safe %>
-  <%= react_component 'Dropdown', title: 'Delete account', children: render(partial: 'delete').html_safe %>
+  <%=
+    react_component 'ProfileConfiguration',
+      premiumHtml: render(partial: 'premium').html_safe,
+      settingsHtml: render(partial: 'user_settings').html_safe,
+      identitiesHtml: render(partial: 'identities').html_safe,
+      deleteHtml: render(partial: 'delete').html_safe,
+      vacations: @vacations
+  %>
 <% end %>

@@ -43,7 +43,7 @@ class ProfilesController < ApplicationController
   end
 
   def find_vacations
-    @vacations = current_user.vacations.order(start_time: :desc).load_async
+    @vacations = VacationSerializer.new(current_user.vacations.order(start_time: :desc)).serializable_hash
   end
 
   def find_identities

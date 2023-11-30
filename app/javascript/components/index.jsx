@@ -7,3 +7,4 @@ export * from './ExcludeRules/ExcludeRules';
 export * from './Repository/Repository';
 export * from './Repository/RepositoryForm';
 export * from './Flash/Flash';
+export * from './Profile/ProfileConfiguration';
