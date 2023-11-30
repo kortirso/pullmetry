@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 5de18679c269931622b44892d68cbd7ecdad0aa6
+  revision: e48c6c86a19c1b8c0bfb5b29a9f00668654bc172
   branch: main
   specs:
     bullet (7.1.4)
@@ -247,7 +247,7 @@ GEM
     msgpack (1.7.2)
     multi_json (1.15.0)
     mutex_m (0.2.0)
-    net-imap (0.4.6)
+    net-imap (0.4.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -272,7 +272,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
-    pghero (3.3.4)
+    pghero (3.4.0)
       activerecord (>= 6)
     psych (5.1.1.1)
       stringio
@@ -355,7 +355,7 @@ GEM
     redis-store (1.10.0)
       redis (>= 4, < 6)
     regexp_parser (2.8.2)
-    reline (0.4.0)
+    reline (0.4.1)
       io-console (~> 0.5)
     rexml (3.2.6)
     rspec (3.12.0)
@@ -451,7 +451,7 @@ GEM
       net-ssh (>= 2.8.0)
     store_model (2.1.2)
       activerecord (>= 5.2)
-    stringio (3.0.9)
+    stringio (3.1.0)
     strong_migrations (1.6.4)
       activerecord (>= 5.2)
     tailwindcss-rails (2.0.32-arm64-darwin)
@@ -467,7 +467,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
-    view_component (3.7.0)
+    view_component (3.8.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
