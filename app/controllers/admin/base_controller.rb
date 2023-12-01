@@ -9,9 +9,9 @@ module Admin
     private
 
     def authorize_admin
-      return if Current.user.admin?
+      return if current_user.admin?
 
-      redirect_to root_path
+      authentication_error
     end
   end
 end

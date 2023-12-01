@@ -56,7 +56,7 @@ module Pullmetry
 
     # Catch 404s
     config.after_initialize do |app|
-      app.routes.append { match '*path', to: 'application#page_not_found', via: :all }
+      app.routes.append { match '*path', to: 'application#not_found', via: :all }
     end
   end
 end
