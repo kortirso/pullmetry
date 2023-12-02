@@ -54,6 +54,7 @@ export const RepositoryForm = ({ company_uuid, companies, providers }) => {
         onClose={() => setPageState({ ...pageState, isOpen: false })}
       >
         <h1 className="mb-8">New Repository</h1>
+        <p className="mb-4">Repository is just abstraction of your real repository. Link must be real, title - anything you want.</p>
         <section className="inline-block w-full">
           <div className="form-field">
             <p className="flex flex-row">

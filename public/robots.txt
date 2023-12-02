@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /companies/
+Disallow: /repositories/
+Disallow: /profile
+Disallow: /achievements
+Disallow: /admin/
+Disallow: /api/
+Sitemap: https://pullkeeper.dev/sitemap.xml

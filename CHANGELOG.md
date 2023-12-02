@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Modified
 - vacation form to modal window
+- refresh views
 
 ## [1.6.2] - 2023-11-30
 ### Added

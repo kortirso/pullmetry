@@ -37,11 +37,11 @@
   }
 
   .benefits-box {
-    @apply flex flex-col pr-12 mb-12;
+    @apply flex flex-col px-4 mb-12;
   }
 
   .benefits-title {
-    @apply text-left mb-8;
+    @apply text-center font-semibold mb-8;
   }
 
   .benefits-text {
@@ -243,5 +243,13 @@
 
   .tooltip:hover .tooltiptext {
     @apply opacity-100 visible;
+  }
+
+  .modal {
+    @apply relative p-4 sm:p-8 bg-white rounded overflow-y-scroll;
+    @apply w-full md:w-3/5 lg:w-2/5;
+
+    max-width: 95%;
+    max-height: 90%;
   }
 }

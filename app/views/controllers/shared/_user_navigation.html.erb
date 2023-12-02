@@ -1,49 +1,53 @@
 <div class="w-full lg:w-64 bg-zinc-800 flex flex-col justify-between p-4 lg:p-0">
-  <div class="flex flex-col">
-    <%= link_to root_path, class: 'user-navigation-link lg:my-4 text-xl' do %>
-      <%- image_tag '' %>
-      <span>PullKeeper</span>
-    <% end %>
-    <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap">
-      <%= link_to companies_path, class: 'user-navigation-link' do %>
+  <% cache('user_navigation_top_v1', expires_in: 24.hours) do %>
+    <div class="flex flex-col">
+      <%= link_to root_path, class: 'user-navigation-link lg:my-4 text-xl' do %>
         <%- image_tag '' %>
-        <span><%= t('components.page_wrappers.page_component.companies') %></span>
+        <span>Pull<span class="text-orange-400">Keeper</span></span>
       <% end %>
-      <%= link_to repositories_path, class: 'user-navigation-link' do %>
-        <%- image_tag '' %>
-        <span><%= t('components.page_wrappers.page_component.repositories') %></span>
-      <% end %>
-      <%= link_to achievements_path, class: 'user-navigation-link' do %>
-        <%- image_tag '' %>
-        <span><%= t('components.page_wrappers.page_component.achievements') %></span>
-      <% end %>
-      <%= link_to profile_path, class: 'user-navigation-link' do %>
-        <%- image_tag '' %>
-        <span><%= t('components.page_wrappers.page_component.profile') %></span>
-      <% end %>
+      <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap">
+        <%= link_to companies_path, class: 'user-navigation-link' do %>
+          <%- image_tag '' %>
+          <span><%= t('components.page_wrappers.page_component.companies') %></span>
+        <% end %>
+        <%= link_to repositories_path, class: 'user-navigation-link' do %>
+          <%- image_tag '' %>
+          <span><%= t('components.page_wrappers.page_component.repositories') %></span>
+        <% end %>
+        <%= link_to achievements_path, class: 'user-navigation-link' do %>
+          <%- image_tag '' %>
+          <span><%= t('components.page_wrappers.page_component.achievements') %></span>
+        <% end %>
+        <%= link_to profile_path, class: 'user-navigation-link' do %>
+          <%- image_tag '' %>
+          <span><%= t('components.page_wrappers.page_component.profile') %></span>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
   <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap lg:pb-8">
     <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
-    <%= link_to how_it_works_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span>How it works</span>
-    <% end %>
-    <%= link_to metrics_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span>Metrics</span>
-    <% end %>
-    <%= link_to sources_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span>Source code</span>
-    <% end %>
-    <%= link_to privacy_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span>Privacy policy</span>
-    <% end %>
-    <%= link_to logout_path, class: 'user-navigation-link' do %>
-      <%- image_tag '' %>
-      <span><%= t('components.page_wrappers.page_component.logout') %></span>
+    <% cache('user_navigation_bottom_v1', expires_in: 24.hours) do %>
+      <%= link_to how_it_works_path, class: 'user-navigation-link' do %>
+        <%- image_tag '' %>
+        <span>How it works</span>
+      <% end %>
+      <%= link_to metrics_path, class: 'user-navigation-link' do %>
+        <%- image_tag '' %>
+        <span>Metrics</span>
+      <% end %>
+      <%= link_to sources_path, class: 'user-navigation-link' do %>
+        <%- image_tag '' %>
+        <span>Source code</span>
+      <% end %>
+      <%= link_to privacy_path, class: 'user-navigation-link' do %>
+        <%- image_tag '' %>
+        <span>Privacy policy</span>
+      <% end %>
+      <%= link_to logout_path, class: 'user-navigation-link' do %>
+        <%- image_tag '' %>
+        <span><%= t('components.page_wrappers.page_component.logout') %></span>
+      <% end %>
     <% end %>
   </div>
 </div>

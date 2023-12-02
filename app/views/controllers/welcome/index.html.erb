@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:my-24">
+  <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-16">
     <div class="flex-1 flex flex-col justify-center">
       <h1 class="text-center lg:text-left">PullKeeper is open source pull requests analyzer</h1>
       <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
@@ -11,15 +11,19 @@
       <% end %>
     </div>
     <div class="flex-1 flex justify-center">
-      <%= image_tag 'screenshot.webp', width: 616, height: 355, alt: 'interface-example', class: 'rounded' %>
+      <%= image_tag 'screenshot.webp', width: 616, height: 355, alt: 'interface-example', class: 'rounded-xl' %>
     </div>
   </section>
-  <section class="mx-auto my-8 xl:my-24">
-    <h1 class="text-center mb-12">PullKeeper features</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+  <section class="mx-auto my-8 xl:mt-16 xl:mb-24">
+    <h1 class="text-center text-4xl mb-12">PullKeeper features</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2">
       <div class="benefits-box">
         <h3 class="benefits-title">Reviewer statistics</h3>
-        <p class="benefits-text">Calculated the up-to-date reviewer statistics (reviews, comments, average review time and <%= link_to 'more', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
+        <p class="benefits-text">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
+      </div>
+      <div class="benefits-box">
+        <h3 class="benefits-title">Privacy</h3>
+        <p class="benefits-text">Application requires read-only access to pull requests in your repositories and does not get/use your code. Your developers can (or can't) have access to their statistics</p>
       </div>
       <div class="benefits-box">
         <h3 class="benefits-title">Customizable calculations</h3>
@@ -34,6 +38,10 @@
         <p class="benefits-text">Compareable data with previous periods for better understanding development improvements</p>
       </div>
       <div class="benefits-box">
+        <h3 class="benefits-title">Slack and Discord notification</h3>
+        <p class="benefits-text">Receive notifications to Slack and/or Discord with latest insights of your companies and repositories</p>
+      </div>
+      <div class="benefits-box">
         <h3 class="benefits-title">Github and Gitlab API</h3>
         <p class="benefits-text">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
       </div>
@@ -41,15 +49,6 @@
         <h3 class="benefits-title">Achievements system</h3>
         <p class="benefits-text">PullKeeper has achievements system for representing and comparing developer success</p>
       </div>
-    </div>
-  </section>
-  <section class="flex flex-col-reverse lg:flex-row mx-auto mt-8 mb-16 xl:my-24">
-    <div class="flex-1 flex justify-center">
-      <%= image_tag 'insights.webp', width: 616, height: 223, alt: 'interface-example' %>
-    </div>
-    <div class="flex-1 flex flex-col justify-center">
-      <h2 class="text-center lg:text-left">Slack and Discord integration</h2>
-      <p class="text-lg leading-8 mb-8 lg-mb-0 text-center lg:text-left">Receive notifications to Slack and/or Discord with latest insights of your companies and repositories.</p>
     </div>
   </section>
 <% end %>

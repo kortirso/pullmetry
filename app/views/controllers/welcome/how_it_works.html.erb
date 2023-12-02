@@ -1,27 +1,37 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <section class="mx-auto my-12">
-    <h1 class="mb-8">How PullKepper works</h1>
-    <h2>Mandatory steps</h2>
-    <ul>
-      <li>First of all for using PullKeeper you need to login with your Github or Gitlab account.</li>
-      <li>Then you need to <%= link_to 'create Company', companies_path, class: 'simple-link' %>. Company is just abstraction for group of repositories with similar configuration.</li>
-      <li>Then for any company you need to <%= link_to 'create Repository', repositories_path, class: 'simple-link' %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
-      <li>And finally, main part - you need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</li>
-    </ul>
-    <p class="mb-4">If you add access token for repository - only this repository will use it for fetching data, if you add it for company - repositories of this company will use it (during access token generation you can specify repositories with access permissions).</p>
-    <p class="mb-8">And these are only required steps, during next synchronization (usually it's the beginning of each hour) all required data will be collected, insights with developers statistics will be generated (by default they will contain data about comments count, review count, average review time, open pull requests and average reviewed LOC).</p>
-    <h3>Using PullKeeper without companies and repositories</h3>
-    <p class="mb-8">Any user, that has insights at some company or repository, has read access for insights data in such companies and repositories, so it's required (and allowed) only for 1 user to create/enable fetching data for specific repository and other developers will have access to it.</p>
-    <h2>Optional steps for free account</h2>
-    <ul>
-      <li>At company configuration page you can specify work time of your company - this allows better calculations of average review time, because they will not count not-working time and weekends (without this setting they will count such not-working time). Ignore users work time checkbox allows to consider only company work time for such calculations.</li>
-      <li>And at this page you can select what type of average calculation to use: arithmetic mean, geometric mean or median.</li>
-      <li>At <%= link_to 'profile page', profile_path, class: 'simple-link' %> you can activate trial subscription (no credit card required to get started, it applies to all your companies) and specify your work time and vacations (again, for better average review time calculations).</li>
-    </ul>
-    <h2>Optional steps for premium account</h2>
-    <ul>
-      <li>Company configuration page for premium account has more available options: you can specify generating insight attributes for developers (up to 12 different metrics), you can enable comparing data with previous periods and enable Slack and Discord notifications with insights.</li>
-    </ul>
-  </section>
+  <% cache('how_it_works_v1', expires_in: 24.hours) do %>
+    <section class="mx-auto my-12">
+      <h1 class="mb-8">How PullKepper works</h1>
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8">
+        <div class="col-span-2">
+          <h2>Mandatory steps</h2>
+          <ul>
+            <li>First of all for using PullKeeper you need to login with your Github or Gitlab account.</li>
+            <li>Then you need to <%= link_to 'create Company', companies_path, class: 'simple-link' %>. Company is just abstraction for group of repositories with similar configuration.</li>
+            <li>Then for any company you need to <%= link_to 'create Repository', repositories_path, class: 'simple-link' %>, and here real link for your repository at Github or Gitlab is required (repository can be private). Later this link will be used for fetching statistics. Maximum 5 repositories for free account.</li>
+            <li>And finally, main part - you need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</li>
+          </ul>
+        </div>
+        <div class="relative col-span-3">
+          <%= image_tag 'new_repository.webp', width: 616, alt: 'repository-form', class: 'relative rounded-xl left-0 lg:left-12' %>
+          <%= image_tag 'new_company.webp', width: 616, alt: 'compant-form', class: 'rounded-xl absolute top-40 left-20 lg:left-32' %>
+        </div>
+      </div>
+      <p class="mb-4">If you add access token for repository - only this repository will use it for fetching data, if you add it for company - repositories of this company will use it (during access token generation you can specify repositories with access permissions).</p>
+      <p class="mb-8">And these are only required steps, during next synchronization (usually it's the beginning of each hour) all required data will be collected, insights with developers statistics will be generated (by default they will contain data about comments count, review count, average review time, open pull requests and average reviewed LOC).</p>
+      <h3>Using PullKeeper without companies and repositories</h3>
+      <p class="mb-8">Any user, that has insights at some company or repository, has read access for insights data in such companies and repositories, so it's required (and allowed) only for 1 user to create/enable fetching data for specific repository and other developers will have access to it.</p>
+      <h2>Optional steps for free account</h2>
+      <ul>
+        <li>At company configuration page you can specify work time of your company - this allows better calculations of average review time, because they will not count not-working time and weekends (without this setting they will count such not-working time). Ignore users work time checkbox allows to consider only company work time for such calculations.</li>
+        <li>And at this page you can select what type of average calculation to use: arithmetic mean, geometric mean or median.</li>
+        <li>At <%= link_to 'profile page', profile_path, class: 'simple-link' %> you can activate trial subscription (no credit card required to get started, it applies to all your companies) and specify your work time and vacations (again, for better average review time calculations).</li>
+      </ul>
+      <h2>Optional steps for premium account</h2>
+      <ul>
+        <li>Company configuration page for premium account has more available options: you can specify generating insight attributes for developers (up to 12 different metrics), you can enable comparing data with previous periods and enable Slack and Discord notifications with insights.</li>
+      </ul>
+    </section>
+  <% end %>
 <% end %>
 

@@ -2,7 +2,7 @@
   <div>
     <span class="copyright">&copy;</span> 2023 PullKeeper, v1.6.2
   </div>
-  <div class="flex grid-x gap-8 mb-4 sm:mb-0">
+  <div class="flex flex-wrap grid-x gap-8 mb-8 sm:mb-0">
     <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer">Support in Telegram</a>
     <% if Current.user %>
       <%= react_component 'FeedbackForm', children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
