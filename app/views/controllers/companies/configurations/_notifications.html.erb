@@ -1,21 +1,16 @@
 <div class="py-6 px-8">
   <div class="grid lg:grid-cols-2 gap-8">
     <div class="form-field">
-      <% if @company.premium? %>
-        <div class="mb-4">
-          <%= form.label :insights_webhook_url, 'Slack webhooks url', class: 'form-label' %>
-          <%= form.text_field :insights_webhook_url, class: 'form-value w-full text-sm', placeholder: 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000' %>
-        </div>
-        <div>
-          <%= form.label :insights_discord_webhook_url, 'Discord webhooks url', class: 'form-label' %>
-          <%= form.text_field :insights_discord_webhook_url, class: 'form-value w-full text-sm', placeholder: 'https://discord.com/api/webhooks/000111222333444555/long-key' %>
-        </div>
-      <% else %>
-        <p>This configuration is available for premium accounts.</p>
-      <% end %>
+      <div class="mb-4">
+        <%= form.label :insights_webhook_url, 'Slack webhooks url', class: 'form-label' %>
+        <%= form.text_field :insights_webhook_url, class: 'form-value w-full text-sm', placeholder: 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000' %>
+      </div>
+      <div>
+        <%= form.label :insights_discord_webhook_url, 'Discord webhooks url', class: 'form-label' %>
+        <%= form.text_field :insights_discord_webhook_url, class: 'form-value w-full text-sm', placeholder: 'https://discord.com/api/webhooks/000111222333444555/long-key' %>
+      </div>
     </div>
     <div>
-      <p>If this configuration enabled then you can set url of Slack and Discord webhook and notifications will be send there.</p>
       <p>For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks">Slack incoming webhooks</a>.</p>
       <p>For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
     </div>

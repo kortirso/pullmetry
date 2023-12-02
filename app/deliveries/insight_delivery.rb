@@ -12,14 +12,12 @@ class InsightDelivery < ApplicationDelivery
   def ensure_mailer_enabled = false
 
   def ensure_slack_webhook_enabled
-    return false unless insightable.premium?
     return false if insightable.configuration.insights_webhook_url.blank?
 
     true
   end
 
   def ensure_discord_webhook_enabled
-    return false unless insightable.premium?
     return false if insightable.configuration.insights_discord_webhook_url.blank?
 
     true
