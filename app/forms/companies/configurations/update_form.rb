@@ -53,7 +53,6 @@ module Companies
         params_list = %i[
           ignore_users_work_time work_time_zone work_start_time work_end_time
           private average_type pull_request_exclude_rules
-          insights_webhook_url insights_discord_webhook_url
         ]
         # premium account has more available attributes for update
         if company.premium?

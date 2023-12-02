@@ -13,6 +13,7 @@ class Company < ApplicationRecord
   has_many :pull_requests_comments, class_name: '::PullRequests::Comment', through: :repositories
   has_many :pull_requests_reviews, class_name: '::PullRequests::Review', through: :repositories
   has_many :ignores, as: :insightable, dependent: :destroy
+  has_many :webhooks, as: :insightable, dependent: :destroy
 
   delegate :premium?, to: :user
 end

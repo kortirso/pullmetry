@@ -1160,6 +1160,41 @@ ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
 
 
 --
+-- Name: webhooks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webhooks (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    insightable_id bigint NOT NULL,
+    insightable_type character varying NOT NULL,
+    source integer DEFAULT 0 NOT NULL,
+    url character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: webhooks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.webhooks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: webhooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.webhooks_id_seq OWNED BY public.webhooks.id;
+
+
+--
 -- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1325,6 +1360,13 @@ ALTER TABLE ONLY public.users_sessions ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.vacations ALTER COLUMN id SET DEFAULT nextval('public.vacations_id_seq'::regclass);
+
+
+--
+-- Name: webhooks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks ALTER COLUMN id SET DEFAULT nextval('public.webhooks_id_seq'::regclass);
 
 
 --
@@ -1549,6 +1591,14 @@ ALTER TABLE ONLY public.users_sessions
 
 ALTER TABLE ONLY public.vacations
     ADD CONSTRAINT vacations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: webhooks webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks
+    ADD CONSTRAINT webhooks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1853,6 +1903,20 @@ CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id
 
 
 --
+-- Name: index_webhooks_on_insightable_id_and_insightable_type_and_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_webhooks_on_insightable_id_and_insightable_type_and_url ON public.webhooks USING btree (insightable_id, insightable_type, url);
+
+
+--
+-- Name: index_webhooks_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_webhooks_on_uuid ON public.webhooks USING btree (uuid);
+
+
+--
 -- Name: kudos_users_achievements_unique_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1932,6 +1996,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20231202162353'),
 ('20231126184938'),
 ('20231107124203'),
 ('20231024120000'),

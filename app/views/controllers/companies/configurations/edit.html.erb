@@ -8,9 +8,9 @@
         insightAttributesHtml: render(partial: 'insights', locals: { form: form }).html_safe,
         averageHtml: render(partial: 'average', locals: { form: form }).html_safe,
         ratiosHtml: render(partial: 'ratios', locals: { form: form }).html_safe,
-        notificationsHtml: render(partial: 'notifications', locals: { form: form }).html_safe,
         excludeRules: JSON.parse(@company.configuration.pull_request_exclude_rules.presence || '{}'),
         ignores: @ignores,
+        webhooks: @webhooks,
         companyUuid: @company.uuid
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>

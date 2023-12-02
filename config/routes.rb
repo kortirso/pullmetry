@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
         resources :ignores, only: %i[create]
+        resources :webhooks, only: %i[create]
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
       end
       resource :feedback, only: %i[create]
       resources :ignores, only: %i[destroy]
+      resources :webhooks, only: %i[destroy]
       resources :vacations, only: %i[create destroy]
     end
   end

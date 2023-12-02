@@ -10,6 +10,7 @@ module Companies
       authorize! @company, to: :update?
 
       find_ignores
+      find_webhooks
       find_insight_ratio_type_values
       find_average_type_values
       find_main_attribute_values
@@ -39,6 +40,10 @@ module Companies
       @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
     end
 
+    def find_webhooks
+      @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
+    end
+
     def find_insight_ratio_type_values
       @insight_ratio_type_values = @company.configuration.insight_ratio_type_values.map { |key, _v| transform_key(key) }
     end
@@ -62,8 +67,6 @@ module Companies
           :private,
           :insight_ratio,
           :insight_ratio_type,
-          :insights_webhook_url,
-          :insights_discord_webhook_url,
           :ignore_users_work_time,
           :work_time_zone,
           :work_start_time,

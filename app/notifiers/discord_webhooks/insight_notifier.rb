@@ -4,7 +4,7 @@ module DiscordWebhooks
   class InsightNotifier < DiscordWebhookNotifier
     def report
       notification(
-        path: URI(insightable.configuration.insights_discord_webhook_url).path,
+        path: URI(insightable.webhooks.discord.first.url).path,
         body: {
           username: 'PullKeeper',
           content: DiscordWebhooks::Insight::ReportPayload.new.call(insightable: insightable)

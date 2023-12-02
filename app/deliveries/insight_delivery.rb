@@ -12,15 +12,19 @@ class InsightDelivery < ApplicationDelivery
   def ensure_mailer_enabled = false
 
   def ensure_slack_webhook_enabled
-    return false if insightable.configuration.insights_webhook_url.blank?
+    return false if webhook_sources.exclude?(Webhook::SLACK)
 
     true
   end
 
   def ensure_discord_webhook_enabled
-    return false if insightable.configuration.insights_discord_webhook_url.blank?
+    return false if webhook_sources.exclude?(Webhook::DISCORD)
 
     true
+  end
+
+  def webhook_sources
+    insightable.webhooks.pluck(:source)
   end
 
   def insightable = params[:insightable]

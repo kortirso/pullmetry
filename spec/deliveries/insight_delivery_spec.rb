@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 describe InsightDelivery, type: :delivery do
-  let!(:company) { create :company, configuration: { insights_webhook_url: 'url' } }
+  let!(:company) { create :company }
+
+  before { create :webhook, source: 'slack', url: 'url1', insightable: company }
 
   describe '#report' do
     context 'for regular account' do
@@ -24,12 +26,7 @@ describe InsightDelivery, type: :delivery do
       end
 
       context 'with available discord webhook' do
-        before do
-          company.configuration.assign_attributes(
-            insights_discord_webhook_url: 'url'
-          )
-          company.save!
-        end
+        before { create :webhook, source: 'discord', url: 'url2', insightable: company }
 
         it 'delivers to 2 webhooks' do
           expect {
