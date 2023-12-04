@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - admin routes for repositories
+- custom webhooks notifications with insights
 
 ## [1.6.3] - 2023-12-03
 ### Added

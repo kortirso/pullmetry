@@ -13,7 +13,7 @@ module DiscordWebhooks
       private
 
       def header_block
-        "**Pull review insights of #{@insightable.class.name.downcase} #{@insightable.title}**\n"
+        "**Pull request insights of #{@insightable.class.name.downcase} #{@insightable.title}**\n"
       end
 
       def accessable_message
