@@ -14,7 +14,7 @@ module Webhooks
       private
 
       def title(insightable)
-        "Pull request insights of #{insightable.class.name.downcase} #{insightable.title}"
+        "Pull review insights of #{insightable.class.name.downcase} #{insightable.title}"
       end
 
       def accessable_message(insightable)

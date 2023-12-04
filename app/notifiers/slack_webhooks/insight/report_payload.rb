@@ -18,7 +18,7 @@ module SlackWebhooks
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: "*Pull request insights of #{@insightable.class.name.downcase} #{@insightable.title}*"
+              text: "*Pull review insights of #{@insightable.class.name.downcase} #{@insightable.title}*"
             }
           }
         ]
