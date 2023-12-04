@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   namespace :admin do
     get '', to: 'welcome#index'
 
-    resources :companies, only: %i[index]
+    resources :companies, only: %i[index] do
+      resources :repositories, only: %i[index], module: 'companies'
+    end
+    resources :repositories, only: %i[index]
     resources :feedbacks, only: %i[index]
   end
 

@@ -5,6 +5,7 @@
       <th>Title</th>
       <th>Description</th>
       <th>User ID</th>
+      <th>User UUID</th>
       <th>User email</th>
       <th>Premium?</th>
     </tr>
@@ -15,7 +16,8 @@
         <td><%= feedback.id %></td>
         <td><%= feedback.title %></td>
         <td><%= feedback.description %></td>
-        <td><%= feedback.user_id %></td>
+        <td><%= feedback.user.id %></td>
+        <td><%= feedback.user.uuid %></td>
         <td><%= feedback.user.email %></td>
         <td><%= feedback.user.premium? %></td>
       </tr>

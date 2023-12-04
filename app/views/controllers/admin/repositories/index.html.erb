@@ -1,0 +1,29 @@
+<table class="table zebra">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>UUID</th>
+      <th>Title</th>
+      <th>URL</th>
+      <th>Access token</th>
+      <th>Access token status</th>
+      <th>Premium?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @repositories.each do |repository| %>
+      <tr>
+        <td><%= repository.id %></td>
+        <td><%= repository.uuid %></td>
+        <td><%= repository.title %></td>
+        <td><%= repository.link %></td>
+        <td><%= repository.fetch_access_token ? "#{repository.fetch_access_token.value.first(16)}-****" : '' %></td>
+        <td><%= repository.access_token_status %></td>
+        <td><%= repository.company.user.premium? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

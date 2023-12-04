@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Admin::CompaniesController do
+describe Admin::RepositoriesController do
   describe 'GET#index' do
     it_behaves_like 'required auth'
     it_behaves_like 'required admin auth'
