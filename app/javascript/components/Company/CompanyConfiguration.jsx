@@ -237,6 +237,7 @@ export const CompanyConfiguration = ({
               value={pageState.webhookSource}
               onChange={e => setPageState({ ...pageState, webhookSource: e.target.value })}
             >
+              <option value="custom">Custom</option>
               <option value="slack">Slack</option>
               <option value="discord">Discord</option>
             </select>

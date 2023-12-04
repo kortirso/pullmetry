@@ -61,6 +61,7 @@ module Pullmetry
     register('notifiers.slack_webhooks.admin.feedback_created_payload') {
       SlackWebhooks::Admin::FeedbackCreatedPayload.new
     }
+    register('notifiers.webhooks.insight.report_payload') { Webhooks::Insight::ReportPayload.new }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

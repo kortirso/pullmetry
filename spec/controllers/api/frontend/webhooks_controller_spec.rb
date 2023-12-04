@@ -54,6 +54,20 @@ describe Api::Frontend::WebhooksController do
           end
         end
 
+        context 'for invalid custom url format' do
+          let(:request) {
+            post :create, params: {
+              company_id: company.uuid, webhook: { source: 'custom', url: '1123' }, auth_token: access_token
+            }
+          }
+
+          it 'does not create webhook', :aggregate_failures do
+            expect { request }.not_to change(Webhook, :count)
+            expect(response).to have_http_status :ok
+            expect(response.parsed_body.dig('errors', 0)).to eq 'Invalid Webhook url'
+          end
+        end
+
         context 'for existing webhook with such source' do
           let(:request) {
             post :create, params: {
@@ -80,7 +94,23 @@ describe Api::Frontend::WebhooksController do
           }
 
           it 'creates webhook', :aggregate_failures do
-            expect { request }.to change(company.webhooks, :count).by(1)
+            expect { request }.to change(company.webhooks.slack, :count).by(1)
+            expect(response).to have_http_status :ok
+            expect(response.parsed_body['errors']).to be_nil
+          end
+        end
+
+        context 'for valid custom params' do
+          let(:request) {
+            post :create, params: {
+              company_id: company.uuid,
+              webhook: { source: 'custom', url: 'https://hooks.slack.com/services/url' },
+              auth_token: access_token
+            }
+          }
+
+          it 'creates webhook', :aggregate_failures do
+            expect { request }.to change(company.webhooks.custom, :count).by(1)
             expect(response).to have_http_status :ok
             expect(response.parsed_body['errors']).to be_nil
           end

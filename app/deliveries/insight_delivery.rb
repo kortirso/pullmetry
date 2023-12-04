@@ -2,6 +2,7 @@
 
 class InsightDelivery < ApplicationDelivery
   before_notify :ensure_mailer_enabled, on: :mailer
+  before_notify :ensure_webhook_enabled, on: :webhook
   before_notify :ensure_slack_webhook_enabled, on: :slack_webhook
   before_notify :ensure_discord_webhook_enabled, on: :discord_webhook
 
@@ -10,6 +11,12 @@ class InsightDelivery < ApplicationDelivery
   private
 
   def ensure_mailer_enabled = false
+
+  def ensure_webhook_enabled
+    return false if webhook_sources.exclude?(Webhook::CUSTOM)
+
+    true
+  end
 
   def ensure_slack_webhook_enabled
     return false if webhook_sources.exclude?(Webhook::SLACK)

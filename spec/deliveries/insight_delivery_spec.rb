@@ -3,7 +3,7 @@
 describe InsightDelivery, type: :delivery do
   let!(:company) { create :company }
 
-  before { create :webhook, source: 'slack', url: 'url1', insightable: company }
+  before { create :webhook, source: Webhook::SLACK, url: 'url1', insightable: company }
 
   describe '#report' do
     context 'for regular account' do
@@ -26,12 +26,22 @@ describe InsightDelivery, type: :delivery do
       end
 
       context 'with available discord webhook' do
-        before { create :webhook, source: 'discord', url: 'url2', insightable: company }
+        before { create :webhook, source: Webhook::DISCORD, url: 'url2', insightable: company }
 
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).report.deliver_later
           }.to deliver_via(:slack_webhook, :discord_webhook)
+        end
+      end
+
+      context 'with available custom webhook' do
+        before { create :webhook, source: Webhook::CUSTOM, url: 'url3', insightable: company }
+
+        it 'delivers to 2 webhooks' do
+          expect {
+            described_class.with(insightable: company).report.deliver_later
+          }.to deliver_via(:slack_webhook, :webhook)
         end
       end
     end
