@@ -25,6 +25,8 @@ module Pullmetry
     register('api.gitlab.client') { GitlabApi::Client.new }
     register('api.slack.client') { SlackHooksApi::Client.new }
     register('api.discord.client') { DiscordApi::Client.new }
+    register('api.telegram.client') { TelegramApi::Client.new }
+    register('bot.telegram.client') { TelegramBot::Client.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }

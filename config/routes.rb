@@ -38,6 +38,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :webhooks do
+    resource :telegram, only: %i[create]
+  end
+
   resources :companies, only: %i[index destroy] do
     resource :configuration, only: %i[edit update], module: 'companies'
     resources :repositories, only: %i[index], module: 'companies'

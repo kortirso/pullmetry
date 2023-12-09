@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - connecting account to Telegram
+- receiving Telegram webhooks from bot
 
 ## [1.6.4] - 2023-12-03
 ### Added
