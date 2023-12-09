@@ -48,6 +48,9 @@ class ProfilesController < ApplicationController
 
   def find_identities
     @identities = current_user.identities.order(provider: :asc).hashable_pluck(:id, :provider, :created_at)
+    @must_be_identities = @identities.select do |identity|
+      Providerable::MUST_BE_PROVIDERS.include?(identity[:provider])
+    end
   end
 
   def find_not_attached_identities

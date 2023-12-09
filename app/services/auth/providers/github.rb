@@ -8,8 +8,8 @@ module Auth
         api_client: 'api.github.client'
       ]
 
-      def call(code:)
-        access_token = fetch_access_token(code)
+      def call(params: {})
+        access_token = fetch_access_token(params[:code])
         return { errors: ['Invalid code'] } unless access_token
 
         user = fetch_user_info(access_token)

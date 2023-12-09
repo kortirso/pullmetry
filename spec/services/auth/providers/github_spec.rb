@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Auth::Providers::Github do
-  subject(:service_call) { described_class.new.call(code: code) }
+  subject(:service_call) { described_class.new.call(params: { code: code }) }
 
   let(:code) { 'code' }
   let(:emails_response) { [] }

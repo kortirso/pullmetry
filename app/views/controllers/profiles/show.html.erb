@@ -1,10 +1,10 @@
 <%= render PageWrappers::UserComponent.new do %>
   <h1 class="mb-8">Profile <%= Current.user.uuid %></h1>
+  <%= render(partial: 'identities') %>
   <%=
     react_component 'ProfileConfiguration',
       premiumHtml: render(partial: 'premium').html_safe,
       settingsHtml: render(partial: 'user_settings').html_safe,
-      identitiesHtml: render(partial: 'identities').html_safe,
       deleteHtml: render(partial: 'delete').html_safe,
       vacations: @vacations
   %>

@@ -82,7 +82,7 @@ describe Users::OmniauthCallbacksController do
           context 'for logged user' do
             sign_in_user
 
-            context 'for invalid payload' do
+            context 'for payload without email' do
               let(:auth_payload) do
                 {
                   uid: '123',
@@ -92,9 +92,9 @@ describe Users::OmniauthCallbacksController do
                 }
               end
 
-              it 'redirects to companies path', :aggregate_failures do
-                expect { request }.not_to change(Identity, :count)
-                expect(response).to redirect_to companies_path
+              it 'redirects to profile path', :aggregate_failures do
+                expect { request }.to change(Identity, :count).by(1)
+                expect(response).to redirect_to profile_path
               end
             end
 
@@ -108,9 +108,9 @@ describe Users::OmniauthCallbacksController do
                 }
               end
 
-              it 'redirects to companies path', :aggregate_failures do
+              it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to companies_path
+                expect(response).to redirect_to profile_path
               end
             end
           end
