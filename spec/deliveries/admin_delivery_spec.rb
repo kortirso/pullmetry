@@ -5,25 +5,25 @@ describe AdminDelivery, type: :delivery do
 
   before do
     allow(Rails.application.credentials).to(
-      receive(:[]).with(:reports_webhook_url).and_return('https://hooks.slack.com/services/T0/B0/G0')
+      receive(:[]).with(:reports_telegram_chat_id).and_return('id')
     )
   end
 
   describe '#job_execution_report' do
-    it 'delivers to slack_webhook' do
+    it 'delivers to telegram' do
       expect {
         described_class.with(job_name: job.class.name).job_execution_report.deliver_later
-      }.to deliver_via(:slack_webhook)
+      }.to deliver_via(:telegram)
     end
   end
 
   describe '#feedback_created' do
     let!(:feedback) { create :feedback }
 
-    it 'delivers to slack_webhook' do
+    it 'delivers to telegram' do
       expect {
         described_class.with(id: feedback.id).feedback_created.deliver_later
-      }.to deliver_via(:slack_webhook)
+      }.to deliver_via(:telegram)
     end
   end
 end
