@@ -8,7 +8,6 @@ import { apiRequest, csrfToken, convertDate } from '../../helpers';
 export const ProfileConfiguration = ({
   premiumHtml,
   settingsHtml,
-  identitiesHtml,
   deleteHtml,
   vacations
 }) => {
@@ -99,7 +98,6 @@ export const ProfileConfiguration = ({
         </div>
       </Dropdown>
       <Dropdown title="User settings">{settingsHtml}</Dropdown>
-      <Dropdown title="Identities">{identitiesHtml}</Dropdown>
       <Dropdown title="Delete account">{deleteHtml}</Dropdown>
       <Modal
         show={pageState.vacationFormIsOpen}

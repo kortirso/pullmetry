@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Auth::Providers::Gitlab do
-  subject(:service_call) { described_class.new.call(code: code) }
+  subject(:service_call) { described_class.new.call(params: { code: code }) }
 
   let(:code) { 'code' }
   let(:user_response) { { 'id' => 1, 'email' => 'email', 'username' => 'labocat' } }

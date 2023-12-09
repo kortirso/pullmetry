@@ -70,6 +70,7 @@ module Pullmetry
     register('services.auth.login_user') { Auth::LoginUserService.new }
     register('services.auth.providers.github') { Auth::Providers::Github.new }
     register('services.auth.providers.gitlab') { Auth::Providers::Gitlab.new }
+    register('services.auth.providers.telegram') { Auth::Providers::Telegram.new }
 
     register('services.persisters.companies.update') { Persisters::Companies::UpdateService.new }
     register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }
