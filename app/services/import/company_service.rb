@@ -51,9 +51,11 @@ module Import
           not_accessable_ticks: not_accessable_ticks
         }
       )
+      # rubocop: disable Style/RedundantReturn
       return if not_accessable_ticks != NOT_ACCESSABLE_LIMIT_TICKS
 
-      Users::NotificationMailer.repository_access_error_email(id: company.user_id).deliver_now
+      # TODO: connect sending notifications
+      # rubocop: enable Style/RedundantReturn
     end
 
     def refresh_entities_cache(company)

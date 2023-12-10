@@ -5,6 +5,7 @@ class Company < ApplicationRecord
   include Tokenable
   include Insightable
   include Configurable
+  include Notifyable
 
   belongs_to :user
 

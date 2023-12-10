@@ -4,16 +4,13 @@ module Users
   class UpdateForm
     prepend ApplicationService
 
-    def call(user:, params:, use_work_time:, notification_params:)
+    def call(user:, params:, use_work_time:)
       @params = params
 
       convert_working_time(use_work_time)
       return if use_work_time && validate_work_time && failure?
 
-      ActiveRecord::Base.transaction do
-        refresh_notifications(user, notification_params)
-        user.update!(@params)
-      end
+      user.update!(@params)
     end
 
     private
@@ -33,19 +30,6 @@ module Users
       return if @params[:work_start_time] != @params[:work_end_time]
 
       fail!('Start and end time must be different')
-    end
-
-    def refresh_notifications(user, notification_params)
-      existing_notifications = user.notifications.load
-
-      notification_params.each do |key, value|
-        notification = existing_notifications.find { |element| element.notification_type == key }
-        next user.notifications.create!(value: value, notification_type: key) if notification.nil?
-
-        if notification.value != value
-          notification.update!(value: value)
-        end
-      end
     end
   end
 end

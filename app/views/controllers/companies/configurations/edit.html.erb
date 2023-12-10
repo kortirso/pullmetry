@@ -11,7 +11,8 @@
         excludeRules: JSON.parse(@company.configuration.pull_request_exclude_rules.presence || '{}'),
         ignores: @ignores,
         webhooks: @webhooks,
-        companyUuid: @company.uuid
+        companyUuid: @company.uuid,
+        notifications: @company.notifications.hashable_pluck(:source, :notification_type)
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
   <% end %>

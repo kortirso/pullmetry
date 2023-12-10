@@ -29,21 +29,6 @@
         <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
       </div>
     </div>
-    <div class="grid lg:grid-cols-2 gap-8 mt-8 lg:mt-0">
-      <div>
-        <%=
-          render Views::Shared::CheckBoxComponent.new(
-            form: form,
-            label: 'Repository access error notifications',
-            field: :access_error,
-            checked: Current.user.notifications.access_error.first&.value
-          )
-        %>
-      </div>
-      <div>
-        <p>You can select email notifications you would like to receive.</p>
-      </div>
-    </div>
     <%= form.submit 'Update user settings', class: 'btn-primary btn-small mt-4' %>
   <% end %>
 </div>

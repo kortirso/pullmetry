@@ -737,6 +737,40 @@ ALTER SEQUENCE public.kudos_users_achievements_id_seq OWNED BY public.kudos_user
 
 
 --
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    id bigint NOT NULL,
+    notifyable_id bigint NOT NULL,
+    notifyable_type character varying NOT NULL,
+    notification_type integer NOT NULL,
+    source integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
+
+
+--
 -- Name: pull_requests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1062,39 +1096,6 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: users_notifications; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users_notifications (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    value boolean DEFAULT false NOT NULL,
-    notification_type integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: users_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.users_notifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.users_notifications_id_seq OWNED BY public.users_notifications.id;
-
-
---
 -- Name: users_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1286,6 +1287,13 @@ ALTER TABLE ONLY public.kudos_users_achievements ALTER COLUMN id SET DEFAULT nex
 
 
 --
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
+
+
+--
 -- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1339,13 +1347,6 @@ ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
-
---
--- Name: users_notifications id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users_notifications ALTER COLUMN id SET DEFAULT nextval('public.users_notifications_id_seq'::regclass);
 
 
 --
@@ -1482,6 +1483,14 @@ ALTER TABLE ONLY public.kudos_users_achievements
 
 
 --
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: pull_requests_comments pull_requests_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1562,14 +1571,6 @@ ALTER TABLE ONLY public.subscriptions
 
 
 --
--- Name: users_notifications users_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users_notifications
-    ADD CONSTRAINT users_notifications_pkey PRIMARY KEY (id);
-
-
---
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1606,6 +1607,13 @@ ALTER TABLE ONLY public.webhooks
 --
 
 CREATE UNIQUE INDEX idx_on_insightable_id_insightable_type_entity_value_508616f247 ON public.ignores USING btree (insightable_id, insightable_type, entity_value);
+
+
+--
+-- Name: idx_on_notifyable_id_notifyable_type_notification_t_9be41a9006; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_notifyable_id_notifyable_type_notification_t_9be41a9006 ON public.notifications USING btree (notifyable_id, notifyable_type, notification_type, source);
 
 
 --
@@ -1861,13 +1869,6 @@ CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree 
 
 
 --
--- Name: index_users_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_notifications_on_user_id ON public.users_notifications USING btree (user_id);
-
-
---
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1996,6 +1997,8 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20231210142646'),
+('20231210092757'),
 ('20231202162353'),
 ('20231126184938'),
 ('20231107124203'),

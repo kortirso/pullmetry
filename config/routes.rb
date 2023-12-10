@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         resources :insights, only: %i[index]
         resources :ignores, only: %i[create]
         resources :webhooks, only: %i[create]
+        resource :notifications, only: %i[create destroy]
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]

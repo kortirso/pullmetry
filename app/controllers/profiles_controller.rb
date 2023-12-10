@@ -16,8 +16,7 @@ class ProfilesController < ApplicationController
     service_call = Users::UpdateForm.call(
       user: current_user,
       params: user_params,
-      use_work_time: to_bool(params[:user][:use_work_time]),
-      notification_params: notification_params.transform_values { |value| to_bool(value) }
+      use_work_time: to_bool(params[:user][:use_work_time])
     )
     if service_call.success?
       redirect_to profile_path
@@ -59,9 +58,5 @@ class ProfilesController < ApplicationController
 
   def user_params
     params.require(:user).permit(:work_time_zone, :work_start_time, :work_end_time)
-  end
-
-  def notification_params
-    params.require(:user).permit(:access_error)
   end
 end

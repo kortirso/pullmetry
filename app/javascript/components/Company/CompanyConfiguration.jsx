@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Dropdown, ExcludeRules } from '../../components';
+import { Checkbox } from './Checkbox';
 
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
+
+NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
 
 export const CompanyConfiguration = ({
   privacyHtml,
@@ -14,7 +17,8 @@ export const CompanyConfiguration = ({
   excludeRules,
   ignores,
   webhooks,
-  companyUuid
+  companyUuid,
+  notifications
 }) => {
   const [pageState, setPageState] = useState({
     ingoreFormIsOpen: false,
@@ -24,9 +28,23 @@ export const CompanyConfiguration = ({
     entityValue: '',
     webhookSource: 'slack',
     webhookUrl: '',
-    errors: []
+    errors: [],
+    notifications: notifications
   });
-  
+
+  const webhookSources = useMemo(() => {
+    return pageState.webhooks.map((item) => item.source);
+  }, [pageState.webhooks]);
+
+  const notificationSources = useMemo(() => {
+    return pageState.notifications.reduce((acc, item) => {
+      if (acc[item.notification_type]) acc[item.notification_type].push(item.source);
+      else acc[item.notification_type] = [item.source];
+
+      return acc;
+    }, {});
+  }, [pageState.notifications]);
+
   const onIgnoreSave = async () => {
     const result = await apiRequest({
       url: `/api/frontend/companies/${companyUuid}/ignores.json`,
@@ -109,9 +127,9 @@ export const CompanyConfiguration = ({
     })
   };
 
-  const onWebhookRemove = async (uuid) => {
+  const onWebhookRemove = async (webhook) => {
     const result = await apiRequest({
-      url: `/api/frontend/webhooks/${uuid}.json`,
+      url: `/api/frontend/webhooks/${webhook.uuid}.json`,
       options: {
         method: 'DELETE',
         headers: {
@@ -123,7 +141,8 @@ export const CompanyConfiguration = ({
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
-      webhooks: pageState.webhooks.filter((item) => item.uuid !== uuid),
+      webhooks: pageState.webhooks.filter((item) => item.uuid !== webhook.uuid),
+      notifications: pageState.notifications.filter((item) => item.source != webhook.source),
       errors: []
     })
   };
@@ -138,13 +157,85 @@ export const CompanyConfiguration = ({
             <p>{webhook.source} - {webhook.url}</p>
             <p
               className="btn-danger btn-xs"
-              onClick={() => onWebhookRemove(webhook.uuid)}
+              onClick={() => onWebhookRemove(webhook)}
             >X</p>
           </div>
         ))}
       </div>
     )
   };
+
+  const onCreateNotification = async (notification_type, source) => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/${companyUuid}/notifications.json`,
+      options: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify({ notification: { notification_type: notification_type, source: source } }),
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      notifications: result.result
+    });
+  };
+
+  const onRemoveNotification = async (notification_type, source) => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/${companyUuid}/notifications.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify({ notification: { notification_type: notification_type, source: source } }),
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      notifications: result.result
+    });
+  };
+
+  const renderNotificationType = (title, notification_type) => (
+    <tr>
+      <td>{title}</td>
+      {NOTIFICATION_SOURCES.map((source) => (
+        <td key={`${notification_type}-${source}`}>
+          <Checkbox
+            disabled={!webhookSources.includes(source)}
+            checked={notificationSources[notification_type]?.includes(source)}
+            onEnable={() => onCreateNotification(notification_type, source)}
+            onDisable={() => onRemoveNotification(notification_type, source)}
+          />
+        </td>
+      ))}
+    </tr>
+  );
+
+  const renderNotifications = () => (
+    <table className="table zebra mt-8">
+      <thead>
+        <tr>
+          <th></th>
+          <th className={`${webhookSources.includes('custom') ? '' : 'opacity-50'}`}>Custom</th>
+          <th className={`${webhookSources.includes('slack') ? '' : 'opacity-50'}`}>Slack</th>
+          <th className={`${webhookSources.includes('discord') ? '' : 'opacity-50'}`}>Discord</th>
+          <th className={`${webhookSources.includes('telegram') ? '' : 'opacity-50'}`}>Telegram</th>
+        </tr>
+      </thead>
+      <tbody>
+        {renderNotificationType('Repository access error', 'repository_access_error')}
+        {renderNotificationType('Insights data', 'insights_data')}
+      </tbody>
+    </table>
+  );
 
   const renderWebhookUrlPlaceholder = () => {
     if (pageState.webhookSource === 'slack') return 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000';
@@ -188,10 +279,13 @@ export const CompanyConfiguration = ({
                 className="btn-primary btn-small mt-4"
                 onClick={() => setPageState({ ...pageState, webhookFormIsOpen: true })}
               >Add webhook</p>
+              {renderNotifications()}
+              <p className="mt-8">For enabling notification for some channel type you need to add webhook first.</p>
             </div>
             <div>
               <p className="mb-4">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" className="simple-link">Slack incoming webhooks</a>.</p>
-              <p>For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
+              <p className="mb-4">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
+              <p>For getting Telegram chat id you need to find <span className="font-semibold">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span className="font-semibold">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number.</p>
             </div>
           </div>
         </div>
@@ -240,6 +334,7 @@ export const CompanyConfiguration = ({
               <option value="custom">Custom</option>
               <option value="slack">Slack</option>
               <option value="discord">Discord</option>
+              <option value="telegram">Telegram</option>
             </select>
           </div>
           <div className="form-field">

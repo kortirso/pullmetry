@@ -36,6 +36,7 @@ module Pullmetry
     register('contracts.feedback') { FeedbackContract.new }
     register('contracts.ignore') { IgnoreContract.new }
     register('contracts.webhook') { WebhookContract.new }
+    register('contracts.notification') { NotificationContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
@@ -45,6 +46,7 @@ module Pullmetry
     register('validators.feedback') { FeedbackValidator.new }
     register('validators.ignore') { IgnoreValidator.new }
     register('validators.webhook') { WebhookValidator.new }
+    register('validators.notification') { NotificationValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
@@ -55,6 +57,7 @@ module Pullmetry
     register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
     register('forms.ignores.create') { Ignores::CreateForm.new }
     register('forms.webhooks.create') { Webhooks::CreateForm.new }
+    register('forms.notifications.create') { Notifications::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
