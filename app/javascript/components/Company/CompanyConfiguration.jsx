@@ -6,7 +6,7 @@ import { Checkbox } from './Checkbox';
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
-NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
+const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
 
 export const CompanyConfiguration = ({
   privacyHtml,
@@ -142,7 +142,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       webhooks: pageState.webhooks.filter((item) => item.uuid !== webhook.uuid),
-      notifications: pageState.notifications.filter((item) => item.source != webhook.source),
+      notifications: pageState.notifications.filter((item) => item.source !== webhook.source),
       errors: []
     })
   };
