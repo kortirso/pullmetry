@@ -11,4 +11,7 @@ class ApplicationDelivery < ActiveDelivery::Base
 
   register_line :discord_webhook, ActiveDelivery::Lines::Notifier,
                 resolver_pattern: 'DiscordWebhooks::%{delivery_name}Notifier'
+
+  register_line :telegram, ActiveDelivery::Lines::Notifier,
+                resolver_pattern: 'Telegram::%{delivery_name}Notifier'
 end

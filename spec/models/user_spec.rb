@@ -9,7 +9,7 @@ describe User do
 
   describe 'associations' do
     it { is_expected.to have_many(:users_sessions).class_name('::Users::Session').dependent(:destroy) }
-    it { is_expected.to have_many(:notifications).class_name('::Users::Notification').dependent(:destroy) }
+    it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_many(:companies).dependent(:destroy) }
     it { is_expected.to have_many(:identities).dependent(:destroy) }
     it { is_expected.to have_many(:subscriptions).dependent(:destroy) }

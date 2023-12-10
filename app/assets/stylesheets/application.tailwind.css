@@ -192,7 +192,7 @@
     height: 24px;
   }
 
-  .toggle:hover .toggle-checkbox + .toggle-label {
+  .toggle:hover .toggle-checkbox:enabled + .toggle-label {
     @apply border-gray-500;
   }
 

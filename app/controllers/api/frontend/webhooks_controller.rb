@@ -20,6 +20,7 @@ module Api
       def destroy
         authorize! @webhook.insightable, to: :update?
         @webhook.destroy
+        @webhook.insightable.notifications.where(source: @webhook.source).destroy_all
         render json: { result: :ok }, status: :ok
       end
 

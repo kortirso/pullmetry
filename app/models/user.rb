@@ -3,12 +3,12 @@
 class User < ApplicationRecord
   include Uuidable
   include Kudos::Achievementable
+  include Notifyable
 
   REGULAR = 'regular'
   ADMIN = 'admin'
 
   has_many :users_sessions, class_name: 'Users::Session', dependent: :destroy
-  has_many :notifications, class_name: 'Users::Notification', dependent: :destroy
 
   has_many :companies, dependent: :destroy
   has_many :repositories, through: :companies

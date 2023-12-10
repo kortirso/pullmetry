@@ -3,6 +3,7 @@ en:
     rules:
       external_id: External id
       entity_value: Entity value
+      notification_type: Notification type
     errors:
       company:
         rules:

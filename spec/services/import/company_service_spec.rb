@@ -25,7 +25,6 @@ describe Import::CompanyService, type: :service do
     allow(sync_repository_from_gitlab).to receive(:call)
     allow(generate_insights_service).to receive(:call)
 
-    allow(Users::NotificationMailer).to receive(:repository_access_error_email).and_return(mailer)
     allow(mailer).to receive(:deliver_now)
   end
 
@@ -37,7 +36,6 @@ describe Import::CompanyService, type: :service do
     expect(generate_insights_service).not_to have_received(:call)
     expect(company.reload.accessable).to be_falsy
     expect(company.not_accessable_ticks).to eq 1
-    expect(Users::NotificationMailer).not_to have_received(:repository_access_error_email)
   end
 
   context 'for over not accessable company' do
@@ -51,7 +49,6 @@ describe Import::CompanyService, type: :service do
       expect(generate_insights_service).not_to have_received(:call)
       expect(company.reload.accessable).to be_falsy
       expect(company.not_accessable_ticks).to eq 10
-      expect(Users::NotificationMailer).to have_received(:repository_access_error_email).with(id: company.user_id)
     end
   end
 
@@ -66,7 +63,6 @@ describe Import::CompanyService, type: :service do
       expect(generate_insights_service).to have_received(:call)
       expect(company.reload.accessable).to be_truthy
       expect(company.not_accessable_ticks).to eq 0
-      expect(Users::NotificationMailer).not_to have_received(:repository_access_error_email)
     end
   end
 end

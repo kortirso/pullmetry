@@ -25,6 +25,8 @@ module Pullmetry
     register('api.gitlab.client') { GitlabApi::Client.new }
     register('api.slack.client') { SlackHooksApi::Client.new }
     register('api.discord.client') { DiscordApi::Client.new }
+    register('api.telegram.client') { TelegramApi::Client.new }
+    register('bot.telegram.client') { TelegramBot::Client.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }
@@ -34,6 +36,7 @@ module Pullmetry
     register('contracts.feedback') { FeedbackContract.new }
     register('contracts.ignore') { IgnoreContract.new }
     register('contracts.webhook') { WebhookContract.new }
+    register('contracts.notification') { NotificationContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
@@ -43,6 +46,7 @@ module Pullmetry
     register('validators.feedback') { FeedbackValidator.new }
     register('validators.ignore') { IgnoreValidator.new }
     register('validators.webhook') { WebhookValidator.new }
+    register('validators.notification') { NotificationValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
@@ -53,6 +57,7 @@ module Pullmetry
     register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
     register('forms.ignores.create') { Ignores::CreateForm.new }
     register('forms.webhooks.create') { Webhooks::CreateForm.new }
+    register('forms.notifications.create') { Notifications::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
@@ -61,7 +66,14 @@ module Pullmetry
     register('notifiers.slack_webhooks.admin.feedback_created_payload') {
       SlackWebhooks::Admin::FeedbackCreatedPayload.new
     }
+    register('notifiers.telegram.admin.job_execution_report_payload') {
+      Telegram::Admin::JobExecutionReportPayload.new
+    }
+    register('notifiers.telegram.admin.feedback_created_payload') {
+      Telegram::Admin::FeedbackCreatedPayload.new
+    }
     register('notifiers.webhooks.insight.report_payload') { Webhooks::Insight::ReportPayload.new }
+    register('notifiers.telegram.insight.report_payload') { Telegram::Insight::ReportPayload.new }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

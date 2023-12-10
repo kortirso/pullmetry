@@ -123,7 +123,7 @@ describe Api::Frontend::WebhooksController do
     it_behaves_like 'required frontend auth'
 
     context 'for logged users' do
-      let!(:webhook) { create :webhook }
+      let!(:webhook) { create :webhook, source: Webhook::SLACK }
       let(:request) { delete :destroy, params: { id: webhook.uuid, auth_token: access_token } }
 
       context 'for not user webhook' do
@@ -134,10 +134,19 @@ describe Api::Frontend::WebhooksController do
       end
 
       context 'for user webhook' do
-        before { webhook.insightable.update!(user: user) }
+        before do
+          webhook.insightable.update!(user: user)
+
+          create :notification, notifyable: webhook.insightable, source: Webhook::SLACK
+          create :notification, source: Webhook::SLACK
+          create :notification, notifyable: webhook.insightable, source: Webhook::TELEGRAM
+        end
 
         it 'destroys webhook', :aggregate_failures do
-          expect { request }.to change(Webhook, :count).by(-1)
+          expect { request }.to(
+            change(Webhook, :count).by(-1)
+              .and(change(Notification, :count).by(-1))
+          )
           expect(response).to have_http_status :ok
         end
       end
