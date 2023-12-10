@@ -231,7 +231,6 @@ export const CompanyConfiguration = ({
         </tr>
       </thead>
       <tbody>
-        {renderNotificationType('Repository access error', 'repository_access_error')}
         {renderNotificationType('Insights data', 'insights_data')}
       </tbody>
     </table>
