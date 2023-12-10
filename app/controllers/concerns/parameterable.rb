@@ -6,7 +6,7 @@ module Parameterable
   InvalidInputParamsError = Class.new(StandardError)
 
   included do
-    rescue_from InvalidInputParamsError, with: :invalid_params
+    # rescue_from InvalidInputParamsError, with: :invalid_params
   end
 
   private
@@ -20,6 +20,6 @@ module Parameterable
   end
 
   def invalid_params
-    render json: { errors: ['Invalid input params'] }, status: :unprocessable_entity
+    render json: { errors: ['Invalid input params'] }, status: :ok
   end
 end

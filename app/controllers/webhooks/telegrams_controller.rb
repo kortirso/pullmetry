@@ -9,14 +9,14 @@ module Webhooks
     skip_before_action :authenticate
 
     def create
-      telegram_bot.call(params: create_params)
+      telegram_bot.call(params: create_params[:message])
       head :ok
     end
 
     private
 
     def create_params
-      schema_params(params: params, schema: Webhooks::TelegramSchema)[:message]
+      schema_params(params: params, schema: Webhooks::TelegramSchema)
     end
   end
 end
