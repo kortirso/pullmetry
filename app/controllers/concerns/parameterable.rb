@@ -6,7 +6,7 @@ module Parameterable
   InvalidInputParamsError = Class.new(StandardError)
 
   included do
-    # rescue_from InvalidInputParamsError, with: :invalid_params
+    rescue_from InvalidInputParamsError, with: :invalid_params
   end
 
   private

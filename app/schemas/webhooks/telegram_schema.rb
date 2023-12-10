@@ -7,7 +7,7 @@ Webhooks::TelegramSchema = Dry::Schema.Params do
       required(:last_name).filled(:string)
     end
     required(:chat).hash do
-      required(:id).filled(:string)
+      required(:id).filled
     end
     required(:text).filled(:string)
   end
