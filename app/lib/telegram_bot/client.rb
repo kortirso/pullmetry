@@ -4,12 +4,12 @@ module TelegramBot
   class Client
     include Deps[telegram_api: 'api.telegram.client']
 
-    def call(sender:, chat:, text:)
-      case text
-      when '/help' then send_help_message(chat)
-      when '/start' then send_start_message(sender, chat)
-      when '/get_chat_id' then send_chat_id_message(chat)
-      else send_unknown_message(chat)
+    def call(params: {})
+      case params[:text]
+      when '/help' then send_help_message(params[:chat])
+      when '/start' then send_start_message(params[:from], params[:chat])
+      when '/get_chat_id' then send_chat_id_message(params[:chat])
+      else send_unknown_message(params[:chat])
       end
     end
 

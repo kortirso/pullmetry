@@ -3,25 +3,20 @@
 module Webhooks
   class TelegramsController < ApplicationController
     include Deps[telegram_bot: 'bot.telegram.client']
+    include Parameterable
 
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate
 
     def create
-      return head :ok unless message
-
-      telegram_bot.call(
-        sender: message[:from].permit!.to_h,
-        chat: message[:chat].permit!.to_h,
-        text: message[:text]
-      )
+      telegram_bot.call(params: create_params)
       head :ok
     end
 
     private
 
-    def message
-      params[:message]
+    def create_params
+      schema_params(params: params, schema: Webhooks::TelegramSchema)[:message]
     end
   end
 end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 describe TelegramBot::Client, type: :service do
-  subject(:service_call) { instance.call(sender: sender, chat: chat, text: text) }
+  subject(:service_call) { instance.call(params: { from: from, chat: chat, text: text }) }
 
   let!(:instance) { described_class.new }
-  let(:sender) { { first_name: 'First', last_name: 'Last' } }
+  let(:from) { { first_name: 'First', last_name: 'Last' } }
   let(:chat) { { id: 'id' } }
   let(:text) { 'text' }
 

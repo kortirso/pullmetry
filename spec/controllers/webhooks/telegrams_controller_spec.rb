@@ -11,19 +11,23 @@ describe Webhooks::TelegramsController do
         post :create, params: {}
 
         expect(Pullmetry::Container.resolve('bot.telegram.client')).not_to have_received(:call)
-        expect(response).to have_http_status :ok
+        expect(response).to have_http_status :unprocessable_entity
       end
     end
 
     context 'when message present in payload', :aggregate_failures do
       it 'calls bot' do
-        post :create, params: { message: { from: { first_name: 'First' }, chat: { id: 'id' }, text: 'text' } }
+        post :create, params: {
+          message: { from: { first_name: 'First', last_name: 'Last' }, chat: { id: 'id' }, text: 'text' }
+        }
 
         expect(Pullmetry::Container.resolve('bot.telegram.client')).to(
           have_received(:call).with(
-            sender: { first_name: 'First' },
-            chat: { id: 'id' },
-            text: 'text'
+            params: {
+              from: { first_name: 'First', last_name: 'Last' },
+              chat: { id: 'id' },
+              text: 'text'
+            }
           )
         )
         expect(response).to have_http_status :ok
