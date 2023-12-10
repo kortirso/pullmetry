@@ -15,28 +15,39 @@ class InsightDelivery < ApplicationDelivery
 
   def ensure_webhook_enabled
     return false if webhook_sources.exclude?(Webhook::CUSTOM)
+    return false if notification_sources.exclude?(Notification::CUSTOM)
 
     true
   end
 
   def ensure_slack_webhook_enabled
     return false if webhook_sources.exclude?(Webhook::SLACK)
+    return false if notification_sources.exclude?(Notification::SLACK)
 
     true
   end
 
   def ensure_discord_webhook_enabled
     return false if webhook_sources.exclude?(Webhook::DISCORD)
+    return false if notification_sources.exclude?(Notification::DISCORD)
 
     true
   end
 
   def ensure_telegram_enabled
-    false
+    return false if webhook_sources.exclude?(Webhook::TELEGRAM)
+    return false if notification_sources.exclude?(Notification::TELEGRAM)
+
+    true
   end
 
   def webhook_sources
-    insightable.webhooks.pluck(:source)
+    @webhook_sources ||= insightable.webhooks.pluck(:source)
+  end
+
+  def notification_sources
+    @notification_sources ||=
+      insightable.notifications.where(notification_type: Notification::INSIGHTS_DATA).pluck(:source)
   end
 
   def insightable = params[:insightable]
