@@ -18,7 +18,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
     allow(delivery_service).to receive(:deliver_later)
   end
 
-  context 'without active subscription' do
+  context 'without insights' do
     it 'does not calls service' do
       job_call
 
@@ -26,8 +26,8 @@ describe Export::SendInsightsNotificationJob, type: :service do
     end
   end
 
-  context 'with active subscription' do
-    before { create :subscription, user: user, start_time: 10.days.ago, end_time: 10.days.after }
+  context 'with insights' do
+    before { create :insight, insightable: company }
 
     context 'without working time' do
       it 'calls service' do

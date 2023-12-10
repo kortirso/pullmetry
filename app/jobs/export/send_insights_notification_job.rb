@@ -8,7 +8,7 @@ module Export
 
     def perform(delivery_service: InsightDelivery)
       Company
-        .where(user_id: Subscription.active.select(:user_id))
+        .where.associated(:insights)
         .find_each do |company|
           next unless working_time?(company)
 
