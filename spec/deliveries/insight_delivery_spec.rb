@@ -59,6 +59,22 @@ describe InsightDelivery, type: :delivery do
           }.to deliver_via(:slack_webhook, :webhook)
         end
       end
+
+      context 'with available telegram webhook' do
+        before do
+          create :webhook, source: Webhook::TELEGRAM, url: 'url4', insightable: company
+          create :notification,
+                 source: Notification::TELEGRAM,
+                 notification_type: Notification::INSIGHTS_DATA,
+                 notifyable: company
+        end
+
+        it 'delivers to 2 webhooks' do
+          expect {
+            described_class.with(insightable: company).report.deliver_later
+          }.to deliver_via(:slack_webhook, :telegram)
+        end
+      end
     end
   end
 end

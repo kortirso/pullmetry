@@ -73,6 +73,7 @@ module Pullmetry
       Telegram::Admin::FeedbackCreatedPayload.new
     }
     register('notifiers.webhooks.insight.report_payload') { Webhooks::Insight::ReportPayload.new }
+    register('notifiers.telegram.insight.report_payload') { Telegram::Insight::ReportPayload.new }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }
