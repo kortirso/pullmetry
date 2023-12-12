@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Webhooks
-  module Insight
-    class ReportPayload
+  module Company
+    class InsightsReportPayload
       def call(insightable:)
         {
           title: title(insightable),

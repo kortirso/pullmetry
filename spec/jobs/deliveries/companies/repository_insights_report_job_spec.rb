@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Export::SendInsightsNotificationJob, type: :service do
+describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
   subject(:job_call) { described_class.perform_now }
 
   let!(:user) { create :user }
@@ -13,8 +13,8 @@ describe Export::SendInsightsNotificationJob, type: :service do
   }
 
   before do
-    allow(InsightDelivery).to receive(:with).and_return(delivery_service)
-    allow(delivery_service).to receive(:report).and_return(delivery_service)
+    allow(CompanyDelivery).to receive(:with).and_return(delivery_service)
+    allow(delivery_service).to receive(:repository_insights_report).and_return(delivery_service)
     allow(delivery_service).to receive(:deliver_later)
   end
 
@@ -22,7 +22,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
     it 'does not calls service' do
       job_call
 
-      expect(InsightDelivery).not_to have_received(:with)
+      expect(CompanyDelivery).not_to have_received(:with)
     end
   end
 
@@ -33,7 +33,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
       it 'calls service' do
         job_call
 
-        expect(InsightDelivery).to have_received(:with).with(insightable: company)
+        expect(CompanyDelivery).to have_received(:with).with(insightable: company)
       end
     end
 
@@ -57,7 +57,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
         it 'calls service' do
           job_call
 
-          expect(InsightDelivery).to have_received(:with).with(insightable: company)
+          expect(CompanyDelivery).to have_received(:with).with(insightable: company)
         end
       end
 
@@ -69,7 +69,7 @@ describe Export::SendInsightsNotificationJob, type: :service do
         it 'does not call service' do
           job_call
 
-          expect(InsightDelivery).not_to have_received(:with)
+          expect(CompanyDelivery).not_to have_received(:with)
         end
       end
     end

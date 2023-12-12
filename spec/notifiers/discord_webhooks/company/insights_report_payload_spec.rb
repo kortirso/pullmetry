@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-describe SlackWebhooks::Insight::ReportPayload, type: :service do
+describe DiscordWebhooks::Company::InsightsReportPayload, type: :service do
   subject(:service_call) { described_class.new.call(insightable: insightable) }
 
   let!(:insightable) { create :company }
 
   context 'without insights' do
-    it 'generates payload and succeeds' do
-      expect(service_call[:blocks].size).to eq 2
+    it 'generates payload' do
+      expect(service_call.size.positive?).to be_truthy
     end
 
     context 'when insightable is unaccessable' do
@@ -16,7 +16,9 @@ describe SlackWebhooks::Insight::ReportPayload, type: :service do
       end
 
       it 'renders message about unaccessability' do
-        expect(service_call[:blocks].size).to eq 3
+        expect(
+          service_call.include?("**#{insightable.class.name} #{insightable.title} has access error**\n")
+        ).to be_truthy
       end
     end
   end
@@ -26,8 +28,8 @@ describe SlackWebhooks::Insight::ReportPayload, type: :service do
       create :insight, insightable: insightable, reviews_count: 1
     end
 
-    it 'generates payload and succeeds' do
-      expect(service_call.dig(:blocks, 1, :elements).size).to eq 3
+    it 'generates payload' do
+      expect(service_call.size.positive?).to be_truthy
     end
   end
 end

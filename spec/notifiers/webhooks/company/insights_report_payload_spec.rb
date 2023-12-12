@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Webhooks::Insight::ReportPayload, type: :service do
+describe Webhooks::Company::InsightsReportPayload, type: :service do
   subject(:service_call) { described_class.new.call(insightable: insightable) }
 
   let!(:insightable) { create :company }
