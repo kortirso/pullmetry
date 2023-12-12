@@ -15,7 +15,12 @@ end
 
 # Send insights notifications
 every 4.hours do
-  runner 'Export::SendInsightsNotificationJob.perform_later'
+  runner 'Deliveries::Companies::InsightsReportJob.perform_later'
+end
+
+# Send repository insights notifications
+every 4.hours do
+  runner 'Deliveries::Companies::RepositoryInsightsReportJob.perform_later'
 end
 
 # Clear expired users sessions

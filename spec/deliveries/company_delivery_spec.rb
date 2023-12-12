@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-describe InsightDelivery, type: :delivery do
+describe CompanyDelivery, type: :delivery do
   let!(:company) { create :company }
 
   before { create :webhook, source: Webhook::SLACK, url: 'url1', insightable: company }
 
-  describe '#report' do
+  describe '#insights_report' do
     it 'does not deliver' do
       expect {
-        described_class.with(insightable: company).report.deliver_later
+        described_class.with(insightable: company).insights_report.deliver_later
       }.not_to deliver_via(:webhook, :slack_webhook, :discord_webhook, :mailer, :telegram)
     end
 
@@ -23,7 +23,7 @@ describe InsightDelivery, type: :delivery do
       context 'with only available slack webhook' do
         it 'delivers to slack_webhook' do
           expect {
-            described_class.with(insightable: company).report.deliver_later
+            described_class.with(insightable: company).insights_report.deliver_later
           }.to deliver_via(:slack_webhook)
         end
       end
@@ -39,7 +39,7 @@ describe InsightDelivery, type: :delivery do
 
         it 'delivers to 2 webhooks' do
           expect {
-            described_class.with(insightable: company).report.deliver_later
+            described_class.with(insightable: company).insights_report.deliver_later
           }.to deliver_via(:slack_webhook, :discord_webhook)
         end
       end
@@ -55,7 +55,7 @@ describe InsightDelivery, type: :delivery do
 
         it 'delivers to 2 webhooks' do
           expect {
-            described_class.with(insightable: company).report.deliver_later
+            described_class.with(insightable: company).insights_report.deliver_later
           }.to deliver_via(:slack_webhook, :webhook)
         end
       end
@@ -71,7 +71,7 @@ describe InsightDelivery, type: :delivery do
 
         it 'delivers to 2 webhooks' do
           expect {
-            described_class.with(insightable: company).report.deliver_later
+            described_class.with(insightable: company).insights_report.deliver_later
           }.to deliver_via(:slack_webhook, :telegram)
         end
       end

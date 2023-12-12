@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Telegram
-  module Insight
-    class ReportPayload
+  module Company
+    class InsightsReportPayload
       include Deps[time_representer: 'services.converters.seconds_to_text']
 
       def call(insightable:)

@@ -232,6 +232,7 @@ export const CompanyConfiguration = ({
       </thead>
       <tbody>
         {renderNotificationType('Insights data', 'insights_data')}
+        {renderNotificationType('Repository insights data', 'repository_insights_data')}
       </tbody>
     </table>
   );
@@ -284,7 +285,7 @@ export const CompanyConfiguration = ({
             <div>
               <p className="mb-4">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" className="simple-link">Slack incoming webhooks</a>.</p>
               <p className="mb-4">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
-              <p>For getting Telegram chat id you need to find <span className="font-semibold">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span className="font-semibold">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number.</p>
+              <p>For getting Telegram chat id you need to find <span className="font-semibold">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span className="font-semibold">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
             </div>
           </div>
         </div>

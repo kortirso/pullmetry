@@ -72,8 +72,21 @@ module Pullmetry
     register('notifiers.telegram.admin.feedback_created_payload') {
       Telegram::Admin::FeedbackCreatedPayload.new
     }
-    register('notifiers.webhooks.insight.report_payload') { Webhooks::Insight::ReportPayload.new }
-    register('notifiers.telegram.insight.report_payload') { Telegram::Insight::ReportPayload.new }
+    register('notifiers.webhooks.company.insights_report_payload') { Webhooks::Company::InsightsReportPayload.new }
+    register('notifiers.telegram.company.insights_report_payload') { Telegram::Company::InsightsReportPayload.new }
+
+    register('notifiers.webhooks.company.repository_insights_report_payload') {
+      Webhooks::Company::RepositoryInsightsReportPayload.new
+    }
+    register('notifiers.discord_webhooks.company.repository_insights_report_payload') {
+      DiscordWebhooks::Company::RepositoryInsightsReportPayload.new
+    }
+    register('notifiers.slack_webhooks.company.repository_insights_report_payload') {
+      SlackWebhooks::Company::RepositoryInsightsReportPayload.new
+    }
+    register('notifiers.telegram.company.repository_insights_report_payload') {
+      Telegram::Company::RepositoryInsightsReportPayload.new
+    }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }
