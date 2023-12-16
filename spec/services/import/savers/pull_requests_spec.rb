@@ -4,9 +4,7 @@
 describe Import::Savers::PullRequests, type: :service do
   subject(:service_call) { described_class.new.call(repository: repository, data: data) }
 
-  let!(:company) {
-    create :company, configuration: { pull_request_exclude_rules: { destination_branch_name: ['master'] }.to_json }
-  }
+  let!(:company) { create :company }
   let!(:repository) { create :repository, company: company }
   let(:data) {
     [

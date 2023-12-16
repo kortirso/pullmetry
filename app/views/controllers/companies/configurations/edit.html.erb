@@ -8,11 +8,11 @@
         insightAttributesHtml: render(partial: 'insights', locals: { form: form }).html_safe,
         averageHtml: render(partial: 'average', locals: { form: form }).html_safe,
         ratiosHtml: render(partial: 'ratios', locals: { form: form }).html_safe,
-        excludeRules: JSON.parse(@company.configuration.pull_request_exclude_rules.presence || '{}'),
+        excludeGroups: @excludes_groups,
         ignores: @ignores,
         webhooks: @webhooks,
         companyUuid: @company.uuid,
-        notifications: @company.notifications.hashable_pluck(:source, :notification_type)
+        notifications: @notifications
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
   <% end %>

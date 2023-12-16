@@ -58,6 +58,7 @@ module Pullmetry
     register('forms.ignores.create') { Ignores::CreateForm.new }
     register('forms.webhooks.create') { Webhooks::CreateForm.new }
     register('forms.notifications.create') { Notifications::CreateForm.new }
+    register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {

@@ -47,10 +47,10 @@ module Import
 
       def reject_pull_request?(payload)
         return true if payload[:pull_number].in?(existing_closed_pull_requests)
-        return true if attribute_in_exclude_rules?(payload, :title)
-        return true if attribute_in_exclude_rules?(payload, :description)
-        return true if attribute_in_exclude_rules?(payload, :branch_name)
-        return true if attribute_in_exclude_rules?(payload, :destination_branch_name)
+        # return true if attribute_in_exclude_rules?(payload, :title)
+        # return true if attribute_in_exclude_rules?(payload, :description)
+        # return true if attribute_in_exclude_rules?(payload, :branch_name)
+        # return true if attribute_in_exclude_rules?(payload, :destination_branch_name)
 
         false
       end

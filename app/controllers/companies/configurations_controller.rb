@@ -11,6 +11,8 @@ module Companies
 
       find_ignores
       find_webhooks
+      find_notifications
+      find_excludes_groups
       find_insight_ratio_type_values
       find_average_type_values
       find_main_attribute_values
@@ -44,6 +46,14 @@ module Companies
       @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
     end
 
+    def find_notifications
+      @notifications = @company.notifications.hashable_pluck(:source, :notification_type)
+    end
+
+    def find_excludes_groups
+      @excludes_groups = Excludes::GroupSerializer.new(@company.excludes_groups.order(id: :desc)).serializable_hash
+    end
+
     def find_insight_ratio_type_values
       @insight_ratio_type_values = @company.configuration.insight_ratio_type_values.map { |key, _v| transform_key(key) }
     end
@@ -73,7 +83,6 @@ module Companies
           :work_end_time,
           :average_type,
           :main_attribute,
-          :pull_request_exclude_rules,
           insight_fields: {}
         )
     end
