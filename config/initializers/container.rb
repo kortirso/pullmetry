@@ -37,6 +37,7 @@ module Pullmetry
     register('contracts.ignore') { IgnoreContract.new }
     register('contracts.webhook') { WebhookContract.new }
     register('contracts.notification') { NotificationContract.new }
+    register('contracts.excludes.rule') { Excludes::RuleContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
@@ -47,6 +48,7 @@ module Pullmetry
     register('validators.ignore') { IgnoreValidator.new }
     register('validators.webhook') { WebhookValidator.new }
     register('validators.notification') { NotificationValidator.new }
+    register('validators.excludes.rules.create') { Excludes::Rules::CreateValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }

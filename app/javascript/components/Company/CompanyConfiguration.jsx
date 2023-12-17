@@ -2,11 +2,26 @@ import React, { useState, useMemo } from 'react';
 
 import { Dropdown } from '../../components';
 import { Checkbox } from './Checkbox';
+import { Select } from './Select';
 
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
 const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
+
+const EXCLUDE_RULES_TARGETS = {
+  title: 'Title',
+  description: 'Description',
+  branch_name: 'Branch name',
+  destination_branch_name: 'Target branch name'
+};
+
+const EXCLUDE_RULES_CONDITIONS = {
+  equal: 'Equal',
+  not_equal: 'Not equal',
+  contain: 'Contain',
+  not_contain: 'Not contain'
+}
 
 export const CompanyConfiguration = ({
   privacyHtml,
@@ -31,7 +46,8 @@ export const CompanyConfiguration = ({
     webhookUrl: '',
     errors: [],
     notifications: notifications,
-    excludeGroups: excludeGroups.data
+    excludeGroups: excludeGroups.data,
+    excludeRules: []
   });
 
   const webhookSources = useMemo(() => {
@@ -253,7 +269,8 @@ export const CompanyConfiguration = ({
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
-        }
+        },
+        body: JSON.stringify({ excludes_rules: pageState.excludeRules })
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
@@ -261,6 +278,7 @@ export const CompanyConfiguration = ({
       ...pageState,
       excludeFormIsOpen: false,
       excludeGroups: pageState.excludeGroups.concat(result.result.data),
+      excludeRules: [],
       errors: []
     })
   };
@@ -284,15 +302,49 @@ export const CompanyConfiguration = ({
     })
   };
 
+  const addExcludeRule = () => {
+    setPageState({
+      ...pageState,
+      excludeRules: pageState.excludeRules.concat({
+        uuid: Math.floor(Math.random() * 1000).toString(),
+        target: 'title',
+        condition: 'equal',
+        value: ''
+      })
+    })
+  };
+
+  const onExcludeRuleRemove = (rule) => {
+    setPageState({
+      ...pageState,
+      excludeRules: pageState.excludeRules.filter((item) => item.uuid !== rule.uuid)
+    })
+  };
+
+  const updateExcludeRule = (rule, field, value) => {
+    const excludeRules = pageState.excludeRules.map((element) => {
+      if (element.uuid !== rule.uuid) return element;
+
+      element[field] = value;
+      return element;
+    });
+    setPageState({ ...pageState, excludeRules: excludeRules });
+  };
+
   const renderExcludesList = () => {
-    console.log(pageState.excludeGroups);
     if (pageState.excludeGroups.length === 0) return <p>You didn't specify any exclude rules yet.</p>;
 
     return (
       <div className="zebra-list">
         {pageState.excludeGroups.map((group) => (
           <div className="zebra-list-element" key={group.id}>
-            <p>{group.id}</p>
+            <div className="flex flex-col">
+              {group.attributes.excludes_rules.map((excludeRule) => (
+                <p key={excludeRule.uuid}>
+                  {EXCLUDE_RULES_TARGETS[excludeRule.target]} {excludeRule.condition.split('_').join(' ')} {excludeRule.value}
+                </p>
+              ))}
+            </div>
             <p
               className="btn-danger btn-xs"
               onClick={() => onExcludeGroupRemove(group)}
@@ -301,6 +353,40 @@ export const CompanyConfiguration = ({
         ))}
       </div>
     )
+  };
+
+  const renderExcludeRulesList = () => {
+    return pageState.excludeRules.map((rule) => (
+      <div className="grid grid-cols-11 gap-2 items-center mb-4" key={rule.uuid}>
+        <div className="form-field mb-0 col-span-4">
+          <Select
+            items={EXCLUDE_RULES_TARGETS}
+            onSelect={(value) => updateExcludeRule(rule, 'target', value)}
+            selectedValue={rule.target}
+          />
+        </div>
+        <div className="form-field mb-0 col-span-3">
+          <Select
+            items={EXCLUDE_RULES_CONDITIONS}
+            onSelect={(value) => updateExcludeRule(rule, 'condition', value)}
+            selectedValue={rule.condition}
+          />
+        </div>
+        <div className="form-field mb-0 col-span-3">
+          <input
+            className="form-value w-full text-sm"
+            defaultValue={rule.value}
+            onChange={(event) => updateExcludeRule(rule, 'value', event.target.value)}
+          />
+        </div>
+        <div className="col-span-1">
+          <p
+            className="btn-danger btn-xs"
+            onClick={() => onExcludeRuleRemove(rule)}
+          >X</p>
+        </div>
+      </div>
+    ))
   };
 
   return (
@@ -326,7 +412,6 @@ export const CompanyConfiguration = ({
         </div>
       </Dropdown>
       <Dropdown title="Work time">{workTimeHtml}</Dropdown>
-      
       <Dropdown convertChildren={false} title="Pull requests">
         <div className="py-6 px-8">
           <div className="grid lg:grid-cols-2 gap-8">
@@ -335,16 +420,15 @@ export const CompanyConfiguration = ({
               <p
                 className="btn-primary btn-small mt-4"
                 onClick={() => setPageState({ ...pageState, excludeFormIsOpen: true })}
-              >Add exclude rules</p>
+              >Add exclude group</p>
             </div>
             <div>
               <p>You can select rules for excluding pull requests from statistics calculations, usually it can be releases, hotfixes to master branch or synchronize pull requests from master branch.</p>
-              <p className="mt-2">Pull request will be excluded if at least 1 group of rules is matches.</p>
+              <p className="mt-2">Pull request will be excluded if at least 1 group of rules is match.</p>
             </div>
           </div>
         </div>
       </Dropdown>
-
       <Dropdown title="Insight attributes">{insightAttributesHtml}</Dropdown>
       <Dropdown title="Average type">{averageHtml}</Dropdown>
       <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
@@ -433,18 +517,24 @@ export const CompanyConfiguration = ({
           <p className="btn-primary mt-4" onClick={onWebhookSave}>Save webhook</p>
         </section>
       </Modal>
-
       <Modal
         show={pageState.excludeFormIsOpen}
         onClose={() => setPageState({ ...pageState, excludeFormIsOpen: false })}
       >
         <h1 className="mb-8">New exclude rules group</h1>
-        <p className="mb-4">Pull request will be excluded if all rules of any group matches.</p>
+        <p className="mb-4">Pull request will be excluded if all rules of group match.</p>
         <section className="inline-block w-full">
+          {renderExcludeRulesList()}
+          <div>
+            <p
+              className="btn-primary btn-small mt-4"
+              onClick={addExcludeRule}
+            >Add exclude rule</p>
+          </div>
           {pageState.errors.length > 0 ? (
-            <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
+            <p className="text-sm text-orange-600 mt-4">{pageState.errors[0]}</p>
           ) : null}
-          <p className="btn-primary mt-4" onClick={onExcludeSave}>Save exclude rules</p>
+          <p className="btn-primary btn-small mt-4" onClick={onExcludeSave}>Save exclude rules</p>
         </section>
       </Modal>
     </>

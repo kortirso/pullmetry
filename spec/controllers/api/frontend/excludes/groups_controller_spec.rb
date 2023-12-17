@@ -30,6 +30,7 @@ describe Api::Frontend::Excludes::GroupsController do
           let(:request) {
             post :create, params: {
               company_id: company.uuid,
+              excludes_rules: [{ uuid: '1', target: 'title', condition: 'equal', value: 'value' }],
               auth_token: access_token
             }
           }

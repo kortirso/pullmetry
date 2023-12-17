@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Excludes::Group, type: :model do
+describe Excludes::Group do
   it 'factory should be valid' do
     excludes_group = build :excludes_group
 
@@ -9,5 +9,6 @@ describe Excludes::Group, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:insightable) }
+    it { is_expected.to have_many(:excludes_rules).class_name('Excludes::Rule').dependent(:destroy) }
   end
 end

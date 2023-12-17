@@ -47,16 +47,24 @@ module Import
 
       def reject_pull_request?(payload)
         return true if payload[:pull_number].in?(existing_closed_pull_requests)
-        # return true if attribute_in_exclude_rules?(payload, :title)
-        # return true if attribute_in_exclude_rules?(payload, :description)
-        # return true if attribute_in_exclude_rules?(payload, :branch_name)
-        # return true if attribute_in_exclude_rules?(payload, :destination_branch_name)
+        return true if @repository.company.excludes_groups.any? { |group| group_rules_match?(group, payload) }
 
         false
       end
 
-      def attribute_in_exclude_rules?(payload, attribute)
-        exclude_rules[attribute]&.any? { |rule| payload[attribute]&.include?(rule) }
+      def group_rules_match?(group, payload)
+        group.excludes_rules.all? { |rule| rule_match?(rule, payload) }
+      end
+
+      def rule_match?(rule, payload)
+        attribute = payload[rule.target.to_sym]
+
+        case rule.condition
+        when Excludes::Rule::EQUAL_CONDITION then attribute == rule.value
+        when Excludes::Rule::NOT_EQUAL_CONDITION then attribute != rule.value
+        when Excludes::Rule::CONTAIN_CONDITION then attribute.include?(rule.value)
+        when Excludes::Rule::NOT_CONTAIN_CONDITION then attribute.exclude?(rule.value)
+        end
       end
 
       def find_or_create_author_entities(authors)

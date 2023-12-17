@@ -51,7 +51,19 @@ module Companies
     end
 
     def find_excludes_groups
-      @excludes_groups = Excludes::GroupSerializer.new(@company.excludes_groups.order(id: :desc)).serializable_hash
+      @excludes_groups =
+        Excludes::GroupSerializer.new(
+          @company.excludes_groups.order(id: :desc),
+          params: { rules: excludes_rules }
+        ).serializable_hash
+    end
+
+    def excludes_rules
+      Excludes::Rule
+        .joins(:excludes_group)
+        .where(excludes_groups: { insightable: @company })
+        .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
+        .group_by { |rule| rule[:excludes_groups_uuid] }
     end
 
     def find_insight_ratio_type_values

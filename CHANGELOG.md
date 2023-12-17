@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - sending repository insights as notifications
 
+### Modified
+- excludes rules configuration
+
 ## [1.6.5] - 2023-12-10
 ### Added
 - connecting account to Telegram

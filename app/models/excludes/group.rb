@@ -6,6 +6,10 @@ module Excludes
 
     include Uuidable
 
+    FREE_GROUPS_AMOUNT = 2
+
     belongs_to :insightable, polymorphic: true
+
+    has_many :excludes_rules, class_name: 'Excludes::Rule', foreign_key: :excludes_group_id, dependent: :destroy
   end
 end
