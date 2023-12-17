@@ -5,6 +5,7 @@ ru:
       name: Название
       external_id: Внешний ID
       entity_value: Entity value
+      excludes_rule: Исключение
     errors:
       company:
         rules:
