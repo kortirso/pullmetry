@@ -4,6 +4,7 @@ en:
       external_id: External id
       entity_value: Entity value
       notification_type: Notification type
+      excludes_rule: Exclude rule
     errors:
       company:
         rules:

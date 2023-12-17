@@ -10,7 +10,6 @@ import {
   Repository,
   RepositoryForm,
   Dropdown,
-  ExcludeRules,
   Flash,
   ProfileConfiguration,
 } from './components';
@@ -23,7 +22,6 @@ const components = {
   Repository,
   RepositoryForm,
   Dropdown,
-  ExcludeRules,
   Flash,
   ProfileConfiguration,
 };

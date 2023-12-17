@@ -13,7 +13,6 @@ module Companies
         convert_working_time(use_work_time)
         return if use_work_time && validate_work_time && failure?
 
-        transform_pull_request_exclude_rules
         ActiveRecord::Base.transaction do
           # commento: companies.configuration
           company.configuration.assign_attributes(sliced_params(company))
@@ -38,21 +37,9 @@ module Companies
         fail!('Start and end time must be different')
       end
 
-      def transform_pull_request_exclude_rules
-        return if @params[:pull_request_exclude_rules].blank?
-
-        @params[:pull_request_exclude_rules] =
-          JSON.parse(@params[:pull_request_exclude_rules])
-            .symbolize_keys
-            .slice(*ALLOWED_EXCLUDE_RULES)
-            .transform_values(&:compact_blank)
-            .to_json
-      end
-
       def sliced_params(company)
         params_list = %i[
-          ignore_users_work_time work_time_zone work_start_time work_end_time
-          private average_type pull_request_exclude_rules
+          ignore_users_work_time work_time_zone work_start_time work_end_time private average_type
         ]
         # premium account has more available attributes for update
         if company.premium?

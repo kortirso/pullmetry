@@ -473,6 +473,95 @@ ALTER SEQUENCE public.event_store_events_in_streams_id_seq OWNED BY public.event
 
 
 --
+-- Name: excludes_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.excludes_groups (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    insightable_id bigint NOT NULL,
+    insightable_type character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: excludes_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.excludes_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: excludes_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.excludes_groups_id_seq OWNED BY public.excludes_groups.id;
+
+
+--
+-- Name: excludes_rules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.excludes_rules (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    excludes_group_id bigint NOT NULL,
+    target integer NOT NULL,
+    condition integer NOT NULL,
+    value character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN excludes_rules.target; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.excludes_rules.target IS 'Target for comparison: branch name';
+
+
+--
+-- Name: COLUMN excludes_rules.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.excludes_rules.condition IS 'Condition for exclude rule: include/contain';
+
+
+--
+-- Name: COLUMN excludes_rules.value; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.excludes_rules.value IS 'Value for comparison';
+
+
+--
+-- Name: excludes_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.excludes_rules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: excludes_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.excludes_rules_id_seq OWNED BY public.excludes_rules.id;
+
+
+--
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1238,6 +1327,20 @@ ALTER TABLE ONLY public.event_store_events_in_streams ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: excludes_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.excludes_groups ALTER COLUMN id SET DEFAULT nextval('public.excludes_groups_id_seq'::regclass);
+
+
+--
+-- Name: excludes_rules id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.excludes_rules ALTER COLUMN id SET DEFAULT nextval('public.excludes_rules_id_seq'::regclass);
+
+
+--
 -- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1424,6 +1527,22 @@ ALTER TABLE ONLY public.event_store_events_in_streams
 
 ALTER TABLE ONLY public.event_store_events
     ADD CONSTRAINT event_store_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: excludes_groups excludes_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.excludes_groups
+    ADD CONSTRAINT excludes_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: excludes_rules excludes_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.excludes_rules
+    ADD CONSTRAINT excludes_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -1722,6 +1841,34 @@ CREATE INDEX index_event_store_events_on_valid_at ON public.event_store_events U
 
 
 --
+-- Name: index_excludes_groups_on_insightable_id_and_insightable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_excludes_groups_on_insightable_id_and_insightable_type ON public.excludes_groups USING btree (insightable_id, insightable_type);
+
+
+--
+-- Name: index_excludes_groups_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_excludes_groups_on_uuid ON public.excludes_groups USING btree (uuid);
+
+
+--
+-- Name: index_excludes_rules_on_excludes_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_excludes_rules_on_excludes_group_id ON public.excludes_rules USING btree (excludes_group_id);
+
+
+--
+-- Name: index_excludes_rules_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_excludes_rules_on_uuid ON public.excludes_rules USING btree (uuid);
+
+
+--
 -- Name: index_feedbacks_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1997,6 +2144,8 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20231216131105'),
+('20231213192605'),
 ('20231210142646'),
 ('20231210092757'),
 ('20231202162353'),

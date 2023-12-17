@@ -4,9 +4,7 @@
 describe Import::Savers::PullRequests, type: :service do
   subject(:service_call) { described_class.new.call(repository: repository, data: data) }
 
-  let!(:company) {
-    create :company, configuration: { pull_request_exclude_rules: { destination_branch_name: ['master'] }.to_json }
-  }
+  let!(:company) { create :company }
   let!(:repository) { create :repository, company: company }
   let(:data) {
     [
@@ -73,33 +71,30 @@ describe Import::Savers::PullRequests, type: :service do
   }
 
   context 'when there are no pull requests' do
-    it 'creates 2 new pull requests', :aggregate_failures do
-      expect { service_call }.to(
-        change(repository.pull_requests, :count).by(2)
-          .and(change(Entity, :count).by(2))
-          .and(change(PullRequests::Review, :count).by(2))
-      )
+    context 'when there are excludes rules' do
+      before do
+        group = create :excludes_group, insightable: company
+        create :excludes_rule,
+               excludes_group: group,
+               target: 'destination_branch_name',
+               condition: 'equal',
+               value: 'master'
+      end
 
-      expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
-      expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
-      expect(repository.reload.owner_avatar_url).to eq 'https://github.com/images/error/octocat_happy.gif'
-    end
-
-    context 'when configuration does not have exclude rules' do
-      before { company.update!(configuration: { pull_request_exclude_rules: nil }) }
-
-      it 'creates 3 new pull requests', :aggregate_failures do
+      it 'creates 2 new pull requests', :aggregate_failures do
         expect { service_call }.to(
-          change(repository.pull_requests, :count).by(3)
+          change(repository.pull_requests, :count).by(2)
             .and(change(Entity, :count).by(2))
             .and(change(PullRequests::Review, :count).by(2))
         )
+
+        expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
+        expect(repository.pull_requests.find_by(pull_number: 2).pull_created_at).not_to be_nil
+        expect(repository.reload.owner_avatar_url).to eq 'https://github.com/images/error/octocat_happy.gif'
       end
     end
 
-    context 'when configuration has blank exclude rules' do
-      before { company.update!(configuration: { pull_request_exclude_rules: '' }) }
-
+    context 'when there are no exclude rules' do
       it 'creates 3 new pull requests', :aggregate_failures do
         expect { service_call }.to(
           change(repository.pull_requests, :count).by(3)
@@ -185,6 +180,15 @@ describe Import::Savers::PullRequests, type: :service do
   context 'when there is 1 existing pull request' do
     let!(:pull_request) { create :pull_request, repository: repository, pull_number: 2 }
 
+    before do
+      group = create :excludes_group, insightable: company
+      create :excludes_rule,
+             excludes_group: group,
+             target: 'destination_branch_name',
+             condition: 'equal',
+             value: 'master'
+    end
+
     it 'creates 1 new pull request', :aggregate_failures do
       expect { service_call }.to(
         change(repository.pull_requests, :count).by(1)
@@ -209,6 +213,15 @@ describe Import::Savers::PullRequests, type: :service do
 
   context 'when there is 1 old existing pull request' do
     let!(:pull_request) { create :pull_request, repository: repository, pull_number: 1 }
+
+    before do
+      group = create :excludes_group, insightable: company
+      create :excludes_rule,
+             excludes_group: group,
+             target: 'destination_branch_name',
+             condition: 'equal',
+             value: 'master'
+    end
 
     it 'creates 2 new pull requests' do
       expect { service_call }.to change { repository.pull_requests.pluck(:pull_number) }.from([1]).to([3, 2])

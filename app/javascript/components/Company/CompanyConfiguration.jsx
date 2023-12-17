@@ -1,12 +1,27 @@
 import React, { useState, useMemo } from 'react';
 
-import { Dropdown, ExcludeRules } from '../../components';
+import { Dropdown } from '../../components';
 import { Checkbox } from './Checkbox';
+import { Select } from './Select';
 
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
 const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
+
+const EXCLUDE_RULES_TARGETS = {
+  title: 'Title',
+  description: 'Description',
+  branch_name: 'Branch name',
+  destination_branch_name: 'Target branch name'
+};
+
+const EXCLUDE_RULES_CONDITIONS = {
+  equal: 'Equal',
+  not_equal: 'Not equal',
+  contain: 'Contain',
+  not_contain: 'Not contain'
+}
 
 export const CompanyConfiguration = ({
   privacyHtml,
@@ -14,7 +29,7 @@ export const CompanyConfiguration = ({
   insightAttributesHtml,
   averageHtml,
   ratiosHtml,
-  excludeRules,
+  excludeGroups,
   ignores,
   webhooks,
   companyUuid,
@@ -23,13 +38,16 @@ export const CompanyConfiguration = ({
   const [pageState, setPageState] = useState({
     ingoreFormIsOpen: false,
     webhookFormIsOpen: false,
+    excludeFormIsOpen: false,
     ignores: ignores,
     webhooks: webhooks,
     entityValue: '',
     webhookSource: 'slack',
     webhookUrl: '',
     errors: [],
-    notifications: notifications
+    notifications: notifications,
+    excludeGroups: excludeGroups.data,
+    excludeRules: []
   });
 
   const webhookSources = useMemo(() => {
@@ -243,6 +261,134 @@ export const CompanyConfiguration = ({
     return '';
   };
 
+  const onExcludeSave = async () => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/${companyUuid}/excludes/groups.json`,
+      options: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify({ excludes_rules: pageState.excludeRules })
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      excludeFormIsOpen: false,
+      excludeGroups: pageState.excludeGroups.concat(result.result.data),
+      excludeRules: [],
+      errors: []
+    })
+  };
+
+  const onExcludeGroupRemove = async (group) => {
+    const result = await apiRequest({
+      url: `/api/frontend/excludes/groups/${group.id}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      excludeGroups: pageState.excludeGroups.filter((item) => item.id !== group.id),
+      errors: []
+    })
+  };
+
+  const addExcludeRule = () => {
+    setPageState({
+      ...pageState,
+      excludeRules: pageState.excludeRules.concat({
+        uuid: Math.floor(Math.random() * 1000).toString(),
+        target: 'title',
+        condition: 'equal',
+        value: ''
+      })
+    })
+  };
+
+  const onExcludeRuleRemove = (rule) => {
+    setPageState({
+      ...pageState,
+      excludeRules: pageState.excludeRules.filter((item) => item.uuid !== rule.uuid)
+    })
+  };
+
+  const updateExcludeRule = (rule, field, value) => {
+    const excludeRules = pageState.excludeRules.map((element) => {
+      if (element.uuid !== rule.uuid) return element;
+
+      element[field] = value;
+      return element;
+    });
+    setPageState({ ...pageState, excludeRules: excludeRules });
+  };
+
+  const renderExcludesList = () => {
+    if (pageState.excludeGroups.length === 0) return <p>You didn't specify any exclude rules yet.</p>;
+
+    return (
+      <div className="zebra-list">
+        {pageState.excludeGroups.map((group) => (
+          <div className="zebra-list-element" key={group.id}>
+            <div className="flex flex-col">
+              {group.attributes.excludes_rules.map((excludeRule) => (
+                <p key={excludeRule.uuid}>
+                  {EXCLUDE_RULES_TARGETS[excludeRule.target]} {excludeRule.condition.split('_').join(' ')} {excludeRule.value}
+                </p>
+              ))}
+            </div>
+            <p
+              className="btn-danger btn-xs"
+              onClick={() => onExcludeGroupRemove(group)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const renderExcludeRulesList = () => {
+    return pageState.excludeRules.map((rule) => (
+      <div className="grid grid-cols-11 gap-2 items-center mb-4" key={rule.uuid}>
+        <div className="form-field mb-0 col-span-4">
+          <Select
+            items={EXCLUDE_RULES_TARGETS}
+            onSelect={(value) => updateExcludeRule(rule, 'target', value)}
+            selectedValue={rule.target}
+          />
+        </div>
+        <div className="form-field mb-0 col-span-3">
+          <Select
+            items={EXCLUDE_RULES_CONDITIONS}
+            onSelect={(value) => updateExcludeRule(rule, 'condition', value)}
+            selectedValue={rule.condition}
+          />
+        </div>
+        <div className="form-field mb-0 col-span-3">
+          <input
+            className="form-value w-full text-sm"
+            defaultValue={rule.value}
+            onChange={(event) => updateExcludeRule(rule, 'value', event.target.value)}
+          />
+        </div>
+        <div className="col-span-1">
+          <p
+            className="btn-danger btn-xs"
+            onClick={() => onExcludeRuleRemove(rule)}
+          >X</p>
+        </div>
+      </div>
+    ))
+  };
+
   return (
     <>
       <Dropdown convertChildren={false} title="Privacy">
@@ -266,7 +412,23 @@ export const CompanyConfiguration = ({
         </div>
       </Dropdown>
       <Dropdown title="Work time">{workTimeHtml}</Dropdown>
-      <ExcludeRules initialRules={excludeRules} />
+      <Dropdown convertChildren={false} title="Pull requests">
+        <div className="py-6 px-8">
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div>
+              {renderExcludesList()}
+              <p
+                className="btn-primary btn-small mt-4"
+                onClick={() => setPageState({ ...pageState, excludeFormIsOpen: true })}
+              >Add exclude group</p>
+            </div>
+            <div>
+              <p>You can select rules for excluding pull requests from statistics calculations, usually it can be releases, hotfixes to master branch or synchronize pull requests from master branch.</p>
+              <p className="mt-2">Pull request will be excluded if at least 1 group of rules is match.</p>
+            </div>
+          </div>
+        </div>
+      </Dropdown>
       <Dropdown title="Insight attributes">{insightAttributesHtml}</Dropdown>
       <Dropdown title="Average type">{averageHtml}</Dropdown>
       <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
@@ -353,6 +515,26 @@ export const CompanyConfiguration = ({
             <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
           ) : null}
           <p className="btn-primary mt-4" onClick={onWebhookSave}>Save webhook</p>
+        </section>
+      </Modal>
+      <Modal
+        show={pageState.excludeFormIsOpen}
+        onClose={() => setPageState({ ...pageState, excludeFormIsOpen: false })}
+      >
+        <h1 className="mb-8">New exclude rules group</h1>
+        <p className="mb-4">Pull request will be excluded if all rules of group match.</p>
+        <section className="inline-block w-full">
+          {renderExcludeRulesList()}
+          <div>
+            <p
+              className="btn-primary btn-small mt-4"
+              onClick={addExcludeRule}
+            >Add exclude rule</p>
+          </div>
+          {pageState.errors.length > 0 ? (
+            <p className="text-sm text-orange-600 mt-4">{pageState.errors[0]}</p>
+          ) : null}
+          <p className="btn-primary btn-small mt-4" onClick={onExcludeSave}>Save exclude rules</p>
         </section>
       </Modal>
     </>

@@ -27,6 +27,9 @@ Rails.application.routes.draw do
         resources :ignores, only: %i[create]
         resources :webhooks, only: %i[create]
         resource :notifications, only: %i[create destroy]
+        namespace :excludes do
+          resources :groups, only: %i[create]
+        end
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
@@ -36,6 +39,9 @@ Rails.application.routes.draw do
       resources :ignores, only: %i[destroy]
       resources :webhooks, only: %i[destroy]
       resources :vacations, only: %i[create destroy]
+      namespace :excludes do
+        resources :groups, only: %i[destroy]
+      end
     end
   end
 

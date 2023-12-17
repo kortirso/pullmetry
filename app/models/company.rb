@@ -15,6 +15,7 @@ class Company < ApplicationRecord
   has_many :pull_requests_reviews, class_name: '::PullRequests::Review', through: :repositories
   has_many :ignores, as: :insightable, dependent: :destroy
   has_many :webhooks, as: :insightable, dependent: :destroy
+  has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
 
   delegate :premium?, to: :user
 end
