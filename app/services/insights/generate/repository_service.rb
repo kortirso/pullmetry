@@ -54,9 +54,9 @@ module Insights
       # rubocop: enable Style/OptionalBooleanParameter
 
       def find_repository_insight_field_value(insight_field, previous)
-        return send("repository_#{insight_field}") unless previous
+        return send(:"repository_#{insight_field}") unless previous
 
-        send("repository_#{insight_field}", Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)
+        send(:"repository_#{insight_field}", Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)
       end
 
       def repository_open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)

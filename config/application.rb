@@ -39,8 +39,6 @@ module Pullmetry
     config.autoload_paths << Rails.root.join('app/views/components')
     config.view_component.view_component_path = 'app/views/components'
 
-    config.action_mailer.preview_path = Rails.root.join('spec/mailers/previews')
-
     # Don't generate system test files.
     config.generators.system_tests = nil
     config.generators do |g|
