@@ -9,6 +9,11 @@ describe Companies::ConfigurationsController do
 
       sign_in_user
 
+      before do
+        group = create :excludes_group, insightable: company
+        create :excludes_rule, excludes_group: group
+      end
+
       context 'for not existing company' do
         it 'renders 404 page' do
           do_request

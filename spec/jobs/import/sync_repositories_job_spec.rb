@@ -90,4 +90,76 @@ describe Import::SyncRepositoriesJob, type: :service do
       end
     end
   end
+
+  context 'with night working time' do
+    before do
+      company.configuration.assign_attributes(
+        work_start_time: DateTime.new(2023, 1, 1, 22, 0),
+        work_end_time: DateTime.new(2023, 1, 1, 8, 0),
+        work_time_zone: 'Moscow'
+      )
+      company.save!
+    end
+
+    context 'with current time inside working time' do
+      before do
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 23, 0))
+      end
+
+      it 'calls service' do
+        job_call
+
+        expect(import_object).to have_received(:call).with(company: company)
+      end
+    end
+
+    context 'with current time inside working time with timezone offset' do
+      before do
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 20, 0))
+      end
+
+      it 'calls service' do
+        job_call
+
+        expect(import_object).to have_received(:call).with(company: company)
+      end
+
+      context 'when company has blank work_time_zone' do
+        before do
+          company.configuration.assign_attributes(work_time_zone: nil)
+          company.save!
+        end
+
+        it 'does not call service' do
+          job_call
+
+          expect(import_object).not_to have_received(:call)
+        end
+      end
+    end
+
+    context 'with current time at weekend' do
+      before do
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 1, 10, 0))
+      end
+
+      it 'does not call service' do
+        job_call
+
+        expect(import_object).not_to have_received(:call)
+      end
+    end
+
+    context 'with current time outside working time' do
+      before do
+        allow(DateTime).to receive(:now).and_return(DateTime.new(2023, 1, 2, 11, 0))
+      end
+
+      it 'does not call service' do
+        job_call
+
+        expect(import_object).not_to have_received(:call)
+      end
+    end
+  end
 end

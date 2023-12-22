@@ -13,6 +13,7 @@ class ProfilesController < ApplicationController
   def show; end
 
   def update
+    # commento: users.work_start_time, users.work_end_time, users.work_time_zone
     service_call = Users::UpdateForm.call(
       user: current_user,
       params: user_params,

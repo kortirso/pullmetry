@@ -26,8 +26,7 @@ module Api
         private
 
         def find_repository
-          @repository = authorized_scope(Repository.order(id: :desc)).find_by(uuid: params[:repository_id])
-          page_not_found if @repository.nil?
+          @repository = authorized_scope(Repository.order(id: :desc)).find_by!(uuid: params[:repository_id])
         end
 
         def visible_insights

@@ -104,7 +104,6 @@ module Pullmetry
     register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }
     register('services.persisters.subscriptions.add') { Persisters::Subscriptions::AddService.new }
     register('services.persisters.users.destroy') { Persisters::Users::DestroyService.new }
-    register('services.persisters.users.refresh_achievements') { Persisters::Users::RefreshAchievementsService.new }
 
     register('services.converters.seconds_to_text') { Converters::SecondsToTextService.new }
 

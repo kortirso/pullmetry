@@ -14,7 +14,6 @@ module Companies
         return if use_work_time && validate_work_time && failure?
 
         ActiveRecord::Base.transaction do
-          # commento: companies.configuration
           company.configuration.assign_attributes(sliced_params(company))
           company.save!
         end

@@ -21,7 +21,11 @@ describe Insights::Generate::CompanyService, type: :service do
     insightable.configuration.insight_fields = {
       comments_count: true,
       changed_loc: true,
-      reviewed_loc: true
+      reviewed_loc: true,
+      reviews_count: true,
+      required_reviews_count: true,
+      open_pull_requests_count: true,
+      review_involving: true
     }
     insightable.save!
   end

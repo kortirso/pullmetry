@@ -7,8 +7,6 @@ module Companies
     before_action :find_company
 
     def edit
-      authorize! @company, to: :update?
-
       find_ignores
       find_webhooks
       find_notifications
@@ -19,7 +17,7 @@ module Companies
     end
 
     def update
-      authorize! @company, to: :update?
+      # commento: companies.configuration
       form = Companies::Configurations::UpdateForm.call(
         company: @company,
         params: configuration_params,

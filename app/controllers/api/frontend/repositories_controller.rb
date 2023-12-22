@@ -19,8 +19,7 @@ module Api
       private
 
       def find_company
-        @company = current_user.companies.find_by(uuid: params[:repository][:company_uuid])
-        page_not_found if @company.nil?
+        @company = current_user.companies.find_by!(uuid: params[:repository][:company_uuid])
       end
 
       def repository_params

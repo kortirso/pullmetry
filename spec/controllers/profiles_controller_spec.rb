@@ -8,6 +8,8 @@ describe ProfilesController do
       sign_in_user
 
       it 'renders show template' do
+        create :identity, user: @current_user
+
         do_request
 
         expect(response).to render_template :show

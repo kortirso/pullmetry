@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 describe CompanyDelivery, type: :delivery do
-  let!(:company) { create :company }
+  let!(:company) { create :company, accessable: false }
 
-  before { create :webhook, source: Webhook::SLACK, url: 'url1', insightable: company }
+  before do
+    create :webhook, source: Webhook::SLACK, url: 'url1', insightable: company
+    create :insight, insightable: company, reviews_count: 1
+  end
 
   describe '#insights_report' do
     it 'does not deliver' do

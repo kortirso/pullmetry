@@ -3,12 +3,17 @@
 describe Api::Frontend::InsightsController do
   describe 'GET#index' do
     context 'for logged users' do
-      let!(:company) { create :company }
+      let!(:company) { create :company, configuration: { insight_ratio: true } }
       let!(:user) { create :user }
       let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
 
+      before { create :subscription, user: user }
+
       context 'for companies' do
-        before { create :insight, insightable: company, comments_count: 1 }
+        before do
+          insight = create :insight, insightable: company, comments_count: 1
+          create :insight, insightable: company, comments_count: 2, previous_date: 1.week.ago, entity: insight.entity
+        end
 
         context 'for user company' do
           before { company.update!(user: user) }
@@ -21,6 +26,40 @@ describe Api::Frontend::InsightsController do
             expect(response).to have_http_status :ok
             expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
             expect(response_values.dig('comments_count', 'value')).to eq 1
+          end
+
+          context 'for selected insight fields' do
+            before do
+              company.configuration.insight_fields = { comments_count: true, reviews_count: true }
+              company.save!
+            end
+
+            it 'returns data', :aggregate_failures do
+              get :index, params: { company_id: company.uuid, auth_token: access_token }
+
+              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+
+              expect(response).to have_http_status :ok
+              expect(response_values.keys).to contain_exactly('comments_count', 'reviews_count')
+              expect(response_values.dig('comments_count', 'value')).to eq 1
+            end
+          end
+
+          context 'for change ratio' do
+            before do
+              company.configuration.insight_ratio_type = 'change'
+              company.save!
+            end
+
+            it 'returns data', :aggregate_failures do
+              get :index, params: { company_id: company.uuid, auth_token: access_token }
+
+              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+
+              expect(response).to have_http_status :ok
+              expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
+              expect(response_values.dig('comments_count', 'value')).to eq 1
+            end
           end
         end
       end

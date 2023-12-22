@@ -27,13 +27,11 @@ module Api
       private
 
       def find_company
-        @company = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
-        page_not_found if @company.nil?
+        @company = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
       end
 
       def find_webhook
-        @webhook = Webhook.find_by(uuid: params[:id])
-        page_not_found if @webhook.nil?
+        @webhook = Webhook.find_by!(uuid: params[:id])
       end
 
       def webhook_params

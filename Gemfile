@@ -79,9 +79,6 @@ gem 'store_model'
 # achievements system
 gem 'kudos'
 
-# event store
-gem 'rails_event_store'
-
 # view pagination
 gem 'pagy', '~> 6.0'
 
@@ -127,7 +124,6 @@ group :test do
   gem 'json_spec', '1.1.5'
   gem 'rails-controller-testing', '1.0.5'
   gem 'rspec-rails', '~> 6.0'
-  gem 'ruby_event_store-rspec'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'simplecov', require: false
 end

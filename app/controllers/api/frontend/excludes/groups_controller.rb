@@ -10,6 +10,7 @@ module Api
         before_action :find_excludes_group, only: %i[destroy]
 
         def create
+          # commento: excludes_rules.target, excludes_rules.condition, excludes_rules.value
           case create_form.call(company: @company, excludes_rules: create_excludes_rules_params)
           in { errors: errors } then render json: { errors: errors }, status: :ok
           in { result: result }
@@ -30,13 +31,11 @@ module Api
         private
 
         def find_company
-          @company = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
-          page_not_found if @company.nil?
+          @company = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
         end
 
         def find_excludes_group
-          @excludes_group = ::Excludes::Group.find_by(uuid: params[:id])
-          page_not_found if @excludes_group.nil?
+          @excludes_group = ::Excludes::Group.find_by!(uuid: params[:id])
         end
 
         def excludes_rules(excludes_group_id)

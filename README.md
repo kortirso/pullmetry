@@ -13,10 +13,11 @@ foreman s
 ## Application layers
 
 contracts - model schemas for validators
+schemas - model schemas for validating controller params
 validators - model validations
 forms - service object to interact with user form input
 
-events - events for event store
+deliveries, notifiers - delivery layer with different providers
 
 queries - separated database queries
 services - business logic layer
@@ -24,43 +25,7 @@ policies - authorization logic
 
 ## Credentials example
 
-If you would like to run application locally or on your production server you need to generate new config/master.key and update config/credentials.yml.enc like this example with your api keys.
-
-```bash
-emailbutler:
-  username:
-  password:
-smtp:
-  domain:
-  username:
-  password:
-reports_webhook_url:
-database_password:
-github_oauth:
-  production:
-    client_id:
-    client_secret:
-    redirect_url:
-  development:
-    client_id:
-    client_secret:
-    redirect_url:
-gitlab_oauth:
-  production: 
-    client_id:
-    client_secret:
-    redirect_url:
-  development:
-    client_id:
-    client_secret:
-    redirect_url:
-queweb:
-  user:
-  password:
-secret_key_skylight:
-secret_key_bugsnag:
-secret_key_base:
-```
+If you would like to run application locally or on your production server you need to generate new config/master.key and use config/credentials.yml.example for updating config/credentials.yml.enc with your api keys.
 
 ## Running application locally in production environment
 

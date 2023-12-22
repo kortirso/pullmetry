@@ -47,7 +47,7 @@
         <div class='column-body'>
           <p>companies.title: </p>
           <div class='column-data'>
-            <span>app/controllers/companies_controller.rb:19</span>
+            <span>app/controllers/api/frontend/companies_controller.rb:9</span>
           </div>
         </div>
         <div class='column-body'>
@@ -59,7 +59,7 @@
         <div class='column-body'>
           <p>companies.configuration: </p>
           <div class='column-data'>
-            <span>app/forms/companies/configurations/update_form.rb:15</span>
+            <span>app/controllers/companies/configurations_controller.rb:23</span>
           </div>
         </div>
         <div class='column-body'>
@@ -137,7 +137,7 @@
         <div class='column-body'>
           <p>identities.uid: </p>
           <div class='column-data'>
-            <span>app/services/auth/attach_identity_service.rb:14</span>            <span>app/services/auth/login_user_service.rb:15</span>
+            <span>app/services/auth/attach_identity_service.rb:12</span>            <span>app/services/auth/login_user_service.rb:15</span>
           </div>
         </div>
         <div class='column-body'>
@@ -149,13 +149,13 @@
         <div class='column-body'>
           <p>identities.email: </p>
           <div class='column-data'>
-            <span>app/services/auth/attach_identity_service.rb:14</span>            <span>app/services/auth/login_user_service.rb:15</span>
+            <span>app/services/auth/attach_identity_service.rb:12</span>            <span>app/services/auth/login_user_service.rb:15</span>
           </div>
         </div>
         <div class='column-body'>
           <p>identities.login: </p>
           <div class='column-data'>
-            <span>app/services/auth/attach_identity_service.rb:14</span>            <span>app/services/auth/login_user_service.rb:15</span>
+            <span>app/services/auth/attach_identity_service.rb:12</span>            <span>app/services/auth/login_user_service.rb:15</span>
           </div>
         </div>
 
@@ -259,6 +259,12 @@
         </div>
         <div class='column-body'>
           <p>insights.average_changed_loc: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>insights.hidden: Flag for hiding insights, if true - available only for owner</p>
           <div class='column-data'>
 
           </div>
@@ -410,7 +416,7 @@
         <div class='column-body'>
           <p>repositories_insights.previous_date: </p>
           <div class='column-data'>
-            <span>app/services/insights/generate/repository_service.rb:38</span>
+            <span>app/services/insights/generate/repository_service.rb:39</span>
           </div>
         </div>
         <div class='column-body'>
@@ -524,7 +530,7 @@
         <div class='column-body'>
           <p>repositories.title: </p>
           <div class='column-data'>
-            <span>app/controllers/repositories_controller.rb:23</span>
+            <span>app/controllers/api/frontend/repositories_controller.rb:12</span>
           </div>
         </div>
         <div class='column-body'>
@@ -536,19 +542,19 @@
         <div class='column-body'>
           <p>repositories.link: </p>
           <div class='column-data'>
-            <span>app/controllers/repositories_controller.rb:23</span>
+            <span>app/controllers/api/frontend/repositories_controller.rb:12</span>
           </div>
         </div>
         <div class='column-body'>
           <p>repositories.provider: </p>
           <div class='column-data'>
-            <span>app/controllers/repositories_controller.rb:23</span>
+            <span>app/controllers/api/frontend/repositories_controller.rb:12</span>
           </div>
         </div>
         <div class='column-body'>
           <p>repositories.external_id: </p>
           <div class='column-data'>
-            <span>app/controllers/repositories_controller.rb:23</span>
+            <span>app/controllers/api/frontend/repositories_controller.rb:12</span>
           </div>
         </div>
         <div class='column-body'>
@@ -566,34 +572,7 @@
         <div class='column-body'>
           <p>repositories.owner_avatar_url: </p>
           <div class='column-data'>
-            <span>app/services/import/savers/pull_requests.rb:86</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class='table'>
-      <div class='table-header'>
-        <h3>users_notifications</h3>
-        <p></p>
-      </div>
-      <div class='table-body'>
-        <div class='column-body'>
-          <p>users_notifications.user_id: </p>
-          <div class='column-data'>
-
-          </div>
-        </div>
-        <div class='column-body'>
-          <p>users_notifications.value: </p>
-          <div class='column-data'>
-
-          </div>
-        </div>
-        <div class='column-body'>
-          <p>users_notifications.notification_type: </p>
-          <div class='column-data'>
-
+            <span>app/services/import/savers/pull_requests.rb:116</span>
           </div>
         </div>
 
@@ -629,13 +608,13 @@
         <div class='column-body'>
           <p>vacations.start_time: </p>
           <div class='column-data'>
-
+            <span>app/controllers/api/frontend/vacations_controller.rb:11</span>
           </div>
         </div>
         <div class='column-body'>
           <p>vacations.end_time: </p>
           <div class='column-data'>
-
+            <span>app/controllers/api/frontend/vacations_controller.rb:11</span>
           </div>
         </div>
 
@@ -662,19 +641,193 @@
         <div class='column-body'>
           <p>users.work_start_time: </p>
           <div class='column-data'>
-
+            <span>app/controllers/profiles_controller.rb:16</span>
           </div>
         </div>
         <div class='column-body'>
           <p>users.work_end_time: </p>
           <div class='column-data'>
-
+            <span>app/controllers/profiles_controller.rb:16</span>
           </div>
         </div>
         <div class='column-body'>
           <p>users.work_time_zone: </p>
           <div class='column-data'>
+            <span>app/controllers/profiles_controller.rb:16</span>
+          </div>
+        </div>
 
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>notifications</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>notifications.notifyable_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>notifications.notifyable_type: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>notifications.notification_type: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/notifications_controller.rb:14</span>
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>notifications.source: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/notifications_controller.rb:14</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>excludes_groups</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>excludes_groups.insightable_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>excludes_groups.insightable_type: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>excludes_rules</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>excludes_rules.excludes_group_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>excludes_rules.target: Target for comparison: branch name</p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/excludes/groups_controller.rb:13</span>
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>excludes_rules.condition: Condition for exclude rule: include/contain</p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/excludes/groups_controller.rb:13</span>
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>excludes_rules.value: Value for comparison</p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/excludes/groups_controller.rb:13</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>feedbacks</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>feedbacks.user_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>feedbacks.title: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>feedbacks.description: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/feedbacks_controller.rb:9</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>ignores</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>ignores.insightable_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>ignores.insightable_type: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>ignores.entity_value: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/ignores_controller.rb:12</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class='table'>
+      <div class='table-header'>
+        <h3>webhooks</h3>
+        <p></p>
+      </div>
+      <div class='table-body'>
+        <div class='column-body'>
+          <p>webhooks.insightable_id: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>webhooks.insightable_type: </p>
+          <div class='column-data'>
+
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>webhooks.source: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/webhooks_controller.rb:12</span>
+          </div>
+        </div>
+        <div class='column-body'>
+          <p>webhooks.url: </p>
+          <div class='column-data'>
+            <span>app/controllers/api/frontend/webhooks_controller.rb:12</span>
           </div>
         </div>
 

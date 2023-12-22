@@ -26,13 +26,11 @@ module Api
       private
 
       def find_company
-        @company = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
-        page_not_found if @company.nil?
+        @company = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
       end
 
       def find_ignore
-        @ignore = Ignore.find_by(uuid: params[:id])
-        page_not_found if @ignore.nil?
+        @ignore = Ignore.find_by!(uuid: params[:id])
       end
 
       def ignore_params

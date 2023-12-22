@@ -3,12 +3,16 @@
 describe Api::Frontend::Repositories::RepositoryInsightsController do
   describe 'GET#index' do
     context 'for logged users' do
-      let!(:company) { create :company }
+      let!(:company) { create :company, configuration: { insight_ratio: true } }
       let!(:repository) { create :repository, company: company }
       let!(:user) { create :user }
       let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
 
-      before { create :repositories_insight, repository: repository, comments_count: 2 }
+      before do
+        create :subscription, user: user
+        create :repositories_insight, repository: repository, comments_count: 2
+        create :repositories_insight, repository: repository, comments_count: 3, previous_date: 1.week.ago
+      end
 
       context 'for user company' do
         before { company.update!(user: user) }
