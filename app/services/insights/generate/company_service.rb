@@ -6,13 +6,14 @@ module Insights
       def call(insightable:)
         @insightable = insightable
         @insight_visibility = insightable.configuration.private
+        @fetch_period = @insightable.find_fetch_period
 
         super()
       end
 
       private
 
-      def comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def comments_count(date_from=@fetch_period, date_to=0)
         @comments_count ||= {}
 
         @comments_count.fetch("#{date_from},#{date_to}") do |key|
@@ -20,7 +21,7 @@ module Insights
         end
       end
 
-      def reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def reviews_count(date_from=@fetch_period, date_to=0)
         @reviews_count ||= {}
 
         @reviews_count.fetch("#{date_from},#{date_to}") do |key|
@@ -28,7 +29,7 @@ module Insights
         end
       end
 
-      def required_reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def required_reviews_count(date_from=@fetch_period, date_to=0)
         @required_reviews_count ||= {}
 
         @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
@@ -36,7 +37,7 @@ module Insights
         end
       end
 
-      def open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def open_pull_requests_count(date_from=@fetch_period, date_to=0)
         @open_pull_requests_count ||= {}
 
         @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -44,7 +45,7 @@ module Insights
         end
       end
 
-      def review_involving(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def review_involving(date_from=@fetch_period, date_to=0)
         @review_involving ||= {}
 
         @review_involving.fetch("#{date_from},#{date_to}") do |key|
@@ -52,7 +53,7 @@ module Insights
         end
       end
 
-      def changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def changed_loc(date_from=@fetch_period, date_to=0)
         @changed_loc ||= {}
 
         @changed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -60,7 +61,7 @@ module Insights
         end
       end
 
-      def reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def reviewed_loc(date_from=@fetch_period, date_to=0)
         @reviewed_loc ||= {}
 
         @reviewed_loc.fetch("#{date_from},#{date_to}") do |key|

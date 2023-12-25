@@ -25,6 +25,7 @@ const EXCLUDE_RULES_CONDITIONS = {
 
 export const CompanyConfiguration = ({
   privacyHtml,
+  fetchPeriodHtml,
   workTimeHtml,
   insightAttributesHtml,
   averageHtml,
@@ -389,6 +390,7 @@ export const CompanyConfiguration = ({
     ))
   };
 
+
   return (
     <>
       <Dropdown convertChildren={false} title="Privacy">
@@ -414,6 +416,10 @@ export const CompanyConfiguration = ({
       <Dropdown title="Work time">{workTimeHtml}</Dropdown>
       <Dropdown convertChildren={false} title="Pull requests">
         <div className="py-6 px-8">
+          <div
+            dangerouslySetInnerHTML={{ __html: fetchPeriodHtml }}
+          >
+          </div>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               {renderExcludesList()}

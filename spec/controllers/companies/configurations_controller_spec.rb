@@ -70,8 +70,7 @@ describe Companies::ConfigurationsController do
               'use_work_time' => '0',
               'work_start_time(4i)' => '',
               'work_end_time(4i)' => ''
-            },
-            locale: 'en'
+            }
           }
 
           expect(response).to render_template 'shared/404'
@@ -91,8 +90,7 @@ describe Companies::ConfigurationsController do
                 'work_start_time(5i)' => '00',
                 'work_end_time(4i)' => '13',
                 'work_end_time(5i)' => '00'
-              },
-              locale: 'en'
+              }
             }
           }
 
@@ -123,8 +121,7 @@ describe Companies::ConfigurationsController do
                 },
                 'insight_ratio' => '1',
                 'insight_ratio_type' => 'change'
-              },
-              locale: 'en'
+              }
             }
           }
 
@@ -185,8 +182,7 @@ describe Companies::ConfigurationsController do
           'use_work_time' => '0',
           'work_start_time(4i)' => '',
           'work_end_time(4i)' => ''
-        },
-        locale: 'en'
+        }
       }
     end
   end

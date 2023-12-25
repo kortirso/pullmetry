@@ -5,13 +5,12 @@ module Companies
     class UpdateForm
       prepend ApplicationService
 
-      ALLOWED_EXCLUDE_RULES = %i[title description branch_name destination_branch_name].freeze
-
       def call(company:, params:, use_work_time:)
         @params = params
 
         convert_working_time(use_work_time)
         return if use_work_time && validate_work_time && failure?
+        return if validate_fetch_period(company) && failure?
 
         ActiveRecord::Base.transaction do
           company.configuration.assign_attributes(sliced_params(company))
@@ -31,14 +30,23 @@ module Companies
       end
 
       def validate_work_time
-        return if @params[:work_start_time] != @params[:work_end_time]
+        return true if @params[:work_start_time] != @params[:work_end_time]
 
         fail!('Start and end time must be different')
       end
 
+      def validate_fetch_period(company)
+        fetch_period = @params[:fetch_period]
+        return if fetch_period.blank?
+        return if fetch_period.to_i <= Insight::FETCH_DAYS_PERIOD
+        return if company.premium? && fetch_period.to_i <= Insight::MAXIMUM_FETCH_DAYS_PERIOD
+
+        fail!('Invalid value of days for fetch period')
+      end
+
       def sliced_params(company)
         params_list = %i[
-          ignore_users_work_time work_time_zone work_start_time work_end_time private average_type
+          ignore_users_work_time work_time_zone work_start_time work_end_time private average_type fetch_period
         ]
         # premium account has more available attributes for update
         if company.premium?

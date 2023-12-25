@@ -66,7 +66,7 @@ module Insights
     # rubocop: enable Style/OptionalBooleanParameter
 
     def find_insight_field_value(insight_field, entity_id, previous)
-      return send(insight_field, Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)[entity_id] if previous
+      return send(insight_field, @fetch_period * 2, @fetch_period)[entity_id] if previous
 
       send(insight_field)[entity_id]
     end
@@ -102,7 +102,7 @@ module Insights
     # this method returns { entity_id => changed LOC in reviewed PRs }
     def reviewed_loc(...) = raise NotImplementedError
 
-    def pulls_with_user_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def pulls_with_user_comments(date_from=@fetch_period, date_to=0)
       @pulls_with_user_comments ||= {}
 
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
@@ -120,7 +120,7 @@ module Insights
     end
 
     # this method returns { entity_id => average_review_seconds }
-    def average_review_seconds(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def average_review_seconds(date_from=@fetch_period, date_to=0)
       @average_review_seconds ||= {}
 
       @average_review_seconds.fetch("#{date_from},#{date_to}") do |key|
@@ -135,7 +135,7 @@ module Insights
     end
 
     # this method returns { entity_id => average_merge_seconds }
-    def average_merge_seconds(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def average_merge_seconds(date_from=@fetch_period, date_to=0)
       @average_merge_seconds ||= {}
 
       @average_merge_seconds.fetch("#{date_from},#{date_to}") do |key|
@@ -149,7 +149,7 @@ module Insights
       end
     end
 
-    def average_open_pr_comments(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def average_open_pr_comments(date_from=@fetch_period, date_to=0)
       @average_open_pr_comments ||= {}
 
       @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
@@ -161,7 +161,7 @@ module Insights
     end
 
     # this method returns { entity_id => average changed LOC in entity PRs }
-    def average_changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def average_changed_loc(date_from=@fetch_period, date_to=0)
       @average_changed_loc ||= {}
 
       @average_changed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -173,7 +173,7 @@ module Insights
     end
 
     # this method returns { entity_id => average changed LOC in reviewed PRs }
-    def average_reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def average_reviewed_loc(date_from=@fetch_period, date_to=0)
       @average_reviewed_loc ||= {}
 
       @average_reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -184,7 +184,7 @@ module Insights
       end
     end
 
-    def reviewed_loc_in_open_prs(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+    def reviewed_loc_in_open_prs(date_from=@fetch_period, date_to=0)
       @reviewed_loc_in_open_prs ||= {}
 
       @reviewed_loc_in_open_prs.fetch("#{date_from},#{date_to}") do |key|
@@ -224,7 +224,7 @@ module Insights
     end
 
     def previous_insight_date
-      @previous_insight_date ||= Insight::DOUBLE_FETCH_DAYS_PERIOD.days.ago.to_date.to_s
+      @previous_insight_date ||= (@fetch_period * 2).days.ago.to_date.to_s
     end
 
     def beginning_of_date(type, value)
