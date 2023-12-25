@@ -40,6 +40,7 @@ export const FeedbackForm = ({ children }) => {
       >
         <h1 className="mb-8">New feedback</h1>
         <p className="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" className="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" className="simple-link">Telegram</a> or just leave here.</p>
+        <p className="mb-4">You can ask to reply or not to reply to your feedback. Response can be sent to the email associated with your account.</p>
         <section className="inline-block w-full">
           <div className="form-field">
             <label className="form-label">Title</label>
