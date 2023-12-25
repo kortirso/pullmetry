@@ -93,6 +93,7 @@ module Companies
           :work_end_time,
           :average_type,
           :main_attribute,
+          :fetch_period,
           insight_fields: {}
         )
     end

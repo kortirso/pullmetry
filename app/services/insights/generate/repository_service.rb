@@ -5,7 +5,8 @@ module Insights
     class RepositoryService < Insights::GenerateService
       def call(insightable:)
         @insightable = insightable
-        @insight_visibility = insightable.company.configuration.private
+        @insight_visibility = insightable.configuration.private
+        @fetch_period = @insightable.find_fetch_period
 
         generate_specific_repository_insights
         super()
@@ -56,10 +57,10 @@ module Insights
       def find_repository_insight_field_value(insight_field, previous)
         return send(:"repository_#{insight_field}") unless previous
 
-        send(:"repository_#{insight_field}", Insight::DOUBLE_FETCH_DAYS_PERIOD, Insight::FETCH_DAYS_PERIOD)
+        send(:"repository_#{insight_field}", @fetch_period * 2, @fetch_period)
       end
 
-      def repository_open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_open_pull_requests_count(date_from=@fetch_period, date_to=0)
         @repository_open_pull_requests_count ||= {}
 
         @repository_open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -67,7 +68,7 @@ module Insights
         end
       end
 
-      def repository_commented_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_commented_pull_requests_count(date_from=@fetch_period, date_to=0)
         @repository_commented_pull_requests_count ||= {}
 
         @repository_commented_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -87,7 +88,7 @@ module Insights
         end
       end
 
-      def repository_reviewed_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_reviewed_pull_requests_count(date_from=@fetch_period, date_to=0)
         @repository_reviewed_pull_requests_count ||= {}
 
         @repository_reviewed_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -100,7 +101,7 @@ module Insights
         end
       end
 
-      def repository_merged_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_merged_pull_requests_count(date_from=@fetch_period, date_to=0)
         @repository_merged_pull_requests_count ||= {}
 
         @repository_merged_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -112,7 +113,7 @@ module Insights
         end
       end
 
-      def repository_average_comment_time(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_average_comment_time(date_from=@fetch_period, date_to=0)
         @repository_average_comment_time ||= {}
 
         @repository_average_comment_time.fetch("#{date_from},#{date_to}") do |key|
@@ -136,7 +137,7 @@ module Insights
         end
       end
 
-      def repository_average_review_time(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_average_review_time(date_from=@fetch_period, date_to=0)
         @repository_average_review_time ||= {}
 
         @repository_average_review_time.fetch("#{date_from},#{date_to}") do |key|
@@ -159,7 +160,7 @@ module Insights
         end
       end
 
-      def repository_average_merge_time(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_average_merge_time(date_from=@fetch_period, date_to=0)
         @repository_average_merge_time ||= {}
 
         @repository_average_merge_time.fetch("#{date_from},#{date_to}") do |key|
@@ -178,7 +179,7 @@ module Insights
         end
       end
 
-      def repository_comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_comments_count(date_from=@fetch_period, date_to=0)
         @repository_comments_count ||= {}
 
         @repository_comments_count.fetch("#{date_from},#{date_to}") do |key|
@@ -186,7 +187,7 @@ module Insights
         end
       end
 
-      def repository_average_comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_average_comments_count(date_from=@fetch_period, date_to=0)
         @repository_average_comments_count ||= {}
 
         @repository_average_comments_count.fetch("#{date_from},#{date_to}") do |key|
@@ -199,7 +200,7 @@ module Insights
         end
       end
 
-      def repository_changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_changed_loc(date_from=@fetch_period, date_to=0)
         @repository_changed_loc ||= {}
 
         @repository_changed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -207,7 +208,7 @@ module Insights
         end
       end
 
-      def repository_average_changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def repository_average_changed_loc(date_from=@fetch_period, date_to=0)
         @repository_average_changed_loc ||= {}
 
         @repository_average_changed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -220,7 +221,7 @@ module Insights
         end
       end
 
-      def comments_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def comments_count(date_from=@fetch_period, date_to=0)
         @comments_count ||= {}
 
         @comments_count.fetch("#{date_from},#{date_to}") do |key|
@@ -231,7 +232,7 @@ module Insights
         end
       end
 
-      def reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def reviews_count(date_from=@fetch_period, date_to=0)
         @reviews_count ||= {}
 
         @reviews_count.fetch("#{date_from},#{date_to}") do |key|
@@ -243,7 +244,7 @@ module Insights
         end
       end
 
-      def required_reviews_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def required_reviews_count(date_from=@fetch_period, date_to=0)
         @required_reviews_count ||= {}
 
         @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
@@ -255,7 +256,7 @@ module Insights
         end
       end
 
-      def open_pull_requests_count(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def open_pull_requests_count(date_from=@fetch_period, date_to=0)
         @open_pull_requests_count ||= {}
 
         @open_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
@@ -267,7 +268,7 @@ module Insights
       end
 
       # rubocop: disable Metrics/AbcSize
-      def review_involving(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def review_involving(date_from=@fetch_period, date_to=0)
         @review_involving ||= {}
 
         @review_involving.fetch("#{date_from},#{date_to}") do |key|
@@ -284,7 +285,7 @@ module Insights
       end
       # rubocop: enable Metrics/AbcSize
 
-      def changed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def changed_loc(date_from=@fetch_period, date_to=0)
         @changed_loc ||= {}
 
         @changed_loc.fetch("#{date_from},#{date_to}") do |key|
@@ -299,7 +300,7 @@ module Insights
         end
       end
 
-      def reviewed_loc(date_from=Insight::FETCH_DAYS_PERIOD, date_to=0)
+      def reviewed_loc(date_from=@fetch_period, date_to=0)
         @reviewed_loc ||= {}
 
         @reviewed_loc.fetch("#{date_from},#{date_to}") do |key|

@@ -24,7 +24,7 @@ module Import
           repository: repository,
           params: {
             synced_at: DateTime.now,
-            pull_requests_count: repository.pull_requests.actual.count
+            pull_requests_count: repository.pull_requests.actual(repository.find_fetch_period).count
           }
         )
       end

@@ -11,7 +11,7 @@ module Import
 
         # rubocop: disable Metrics/AbcSize
         def call(repository:, fetch_client: GitlabApi::Client, result: [])
-          started_at_limit = (DateTime.now - Insight::FETCH_DAYS_PERIOD.days).beginning_of_day
+          started_at_limit = find_started_at(repository)
           fetch_client = fetch_client.new(url: base_url(repository))
           request_params = find_default_request_params(repository)
           page = 1
@@ -44,6 +44,12 @@ module Import
 
             true
           end
+        end
+
+        def find_started_at(repository)
+          fetch_period = repository.find_fetch_period
+          fetch_period *= 2 if repository.configuration.insight_ratio
+          (DateTime.now - fetch_period.days).beginning_of_day
         end
 
         def find_default_request_params(repository)

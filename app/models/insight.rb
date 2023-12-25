@@ -25,7 +25,7 @@ class Insight < ApplicationRecord
   }.freeze
 
   FETCH_DAYS_PERIOD = 30
-  DOUBLE_FETCH_DAYS_PERIOD = 60
+  MAXIMUM_FETCH_DAYS_PERIOD = 60
 
   belongs_to :insightable, polymorphic: true
   belongs_to :entity
