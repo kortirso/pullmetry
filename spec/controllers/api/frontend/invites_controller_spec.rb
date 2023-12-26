@@ -52,4 +52,57 @@ describe Api::Frontend::InvitesController do
       end
     end
   end
+
+  describe 'DELETE#destroy' do
+    it_behaves_like 'required frontend auth'
+
+    context 'for logged users' do
+      let!(:invite) { create :invite }
+      let(:request) { delete :destroy, params: { id: invite.uuid, auth_token: access_token } }
+
+      context 'for user invite' do
+        context 'for not own invite' do
+          it 'does not destroy invite', :aggregate_failures do
+            expect { request }.not_to change(Invite, :count)
+            expect(response).to have_http_status :unauthorized
+          end
+        end
+
+        context 'for own invite' do
+          before { invite.update!(inviteable: user) }
+
+          it 'destroys invite', :aggregate_failures do
+            expect { request }.to change(Invite, :count).by(-1)
+            expect(response).to have_http_status :ok
+          end
+        end
+      end
+
+      context 'for company' do
+        let!(:company) { create :company }
+
+        before { invite.update!(inviteable: company) }
+
+        context 'for not own invite' do
+          it 'does not destroy invite', :aggregate_failures do
+            expect { request }.not_to change(Invite, :count)
+            expect(response).to have_http_status :unauthorized
+          end
+        end
+
+        context 'for own invite' do
+          before { company.update!(user: user) }
+
+          it 'destroys invite', :aggregate_failures do
+            expect { request }.to change(Invite, :count).by(-1)
+            expect(response).to have_http_status :ok
+          end
+        end
+      end
+    end
+
+    def do_request
+      delete :destroy, params: { id: 'unexisting' }
+    end
+  end
 end

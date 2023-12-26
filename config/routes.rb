@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       namespace :excludes do
         resources :groups, only: %i[destroy]
       end
+      resources :invites, only: %i[destroy]
     end
   end
 
