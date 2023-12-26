@@ -3,8 +3,11 @@
 module Persisters
   module Users
     class DestroyService
+      # rubocop: disable Metrics/AbcSize
       def call(user:)
         ActiveRecord::Base.transaction do
+          user.invites.destroy_all
+          user.receive_invites.update_all(receiver_id: nil)
           user.users_sessions.destroy_all
           user.companies.destroy_all
           user.identities.destroy_all
@@ -14,6 +17,7 @@ module Persisters
           user.feedbacks.destroy_all
         end
       end
+      # rubocop: enable Metrics/AbcSize
     end
   end
 end

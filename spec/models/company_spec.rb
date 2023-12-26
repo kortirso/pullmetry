@@ -16,6 +16,7 @@ describe Company do
     it { is_expected.to have_many(:webhooks).dependent(:destroy) }
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_many(:excludes_groups).class_name('Excludes::Group').dependent(:destroy) }
+    it { is_expected.to have_many(:invites).dependent(:destroy) }
 
     it {
       is_expected.to have_many(:pull_requests_comments).class_name('::PullRequests::Comment').through(:repositories)

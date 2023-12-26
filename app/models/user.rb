@@ -4,11 +4,14 @@ class User < ApplicationRecord
   include Uuidable
   include Kudos::Achievementable
   include Notifyable
+  include Inviteable
 
   REGULAR = 'regular'
   ADMIN = 'admin'
 
+  # TODO: remember to modify Persisters::Users::DestroyService
   has_many :users_sessions, class_name: 'Users::Session', dependent: :destroy
+  has_many :receive_invites, class_name: 'Invite', foreign_key: :receiver_id, dependent: :nullify
 
   has_many :companies, dependent: :destroy
   has_many :repositories, through: :companies
