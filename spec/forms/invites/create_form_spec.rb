@@ -26,6 +26,15 @@ describe Invites::CreateForm, type: :service do
         expect(form[:result].is_a?(Invite)).to be_truthy
         expect(form[:errors]).to be_blank
       end
+
+      context 'for existing invite' do
+        before { create :invite, email: 'email', inviteable: inviteable }
+
+        it 'does not create invite', :aggregate_failures do
+          expect { form }.not_to change(Invite, :count)
+          expect(form[:errors]).not_to be_blank
+        end
+      end
     end
   end
 
@@ -49,6 +58,15 @@ describe Invites::CreateForm, type: :service do
         expect { form }.to change(Invite, :count).by(1)
         expect(form[:result].is_a?(Invite)).to be_truthy
         expect(form[:errors]).to be_blank
+      end
+
+      context 'for existing invite' do
+        before { create :invite, email: 'email', inviteable: inviteable }
+
+        it 'does not create invite', :aggregate_failures do
+          expect { form }.not_to change(Invite, :count)
+          expect(form[:errors]).not_to be_blank
+        end
       end
     end
   end
