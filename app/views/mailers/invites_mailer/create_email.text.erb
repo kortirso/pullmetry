@@ -1,0 +1,11 @@
+Greeting, dear user!
+
+You are invited by person with email <%= @subject_email %> to PullKeeper - web service for pull requests analyzing.
+
+To join PullKeeper - please visit <%= root_url(invite_code: @invite.code) %>.
+
+<% if @invite.friend? %>
+
+<% elsif @invite.coworker? %>
+After signin you will have access to <%= @invite.inviteable.title %> company insights.
+<% end %>
