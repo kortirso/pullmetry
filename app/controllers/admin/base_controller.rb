@@ -2,6 +2,7 @@
 
 module Admin
   class BaseController < ApplicationController
+    skip_before_action :find_invite
     before_action :authorize_admin
 
     layout 'admin'

@@ -6,10 +6,13 @@ class ApplicationController < ActionController::Base
   append_view_path Rails.root.join('app/views/controllers')
 
   include Authentication
+  include Invitationable
 
   authorize :user, through: :current_user
 
+  # TODO: remember to skip redundant before actions in Api::Frontend::BaseController, Admin::BaseController
   before_action :authenticate, except: %i[not_found]
+  before_action :find_invite, except: %i[not_found]
 
   rescue_from ActiveRecord::RecordNotFound, with: :page_not_found
   rescue_from ActionPolicy::Unauthorized, with: :access_denied

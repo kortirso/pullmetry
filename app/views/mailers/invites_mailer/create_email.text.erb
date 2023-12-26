@@ -2,7 +2,7 @@ Greeting, dear user!
 
 You are invited by person with email <%= @subject_email %> to PullKeeper - web service for pull requests analyzing.
 
-To join PullKeeper - please visit <%= root_url(invite_code: @invite.code) %>.
+To join PullKeeper - please visit <%= root_url(invite_email: @invite.email, invite_code: @invite.code) %>.
 
 <% if @invite.friend? %>
 
