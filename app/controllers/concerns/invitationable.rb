@@ -20,19 +20,23 @@ module Invitationable
     return unless invite_uuid
 
     invite = Invite.find_by(uuid: invite_uuid)
-    return if invite.nil?
+    return clear_invite_cookies if invite.nil?
     # skip self invites
-    return if invite.friend? && invite.inviteable_id == Current.user.id
-    return if invite.coworker? && invite.inviteable.user_id == Current.user.id
+    return clear_invite_cookies if invite.friend? && invite.inviteable_id == Current.user.id
+    return clear_invite_cookies if invite.coworker? && invite.inviteable.user_id == Current.user.id
 
     invite.update!(
       receiver: Current.user,
       email: nil,
       code: nil
     )
-    cookies.delete(:pullmetry_invite_uuid)
+    clear_invite_cookies
   end
   # rubocop: enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+
+  def clear_invite_cookies
+    cookies.delete(:pullmetry_invite_uuid)
+  end
 
   def save_invite_cookies(invite)
     cookies[:pullmetry_invite_uuid] = {
