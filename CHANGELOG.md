@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - changing fetch period
+- invites for coworkers
 
 ## [1.6.6] - 2023-12-17
 ### Added
