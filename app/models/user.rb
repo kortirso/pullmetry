@@ -9,7 +9,7 @@ class User < ApplicationRecord
   REGULAR = 'regular'
   ADMIN = 'admin'
 
-  # TODO: remember to modify Persisters::Users::DestroyService
+  # TODO: remember to modify Persisters::Users::DestroyService after adding new has_many
   has_many :users_sessions, class_name: 'Users::Session', dependent: :destroy
   has_many :receive_invites, class_name: 'Invite', foreign_key: :receiver_id, dependent: :nullify
 
@@ -36,11 +36,9 @@ class User < ApplicationRecord
   end
 
   def available_companies
-    Company
-      .where(user_id: id)
-      .or(
-        Company.where(id: insights.actual.visible.of_type('Company').select(:insightable_id))
-      )
+    Company.where(user_id: id)
+      .or(Company.where(id: insights.actual.visible.of_type('Company').select(:insightable_id)))
+      .or(Company.where(id: receive_invites.coworker.select(:inviteable_id)))
   end
 
   def available_repositories
