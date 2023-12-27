@@ -9,6 +9,8 @@ describe User do
 
   describe 'associations' do
     it { is_expected.to have_many(:users_sessions).class_name('::Users::Session').dependent(:destroy) }
+    it { is_expected.to have_many(:invites).dependent(:destroy) }
+    it { is_expected.to have_many(:receive_invites).class_name('Invite').dependent(:nullify) }
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_many(:companies).dependent(:destroy) }
     it { is_expected.to have_many(:identities).dependent(:destroy) }
@@ -47,6 +49,7 @@ describe User do
     let!(:company1) { create :company, user: user }
     let!(:company2) { create :company }
     let!(:company3) { create :company }
+    let!(:company4) { create :company }
 
     before do
       create :company
@@ -54,10 +57,11 @@ describe User do
       entity = create :entity, identity: identity
       create :insight, insightable: company2, entity: entity
       create :insight, insightable: company3, entity: entity, hidden: true
+      create :invite, inviteable: company4, receiver: user
     end
 
-    it 'return 2 available companies' do
-      expect(user.available_companies.ids).to contain_exactly(company1.id, company2.id)
+    it 'returns 3 available companies' do
+      expect(user.available_companies.ids).to contain_exactly(company1.id, company2.id, company4.id)
     end
   end
 
@@ -74,7 +78,7 @@ describe User do
       create :insight, insightable: repository2.company, entity: entity
     end
 
-    it 'return 2 available repositories' do
+    it 'returns 2 available repositories' do
       expect(user.available_repositories.ids).to contain_exactly(repository1.id, repository2.id)
     end
   end

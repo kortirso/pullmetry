@@ -5,12 +5,14 @@ module Api
     class BaseController < ApplicationController
       protect_from_forgery with: :null_session
 
+      skip_before_action :find_invite
+
       private
 
       def authenticate
         return if current_user
 
-        render json: { errors: ['Unauthorized'] }, status: :unauthorized
+        access_denied
       end
 
       def page_not_found

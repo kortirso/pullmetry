@@ -54,6 +54,7 @@ module Users
           value: generate_token.call(user: user)[:result],
           expires: 1.week.from_now
         }
+        accept_invite
         redirect_to(attaching_identity ? profile_path : companies_path)
       else
         redirect_to root_path, flash: { manifesto_username: true }

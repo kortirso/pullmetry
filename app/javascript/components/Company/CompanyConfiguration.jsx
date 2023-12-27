@@ -32,6 +32,7 @@ export const CompanyConfiguration = ({
   ratiosHtml,
   excludeGroups,
   ignores,
+  invites,
   webhooks,
   companyUuid,
   notifications
@@ -40,11 +41,14 @@ export const CompanyConfiguration = ({
     ingoreFormIsOpen: false,
     webhookFormIsOpen: false,
     excludeFormIsOpen: false,
+    inviteFormIsOpen: false,
     ignores: ignores,
+    invites: invites,
     webhooks: webhooks,
     entityValue: '',
     webhookSource: 'slack',
     webhookUrl: '',
+    inviteEmail: '',
     errors: [],
     notifications: notifications,
     excludeGroups: excludeGroups.data,
@@ -116,6 +120,65 @@ export const CompanyConfiguration = ({
             <p
               className="btn-danger btn-xs"
               onClick={() => onIgnoreRemove(ignore.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const onInviteSave = async () => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/${companyUuid}/invites.json`,
+      options: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify({ invite: { email: pageState.inviteEmail } }),
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      inviteFormIsOpen: false,
+      invites: pageState.invites.concat(result.result),
+      inviteEmail: '',
+      errors: []
+    })
+  };
+
+  const onInviteRemove = async (uuid) => {
+    const result = await apiRequest({
+      url: `/api/frontend/invites/${uuid}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      invites: pageState.invites.filter((item) => item.uuid !== uuid),
+      errors: []
+    })
+  };
+
+  const renderInvitesList = () => {
+    if (pageState.invites.length === 0) return <p>You didn't specify any invites yet.</p>;
+
+    return (
+      <div className="zebra-list">
+        {pageState.invites.map((invite) => (
+          <div className="zebra-list-element" key={invite.uuid}>
+            <p>{invite.email}</p>
+            <p
+              className="btn-danger btn-xs"
+              onClick={() => onInviteRemove(invite.uuid)}
             >X</p>
           </div>
         ))}
@@ -390,7 +453,6 @@ export const CompanyConfiguration = ({
     ))
   };
 
-
   return (
     <>
       <Dropdown convertChildren={false} title="Privacy">
@@ -398,6 +460,18 @@ export const CompanyConfiguration = ({
           <div
             dangerouslySetInnerHTML={{ __html: privacyHtml }}
           >
+          </div>
+          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+            <div>
+              {renderInvitesList()}
+              <p
+                className="btn-primary btn-small mt-4"
+                onClick={() => setPageState({ ...pageState, inviteFormIsOpen: true })}
+              >Invite coworker</p>
+            </div>
+            <div>
+              <p>In this block you can specify coworkers from company that don't have insights but it requires for them to see statistics.</p>
+            </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
@@ -541,6 +615,30 @@ export const CompanyConfiguration = ({
             <p className="text-sm text-orange-600 mt-4">{pageState.errors[0]}</p>
           ) : null}
           <p className="btn-primary btn-small mt-4" onClick={onExcludeSave}>Save exclude rules</p>
+        </section>
+      </Modal>
+      <Modal
+        show={pageState.inviteFormIsOpen}
+        onClose={() => setPageState({ ...pageState, inviteFormIsOpen: false })}
+      >
+        <h1 className="mb-8">New invite</h1>
+        <p className="mb-4">Invite will be send to email and after submitting such person will have access to company insights.</p>
+        <section className="inline-block w-full">
+          <div className="form-field">
+            <p className="flex flex-row">
+              <label className="form-label">Invite email</label>
+              <sup className="leading-4">*</sup>
+            </p>
+            <input
+              className="form-value w-full"
+              value={pageState.inviteEmail}
+              onChange={(e) => setPageState({ ...pageState, inviteEmail: e.target.value })}
+            />
+          </div>
+          {pageState.errors.length > 0 ? (
+            <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
+          ) : null}
+          <p className="btn-primary mt-4" onClick={onInviteSave}>Create invite</p>
         </section>
       </Modal>
     </>

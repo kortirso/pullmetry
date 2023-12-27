@@ -6,6 +6,7 @@ class Company < ApplicationRecord
   include Insightable
   include Configurable
   include Notifyable
+  include Inviteable
 
   belongs_to :user
 

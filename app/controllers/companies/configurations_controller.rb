@@ -8,6 +8,7 @@ module Companies
 
     def edit
       find_ignores
+      find_invites
       find_webhooks
       find_notifications
       find_excludes_groups
@@ -38,6 +39,10 @@ module Companies
 
     def find_ignores
       @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
+    end
+
+    def find_invites
+      @invites = @company.invites.hashable_pluck(:uuid, :email)
     end
 
     def find_webhooks

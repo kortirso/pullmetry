@@ -718,6 +718,42 @@ ALTER SEQUENCE public.insights_id_seq OWNED BY public.insights.id;
 
 
 --
+-- Name: invites; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invites (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    inviteable_id bigint NOT NULL,
+    inviteable_type character varying NOT NULL,
+    receiver_id bigint,
+    email character varying,
+    code character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invites_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
+
+
+--
 -- Name: kudos_achievement_groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1369,6 +1405,13 @@ ALTER TABLE ONLY public.insights ALTER COLUMN id SET DEFAULT nextval('public.ins
 
 
 --
+-- Name: invites id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites ALTER COLUMN id SET DEFAULT nextval('public.invites_id_seq'::regclass);
+
+
+--
 -- Name: kudos_achievement_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1578,6 +1621,14 @@ ALTER TABLE ONLY public.insights
 
 
 --
+-- Name: invites invites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites
+    ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: kudos_achievement_groups kudos_achievement_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1726,6 +1777,13 @@ ALTER TABLE ONLY public.webhooks
 --
 
 CREATE UNIQUE INDEX idx_on_insightable_id_insightable_type_entity_value_508616f247 ON public.ignores USING btree (insightable_id, insightable_type, entity_value);
+
+
+--
+-- Name: idx_on_inviteable_id_inviteable_type_receiver_id_700d475c99; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_inviteable_id_inviteable_type_receiver_id_700d475c99 ON public.invites USING btree (inviteable_id, inviteable_type, receiver_id);
 
 
 --
@@ -1908,6 +1966,13 @@ CREATE INDEX index_insights_on_entity_id ON public.insights USING btree (entity_
 --
 
 CREATE INDEX index_insights_on_insightable_id_and_insightable_type ON public.insights USING btree (insightable_id, insightable_type);
+
+
+--
+-- Name: index_invites_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_invites_on_uuid ON public.invites USING btree (uuid);
 
 
 --
@@ -2144,6 +2209,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20231226083832'),
 ('20231216131105'),
 ('20231213192605'),
 ('20231210142646'),

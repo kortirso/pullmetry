@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         namespace :excludes do
           resources :groups, only: %i[create]
         end
+        resources :invites, only: %i[create]
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
@@ -42,6 +43,7 @@ Rails.application.routes.draw do
       namespace :excludes do
         resources :groups, only: %i[destroy]
       end
+      resources :invites, only: %i[destroy]
     end
   end
 
