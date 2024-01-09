@@ -1,0 +1,39 @@
+<table class="table zebra">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Private</th>
+      <th>Start time</th>
+      <th>End time</th>
+      <th>Timezone</th>
+      <th>Ignore users</th>
+      <th>Fetch period</th>
+      <th>Main</th>
+      <th>Average</th>
+      <th>Ratio?</th>
+      <th>Ratio type</th>
+      <th>Premium?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.id %></td>
+        <td><%= company.configuration.private %></td>
+        <td><%= company.configuration.work_start_time&.strftime('%H:%M') %></td>
+        <td><%= company.configuration.work_end_time&.strftime('%H:%M') %></td>
+        <td><%= company.configuration.work_time_zone %></td>
+        <td><%= company.configuration.ignore_users_work_time %></td>
+        <td><%= company.configuration.fetch_period %></td>
+        <td><%= company.configuration.main_attribute %></td>
+        <td><%= company.configuration.average_type %></td>
+        <td><%= company.configuration.insight_ratio %></td>
+        <td><%= company.configuration.insight_ratio_type %></td>
+        <td><%= company.user.premium? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

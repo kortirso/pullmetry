@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :repositories, only: %i[index], module: 'companies'
     end
     resources :repositories, only: %i[index]
+    resources :configurations, only: %i[index]
     resources :feedbacks, only: %i[index]
   end
 
