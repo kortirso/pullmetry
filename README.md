@@ -1,13 +1,33 @@
-# Application for getting relevant stats about PRs and reviewers
+# PullKeeper
+Application for getting relevant stats about PRs and reviewers
 
-## Ruby version
+## Installation
 
-- 3.2.0
+```bash
+$ bundle install
+$ rails db:create
+$ rails db:schema:load
+$ rails db:seed
+$ yarn install
+$ EDITOR=vim rails credentials:edit
+```
+
+### Credentials
+
+If you would like to run application locally or on your production server you need to generate new config/master.key and use config/credentials.yml.example for updating config/credentials.yml.enc with your api keys.
 
 ## Running application locally
 
 ```bash
 foreman s
+```
+
+### Running application locally in production environment
+
+For running production env locally you can call
+
+```bash
+bin/local-production
 ```
 
 ## Application layers
@@ -22,18 +42,6 @@ deliveries, notifiers - delivery layer with different providers
 queries - separated database queries
 services - business logic layer
 policies - authorization logic
-
-## Credentials example
-
-If you would like to run application locally or on your production server you need to generate new config/master.key and use config/credentials.yml.example for updating config/credentials.yml.enc with your api keys.
-
-## Running application locally in production environment
-
-For running production env locally you can call
-
-```bash
-bin/local-production
-```
 
 ## License
 
