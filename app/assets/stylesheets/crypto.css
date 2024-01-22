@@ -1,0 +1,20 @@
+.btn-crypto {
+  height:40px;
+  border-radius:10px;
+  font-size:12px;
+  text-align:center;
+  display:block;
+  text-decoration:none;
+  border:1px solid;
+  cursor:pointer;
+  margin:0!important;
+}
+
+.btn-crypto .centred {
+  display:flex;
+  align-items:center;
+  align-content:center;
+  justify-content:center;
+  height:100%;
+  text-decoration:none
+}

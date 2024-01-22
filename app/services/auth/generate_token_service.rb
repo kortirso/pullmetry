@@ -5,7 +5,7 @@ module Auth
     include Deps[jwt_encoder: 'jwt_encoder']
 
     def call(user:)
-      { result: jwt_encoder.encode(uuid: Users::Session.create!(user: user).uuid) }
+      { result: jwt_encoder.encode(payload: { uuid: Users::Session.create!(user: user).uuid }) }
     end
   end
 end

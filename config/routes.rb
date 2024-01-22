@@ -50,6 +50,12 @@ Rails.application.routes.draw do
 
   namespace :webhooks do
     resource :telegram, only: %i[create]
+    resource :cryptocloud, only: %i[create]
+  end
+
+  namespace :confirmations do
+    get 'cryptocloud-success', to: 'cryptocloud#success'
+    get 'cryptocloud-failure', to: 'cryptocloud#failure'
   end
 
   resources :companies, only: %i[index destroy] do
