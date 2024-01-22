@@ -1161,8 +1161,16 @@ CREATE TABLE public.subscriptions (
     start_time timestamp(6) without time zone NOT NULL,
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    external_invoice_id character varying
 );
+
+
+--
+-- Name: COLUMN subscriptions.external_invoice_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.subscriptions.external_invoice_id IS 'Invoice ID from external system';
 
 
 --
@@ -2209,6 +2217,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240122114110'),
 ('20231226083832'),
 ('20231216131105'),
 ('20231213192605'),

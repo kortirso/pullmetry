@@ -28,18 +28,10 @@ describe User do
     end
 
     context 'with subscription' do
-      let!(:subscription) { create :subscription, user: user, start_time: DateTime.now + 1.minute }
+      before { create :subscription, user: user, start_time: DateTime.now + 1.minute }
 
-      it 'returns false' do
-        expect(user.premium?).to be_falsy
-      end
-
-      context 'with active subscription' do
-        before { subscription.update!(start_time: 1.day.ago) }
-
-        it 'returns true' do
-          expect(user.premium?).to be_truthy
-        end
+      it 'returns true' do
+        expect(user.premium?).to be_truthy
       end
     end
   end

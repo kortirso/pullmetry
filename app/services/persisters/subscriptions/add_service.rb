@@ -3,23 +3,37 @@
 module Persisters
   module Subscriptions
     class AddService
-      def call(user:, trial: false)
+      def call(user:, trial: false, days_period: Subscription::TRIAL_PERIOD_DAYS, invoice_id: nil)
         user.with_lock do
-          trial ? add_trial(user) : add_primary
+          trial ? add_trial(user, days_period) : add_primary(user, days_period, invoice_id)
         end
       end
 
       private
 
-      def add_trial(user)
+      def add_trial(user, days_period)
         return { errors: ["Trial subscription can't be created"] } if user.subscriptions.exists?
 
-        time = DateTime.now
-        # commento: subscriptions.start_time, subscriptions.end_time
-        user.subscriptions.create!(start_time: time, end_time: time + Subscription::TRIAL_PERIOD_DAYS.days)
+        create_subscription(user, DateTime.now, days_period)
       end
 
-      def add_primary; end
+      def add_primary(user, days_period, invoice_id)
+        max_end_time = user.subscriptions.active.maximum(:end_time)
+        if max_end_time
+          create_subscription(user, max_end_time, days_period, invoice_id)
+        else
+          create_subscription(user, DateTime.now, days_period, invoice_id)
+        end
+      end
+
+      def create_subscription(user, time, days_period, invoice_id=nil)
+        # commento: subscriptions.start_time, subscriptions.end_time, subscriptions.external_invoice_id
+        user.subscriptions.create!(
+          start_time: time,
+          end_time: time + days_period.days,
+          external_invoice_id: invoice_id
+        )
+      end
     end
   end
 end

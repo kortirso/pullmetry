@@ -6,5 +6,5 @@ class Subscription < ApplicationRecord
 
   belongs_to :user
 
-  scope :active, -> { where('start_time < :date AND end_time > :date', date: DateTime.now.new_offset(0)) }
+  scope :active, -> { where('end_time > :date', date: DateTime.now.new_offset(0)) }
 end

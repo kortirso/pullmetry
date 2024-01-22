@@ -12,6 +12,44 @@
     </div>
   </div>
   <% unless @used_trial_subscription %>
-    <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'btn-primary mt-4' %>
+    <%= button_to 'Activate trial subscription', subscriptions_trial_path, class: 'btn-primary btn-small mt-4' %>
   <% end %>
+
+  <div class="grid lg:grid-cols-2 gap-8 mt-8">
+    <div id="crypto">
+      <vue-widget
+        shop_id="eRba0IjxBVaqvZUG"
+        api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+        background="#fff"
+        color="#000"
+        border_color="#000"
+        logo="color"
+        width="300px"
+        currency="EUR"
+        amount="10"
+        text_btn="Pay for 30 days"
+        order_id="<%= Current.user.uuid %>"
+      ></vue-widget>
+      <% if false %>
+        <div class="mt-2">
+          <vue-widget
+            shop_id="eRba0IjxBVaqvZUG"
+            api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+            background="#fff"
+            color="#000"
+            border_color="#000"
+            logo="color"
+            width="300px"
+            currency="EUR"
+            amount="100"
+            text_btn="Pay for 365 days"
+            order_id="<%= Current.user.uuid %>"
+          ></vue-widget>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <p>Here you can pay for premium subscription with CryptoCloud service for 30 days (10 EURO) in crypto currency.</p>
+    </div>
+  </div>
 </div>

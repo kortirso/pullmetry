@@ -17,9 +17,7 @@ module Auth
     private
 
     def extract_uuid(token)
-      jwt_encoder.decode(token)
-    rescue JWT::DecodeError
-      {}
+      jwt_encoder.decode(token: token)
     end
 
     def find_session(payload)

@@ -6,7 +6,7 @@ describe Auth::FetchSessionService do
   let!(:instance) { described_class.new }
 
   context 'for valid token' do
-    let(:token) { JwtEncoder.new.encode(uuid: session_uuid) }
+    let(:token) { JwtEncoder.new.encode(payload: { uuid: session_uuid }) }
 
     context 'for unexisted session' do
       let(:session_uuid) { 'random uuid' }
