@@ -64,6 +64,16 @@ describe Webhooks::CryptocloudsController do
               post :create, params: { status: 'success', order_id: order_id, invoice_id: '123', token: invoice_token }
             }
 
+            before do
+              allow(Pullmetry::Container.resolve('jwt_encoder')).to(
+                receive(:decode).with(token: order_id).and_return({ 'uuid' => user.uuid, 'days_period' => 30 })
+              )
+
+              allow(Pullmetry::Container.resolve('jwt_encoder')).to(
+                receive(:decode).with(token: invoice_token, secret: anything).and_return({ 'id' => '123' })
+              )
+            end
+
             it 'does not create subscription', :aggregate_failures do
               expect { request }.to change(user.subscriptions, :count).by(1)
               expect(response).to have_http_status :ok
