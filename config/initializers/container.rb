@@ -27,6 +27,8 @@ module Pullmetry
     register('api.discord.client') { DiscordApi::Client.new }
     register('api.telegram.client') { TelegramApi::Client.new }
     register('bot.telegram.client') { TelegramBot::Client.new }
+    register('monitoring.providers.bugsnag') { Monitoring::Providers::Bugsnag.new }
+    register('monitoring.client') { Monitoring::Client.new }
 
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }

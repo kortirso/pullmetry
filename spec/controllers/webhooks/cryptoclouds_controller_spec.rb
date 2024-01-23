@@ -2,11 +2,16 @@
 
 describe Webhooks::CryptocloudsController do
   describe 'POST#create' do
+    let(:monitoring) { Pullmetry::Container.resolve('monitoring.client') }
+
+    before { allow(monitoring).to receive(:notify) }
+
     context 'when status is not success' do
       let(:request) { post :create, params: { status: 'failed' } }
 
       it 'does not create subscription', :aggregate_failures do
         expect { request }.not_to change(Subscription, :count)
+        expect(monitoring).to have_received(:notify)
         expect(response).to have_http_status :ok
       end
     end
@@ -17,6 +22,7 @@ describe Webhooks::CryptocloudsController do
 
         it 'does not create subscription', :aggregate_failures do
           expect { request }.not_to change(Subscription, :count)
+          expect(monitoring).to have_received(:notify)
           expect(response).to have_http_status :not_found
         end
       end
@@ -30,6 +36,7 @@ describe Webhooks::CryptocloudsController do
 
           it 'does not create subscription', :aggregate_failures do
             expect { request }.not_to change(Subscription, :count)
+            expect(monitoring).to have_received(:notify)
             expect(response).to have_http_status :not_found
           end
         end
@@ -39,6 +46,7 @@ describe Webhooks::CryptocloudsController do
 
           it 'does not create subscription', :aggregate_failures do
             expect { request }.not_to change(Subscription, :count)
+            expect(monitoring).to have_received(:notify)
             expect(response).to have_http_status :ok
           end
         end
@@ -55,6 +63,7 @@ describe Webhooks::CryptocloudsController do
 
             it 'does not create subscription', :aggregate_failures do
               expect { request }.not_to change(Subscription, :count)
+              expect(monitoring).to have_received(:notify)
               expect(response).to have_http_status :ok
             end
           end
@@ -76,6 +85,7 @@ describe Webhooks::CryptocloudsController do
 
             it 'does not create subscription', :aggregate_failures do
               expect { request }.to change(user.subscriptions, :count).by(1)
+              expect(monitoring).to have_received(:notify)
               expect(response).to have_http_status :ok
             end
           end

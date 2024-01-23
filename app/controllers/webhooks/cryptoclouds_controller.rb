@@ -4,11 +4,13 @@ module Webhooks
   class CryptocloudsController < ApplicationController
     include Deps[
       add_service: 'services.persisters.subscriptions.add',
-      jwt_encoder: 'jwt_encoder'
+      jwt_encoder: 'jwt_encoder',
+      monitoring: 'monitoring.client'
     ]
 
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate
+    before_action :monitor_request
     before_action :validate_status
     before_action :find_user
     before_action :find_invoice_payload
@@ -21,6 +23,14 @@ module Webhooks
     end
 
     private
+
+    def monitor_request
+      monitoring.notify(
+        exception: 'Cryproclouds sends webhook with payment confirmation',
+        metadata: { params: params },
+        severity: :info
+      )
+    end
 
     def validate_status
       return if params[:status] == 'success'
