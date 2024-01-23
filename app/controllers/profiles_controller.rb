@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ProfilesController < ApplicationController
-  include Deps[destroy_service: 'services.persisters.users.destroy']
+  include Deps[
+    destroy_service: 'services.persisters.users.destroy',
+    jwt_encoder: 'jwt_encoder'
+  ]
   include Boolable
 
   before_action :find_used_trial_subscription, only: %i[show]
@@ -9,6 +12,7 @@ class ProfilesController < ApplicationController
   before_action :find_vacations, only: %i[show]
   before_action :find_identities, only: %i[show]
   before_action :find_not_attached_identities, only: %i[show]
+  before_action :generate_order_ids, only: %i[show]
 
   def show; end
 
@@ -55,6 +59,11 @@ class ProfilesController < ApplicationController
 
   def find_not_attached_identities
     @need_identities = Identity.providers.keys - @identities.pluck(:provider)
+  end
+
+  def generate_order_ids
+    @cryptocloud_30_order_id = jwt_encoder.encode(payload: { uuid: current_user.uuid, days_period: 30 })
+    @cryptocloud_365_order_id = jwt_encoder.encode(payload: { uuid: current_user.uuid, days_period: 365 })
   end
 
   def user_params

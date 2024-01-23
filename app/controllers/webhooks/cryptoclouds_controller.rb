@@ -14,10 +14,8 @@ module Webhooks
     before_action :find_invoice_payload
 
     def create
-      # TODO: validate payment amount for calculating days_period
-      # params = { amount_crypto: '', currency: '' }
       if @invoice_payload['id'] == params[:invoice_id]
-        add_service.call(user: @user, trial: false, days_period: 30, invoice_id: params[:invoice_id])
+        add_service.call(user: @user, trial: false, days_period: days_period, invoice_id: params[:invoice_id])
       end
       head :ok
     end
@@ -31,7 +29,7 @@ module Webhooks
     end
 
     def find_user
-      @user = User.find_by!(uuid: params[:order_id])
+      @user = User.find_by!(uuid: user_uuid)
     end
 
     def find_invoice_payload
@@ -39,6 +37,18 @@ module Webhooks
       return if @invoice_payload.present?
 
       head :ok
+    end
+
+    def user_uuid
+      order_id_payload['uuid']
+    end
+
+    def days_period
+      order_id_payload['days_period']
+    end
+
+    def order_id_payload
+      @order_id_payload ||= jwt_encoder.decode(token: params[:order_id])
     end
 
     def token_secret
