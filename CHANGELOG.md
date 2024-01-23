@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - receiving payments in crypto for subscription
+- validating payments amount in webhook
 
 ## [1.6.8] - 2024-01-09
 ### Added
