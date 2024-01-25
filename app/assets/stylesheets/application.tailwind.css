@@ -37,11 +37,11 @@
   }
 
   .benefits-box {
-    @apply flex flex-col px-4 mb-12;
+    @apply flex flex-col px-4 mb-16;
   }
 
   .benefits-title {
-    @apply text-center font-semibold mb-8;
+    @apply text-center font-semibold mb-8 text-2xl;
   }
 
   .benefits-text {
@@ -73,7 +73,9 @@
   }
 
   .simple-link {
-    @apply text-orange-400 underline;
+    @apply font-medium underline;
+
+    color: #FF6600;
   }
 
   .table th, .table td {
@@ -256,5 +258,13 @@
 
     max-width: 95%;
     max-height: 90%;
+  }
+
+  .welcome-image {
+    @apply rounded-xl border border-stone-200 overflow-hidden;
+  }
+
+  .client-image img {
+    @apply h-20 mb-4;
   }
 }

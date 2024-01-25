@@ -27,18 +27,10 @@
   <% end %>
   <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap lg:pb-8">
     <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
-    <% cache('user_navigation_bottom_v1', expires_in: 24.hours) do %>
-      <%= link_to how_it_works_path, class: 'user-navigation-link' do %>
-        <%- image_tag '' %>
-        <span>How it works</span>
-      <% end %>
+    <% cache('user_navigation_bottom_v2', expires_in: 24.hours) do %>
       <%= link_to metrics_path, class: 'user-navigation-link' do %>
         <%- image_tag '' %>
         <span>Metrics</span>
-      <% end %>
-      <%= link_to sources_path, class: 'user-navigation-link' do %>
-        <%- image_tag '' %>
-        <span>Source code</span>
       <% end %>
       <%= link_to privacy_path, class: 'user-navigation-link' do %>
         <%- image_tag '' %>

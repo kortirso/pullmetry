@@ -7,9 +7,7 @@
     <% if Current.user %>
       <%= react_component 'FeedbackForm', children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
     <% end %>
-    <%= link_to 'How it works', how_it_works_path %>
     <%= link_to 'Metrics', metrics_path %>
-    <%= link_to 'Source code', sources_path %>
     <%= link_to 'Privacy policy', privacy_path %>
   </div>
 </footer>

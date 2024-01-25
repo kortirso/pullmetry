@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - validating payments amount in webhook
 - monitoring system with notifications to Bugsnag
 
+### Modified
+- welcome page
+
 ## [1.6.8] - 2024-01-09
 ### Added
 - admin page for checking company configurations

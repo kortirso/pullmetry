@@ -138,6 +138,7 @@ export const Repository = ({
               href={repository_url}
               target="_blank"
               rel="noopener noreferrer"
+              area-label="Visit repository page"
               onClick={(event) => event.stopPropagation()}
               className="mr-2 flex items-center"
             >

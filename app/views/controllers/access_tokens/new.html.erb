@@ -21,19 +21,23 @@
       <li>visit <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" class="simple-link">Github token generating page</a>, or <a href="https://gitlab.com/-/profile/personal_access_tokens" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab token generating page</a></li>
       <li>set token name and expiration time,</li>
       <li>in Repository access area - select for which repositories you want to create token,</li>
-      <p class="mt-4">If you create access token for repository - select only 1 repository for your PAT.</p>
-      <p class="mb-4">If you create access token for company - you can select many repositories, all repositories of this company will use the same access token.</p>
-      <div class="grid lg:grid-cols-2">
-        <%= image_tag 'all-repos.webp', width: 600, alt: 'permissions', class: 'my-4 border border-stone-200 rounded' %>
-        <%= image_tag 'selected-repos.webp', width: 600, alt: 'permissions', class: 'my-4 border border-stone-200 rounded' %>
-      </div>
+    </ul>
+    <p class="mt-4">If you create access token for repository - select only 1 repository for your PAT.</p>
+    <p class="mb-4">If you create access token for company - you can select many repositories, all repositories of this company will use the same access token.</p>
+    <div class="grid lg:grid-cols-2">
+      <%= image_tag 'selected-repos.webp', width: 600, height: 300, alt: 'permissions', class: 'my-4 border border-stone-200 rounded' %>
+    </div>
+    <ul>
       <li>select required repository permissions, they must be only <strong class="text-red-600">READ-ONLY</strong> for <strong class="text-red-600">Pull requests</strong>,</li>
-      <div class="grid lg:grid-cols-2">
-        <%= image_tag 'permissions.webp', width: 616, alt: 'permissions', class: 'my-4 border border-stone-200 rounded' %>
-        <%= image_tag 'overview.webp', width: 600, alt: 'overview', class: 'my-4 border border-stone-200 rounded' %>
-      </div>
+    </ul>
+    <div class="grid lg:grid-cols-2">
+      <%= image_tag 'permissions.webp', width: 616, height: 406, alt: 'permissions', class: 'my-4 border border-stone-200 rounded' %>
+      <%= image_tag 'overview.webp', width: 600, height: 257, alt: 'overview', class: 'my-4 border border-stone-200 rounded' %>
+    </div>
+    <ul>
       <li>click Generate token and then you could copy it,</li>
-      <li>if you are not repository owner - then it requires for owner to approve PAT token.</li>
+      <li>if you are not repository owner - then it requires for owner to approve PAT token,</li>
+      <li>if token expires - you will receive email from Github and then you will need to refresh it at Github and refresh here if changed.</li>
     </ul>
   </div>
 <% end %>

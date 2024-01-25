@@ -64,20 +64,4 @@ describe WelcomeController do
       expect(response).to render_template :privacy
     end
   end
-
-  describe 'GET#sources' do
-    it 'renders sources template' do
-      get :sources
-
-      expect(response).to render_template :sources
-    end
-  end
-
-  describe 'GET#how_it_works' do
-    it 'renders how_it_works template' do
-      get :how_it_works
-
-      expect(response).to render_template :how_it_works
-    end
-  end
 end
