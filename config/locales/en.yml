@@ -4,7 +4,6 @@ en:
       page_component:
         companies: Companies
         repositories: Repositories
-        how_it_works: How it works
         profile: Profile
         achievements: Achievements
         logout: Logout

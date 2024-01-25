@@ -17,7 +17,7 @@
           <div class="relative text-center bg-stone-600 text-white py-2 px-16">
             <p class="text-xl"><%= achievement.title['en'] %></p>
             <span class="absolute top-2 right-16">
-              <%= achievement.updated_at.strftime('%Y-%m-%d %H:%M') %>
+              <%- achievement.updated_at.strftime('%Y-%m-%d %H:%M') %>
             </span>
           </div>
           <div class="text-center bg-stone-300 py-2 px-16 text-sm">
