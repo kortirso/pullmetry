@@ -119,7 +119,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (6.1.1)
       racc
-    bugsnag (6.26.2)
+    bugsnag (6.26.3)
       concurrent-ruby (~> 1.0)
     builder (3.2.4)
     capistrano (3.18.0)
@@ -369,7 +369,7 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
-    rubocop (1.60.1)
+    rubocop (1.60.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
