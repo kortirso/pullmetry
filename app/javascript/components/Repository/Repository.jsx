@@ -115,12 +115,12 @@ export const Repository = ({
             </div>
             {access_token_status === 'valid' && !accessable ? (
               <span className="badge mt-4 sm:mt-0 sm:ml-4">
-                Repository access error
+                Access token does not include this repository or expired, refresh it
               </span>
             ) : null}
             {access_token_status === 'invalid' ? (
               <span className="badge mt-4 sm:mt-0 sm:ml-4">
-                Access token is invalid
+                Access token is invalid, refresh it
               </span>
             ) : null}
             {access_token_status === 'empty' && edit_links ? (

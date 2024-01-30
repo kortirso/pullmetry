@@ -11,7 +11,7 @@
           title: company.title,
           repositories_count: company.repositories.size,
           repositories_url: company_repositories_path(company_id: company.uuid),
-          unaccessable: company.access_token && !company.accessable,
+          unaccessable: !company.accessable,
           is_private: !!company.configuration.private,
           main_attribute: company.configuration.main_attribute,
           edit_links: allowed_to?(:update?, company) ? {
