@@ -3,6 +3,13 @@
     <h1 class="m-0">Companies</h1>
     <%= react_component 'CompanyForm' %>
   </div>
+  <% if @companies.any? { |company| company.user_id == Current.user.id && !company.accessable } %>
+    <div class="badge mb-4 p-4">
+      <p>One of your company has access error because of invalid access token permissions.</p>
+      <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
+      <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
+    </div>
+  <% end %>
   <section>
     <% @companies.each do |company| %>
       <%=
