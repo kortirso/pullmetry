@@ -7,7 +7,7 @@
     <% if Current.user %>
       <%= react_component 'FeedbackForm', children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
     <% end %>
-    <%= link_to 'Metrics', metrics_path %>
-    <%= link_to 'Privacy policy', privacy_path %>
+    <%= link_to 'Metrics', metrics_path, data: { 'test-id' => 'footer-metrics-link' } %>
+    <%= link_to 'Privacy policy', privacy_path, data: { 'test-id' => 'footer-privacy-link' } %>
   </div>
 </footer>

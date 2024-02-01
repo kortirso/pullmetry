@@ -96,6 +96,7 @@ gem 'active_delivery'
 
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
+  gem 'cypress-on-rails', '~> 1.0'
   gem 'rubocop', '~> 1.35', require: false
   gem 'rubocop-performance', '~> 1.14', require: false
   gem 'rubocop-rails', '~> 2.15', require: false
