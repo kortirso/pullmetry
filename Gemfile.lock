@@ -140,6 +140,8 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    cypress-on-rails (1.17.0)
+      rack
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -481,6 +483,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.6)
   capistrano-rvm
   commento
+  cypress-on-rails (~> 1.0)
   database_cleaner (~> 2.0)
   dry-auto_inject (~> 1.0)
   dry-container (~> 0.11.0)
