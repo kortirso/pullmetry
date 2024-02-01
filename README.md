@@ -12,28 +12,6 @@ $ yarn install
 $ EDITOR=vim rails credentials:edit
 ```
 
-### Testing
-
-#### Unit tests
-
-```bash
-$ rspec
-```
-
-#### E2E tests
-
-With browser
-```bash
-$ rails server -e test -p 5002
-$ yarn cypress open --project ./spec/e2e
-```
-
-Headless
-```bash
-$ rails server -e test -p 5002
-$ yarn run cypress run --project ./spec/e2e
-```
-
 ### Credentials
 
 If you would like to run application locally or on your production server you need to generate new config/master.key and use config/credentials.yml.example for updating config/credentials.yml.enc with your api keys.
@@ -50,6 +28,28 @@ For running production env locally you can call
 
 ```bash
 bin/local-production
+```
+
+## Testing
+
+### Unit tests
+
+```bash
+$ rspec
+```
+
+### E2E tests
+
+With browser
+```bash
+$ rails server -e test -p 5002
+$ yarn cypress open --project ./spec/e2e
+```
+
+Headless
+```bash
+$ rails server -e test -p 5002
+$ yarn run cypress run --project ./spec/e2e
 ```
 
 ## Application layers
