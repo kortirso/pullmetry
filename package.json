@@ -7,7 +7,7 @@
     "lint": "eslint -c .eslintrc.json app/javascript --ext .js,.jsx"
   },
   "dependencies": {
-    "esbuild": "^0.19.3"
+    "esbuild": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
