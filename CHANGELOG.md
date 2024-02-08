@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - basis for E2E tests with Cypress
 - limit for premium repositories
+- deleting repositories from admin panel
 
 ### Modified
 - navigation styles for better mobile

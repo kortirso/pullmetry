@@ -7,7 +7,8 @@
       <th>URL</th>
       <th>Access token</th>
       <th>Access token status</th>
-      <th>Premium?</th>
+      <th>Company ID</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -19,7 +20,10 @@
         <td><%= repository.link %></td>
         <td><%= repository.fetch_access_token ? "#{repository.fetch_access_token.value.first(16)}-****" : '' %></td>
         <td><%= repository.access_token_status %></td>
-        <td><%= repository.company.user.premium? %></td>
+        <td><%= repository.company_id %></td>
+        <td>
+          <%= button_to 'X', admin_repository_path(repository.id), class: 'btn-danger btn-xs', method: :delete %>
+        </td>
       </tr>
     <% end %>
   </tbody>

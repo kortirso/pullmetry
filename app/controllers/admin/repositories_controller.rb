@@ -7,17 +7,27 @@ module Admin
     PER_PAGE = 25
 
     before_action :find_repositories, only: %i[index]
+    before_action :find_repository, only: %i[destroy]
 
     def index; end
+
+    def destroy
+      @repository.destroy
+      redirect_to admin_repositories_path
+    end
 
     private
 
     def find_repositories
       @pagy, @repositories =
         pagy(
-          Repository.order(id: :desc).includes(:access_token, company: %i[access_token user]),
+          Repository.order(id: :desc).includes(:access_token, company: %i[access_token]),
           items: PER_PAGE
         )
+    end
+
+    def find_repository
+      @repository = Repository.find(params[:id])
     end
   end
 end
