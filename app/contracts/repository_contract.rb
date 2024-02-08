@@ -10,6 +10,12 @@ class RepositoryContract < ApplicationContract
     optional(:external_id)
   end
 
+  rule(:provider, :link) do
+    unless values[:link].starts_with?(Repository::LINK_FORMAT_BY_PROVIDER[values[:provider]])
+      key(:link).failure(:invalid_host)
+    end
+  end
+
   rule(:provider, :external_id) do
     if values[:provider] == Providerable::GITLAB && values[:external_id].blank?
       key(:external_id).failure(:empty)

@@ -9,30 +9,42 @@ describe Repositories::CreateForm, type: :service do
   context 'for invalid params' do
     let(:params) { { title: '', link: '' } }
 
-    it 'does not create repository and fails' do
+    it 'does not create repository and fails', :aggregate_failures do
       expect { form }.not_to change(Repository, :count)
+      expect(form[:errors]).not_to be_empty
     end
   end
 
   context 'for invalid external id' do
-    let(:params) { { title: 'Title', link: 'link', provider: 'gitlab' } }
+    let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab' } }
 
-    it 'does not create repository and fails' do
+    it 'does not create repository and fails', :aggregate_failures do
       expect { form }.not_to change(Repository, :count)
+      expect(form[:errors]).not_to be_empty
+    end
+  end
+
+  context 'for invalid link' do
+    let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'github' } }
+
+    it 'does not create repository and fails', :aggregate_failures do
+      expect { form }.not_to change(Repository, :count)
+      expect(form[:errors]).not_to be_empty
     end
   end
 
   context 'for valid external id' do
-    let(:params) { { title: 'Title', link: 'link', provider: 'gitlab', external_id: '1' } }
+    let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab', external_id: '1' } }
 
-    it 'creates repository and succeeds' do
+    it 'creates repository and succeeds', :aggregate_failures do
       expect { form }.to change(company.repositories, :count).by(1)
+      expect(form[:errors]).to be_blank
     end
   end
 
   context 'for valid params' do
-    let!(:repository) { create :repository, link: 'link' }
-    let(:params) { { title: 'Title', link: 'link', provider: 'github' } }
+    let!(:repository) { create :repository, link: 'https://github.com' }
+    let(:params) { { title: 'Title', link: 'https://github.com', provider: 'github' } }
 
     it 'creates repository and destroys old repository', :aggregate_failures do
       form

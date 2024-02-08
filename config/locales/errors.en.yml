@@ -5,17 +5,20 @@ en:
       entity_value: Entity value
       notification_type: Notification type
       excludes_rule: Exclude rule
+      link: Link
     errors:
       company:
         rules:
           title:
-            filled?: can't be blank
+            filled?: must be filled
           name:
-            filled?: can't be blank
+            filled?: must be filled
       repository:
         rules:
           external_id:
             empty: can't be blank
+          link:
+            invalid_host: must start with https://github.com or https://gitlab.com
       ignore:
         rules:
           entity_value:
