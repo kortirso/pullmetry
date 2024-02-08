@@ -6,6 +6,11 @@ class Repository < ApplicationRecord
   include Insightable
   include Providerable
 
+  LINK_FORMAT_BY_PROVIDER = {
+    Providerable::GITHUB => 'https://github.com',
+    Providerable::GITLAB => 'https://gitlab.com'
+  }.freeze
+
   belongs_to :company, counter_cache: true
 
   has_many :pull_requests, dependent: :destroy

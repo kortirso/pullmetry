@@ -6,6 +6,7 @@ ru:
       external_id: Внешний ID
       entity_value: Entity value
       excludes_rule: Исключение
+      link: Ссылка
     errors:
       company:
         rules:
@@ -17,6 +18,8 @@ ru:
         rules:
           external_id:
             empty: не может быть пустым
+          link:
+            invalid_host: должна начинаться с https://github.com или https://gitlab.com
       ignore:
         rules:
           entity_value:

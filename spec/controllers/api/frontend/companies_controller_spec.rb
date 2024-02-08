@@ -12,7 +12,7 @@ describe Api::Frontend::CompaniesController do
         it 'does not create company', :aggregate_failures do
           expect { request }.not_to change(Company, :count)
           expect(response).to have_http_status :ok
-          expect(response.parsed_body.dig('errors', 0)).to eq "Title can't be blank"
+          expect(response.parsed_body.dig('errors', 0)).to eq 'Title must be filled'
         end
       end
 

@@ -7,7 +7,7 @@ describe Companies::CreateValidator, type: :service do
     let(:params) { { title: '' } }
 
     it 'result contains error' do
-      expect(validator_call.first).to eq("Title can't be blank")
+      expect(validator_call.first).to eq('Title must be filled')
     end
   end
 

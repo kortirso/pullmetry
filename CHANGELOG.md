@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Modified
 - navigation styles for better mobile
 - H structure for home page
+- validating repository url
 
 ## [1.7.0] - 2024-01-25
 ### Added

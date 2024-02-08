@@ -4,7 +4,7 @@ describe RepositoryValidator, type: :service do
   subject(:validator_call) { described_class.new.call(params: params) }
 
   context 'for invalid format' do
-    let(:params) { { title: 'title', link: 'link', provider: '' } }
+    let(:params) { { title: 'title', link: 'https://github.com', provider: '' } }
 
     it 'result contains error' do
       expect(validator_call.first).to eq('Provider must be filled')
@@ -12,7 +12,7 @@ describe RepositoryValidator, type: :service do
   end
 
   context 'for valid params' do
-    let(:params) { { title: 'title', link: 'link', provider: 'provider' } }
+    let(:params) { { title: 'title', link: 'https://github.com', provider: 'github' } }
 
     it 'result does not contain errors' do
       expect(validator_call.empty?).to be_truthy
@@ -21,7 +21,7 @@ describe RepositoryValidator, type: :service do
 
   context 'for gitlab' do
     context 'for invalid format' do
-      let(:params) { { title: 'title', link: 'link', provider: 'gitlab', external_id: '' } }
+      let(:params) { { title: 'title', link: 'https://gitlab.com', provider: 'gitlab', external_id: '' } }
 
       it 'result contains error' do
         expect(validator_call.first).to eq("External id can't be blank")
@@ -29,7 +29,7 @@ describe RepositoryValidator, type: :service do
     end
 
     context 'for valid params' do
-      let(:params) { { title: 'title', link: 'link', provider: 'gitlab', external_id: 'external_id' } }
+      let(:params) { { title: 'title', link: 'https://gitlab.com', provider: 'gitlab', external_id: 'external_id' } }
 
       it 'result does not contain errors' do
         expect(validator_call.empty?).to be_truthy

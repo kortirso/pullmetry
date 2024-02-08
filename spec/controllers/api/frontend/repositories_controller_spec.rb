@@ -89,7 +89,11 @@ describe Api::Frontend::RepositoriesController do
           let(:request) {
             post :create, params: {
               repository: {
-                company_uuid: company.uuid, title: 'Title', link: 'nam', provider: 'gitlab', external_id: '1'
+                company_uuid: company.uuid,
+                title: 'Title',
+                link: 'https://gitlab.com',
+                provider: 'gitlab',
+                external_id: '1'
               }, auth_token: access_token
             }
           }
@@ -106,7 +110,9 @@ describe Api::Frontend::RepositoriesController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam', provider: 'github' },
+              repository: {
+                company_uuid: company.uuid, title: 'Title', link: 'https://github.com', provider: 'github'
+              },
               auth_token: access_token
             }
           }
