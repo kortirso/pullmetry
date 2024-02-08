@@ -69,7 +69,11 @@
   }
 
   .user-navigation-link {
-    @apply inline-block p-4 md:pl-12 text-white whitespace-nowrap;
+    @apply inline-block p-4 pl-0 lg:pl-12 text-white whitespace-nowrap;
+  }
+
+  .navigation-menu:not(.hidden) {
+    @apply absolute w-full z-10 bg-zinc-800 top-14;
   }
 
   .simple-link {

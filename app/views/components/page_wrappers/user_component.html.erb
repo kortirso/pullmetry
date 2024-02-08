@@ -1,5 +1,40 @@
 <div class="flex flex-col lg:flex-row flex-1 max-h-screen">
-  <%= render 'shared/user_navigation' %>
+  <nav>
+    <div class="relative h-full lg:w-64 bg-zinc-800 flex flex-col">
+      <% cache('user_navigation_header_v1', expires_in: 24.hours) do %>
+        <section class="flex flex-row justify-between px-8 lg:px-0">
+          <%= link_to root_path, class: 'user-navigation-link lg:my-4 text-xl' do %>
+            <span>Pull<span class="text-orange-400">Keeper</span></span>
+          <% end %>
+          <div class="lg:hidden flex items-center">
+            <button type="button" class="mobile-menu-button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+              </svg>
+            </button>
+          </div>
+        </section>
+      <% end %>
+      <div class="navigation-menu flex-1 hidden lg:flex flex-col px-8 lg:px-0 py-4 lg:py-0">
+        <% cache('user_navigation_links_v1', expires_in: 24.hours) do %>
+          <section class="flex-1 flex flex-wrap flex-col mb-4 lg:mb-0">
+            <%= link_to t('components.page_wrappers.page_component.companies'), companies_path, class: 'user-navigation-link' %>
+            <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path, class: 'user-navigation-link' %>
+            <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path, class: 'user-navigation-link' %>
+            <%= link_to t('components.page_wrappers.page_component.profile'), profile_path, class: 'user-navigation-link' %>
+          </section>
+        <% end %>
+        <section class="flex flex-col lg:pb-8">
+          <%= react_component 'FeedbackForm', children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
+          <% cache('user_navigation_bottom_v3', expires_in: 24.hours) do %>
+            <%= link_to 'Metrics', metrics_path, class: 'user-navigation-link' %>
+            <%= link_to 'Privacy policy', privacy_path, class: 'user-navigation-link' %>
+            <%= link_to t('components.page_wrappers.page_component.logout'), logout_path, class: 'user-navigation-link' %>
+          <% end %>
+        </section>
+      </div>
+    </div>
+  </nav>
   <div class="flex-1 w-full p-8 lg:p-12 overflow-y-scroll bg-stone-100">
     <%= content %>
   </div>
