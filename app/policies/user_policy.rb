@@ -3,8 +3,10 @@
 class UserPolicy < ApplicationPolicy
   def create_repository?
     return false unless record.companies.exists?
-    return true if record.premium?
 
-    record.repositories.size < Subscription::FREE_REPOSITORIES_AMOUNT
+    objects_count = record.repositories.size
+    return objects_count < Subscription::PREMIUM_REPOSITORIES_AMOUNT if record.premium?
+
+    objects_count < Subscription::FREE_REPOSITORIES_AMOUNT
   end
 end

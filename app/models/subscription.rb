@@ -2,6 +2,7 @@
 
 class Subscription < ApplicationRecord
   FREE_REPOSITORIES_AMOUNT = 5
+  PREMIUM_REPOSITORIES_AMOUNT = 15
   TRIAL_PERIOD_DAYS = 100
 
   belongs_to :user

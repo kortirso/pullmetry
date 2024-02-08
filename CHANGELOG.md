@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - basis for E2E tests with Cypress
+- limit for premium repositories
 
 ## [1.7.0] - 2024-01-25
 ### Added

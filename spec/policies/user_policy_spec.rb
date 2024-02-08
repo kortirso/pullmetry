@@ -25,6 +25,27 @@ describe UserPolicy do
             it 'returns false' do
               expect(policy_access).to be_falsy
             end
+
+            context 'for premium account' do
+              before { create :subscription, user: user }
+
+              it 'returns true' do
+                expect(policy_access).to be_truthy
+              end
+            end
+          end
+
+          context 'for premium account' do
+            context 'when user has too much repositories' do
+              before do
+                create :subscription, user: user
+                create_list :repository, Subscription::PREMIUM_REPOSITORIES_AMOUNT, company: company
+              end
+
+              it 'returns false' do
+                expect(policy_access).to be_falsy
+              end
+            end
           end
         end
 
