@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - third pricing plan for enterprise clients
 
+### Modified
+- titles and descriptions for landing page
+
 ## [1.7.1] - 2024-02-08
 ### Added
 - basis for E2E tests with Cypress
