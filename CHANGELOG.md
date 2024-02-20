@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - third pricing plan for enterprise clients
+- subscribing for newslist
 
 ### Modified
 - titles and descriptions for landing page

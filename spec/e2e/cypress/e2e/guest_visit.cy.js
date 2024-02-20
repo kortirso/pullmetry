@@ -2,10 +2,16 @@ import { clickBySelector } from '../helpers/actions';
 
 // spec/cypress/e2e/guest_visit.cy.js
 describe('Guest visit', () => {
-  it('visit main pages', () => {
+  it('visit main pages as guest', () => {
     // Visit the application under test
     cy.visit('/')
-    cy.contains('PullKeeper is open source pull requests analyzer')
+    cy.contains('Get the PR statistics you always needed')
+    cy.contains('Join newslist')
+
+    // visiting main page after subscribing for newslist
+    cy.setCookie('pullmetry_subscriber_email', 'email')
+    cy.visit('/')
+    cy.contains('Join newslist').should('not.exist')
 
     // visit metrics page
     clickBySelector('a[data-test-id="footer-metrics-link"]')

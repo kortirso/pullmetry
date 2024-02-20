@@ -64,4 +64,12 @@ describe WelcomeController do
       expect(response).to render_template :privacy
     end
   end
+
+  describe 'GET#metrics' do
+    it 'renders metrics template' do
+      get :metrics
+
+      expect(response).to render_template :metrics
+    end
+  end
 end

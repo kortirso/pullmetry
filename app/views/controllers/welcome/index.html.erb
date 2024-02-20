@@ -1,6 +1,6 @@
 <%= render PageWrappers::GuestComponent.new do %>
   <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-16">
-    <div class="flex-1 flex flex-col justify-center">
+    <div class="flex flex-col justify-center">
       <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
       <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
       <% unless Current.user %>
@@ -10,7 +10,7 @@
         </div>
       <% end %>
     </div>
-    <div class="flex-1 flex justify-center">
+    <div class="flex justify-center">
       <div class="welcome-image">
         <%= image_tag 'screenshot.webp', width: 616, height: 355, alt: 'interface-example' %>
       </div>
@@ -70,6 +70,25 @@
     <p class="mb-4 text-lg">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
     <p class="text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
   </section>
+  <% unless cookies[:pullmetry_subscriber_email] %>
+    <div class="flex justify-center items-center mb-24">
+      <div class="p-8 border border-stone-200 rounded flex flex-col items-center">
+        <h2>Join newslist</h2>
+        <p class="mb-4">Receive latest project news about releases and new features.</p>
+        <%= form_with model: Subscriber.new, url: subscribers_path, method: :post, class: 'form-block' do |form| %>
+          <div class="flex flex-row gap-4 mb-8">
+            <div class="form-field m-0">
+              <%= form.text_field :email, required: true, placeholder: 'Email', class: 'form-value', data: { 'test-id' => 'join-newslist-email-value' } %>
+            </div>
+            <%= form.submit 'Join', class: 'btn-primary btn-small', data: { 'test-id' => 'join-newslist-link' } %>
+          </div>
+          <div class="form-field m-0">
+            <%= recaptcha_tags %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
   <section class="mx-auto mb-8 xl:mb-24">
     <h2 class="text-center text-4xl mb-12">How it works</h2>
     <div class="flex flex-col-reverse md:flex-row md:gap-20 mb-12">
