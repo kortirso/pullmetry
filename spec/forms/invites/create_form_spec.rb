@@ -5,6 +5,12 @@ describe Invites::CreateForm, type: :service do
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
+  let(:mail) { double }
+
+  before do
+    allow(InvitesMailer).to receive(:create_email).and_return(mail)
+    allow(mail).to receive(:deliver_later)
+  end
 
   context 'for user inviteable' do
     let(:inviteable) { user }
@@ -15,6 +21,7 @@ describe Invites::CreateForm, type: :service do
       it 'does not create invite', :aggregate_failures do
         expect { form }.not_to change(Invite, :count)
         expect(form[:errors]).not_to be_blank
+        expect(InvitesMailer).not_to have_received(:create_email)
       end
     end
 
@@ -25,6 +32,7 @@ describe Invites::CreateForm, type: :service do
         expect { form }.to change(Invite, :count).by(1)
         expect(form[:result].is_a?(Invite)).to be_truthy
         expect(form[:errors]).to be_blank
+        expect(InvitesMailer).to have_received(:create_email)
       end
 
       context 'for existing invite' do
@@ -33,6 +41,7 @@ describe Invites::CreateForm, type: :service do
         it 'does not create invite', :aggregate_failures do
           expect { form }.not_to change(Invite, :count)
           expect(form[:errors]).not_to be_blank
+          expect(InvitesMailer).not_to have_received(:create_email)
         end
       end
     end
@@ -48,6 +57,7 @@ describe Invites::CreateForm, type: :service do
       it 'does not create invite', :aggregate_failures do
         expect { form }.not_to change(Invite, :count)
         expect(form[:errors]).not_to be_blank
+        expect(InvitesMailer).not_to have_received(:create_email)
       end
     end
 
@@ -58,6 +68,7 @@ describe Invites::CreateForm, type: :service do
         expect { form }.to change(Invite, :count).by(1)
         expect(form[:result].is_a?(Invite)).to be_truthy
         expect(form[:errors]).to be_blank
+        expect(InvitesMailer).to have_received(:create_email)
       end
 
       context 'for existing invite' do
@@ -66,6 +77,7 @@ describe Invites::CreateForm, type: :service do
         it 'does not create invite', :aggregate_failures do
           expect { form }.not_to change(Invite, :count)
           expect(form[:errors]).not_to be_blank
+          expect(InvitesMailer).not_to have_received(:create_email)
         end
       end
     end

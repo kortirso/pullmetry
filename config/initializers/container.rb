@@ -41,6 +41,7 @@ module Pullmetry
     register('contracts.notification') { NotificationContract.new }
     register('contracts.excludes.rule') { Excludes::RuleContract.new }
     register('contracts.invite') { InviteContract.new }
+    register('contracts.subscribers.create') { Subscribers::CreateContract.new }
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
@@ -53,6 +54,7 @@ module Pullmetry
     register('validators.notification') { NotificationValidator.new }
     register('validators.excludes.rules.create') { Excludes::Rules::CreateValidator.new }
     register('validators.invite') { InviteValidator.new }
+    register('validators.subscribers.create') { Subscribers::CreateValidator.new }
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
@@ -66,6 +68,7 @@ module Pullmetry
     register('forms.notifications.create') { Notifications::CreateForm.new }
     register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
     register('forms.invites.create') { Invites::CreateForm.new }
+    register('forms.subscribers.create') { Subscribers::CreateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {

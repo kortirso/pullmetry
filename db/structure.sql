@@ -1152,6 +1152,39 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: subscribers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscribers (
+    id bigint NOT NULL,
+    email character varying NOT NULL,
+    unsubscribe_token character varying,
+    unsubscribed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: subscribers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.subscribers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscribers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.subscribers_id_seq OWNED BY public.subscribers.id;
+
+
+--
 -- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1490,6 +1523,13 @@ ALTER TABLE ONLY public.repositories_insights ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: subscribers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscribers ALTER COLUMN id SET DEFAULT nextval('public.subscribers_id_seq'::regclass);
+
+
+--
 -- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1738,6 +1778,14 @@ ALTER TABLE ONLY public.repositories
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: subscribers subscribers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscribers
+    ADD CONSTRAINT subscribers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2082,6 +2130,13 @@ CREATE UNIQUE INDEX index_repositories_on_uuid ON public.repositories USING btre
 
 
 --
+-- Name: index_subscribers_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscribers_on_email ON public.subscribers USING btree (email);
+
+
+--
 -- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2217,6 +2272,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240220110817'),
 ('20240122114110'),
 ('20231226083832'),
 ('20231216131105'),

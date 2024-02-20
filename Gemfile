@@ -94,6 +94,9 @@ gem 'jsonapi-serializer', '2.2.0'
 # notification layer
 gem 'active_delivery'
 
+# antibot captcha
+gem 'recaptcha', require: 'recaptcha/rails'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'cypress-on-rails', '~> 1.0'
