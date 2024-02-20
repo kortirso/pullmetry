@@ -1158,7 +1158,7 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.subscribers (
     id bigint NOT NULL,
     email character varying NOT NULL,
-    unsubscribe_token character varying NOT NULL,
+    unsubscribe_token character varying,
     unsubscribed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL

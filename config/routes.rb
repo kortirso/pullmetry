@@ -71,6 +71,9 @@ Rails.application.routes.draw do
   resource :achievements, only: %i[show]
   resources :identities, only: %i[destroy]
   resources :subscribers, only: %i[create]
+  namespace :subscribers do
+    resource :unsubscribe, only: %i[show]
+  end
 
   post 'subscriptions/trial', to: 'subscriptions/trial#create'
 

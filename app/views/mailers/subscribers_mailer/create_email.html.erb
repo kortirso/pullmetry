@@ -1,0 +1,4 @@
+<p>Greeting, dear user!</p>
+<p>Your subscription for our newslist is confirmed.</p>
+<br />
+<p>If it was not you or you would like to cancel subscription - please click <%= link_to 'link', subscribers_unsubscribe_url(email: @subscriber.email, unsubscribe_token: @subscriber.unsubscribe_token) %>.</p>

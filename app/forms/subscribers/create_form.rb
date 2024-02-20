@@ -9,7 +9,7 @@ module Subscribers
       return { errors: errors } if errors.any?
 
       result = Subscriber.create!(params)
-      # TODO: add sending welcome email
+      SubscribersMailer.create_email(id: result.id).deliver_later
 
       { result: result }
     end
