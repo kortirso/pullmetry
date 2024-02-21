@@ -284,7 +284,7 @@ GEM
     puma (6.3.0)
       nio4r (~> 2.0)
     que (2.3.0)
-    que-view (0.2.3)
+    que-view (0.3.0)
       que (> 2.0)
       rails (> 6.0.0)
       sassc-rails
@@ -505,7 +505,7 @@ DEPENDENCIES
   pghero
   puma (~> 6.0)
   que (~> 2.3)
-  que-view (~> 0.2)
+  que-view (~> 0.3)
   rack (~> 3.0)
   rack-session (~> 2.0)
   rackup (~> 2.1)
