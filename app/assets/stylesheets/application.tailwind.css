@@ -265,7 +265,11 @@
   }
 
   .welcome-image {
-    @apply rounded-xl border border-stone-200 overflow-hidden;
+    @apply overflow-hidden;
+  }
+
+  .welcome-image img {
+    @apply rounded-xl border border-stone-200;
   }
 
   .client-image img {
