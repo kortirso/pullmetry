@@ -5,6 +5,7 @@
       <th>UUID</th>
       <th>Title</th>
       <th>Repos</th>
+      <th>Users</th>
       <th>Access token</th>
       <th>User ID</th>
     </tr>
@@ -16,6 +17,7 @@
         <td><%= company.uuid %></td>
         <td><%= company.title %></td>
         <td><%= link_to company.repositories.size, admin_company_repositories_path(company_id: company.id), class: 'simple-link' %></td>
+        <td><%= company.user_ids.count %></td>
         <td><%= company.access_token ? "#{company.access_token.value.first(16)}-****" : '' %></td>
         <td><%= company.user_id %></td>
       </tr>
