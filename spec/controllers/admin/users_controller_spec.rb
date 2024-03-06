@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Admin::FeedbacksController do
+describe Admin::UsersController do
   describe 'GET#index' do
     it_behaves_like 'required auth'
     it_behaves_like 'required admin auth'
@@ -8,7 +8,7 @@ describe Admin::FeedbacksController do
     context 'for logged admins' do
       sign_in_admin
 
-      context 'without feedbacks' do
+      context 'without users' do
         it 'renders index page' do
           do_request
 
@@ -16,8 +16,8 @@ describe Admin::FeedbacksController do
         end
       end
 
-      context 'with feedbacks' do
-        before { create :feedback }
+      context 'with users' do
+        before { create :user }
 
         it 'renders index page' do
           do_request

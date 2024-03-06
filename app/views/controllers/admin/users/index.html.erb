@@ -1,0 +1,29 @@
+<table class="table zebra w-full">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>UUID</th>
+      <th>email</th>
+      <th>Work start time</th>
+      <th>Work end time</th>
+      <th>Work time zone</th>
+      <th>Premium?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.uuid %></td>
+        <td><%= user.email %></td>
+        <td><%= user.work_start_time %></td>
+        <td><%= user.work_end_time %></td>
+        <td><%= user.work_time_zone %></td>
+        <td><%= user.premium? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_companies
-      @pagy, @companies = pagy(Company.includes(:access_token, :user).order(id: :desc), items: PER_PAGE)
+      @pagy, @companies = pagy(Company.includes(:access_token).order(id: :desc), items: PER_PAGE)
     end
   end
 end
