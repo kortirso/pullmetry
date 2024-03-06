@@ -19,4 +19,13 @@ class Company < ApplicationRecord
   has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
 
   delegate :premium?, to: :user
+
+  def user_ids
+    Rails.cache.fetch("company_users_ids_v1_#{id}", expires_in: 24.hours) do
+      insights.actual.visible
+        .joins(entity: :identity)
+        .where.not(entities: { identity_id: nil })
+        .pluck('identities.user_id')
+    end
+  end
 end

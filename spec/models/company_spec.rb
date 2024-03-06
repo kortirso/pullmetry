@@ -66,4 +66,41 @@ describe Company do
       end
     end
   end
+
+  describe '#user_ids' do
+    let!(:company) { create :company }
+    let!(:entity) { create :entity }
+    let!(:identity) { create :identity }
+    let!(:insight) { create :insight, insightable: company, entity: entity, previous_date: DateTime.now, hidden: true }
+
+    context 'for not actual insight' do
+      it 'returns empty result' do
+        expect(company.user_ids).to be_empty
+      end
+
+      context 'for actual insight' do
+        before { insight.update!(previous_date: nil) }
+
+        it 'returns empty result' do
+          expect(company.user_ids).to be_empty
+        end
+
+        context 'for visible insight' do
+          before { insight.update!(hidden: false) }
+
+          it 'returns empty result' do
+            expect(company.user_ids).to be_empty
+          end
+
+          context 'for connected entity with user' do
+            before { entity.update!(identity: identity) }
+
+            it 'returns user id' do
+              expect(company.user_ids).to eq([identity.user_id])
+            end
+          end
+        end
+      end
+    end
+  end
 end

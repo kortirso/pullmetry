@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - admin page for rendering users
+- rendering company users amount at admin page
 
 ## [1.7.2] - 2024-02-20
 ### Added

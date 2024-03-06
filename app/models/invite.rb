@@ -10,6 +10,7 @@ class Invite < ApplicationRecord
 
   scope :coworker, -> { where(inviteable_type: 'Company') }
   scope :friend, -> { where(inviteable_type: 'User') }
+  scope :accepted, -> { where.not(receiver_id: nil) }
 
   def coworker?
     inviteable_type == 'Company'
