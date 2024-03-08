@@ -75,7 +75,7 @@ describe Api::Frontend::WebhooksController do
             }
           }
 
-          before { create :webhook, insightable: company, source: 'slack' }
+          before { create :webhook, webhookable: company, source: 'slack' }
 
           it 'does not create webhook', :aggregate_failures do
             expect { request }.not_to change(Webhook, :count)
@@ -135,11 +135,11 @@ describe Api::Frontend::WebhooksController do
 
       context 'for user webhook' do
         before do
-          webhook.insightable.update!(user: user)
+          webhook.webhookable.update!(user: user)
 
-          create :notification, notifyable: webhook.insightable, source: Webhook::SLACK
+          create :notification, notifyable: webhook.webhookable, source: Webhook::SLACK
           create :notification, source: Webhook::SLACK
-          create :notification, notifyable: webhook.insightable, source: Webhook::TELEGRAM
+          create :notification, notifyable: webhook.webhookable, source: Webhook::TELEGRAM
         end
 
         it 'destroys webhook', :aggregate_failures do

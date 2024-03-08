@@ -4,7 +4,7 @@ describe CompanyDelivery, type: :delivery do
   let!(:company) { create :company, accessable: false }
 
   before do
-    create :webhook, source: Webhook::SLACK, url: 'url1', insightable: company
+    create :webhook, source: Webhook::SLACK, url: 'url1', webhookable: company
     create :insight, insightable: company, reviews_count: 1
   end
 
@@ -33,7 +33,7 @@ describe CompanyDelivery, type: :delivery do
 
       context 'with available discord webhook' do
         before do
-          create :webhook, source: Webhook::DISCORD, url: 'url2', insightable: company
+          create :webhook, source: Webhook::DISCORD, url: 'url2', webhookable: company
           create :notification,
                  source: Notification::DISCORD,
                  notification_type: Notification::INSIGHTS_DATA,
@@ -49,7 +49,7 @@ describe CompanyDelivery, type: :delivery do
 
       context 'with available custom webhook' do
         before do
-          create :webhook, source: Webhook::CUSTOM, url: 'url3', insightable: company
+          create :webhook, source: Webhook::CUSTOM, url: 'url3', webhookable: company
           create :notification,
                  source: Notification::CUSTOM,
                  notification_type: Notification::INSIGHTS_DATA,
@@ -65,7 +65,7 @@ describe CompanyDelivery, type: :delivery do
 
       context 'with available telegram webhook' do
         before do
-          create :webhook, source: Webhook::TELEGRAM, url: 'url4', insightable: company
+          create :webhook, source: Webhook::TELEGRAM, url: 'url4', webhookable: company
           create :notification,
                  source: Notification::TELEGRAM,
                  notification_type: Notification::INSIGHTS_DATA,

@@ -22,6 +22,8 @@ class Notification < ApplicationRecord
 
   belongs_to :notifyable, polymorphic: true
 
+  has_one :webhook, as: :webhookable, dependent: :destroy
+
   enum notification_type: {
     REPOSITORY_ACCESS_ERROR => 0,
     INSIGHTS_DATA => 1,
