@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Notification < ApplicationRecord
+  include Uuidable
+
   REPOSITORY_ACCESS_ERROR = 'repository_access_error'
   INSIGHTS_DATA = 'insights_data'
   REPOSITORY_INSIGHTS_DATA = 'repository_insights_data'
@@ -23,6 +25,8 @@ class Notification < ApplicationRecord
   belongs_to :notifyable, polymorphic: true
 
   has_one :webhook, as: :webhookable, dependent: :destroy
+
+  scope :enabled, -> { where(enabled: true) }
 
   enum notification_type: {
     REPOSITORY_ACCESS_ERROR => 0,

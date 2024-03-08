@@ -11,7 +11,7 @@ module Webhooks
       error = validate_url(params)
       return { errors: [error] } if error.present?
 
-      { result: webhookable.webhooks.create!(params) }
+      { result: Webhook.create!(params.merge(webhookable: webhookable)) }
     rescue ActiveRecord::RecordNotUnique => _e
       { errors: ['Webhook already exists'] }
     end

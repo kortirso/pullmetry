@@ -12,9 +12,9 @@
         excludeGroups: @excludes_groups,
         ignores: @ignores,
         invites: @invites,
-        webhooks: @webhooks,
+        webhooks: @webhooks.map { |notification| notification.except(:webhookable_id) },
         companyUuid: @company.uuid,
-        notifications: @notifications
+        notifications: @notifications.map { |notification| notification.except(:id) }
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
   <% end %>

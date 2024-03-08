@@ -9,21 +9,21 @@ module Api
       before_action :find_notification
 
       def create
-        return render json: { errors: ['Notification already exists'] }, status: :ok if @notification
+        return refresh_notifications if @notification
 
         # commento: notifications.source, notifications.notification_type
         case create_form.call(notifyable: @notifyable, params: notification_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
-        in { result: result }
-          render json: { result: @notifyable.notifications.hashable_pluck(:source, :notification_type) }, status: :ok
+        in { result: result } then render_enabled_notifications
         end
       end
 
       def destroy
         return page_not_found if @notification.nil?
 
-        @notification.destroy
-        render json: { result: @notifyable.notifications.hashable_pluck(:source, :notification_type) }, status: :ok
+        # commento: notifications.enabled
+        @notification.update(enabled: false)
+        render_enabled_notifications
       end
 
       private
@@ -39,7 +39,19 @@ module Api
       end
 
       def find_company
-        @notifyable = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
+        @notifyable = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
+      end
+
+      def refresh_notifications
+        # commento: notifications.enabled
+        @notification.update(enabled: true)
+        render_enabled_notifications
+      end
+
+      def render_enabled_notifications
+        render json: {
+          result: @notifyable.notifications.hashable_pluck(:uuid, :source, :notification_type, :enabled)
+        }, status: :ok
       end
 
       def notification_params

@@ -13,14 +13,13 @@ module Api
         case create_form.call(webhookable: @company, params: webhook_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
-          render json: { result: { uuid: result.uuid, source: result.source, url: result.url } }, status: :ok
+          render json: { result: WebhookSerializer.new(result).serializable_hash }, status: :ok
         end
       end
 
       def destroy
         authorize! @webhook.webhookable, to: :update?
         @webhook.destroy
-        @webhook.webhookable.notifications.where(source: @webhook.source).destroy_all
         render json: { result: :ok }, status: :ok
       end
 
