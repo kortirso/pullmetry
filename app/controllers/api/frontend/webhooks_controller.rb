@@ -10,7 +10,7 @@ module Api
 
       def create
         # commento: webhooks.source, webhooks.url
-        case create_form.call(company: @company, params: webhook_params)
+        case create_form.call(webhookable: @company, params: webhook_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: { result: { uuid: result.uuid, source: result.source, url: result.url } }, status: :ok

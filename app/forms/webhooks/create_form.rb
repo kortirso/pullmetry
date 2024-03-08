@@ -4,28 +4,19 @@ module Webhooks
   class CreateForm
     include Deps[validator: 'validators.webhook']
 
-    def call(company:, params:)
+    def call(webhookable:, params:)
       errors = validator.call(params: params)
       return { errors: errors } if errors.any?
-
-      error = validate_single_source(company, params)
-      return { errors: [error] } if error.present?
 
       error = validate_url(params)
       return { errors: [error] } if error.present?
 
-      { result: company.webhooks.create!(params) }
+      { result: webhookable.webhooks.create!(params) }
     rescue ActiveRecord::RecordNotUnique => _e
       { errors: ['Webhook already exists'] }
     end
 
     private
-
-    def validate_single_source(company, params)
-      return unless company.webhooks.exists?(source: params[:source])
-
-      'There is already webhook with such source'
-    end
 
     # rubocop: disable Metrics/CyclomaticComplexity
     def validate_url(params)

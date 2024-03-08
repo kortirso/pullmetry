@@ -71,7 +71,9 @@ describe Api::Frontend::WebhooksController do
         context 'for existing webhook with such source' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, webhook: { source: 'slack', url: '1123' }, auth_token: access_token
+              company_id: company.uuid, webhook: {
+                source: 'slack', url: 'https://hooks.slack.com/services/url'
+              }, auth_token: access_token
             }
           }
 
@@ -80,7 +82,7 @@ describe Api::Frontend::WebhooksController do
           it 'does not create webhook', :aggregate_failures do
             expect { request }.not_to change(Webhook, :count)
             expect(response).to have_http_status :ok
-            expect(response.parsed_body.dig('errors', 0)).to eq 'There is already webhook with such source'
+            expect(response.parsed_body.dig('errors', 0)).to eq 'Webhook already exists'
           end
         end
 
