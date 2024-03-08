@@ -11,7 +11,8 @@ const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
 
 const NOTIFICATION_TYPES = {
   insights_data: 'Insights',
-  repository_insights_data: 'Repo insights'
+  repository_insights_data: 'Repo insights',
+  long_time_review_data: 'Long time review'
 };
 
 const EXCLUDE_RULES_TARGETS = {
@@ -31,6 +32,7 @@ const EXCLUDE_RULES_CONDITIONS = {
 export const CompanyConfiguration = ({
   privacyHtml,
   fetchPeriodHtml,
+  longTimeReviewHtml,
   workTimeHtml,
   insightAttributesHtml,
   averageHtml,
@@ -333,6 +335,7 @@ export const CompanyConfiguration = ({
       <tbody>
         {renderNotificationType('Insights', 'insights_data')}
         {renderNotificationType('Repository insights', 'repository_insights_data')}
+        {renderNotificationType('Long time review', 'long_time_review_data')}
       </tbody>
     </table>
   );
@@ -533,6 +536,10 @@ export const CompanyConfiguration = ({
       <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
       <Dropdown convertChildren={false} title="Notifications">
         <div className="py-6 px-8">
+          <div
+            dangerouslySetInnerHTML={{ __html: longTimeReviewHtml }}
+          >
+          </div>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
               <h5 className="mb-4">Enabled notifications</h5>
@@ -595,7 +602,7 @@ export const CompanyConfiguration = ({
               onChange={e => setPageState({ ...pageState, webhookTargetUuid: e.target.value })}
             >
               <option value={null}>Company</option>
-              {pageState.notifications.map((notification) => (
+              {pageState.notifications.filter((item) => item.enabled).map((notification) => (
                 <option value={`${notification.uuid}`}>
                   {NOTIFICATION_TYPES[notification.notification_type]} - {notification.source}
                 </option>

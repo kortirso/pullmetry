@@ -111,6 +111,7 @@ module Companies
           :average_type,
           :main_attribute,
           :fetch_period,
+          :long_time_review_hours,
           insight_fields: {}
         )
     end

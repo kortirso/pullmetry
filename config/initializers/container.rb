@@ -98,6 +98,18 @@ module Pullmetry
     register('notifiers.telegram.company.repository_insights_report_payload') {
       Telegram::Company::RepositoryInsightsReportPayload.new
     }
+    register('notifiers.webhooks.company.long_time_review_report_payload') {
+      Webhooks::Company::LongTimeReviewReportPayload.new
+    }
+    register('notifiers.discord_webhooks.company.long_time_review_report_payload') {
+      DiscordWebhooks::Company::LongTimeReviewReportPayload.new
+    }
+    register('notifiers.slack_webhooks.company.long_time_review_report_payload') {
+      SlackWebhooks::Company::LongTimeReviewReportPayload.new
+    }
+    register('notifiers.telegram.company.long_time_review_report_payload') {
+      Telegram::Company::LongTimeReviewReportPayload.new
+    }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

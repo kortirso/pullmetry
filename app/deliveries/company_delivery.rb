@@ -9,6 +9,7 @@ class CompanyDelivery < ApplicationDelivery
 
   delivers :insights_report
   delivers :repository_insights_report
+  delivers :long_time_review_report
 
   private
 
@@ -63,6 +64,7 @@ class CompanyDelivery < ApplicationDelivery
     case notification_name
     when :insights_report then Notification::INSIGHTS_DATA
     when :repository_insights_report then Notification::REPOSITORY_INSIGHTS_DATA
+    when :long_time_review_report then Notification::LONG_TIME_REVIEW_DATA
     end
   end
 

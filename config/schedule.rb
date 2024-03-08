@@ -19,6 +19,9 @@ every 4.hours do
 
   # Send repository insights notifications
   runner 'Deliveries::Companies::RepositoryInsightsReportJob.perform_later'
+
+  # Send long time review notifications
+  runner 'Deliveries::Companies::LongTimeReviewReportJob.perform_later'
 end
 
 # Clear expired users sessions

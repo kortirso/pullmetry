@@ -24,10 +24,24 @@ module DiscordWebhooks
       )
     end
 
+    def long_time_review_report
+      notification(
+        path: url(Webhook::DISCORD),
+        body: {
+          username: 'PullKeeper',
+          content: long_time_review_report_payload.call(insightable: insightable)
+        }
+      )
+    end
+
     private
 
     def repository_insights_report_payload
       Pullmetry::Container['notifiers.discord_webhooks.company.repository_insights_report_payload']
+    end
+
+    def long_time_review_report_payload
+      Pullmetry::Container['notifiers.discord_webhooks.company.long_time_review_report_payload']
     end
   end
 end
