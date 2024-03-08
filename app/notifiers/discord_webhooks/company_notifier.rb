@@ -2,9 +2,11 @@
 
 module DiscordWebhooks
   class CompanyNotifier < DiscordWebhookNotifier
+    include Companiable
+
     def insights_report
       notification(
-        path: URI(insightable.webhooks.discord.first.url).path,
+        path: url(Webhook::DISCORD),
         body: {
           username: 'PullKeeper',
           content: DiscordWebhooks::Company::InsightsReportPayload.new.call(insightable: insightable)
@@ -14,7 +16,7 @@ module DiscordWebhooks
 
     def repository_insights_report
       notification(
-        path: URI(insightable.webhooks.discord.first.url).path,
+        path: url(Webhook::DISCORD),
         body: {
           username: 'PullKeeper',
           content: repository_insights_report_payload.call(insightable: insightable)
@@ -23,8 +25,6 @@ module DiscordWebhooks
     end
 
     private
-
-    def insightable = params[:insightable]
 
     def repository_insights_report_payload
       Pullmetry::Container['notifiers.discord_webhooks.company.repository_insights_report_payload']

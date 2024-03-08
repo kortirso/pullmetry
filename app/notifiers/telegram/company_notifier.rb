@@ -2,23 +2,24 @@
 
 module Telegram
   class CompanyNotifier < TelegramNotifier
+    include Companiable
+
     def insights_report
       notification(
-        chat_id: insightable.webhooks.telegram.first.url,
+        chat_id: url(Webhook::TELEGRAM),
         body: insights_report_payload.call(insightable: insightable)
       )
     end
 
     def repository_insights_report
       notification(
-        chat_id: insightable.webhooks.telegram.first.url,
+        chat_id: url(Webhook::TELEGRAM),
         body: repository_insights_report_payload.call(insightable: insightable)
       )
     end
 
     private
 
-    def insightable = params[:insightable]
     def insights_report_payload = Pullmetry::Container['notifiers.telegram.company.insights_report_payload']
 
     def repository_insights_report_payload

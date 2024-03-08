@@ -28,4 +28,13 @@ class Company < ApplicationRecord
         .pluck('identities.user_id')
     end
   end
+
+  def all_webhooks
+    Webhook.where(webhookable: self)
+      .or(
+        Webhook.where(
+          webhookable_id: Notification.where(notifyable: self).select(:id), webhookable_type: 'Notification'
+        )
+      )
+  end
 end

@@ -18,6 +18,7 @@ describe CompanyDelivery, type: :delivery do
     context 'with enabled notification' do
       before do
         create :notification,
+               enabled: true,
                source: Notification::SLACK,
                notification_type: Notification::INSIGHTS_DATA,
                notifyable: company
