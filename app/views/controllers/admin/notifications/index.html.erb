@@ -1,0 +1,25 @@
+<table class="table zebra w-full">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Notification type</th>
+      <th>Source</th>
+      <th>Notifyable type</th>
+      <th>Notifyable ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @notifications.each do |notification| %>
+      <tr>
+        <td><%= notification.id %></td>
+        <td><%= notification.notification_type %></td>
+        <td><%= notification.source %></td>
+        <td><%= notification.notifyable_type %></td>
+        <td><%= notification.notifyable_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

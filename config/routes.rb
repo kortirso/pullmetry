@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
     resources :repositories, only: %i[index destroy]
     resources :configurations, only: %i[index]
+    resources :notifications, only: %i[index]
     resources :feedbacks, only: %i[index]
     resources :users, only: %i[index]
   end
