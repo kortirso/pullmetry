@@ -6,10 +6,11 @@ module SlackWebhooks
       include Deps[time_representer: 'services.converters.seconds_to_text']
 
       def call(insightable:)
-        return no_long_time_block(insightable) if grouped_pull_requests(insightable).empty?
+        grouped_pull_requests = grouped_pull_requests(insightable)
+        return no_long_time_block(insightable) if grouped_pull_requests.empty?
 
         {
-          blocks: grouped_pull_requests(insightable).values.flat_map { |pull_requests|
+          blocks: grouped_pull_requests.values.flat_map { |pull_requests|
             title(pull_requests.first[:repositories_title]) + metrics(pull_requests)
           }
         }

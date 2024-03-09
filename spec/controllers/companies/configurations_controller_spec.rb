@@ -12,6 +12,9 @@ describe Companies::ConfigurationsController do
       before do
         group = create :excludes_group, insightable: company
         create :excludes_rule, excludes_group: group
+        notification = create :notification, notifyable: company
+        create :webhook, webhookable: notification
+        create :webhook, webhookable: company
       end
 
       context 'for not existing company' do

@@ -6,7 +6,10 @@ module DiscordWebhooks
       include Deps[time_representer: 'services.converters.seconds_to_text']
 
       def call(insightable:)
-        insights(insightable).map { |insight|
+        insights = insights(insightable)
+        return "Company #{insightable.title} doesn't have repository insights" if insights.empty?
+
+        insights.map { |insight|
           [
             title(insight[:repositories_title]),
             accessable_message(insight[:repositories_accessable]),

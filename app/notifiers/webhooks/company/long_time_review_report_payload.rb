@@ -4,9 +4,10 @@ module Webhooks
   module Company
     class LongTimeReviewReportPayload
       def call(insightable:)
-        return "Company #{insightable.title} doesn't have long time review" if grouped_pull_requests(insightable).empty?
+        grouped_pull_requests = grouped_pull_requests(insightable)
+        return "Company #{insightable.title} doesn't have long time review" if grouped_pull_requests.empty?
 
-        grouped_pull_requests(insightable).values.map do |pull_requests|
+        grouped_pull_requests.values.map do |pull_requests|
           {
             title: title(pull_requests.first[:repositories_title]),
             metrics: pull_requests.map { |pull_request| metrics(pull_request) }

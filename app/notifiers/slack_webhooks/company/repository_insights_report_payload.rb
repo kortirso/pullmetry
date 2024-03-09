@@ -6,8 +6,11 @@ module SlackWebhooks
       include Deps[time_representer: 'services.converters.seconds_to_text']
 
       def call(insightable:)
+        insights = insights(insightable)
+        return no_repo_insights_block(insightable) if insights.empty?
+
         {
-          blocks: insights(insightable).flat_map { |insight|
+          blocks: insights.flat_map { |insight|
             (
               title(insight[:repositories_title]) +
               accessable_message(insight[:repositories_accessable]) +
@@ -18,6 +21,20 @@ module SlackWebhooks
       end
 
       private
+
+      def no_repo_insights_block(insightable)
+        {
+          blocks: [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: "*Company #{insightable.title} doesn't have repository insights*"
+              }
+            }
+          ]
+        }
+      end
 
       def title(title)
         [
