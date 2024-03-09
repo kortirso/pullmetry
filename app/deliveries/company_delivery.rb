@@ -53,7 +53,7 @@ class CompanyDelivery < ApplicationDelivery
 
   def notifications
     @notifications ||=
-      insightable.notifications.enabled.where(notification_type: notification_type).hashable_pluck(:id, :source)
+      insightable.notifications.where(notification_type: notification_type).hashable_pluck(:id, :source)
   end
 
   def notification_sources

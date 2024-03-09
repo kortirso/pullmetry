@@ -73,8 +73,6 @@ export const CompanyConfiguration = ({
 
   const notificationSources = useMemo(() => {
     return pageState.notifications.reduce((acc, item) => {
-      if (!item.enabled) return acc;
-
       if (acc[item.notification_type]) acc[item.notification_type].push(item.source);
       else acc[item.notification_type] = [item.source];
 
@@ -84,21 +82,21 @@ export const CompanyConfiguration = ({
 
   const onIgnoreSave = async () => {
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/ignores.json`,
+      url: '/api/frontend/ignores.json',
       options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ ignore: { entity_value: pageState.entityValue } }),
+        body: JSON.stringify({ company_id: companyUuid, ignore: { entity_value: pageState.entityValue } }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
       ingoreFormIsOpen: false,
-      ignores: pageState.ignores.concat(result.result),
+      ignores: pageState.ignores.concat(result.result.data.attributes),
       entityValue: '',
       errors: []
     })
@@ -143,21 +141,21 @@ export const CompanyConfiguration = ({
 
   const onInviteSave = async () => {
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/invites.json`,
+      url: '/api/frontend/invites.json',
       options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ invite: { email: pageState.inviteEmail } }),
+        body: JSON.stringify({ company_id: companyUuid, invite: { email: pageState.inviteEmail } }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
       inviteFormIsOpen: false,
-      invites: pageState.invites.concat(result.result),
+      invites: pageState.invites.concat(result.result.data.attributes),
       inviteEmail: '',
       errors: []
     })
@@ -201,7 +199,7 @@ export const CompanyConfiguration = ({
   };
 
   const onWebhookSave = async () => {
-    const url = pageState.webhookTargetUuid ? `/api/frontend/notifications/${pageState.webhookTargetUuid}/webhooks.json` : `/api/frontend/companies/${companyUuid}/webhooks.json`;
+    const url = pageState.webhookTargetUuid ? `/api/frontend/webhooks.json?notification_id=${pageState.webhookTargetUuid}` : `/api/frontend/webhooks.json?company_id=${companyUuid}`;
     const result = await apiRequest({
       url: url,
       options: {
@@ -268,56 +266,60 @@ export const CompanyConfiguration = ({
 
   const onCreateNotification = async (notification_type, source) => {
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/notifications.json`,
+      url: '/api/frontend/notifications.json',
       options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ notification: { notification_type: notification_type, source: source } }),
+        body: JSON.stringify({ company_id: companyUuid, notification: { notification_type: notification_type, source: source } }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
-      notifications: result.result
+      notifications: pageState.notifications.concat(result.result.data.attributes),
+      errors: []
     });
   };
 
-  const onRemoveNotification = async (notification_type, source) => {
+  const onRemoveNotification = async (uuid) => {
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/notifications.json`,
+      url: `/api/frontend/notifications/${uuid}.json`,
       options: {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
-        },
-        body: JSON.stringify({ notification: { notification_type: notification_type, source: source } }),
+        }
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
-      notifications: result.result
+      notifications: pageState.notifications.filter((item) => item.uuid !== uuid),
+      errors: []
     });
   };
 
   const renderNotificationType = (title, notification_type) => (
     <tr>
       <td>{title}</td>
-      {NOTIFICATION_SOURCES.map((source) => (
-        <td key={`${notification_type}-${source}`}>
-          <div className="flex">
-            <Checkbox
-              checked={notificationSources[notification_type]?.includes(source)}
-              onEnable={() => onCreateNotification(notification_type, source)}
-              onDisable={() => onRemoveNotification(notification_type, source)}
-            />
-          </div>
-        </td>
-      ))}
+      {NOTIFICATION_SOURCES.map((source) => {
+        const notification = pageState.notifications.find((item) => item.source === source && item.notification_type === notification_type);
+        return (
+          <td key={`${notification_type}-${source}`}>
+            <div className="flex">
+              <Checkbox
+                checked={!!notification}
+                onEnable={() => onCreateNotification(notification_type, source)}
+                onDisable={() => onRemoveNotification(notification.uuid)}
+              />
+            </div>
+          </td>
+        )
+      })}
     </tr>
   );
 
@@ -349,14 +351,14 @@ export const CompanyConfiguration = ({
 
   const onExcludeSave = async () => {
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/excludes/groups.json`,
+      url: '/api/frontend/excludes/groups.json',
       options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ excludes_rules: pageState.excludeRules })
+        body: JSON.stringify({ company_id: companyUuid, excludes_rules: pageState.excludeRules })
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })

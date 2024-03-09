@@ -28,8 +28,6 @@ class Notification < ApplicationRecord
 
   has_one :webhook, as: :webhookable, dependent: :destroy
 
-  scope :enabled, -> { where(enabled: true) }
-
   enum notification_type: {
     REPOSITORY_ACCESS_ERROR => 0,
     INSIGHTS_DATA => 1,

@@ -46,7 +46,7 @@ module Companies
     end
 
     def find_notifications
-      @notifications = @company.notifications.hashable_pluck(:id, :uuid, :source, :notification_type, :enabled)
+      @notifications = @company.notifications.hashable_pluck(:id, :uuid, :source, :notification_type)
     end
 
     def find_webhooks

@@ -9,14 +9,12 @@ module Api
 
       private
 
-      def authenticate
-        return if current_user
-
-        access_denied
-      end
-
       def page_not_found
         render json: { errors: ['Not found'] }, status: :not_found
+      end
+
+      def authentication_error
+        render json: { errors: ['Unauthorized'] }, status: :unauthorized
       end
 
       def access_denied

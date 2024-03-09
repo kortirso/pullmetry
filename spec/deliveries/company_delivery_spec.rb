@@ -18,7 +18,6 @@ describe CompanyDelivery, type: :delivery do
     context 'with enabled notification' do
       before do
         create :notification,
-               enabled: true,
                source: Notification::SLACK,
                notification_type: Notification::INSIGHTS_DATA,
                notifyable: company
@@ -92,7 +91,6 @@ describe CompanyDelivery, type: :delivery do
     context 'with enabled notification' do
       before do
         create :notification,
-               enabled: true,
                source: Notification::SLACK,
                notification_type: Notification::REPOSITORY_INSIGHTS_DATA,
                notifyable: company
@@ -170,7 +168,6 @@ describe CompanyDelivery, type: :delivery do
     context 'with enabled notification' do
       before do
         create :notification,
-               enabled: true,
                source: Notification::SLACK,
                notification_type: Notification::LONG_TIME_REVIEW_DATA,
                notifyable: company

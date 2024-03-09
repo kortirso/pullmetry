@@ -12,7 +12,7 @@ module Api
         # commento: invites.email
         case create_form.call(inviteable: @inviteable, params: invite_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
-        in { result: result } then render json: { result: { uuid: result.uuid, email: result.email } }, status: :ok
+        in { result: result } then render json: { result: InviteSerializer.new(result).serializable_hash }, status: :ok
         end
       end
 
@@ -31,7 +31,7 @@ module Api
       end
 
       def find_invite
-        @invite = Invite.find_by(uuid: params[:id])
+        @invite = Invite.find_by!(uuid: params[:id])
       end
 
       def find_company

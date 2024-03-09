@@ -26,29 +26,22 @@ Rails.application.routes.draw do
     namespace :frontend do
       resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
-        resources :ignores, only: %i[create]
-        resources :webhooks, only: %i[create]
-        resource :notifications, only: %i[create destroy]
-        namespace :excludes do
-          resources :groups, only: %i[create]
-        end
-        resources :invites, only: %i[create]
       end
       resources :repositories, only: %i[create] do
         resources :insights, only: %i[index]
         resources :repository_insights, only: %i[index], module: 'repositories'
       end
+      resources :notifications, only: %i[create destroy]
+      resources :ignores, only: %i[create]
+      resources :invites, only: %i[create]
       resource :feedback, only: %i[create]
       resources :ignores, only: %i[destroy]
-      resources :webhooks, only: %i[destroy]
+      resources :webhooks, only: %i[create destroy]
       resources :vacations, only: %i[create destroy]
       namespace :excludes do
-        resources :groups, only: %i[destroy]
+        resources :groups, only: %i[create destroy]
       end
       resources :invites, only: %i[destroy]
-      resources :notifications, only: %i[] do
-        resources :webhooks, only: %i[create], module: 'notifications'
-      end
     end
   end
 
