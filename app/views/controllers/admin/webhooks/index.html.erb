@@ -1,0 +1,25 @@
+<table class="table zebra w-full">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>URL</th>
+      <th>Source</th>
+      <th>Webhookable type</th>
+      <th>Webhookable ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @webhooks.each do |webhook| %>
+      <tr>
+        <td><%= webhook.id %></td>
+        <td><%= webhook.url %></td>
+        <td><%= webhook.source %></td>
+        <td><%= webhook.webhookable_type %></td>
+        <td><%= webhook.webhookable_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

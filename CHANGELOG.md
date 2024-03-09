@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - rendering company users amount at admin page
 - notifications about long time review for pull requests
 - admin page for rendering notifications
+- admin page for rendering webhooks
 
 ### Modified
 - refactoring Api::Frontend endpoints
