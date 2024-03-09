@@ -1,0 +1,19 @@
+<table class="table zebra w-full">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @subscribers.each do |subscriber| %>
+      <tr>
+        <td><%= subscriber.id %></td>
+        <td><%= subscriber.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @pagy.pages > 1 %>
+  <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+<% end %>

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - notifications about long time review for pull requests
 - admin page for rendering notifications
 - admin page for rendering webhooks
+- admin page for rendering subscribers
 
 ### Modified
 - refactoring Api::Frontend endpoints

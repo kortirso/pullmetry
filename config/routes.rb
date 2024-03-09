@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :webhooks, only: %i[index]
     resources :feedbacks, only: %i[index]
     resources :users, only: %i[index]
+    resources :subscribers, only: %i[index]
   end
 
   namespace :api do
