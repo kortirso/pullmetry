@@ -63,22 +63,9 @@ export const CompanyConfiguration = ({
     excludeRules: []
   });
 
-  const webhookSources = useMemo(() => {
-    return pageState.webhooks.map((item) => item.source);
-  }, [pageState.webhooks]);
-
   const currentWebhookNotification = useMemo(() => {
     return pageState.notifications.find((element) => element.uuid === pageState.webhookTargetUuid);
-  }, [pageState.webhookTargetUuid]);
-
-  const notificationSources = useMemo(() => {
-    return pageState.notifications.reduce((acc, item) => {
-      if (acc[item.notification_type]) acc[item.notification_type].push(item.source);
-      else acc[item.notification_type] = [item.source];
-
-      return acc;
-    }, {});
-  }, [pageState.notifications]);
+  }, [pageState.notifications, pageState.webhookTargetUuid]);
 
   const onIgnoreSave = async () => {
     const result = await apiRequest({
@@ -299,6 +286,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       notifications: pageState.notifications.filter((item) => item.uuid !== uuid),
+      webhooks: pageState.webhooks.filter((item) => item.webhookable_uuid !== uuid),
       errors: []
     });
   };
