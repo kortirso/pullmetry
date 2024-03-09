@@ -10,6 +10,8 @@ module Feedbacks
 
       feedback = user.feedbacks.create!(params)
       AdminDelivery.with(id: feedback.id).feedback_created.deliver_later
+
+      { result: feedback }
     end
   end
 end

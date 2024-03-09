@@ -57,7 +57,7 @@ describe Api::Frontend::NotificationsController do
           it 'does not create notification', :aggregate_failures do
             expect { request }.not_to change(Notification, :count)
             expect(response).to have_http_status :ok
-            expect(response.parsed_body['errors']).to be_nil
+            expect(response.parsed_body['errors']).to eq(['Notification already exists'])
           end
         end
 
@@ -84,42 +84,37 @@ describe Api::Frontend::NotificationsController do
     it_behaves_like 'required frontend auth'
 
     context 'for logged users' do
-      let!(:notification) do
-        create :notification, source: Webhook::SLACK, notification_type: 'insights_data', notifyable: company
-      end
-      let(:request) do
-        delete :destroy, params: {
-          company_id: company.uuid,
-          notification: { source: 'slack', notification_type: 'insights_data' },
-          auth_token: access_token
-        }
+      let!(:notification) { create :notification, notifyable: company }
+      let(:request) { delete :destroy, params: { id: notification.uuid, auth_token: access_token } }
+
+      context 'for not existing notification' do
+        let(:request) { delete :destroy, params: { id: 'unexisting', auth_token: access_token } }
+
+        it 'does not destroy notification', :aggregate_failures do
+          expect { request }.not_to change(Notification, :count)
+          expect(response).to have_http_status :not_found
+        end
       end
 
       context 'for not user company notification' do
         before { company.update!(user: another_user) }
 
-        it 'does not disable notification', :aggregate_failures do
-          request
-
-          expect(notification.reload.enabled).to be_truthy
-          expect(response).to have_http_status :not_found
+        it 'does not destroy notification', :aggregate_failures do
+          expect { request }.not_to change(Notification, :count)
+          expect(response).to have_http_status :unauthorized
         end
       end
 
       context 'for user company notification' do
-        before { notification.notifyable.update!(user: user) }
-
-        it 'disables notification', :aggregate_failures do
-          request
-
-          expect(notification.reload.enabled).to be_falsy
+        it 'destroys notification', :aggregate_failures do
+          expect { request }.to change(Notification, :count).by(-1)
           expect(response).to have_http_status :ok
         end
       end
     end
 
     def do_request
-      delete :destroy, params: { company_id: 'unexisting' }
+      delete :destroy, params: { id: 'unexisting' }
     end
   end
 end

@@ -13,7 +13,7 @@ module Api
         case create_form.call(company: @company, params: ignore_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
-          render json: { result: { uuid: result.uuid, entity_value: result.entity_value } }, status: :ok
+          render json: { result: IgnoreSerializer.new(result).serializable_hash }, status: :ok
         end
       end
 

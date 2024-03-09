@@ -873,8 +873,7 @@ CREATE TABLE public.notifications (
     source integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid NOT NULL,
-    enabled boolean DEFAULT true
+    uuid uuid NOT NULL
 );
 
 
@@ -2281,6 +2280,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240309093507'),
 ('20240308124848'),
 ('20240308095839'),
 ('20240308074454'),
