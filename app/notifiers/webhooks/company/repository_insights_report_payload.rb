@@ -4,7 +4,10 @@ module Webhooks
   module Company
     class RepositoryInsightsReportPayload
       def call(insightable:)
-        insights(insightable).map do |insight|
+        insights = insights(insightable)
+        return "Company #{insightable.title} doesn't have repository insights" if insights.empty?
+
+        insights.map do |insight|
           {
             title: title(insight[:repositories_title]),
             accessable: accessable_message(insight[:repositories_accessable]),

@@ -46,6 +46,9 @@ Rails.application.routes.draw do
         resources :groups, only: %i[destroy]
       end
       resources :invites, only: %i[destroy]
+      resources :notifications, only: %i[] do
+        resources :webhooks, only: %i[create], module: 'notifications'
+      end
     end
   end
 

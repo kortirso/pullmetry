@@ -872,7 +872,9 @@ CREATE TABLE public.notifications (
     notification_type integer NOT NULL,
     source integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    uuid uuid NOT NULL,
+    enabled boolean DEFAULT true
 );
 
 
@@ -1333,12 +1335,12 @@ ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
 CREATE TABLE public.webhooks (
     id bigint NOT NULL,
     uuid uuid NOT NULL,
-    insightable_id bigint NOT NULL,
-    insightable_type character varying NOT NULL,
     source integer DEFAULT 0 NOT NULL,
     url character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    webhookable_id bigint NOT NULL,
+    webhookable_type character varying NOT NULL
 );
 
 
@@ -1850,6 +1852,13 @@ CREATE UNIQUE INDEX idx_on_notifyable_id_notifyable_type_notification_t_9be41a90
 
 
 --
+-- Name: idx_on_webhookable_id_webhookable_type_source_36c808bfb2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_webhookable_id_webhookable_type_source_36c808bfb2 ON public.webhooks USING btree (webhookable_id, webhookable_type, source);
+
+
+--
 -- Name: index_access_tokens_on_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2074,6 +2083,13 @@ CREATE INDEX index_kudos_users_achievements_on_kudos_achievement_id ON public.ku
 
 
 --
+-- Name: index_notifications_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_uuid ON public.notifications USING btree (uuid);
+
+
+--
 -- Name: index_pull_requests_comments_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2179,13 +2195,6 @@ CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id
 
 
 --
--- Name: index_webhooks_on_insightable_id_and_insightable_type_and_url; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_webhooks_on_insightable_id_and_insightable_type_and_url ON public.webhooks USING btree (insightable_id, insightable_type, url);
-
-
---
 -- Name: index_webhooks_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2272,6 +2281,9 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240308124848'),
+('20240308095839'),
+('20240308074454'),
 ('20240220110817'),
 ('20240122114110'),
 ('20231226083832'),

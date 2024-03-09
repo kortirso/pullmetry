@@ -5,6 +5,7 @@
       react_component 'CompanyConfiguration',
         privacyHtml: render(partial: 'access', locals: { form: form }).html_safe,
         fetchPeriodHtml: render(partial: 'fetch_period', locals: { form: form }).html_safe,
+        longTimeReviewHtml: render(partial: 'long_time_review', locals: { form: form }).html_safe,
         workTimeHtml: render(partial: 'work_time', locals: { form: form }).html_safe,
         insightAttributesHtml: render(partial: 'insights', locals: { form: form }).html_safe,
         averageHtml: render(partial: 'average', locals: { form: form }).html_safe,
@@ -12,9 +13,9 @@
         excludeGroups: @excludes_groups,
         ignores: @ignores,
         invites: @invites,
-        webhooks: @webhooks,
+        webhooks: @webhooks.map { |notification| notification.except(:webhookable_id) },
         companyUuid: @company.uuid,
-        notifications: @notifications
+        notifications: @notifications.map { |notification| notification.except(:id) }
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
   <% end %>

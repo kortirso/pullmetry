@@ -9,6 +9,7 @@ class CompanyDelivery < ApplicationDelivery
 
   delivers :insights_report
   delivers :repository_insights_report
+  delivers :long_time_review_report
 
   private
 
@@ -43,17 +44,27 @@ class CompanyDelivery < ApplicationDelivery
   end
 
   def webhook_sources
-    @webhook_sources ||= insightable.webhooks.pluck(:source)
+    @webhook_sources ||=
+      Webhook.where(webhookable: insightable)
+        .or(Webhook.where(webhookable_type: 'Notification', webhookable_id: notifications.pluck(:id)))
+        .pluck(:source)
+        .uniq
+  end
+
+  def notifications
+    @notifications ||=
+      insightable.notifications.enabled.where(notification_type: notification_type).hashable_pluck(:id, :source)
   end
 
   def notification_sources
-    @notification_sources ||= insightable.notifications.where(notification_type: notification_type).pluck(:source)
+    @notification_sources ||= notifications.pluck(:source)
   end
 
   def notification_type
     case notification_name
     when :insights_report then Notification::INSIGHTS_DATA
     when :repository_insights_report then Notification::REPOSITORY_INSIGHTS_DATA
+    when :long_time_review_report then Notification::LONG_TIME_REVIEW_DATA
     end
   end
 

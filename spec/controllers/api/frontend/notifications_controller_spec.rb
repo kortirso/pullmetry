@@ -57,7 +57,7 @@ describe Api::Frontend::NotificationsController do
           it 'does not create notification', :aggregate_failures do
             expect { request }.not_to change(Notification, :count)
             expect(response).to have_http_status :ok
-            expect(response.parsed_body.dig('errors', 0)).to eq 'Notification already exists'
+            expect(response.parsed_body['errors']).to be_nil
           end
         end
 
@@ -98,8 +98,10 @@ describe Api::Frontend::NotificationsController do
       context 'for not user company notification' do
         before { company.update!(user: another_user) }
 
-        it 'does not destroy notification', :aggregate_failures do
-          expect { request }.not_to change(Notification, :count)
+        it 'does not disable notification', :aggregate_failures do
+          request
+
+          expect(notification.reload.enabled).to be_truthy
           expect(response).to have_http_status :not_found
         end
       end
@@ -107,8 +109,10 @@ describe Api::Frontend::NotificationsController do
       context 'for user company notification' do
         before { notification.notifyable.update!(user: user) }
 
-        it 'destroys notification', :aggregate_failures do
-          expect { request }.to change(Notification, :count).by(-1)
+        it 'disables notification', :aggregate_failures do
+          request
+
+          expect(notification.reload.enabled).to be_falsy
           expect(response).to have_http_status :ok
         end
       end

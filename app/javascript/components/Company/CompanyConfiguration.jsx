@@ -9,6 +9,12 @@ import { apiRequest, csrfToken } from '../../helpers';
 
 const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
 
+const NOTIFICATION_TYPES = {
+  insights_data: 'Insights',
+  repository_insights_data: 'Repo insights',
+  long_time_review_data: 'Long time review'
+};
+
 const EXCLUDE_RULES_TARGETS = {
   title: 'Title',
   description: 'Description',
@@ -26,6 +32,7 @@ const EXCLUDE_RULES_CONDITIONS = {
 export const CompanyConfiguration = ({
   privacyHtml,
   fetchPeriodHtml,
+  longTimeReviewHtml,
   workTimeHtml,
   insightAttributesHtml,
   averageHtml,
@@ -46,6 +53,7 @@ export const CompanyConfiguration = ({
     invites: invites,
     webhooks: webhooks,
     entityValue: '',
+    webhookTargetUuid: null,
     webhookSource: 'slack',
     webhookUrl: '',
     inviteEmail: '',
@@ -59,8 +67,14 @@ export const CompanyConfiguration = ({
     return pageState.webhooks.map((item) => item.source);
   }, [pageState.webhooks]);
 
+  const currentWebhookNotification = useMemo(() => {
+    return pageState.notifications.find((element) => element.uuid === pageState.webhookTargetUuid);
+  }, [pageState.webhookTargetUuid]);
+
   const notificationSources = useMemo(() => {
     return pageState.notifications.reduce((acc, item) => {
+      if (!item.enabled) return acc;
+
       if (acc[item.notification_type]) acc[item.notification_type].push(item.source);
       else acc[item.notification_type] = [item.source];
 
@@ -187,22 +201,24 @@ export const CompanyConfiguration = ({
   };
 
   const onWebhookSave = async () => {
+    const url = pageState.webhookTargetUuid ? `/api/frontend/notifications/${pageState.webhookTargetUuid}/webhooks.json` : `/api/frontend/companies/${companyUuid}/webhooks.json`;
     const result = await apiRequest({
-      url: `/api/frontend/companies/${companyUuid}/webhooks.json`,
+      url: url,
       options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ webhook: { url: pageState.webhookUrl, source: pageState.webhookSource } }),
+        body: JSON.stringify({ webhook: { url: pageState.webhookUrl, source: pageState.webhookTargetUuid ? null : pageState.webhookSource } }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
       webhookFormIsOpen: false,
-      webhooks: pageState.webhooks.concat(result.result),
+      webhooks: pageState.webhooks.concat(result.result.data.attributes),
+      webhookTargetUuid: null,
       webhookSource: 'slack',
       webhookUrl: '',
       errors: []
@@ -224,7 +240,6 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       webhooks: pageState.webhooks.filter((item) => item.uuid !== webhook.uuid),
-      notifications: pageState.notifications.filter((item) => item.source !== webhook.source),
       errors: []
     })
   };
@@ -234,15 +249,19 @@ export const CompanyConfiguration = ({
 
     return (
       <div className="zebra-list">
-        {pageState.webhooks.map((webhook) => (
-          <div className="zebra-list-element" key={webhook.uuid}>
-            <p>{webhook.source} - {webhook.url}</p>
-            <p
-              className="btn-danger btn-xs"
-              onClick={() => onWebhookRemove(webhook)}
-            >X</p>
-          </div>
-        ))}
+        {pageState.webhooks.map((webhook) => {
+          const webhookableType = webhook.webhookable_type === 'Company' ? 'Company' : NOTIFICATION_TYPES[pageState.notifications.find((element) => element.uuid === webhook.webhookable_uuid)?.notification_type];
+
+          return (
+            <div className="zebra-list-element" key={webhook.uuid}>
+              <p>{webhookableType}:{webhook.source} - {webhook.url}</p>
+              <p
+                className="btn-danger btn-xs"
+                onClick={() => onWebhookRemove(webhook)}
+              >X</p>
+            </div>
+          )
+        })}
       </div>
     )
   };
@@ -290,38 +309,41 @@ export const CompanyConfiguration = ({
       <td>{title}</td>
       {NOTIFICATION_SOURCES.map((source) => (
         <td key={`${notification_type}-${source}`}>
-          <Checkbox
-            disabled={!webhookSources.includes(source)}
-            checked={notificationSources[notification_type]?.includes(source)}
-            onEnable={() => onCreateNotification(notification_type, source)}
-            onDisable={() => onRemoveNotification(notification_type, source)}
-          />
+          <div className="flex">
+            <Checkbox
+              checked={notificationSources[notification_type]?.includes(source)}
+              onEnable={() => onCreateNotification(notification_type, source)}
+              onDisable={() => onRemoveNotification(notification_type, source)}
+            />
+          </div>
         </td>
       ))}
     </tr>
   );
 
   const renderNotifications = () => (
-    <table className="table zebra mt-8">
+    <table className="table zebra w-full">
       <thead>
         <tr>
           <th></th>
-          <th className={`${webhookSources.includes('custom') ? '' : 'opacity-50'}`}>Custom</th>
-          <th className={`${webhookSources.includes('slack') ? '' : 'opacity-50'}`}>Slack</th>
-          <th className={`${webhookSources.includes('discord') ? '' : 'opacity-50'}`}>Discord</th>
-          <th className={`${webhookSources.includes('telegram') ? '' : 'opacity-50'}`}>Telegram</th>
+          <th>Custom</th>
+          <th>Slack</th>
+          <th>Discord</th>
+          <th>Telegram</th>
         </tr>
       </thead>
       <tbody>
-        {renderNotificationType('Insights data', 'insights_data')}
-        {renderNotificationType('Repository insights data', 'repository_insights_data')}
+        {renderNotificationType('Insights', 'insights_data')}
+        {renderNotificationType('Repository insights', 'repository_insights_data')}
+        {renderNotificationType('Long time review', 'long_time_review_data')}
       </tbody>
     </table>
   );
 
   const renderWebhookUrlPlaceholder = () => {
-    if (pageState.webhookSource === 'slack') return 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000';
-    if (pageState.webhookSource === 'discord') return 'https://discord.com/api/webhooks/000111222333444555/long-key';
+    const webhookSource = currentWebhookNotification ? currentWebhookNotification.source : pageState.webhookSource;
+    if (webhookSource === 'slack') return 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000';
+    if (webhookSource === 'discord') return 'https://discord.com/api/webhooks/000111222333444555/long-key';
     return '';
   };
 
@@ -514,20 +536,26 @@ export const CompanyConfiguration = ({
       <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
       <Dropdown convertChildren={false} title="Notifications">
         <div className="py-6 px-8">
+          <div
+            dangerouslySetInnerHTML={{ __html: longTimeReviewHtml }}
+          >
+          </div>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
+              <h5 className="mb-4">Enabled notifications</h5>
+              {renderNotifications()}
+              <h5 className="mt-8 mb-4">Webhooks list</h5>
               {renderWebhooksList()}
               <p
-                className="btn-primary btn-small mt-4"
+                className="btn-primary btn-small mt-8"
                 onClick={() => setPageState({ ...pageState, webhookFormIsOpen: true })}
               >Add webhook</p>
-              {renderNotifications()}
-              <p className="mt-8">For enabling notification for some channel type you need to add webhook first.</p>
             </div>
             <div>
               <p className="mb-4">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" className="simple-link">Slack incoming webhooks</a>.</p>
               <p className="mb-4">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
-              <p>For getting Telegram chat id you need to find <span className="font-semibold">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span className="font-semibold">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
+              <p className="mb-4">For getting Telegram chat id you need to find <span className="font-semibold">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span className="font-semibold">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
+              <p>If notification is enabled for at least one source then it will be send to url of notification's webhook or if not present to company's webhook. So you can send different notifications to one channel or to different channels.</p>
             </div>
           </div>
         </div>
@@ -565,20 +593,40 @@ export const CompanyConfiguration = ({
         <section className="inline-block w-full">
           <div className="form-field">
             <p className="flex flex-row">
-              <label className="form-label">Source</label>
+              <label className="form-label">Webhookable</label>
               <sup className="leading-4">*</sup>
             </p>
             <select
               className="form-value w-full"
-              value={pageState.webhookSource}
-              onChange={e => setPageState({ ...pageState, webhookSource: e.target.value })}
+              value={currentWebhookNotification ? currentWebhookNotification.uuid : null}
+              onChange={e => setPageState({ ...pageState, webhookTargetUuid: e.target.value })}
             >
-              <option value="custom">Custom</option>
-              <option value="slack">Slack</option>
-              <option value="discord">Discord</option>
-              <option value="telegram">Telegram</option>
+              <option value={null}>Company</option>
+              {pageState.notifications.filter((item) => item.enabled).map((notification) => (
+                <option value={`${notification.uuid}`}>
+                  {NOTIFICATION_TYPES[notification.notification_type]} - {notification.source}
+                </option>
+              ))}
             </select>
           </div>
+          {currentWebhookNotification ? null : (
+            <div className="form-field">
+              <p className="flex flex-row">
+                <label className="form-label">Source</label>
+                <sup className="leading-4">*</sup>
+              </p>
+              <select
+                className="form-value w-full"
+                value={pageState.webhookSource}
+                onChange={e => setPageState({ ...pageState, webhookSource: e.target.value })}
+              >
+                <option value="custom">Custom</option>
+                <option value="slack">Slack</option>
+                <option value="discord">Discord</option>
+                <option value="telegram">Telegram</option>
+              </select>
+            </div>
+          )}
           <div className="form-field">
             <p className="flex flex-row">
               <label className="form-label">Url</label>

@@ -9,8 +9,8 @@ module Companies
     def edit
       find_ignores
       find_invites
-      find_webhooks
       find_notifications
+      find_webhooks
       find_excludes_groups
       find_insight_ratio_type_values
       find_average_type_values
@@ -45,12 +45,24 @@ module Companies
       @invites = @company.invites.hashable_pluck(:uuid, :email)
     end
 
-    def find_webhooks
-      @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
+    def find_notifications
+      @notifications = @company.notifications.hashable_pluck(:id, :uuid, :source, :notification_type, :enabled)
     end
 
-    def find_notifications
-      @notifications = @company.notifications.hashable_pluck(:source, :notification_type)
+    def find_webhooks
+      @webhooks =
+        Webhook.where(webhookable: @company)
+          .or(
+            Webhook.where(webhookable_id: @notifications.pluck(:id), webhookable_type: 'Notification')
+          )
+          .hashable_pluck(:uuid, :source, :url, :webhookable_id, :webhookable_type)
+          .map { |webhook|
+            next webhook if webhook[:webhookable_type] == 'Company'
+
+            webhook.merge(
+              webhookable_uuid: @notifications.find { |element| element[:id] == webhook[:webhookable_id] }[:uuid]
+            )
+          }
     end
 
     def find_excludes_groups
@@ -99,6 +111,7 @@ module Companies
           :average_type,
           :main_attribute,
           :fetch_period,
+          :long_time_review_hours,
           insight_fields: {}
         )
     end

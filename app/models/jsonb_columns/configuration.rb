@@ -18,6 +18,7 @@ module JsonbColumns
     # data fetching attributes
     attribute :fetch_period, :integer
     # different
+    attribute :long_time_review_hours, :integer
     enum :average_type, %i[arithmetic_mean median geometric_mean], default: :arithmetic_mean
     enum :main_attribute,
          %i[
