@@ -50,11 +50,8 @@ module Users
 
     def auth_result
       if user
-        cookies[:pullmetry_token] = {
-          value: generate_token.call(user: user)[:result],
-          expires: 1.week.from_now
-        }
-        accept_invite
+        update_cookies(user)
+        accept_invite(user)
         redirect_to(attaching_identity ? profile_path : companies_path)
       else
         redirect_to root_path, flash: { manifesto_username: true }
@@ -85,6 +82,13 @@ module Users
 
     def attaching_identity
       @attaching_identity ||= current_user.present?
+    end
+
+    def update_cookies(user)
+      cookies[:pullmetry_token] = {
+        value: generate_token.call(user: user)[:result],
+        expires: 1.week.from_now
+      }
     end
   end
 end
