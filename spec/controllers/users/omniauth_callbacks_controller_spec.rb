@@ -76,6 +76,23 @@ describe Users::OmniauthCallbacksController do
                 expect { request }.to change(User, :count).by(1)
                 expect(response).to redirect_to companies_path
               end
+
+              context 'with invite uuid in session' do
+                let!(:invite) { create :invite }
+
+                before do
+                  cookies[:pullmetry_invite_uuid] = {
+                    value: invite.uuid,
+                    expires: 1.week.from_now
+                  }
+                end
+
+                it 'redirects to companies path', :aggregate_failures do
+                  expect { request }.to change(User, :count).by(1)
+                  expect(invite.reload.receiver).to eq User.last
+                  expect(response).to redirect_to companies_path
+                end
+              end
             end
           end
 
