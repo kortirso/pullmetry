@@ -67,9 +67,10 @@
           class="mx-auto pl-10"
         ></iframe>
       </p>
-      <p class="mb-4 text-lg">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
-      <p class="mb-4 text-lg">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
-      <p class="text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
+      <p class="text-center mb-4 text-lg">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
+      <p class="text-center mb-4 text-lg">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
+      <p class="text-center mb-4 text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
+      <p class="text-center text-lg">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
     </section>
     <% unless cookies[:pullmetry_subscriber_email] %>
       <div class="flex justify-center items-center mb-24">
