@@ -21,4 +21,10 @@ class RepositoryContract < ApplicationContract
       key(:external_id).failure(:empty)
     end
   end
+
+  rule(:link) do
+    if values[:link].ends_with?('.git')
+      key(:link).failure(:invalid_git)
+    end
+  end
 end
