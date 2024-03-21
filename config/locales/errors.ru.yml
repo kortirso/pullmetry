@@ -24,6 +24,7 @@ ru:
             empty: не может быть пустым
           link:
             invalid_host: должна начинаться с https://github.com или https://gitlab.com
+            invalid_git: не должна заканчиваться на .git
       ignore:
         rules:
           entity_value:

@@ -33,6 +33,15 @@ describe Repositories::CreateForm, type: :service do
     end
   end
 
+  context 'for invalid git link' do
+    let(:params) { { title: 'Title', link: 'https://gitlab.com.git', provider: 'github' } }
+
+    it 'does not create repository and fails', :aggregate_failures do
+      expect { form }.not_to change(Repository, :count)
+      expect(form[:errors]).not_to be_empty
+    end
+  end
+
   context 'for valid external id' do
     let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab', external_id: '1' } }
 
