@@ -137,7 +137,7 @@ Kudos::Achievement.create(
     html_url: "https://github.com/octocat_#{index}"
   )
 
-  Identities::CreateForm.call(
+  Pullmetry::Container.resolve('forms.identities.create').call(
     user: user,
     params: { uid: index.to_s, provider: 'github', email: "user#{index}@gmail.com", login: "octocat_#{index}" }
   )
@@ -148,14 +148,14 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
 7.times do |company_index|
   company = Company.create(title: "Test company #{company_index + 1}", user: User.all.sample)
   3.times do |repository_index|
-    repository = ::Repositories::CreateForm.call(
+    repository = Pullmetry::Container.resolve('forms.repositories.create').call(
       company: company,
       params: {
         title: "Test #{company_index + 1} #{repository_index + 1}",
         link: "https://github.com/octocat_#{company_index + 1}_#{repository_index + 1}/first",
         provider: 'github'
       }
-    ).result
+    )[:result]
 
     Entity.all.each_with_index do |entity, entity_index|
       # old pull requests
@@ -221,4 +221,3 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
   end
   Insights::Generate::CompanyService.call(insightable: company)
 end
-Users::RefreshAchievementsService.call
