@@ -17,7 +17,13 @@ module Webhooks
 
     def create
       if @invoice_payload['id'] == params[:invoice_id]
-        add_service.call(user: @user, trial: false, days_period: days_period, invoice_id: params[:invoice_id])
+        add_service.call(
+          user: @user,
+          trial: false,
+          days_period: days_period,
+          plan: plan,
+          invoice_id: params[:invoice_id]
+        )
       end
       head :ok
     end
@@ -54,7 +60,11 @@ module Webhooks
     end
 
     def days_period
-      order_id_payload['days_period']
+      order_id_payload['days_period'] || Subscription::TRIAL_PERIOD_DAYS
+    end
+
+    def plan
+      order_id_payload['plan'] || Subscription::REGULAR
     end
 
     def order_id_payload

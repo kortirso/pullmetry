@@ -29,8 +29,36 @@
         width="300px"
         currency="EUR"
         amount="10"
-        text_btn="Pay for 30 days"
-        order_id="<%= @cryptocloud_30_order_id %>"
+        text_btn="Pay for regular 30 days"
+        order_id="<%= @cryptocloud_order_ids[:regular30] %>"
+      ></vue-widget>
+      <div class="my-2">
+        <vue-widget
+          shop_id="eRba0IjxBVaqvZUG"
+          api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+          background="#fff"
+          color="#000"
+          border_color="#000"
+          logo="color"
+          width="300px"
+          currency="EUR"
+          amount="100"
+          text_btn="Pay for regular 365 days"
+          order_id="<%= @cryptocloud_order_ids[:regular365] %>"
+        ></vue-widget>
+      </div>
+      <vue-widget
+        shop_id="eRba0IjxBVaqvZUG"
+        api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+        background="#fff"
+        color="#000"
+        border_color="#000"
+        logo="color"
+        width="300px"
+        currency="EUR"
+        amount="20"
+        text_btn="Pay for unlimited 30 days"
+        order_id="<%= @cryptocloud_order_ids[:unlimited30] %>"
       ></vue-widget>
       <div class="mt-2">
         <vue-widget
@@ -42,14 +70,14 @@
           logo="color"
           width="300px"
           currency="EUR"
-          amount="100"
-          text_btn="Pay for 365 days"
-          order_id="<%= @cryptocloud_365_order_id %>"
+          amount="200"
+          text_btn="Pay for unlimited 365 days"
+          order_id="<%= @cryptocloud_order_ids[:unlimited365] %>"
         ></vue-widget>
       </div>
     </div>
     <div>
-      <p>Here you can pay for premium subscription with CryptoCloud service for 30 days (10 EURO) or 365 days (100 EURO) in crypto currency. Payment is non-refundable. If you have any questions about payment - please use feedback form.</p>
+      <p>Here you can pay for premium subscription with CryptoCloud service for 30 days (regular - 10 EURO, unlimited - 20 EURO) or 365 days (regular - 100 EURO, unlimited - 200 EURO) in crypto currency. Payment is non-refundable. If you have any questions about payment - please use feedback form.</p>
     </div>
   </div>
 </div>
