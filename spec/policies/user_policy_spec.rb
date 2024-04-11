@@ -39,11 +39,20 @@ describe UserPolicy do
             context 'when user has too much repositories' do
               before do
                 create :subscription, user: user
-                create_list :repository, Subscription::PREMIUM_REPOSITORIES_AMOUNT, company: company
+
+                allow(user).to receive(:plan_settings).and_return({ repositories_limit: 0 })
               end
 
               it 'returns false' do
                 expect(policy_access).to be_falsy
+              end
+            end
+
+            context 'for unlimited subscription' do
+              before { create :subscription, user: user, plan: Subscription::UNLIMITED }
+
+              it 'returns true' do
+                expect(policy_access).to be_truthy
               end
             end
           end

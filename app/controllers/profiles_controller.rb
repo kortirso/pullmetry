@@ -61,10 +61,27 @@ class ProfilesController < ApplicationController
     @need_identities = Identity.providers.keys - @identities.pluck(:provider)
   end
 
+  # rubocop: disable Metrics/AbcSize
   def generate_order_ids
-    @cryptocloud_30_order_id = jwt_encoder.encode(payload: { uuid: current_user.uuid, days_period: 30 })
-    @cryptocloud_365_order_id = jwt_encoder.encode(payload: { uuid: current_user.uuid, days_period: 365 })
+    @cryptocloud_order_ids =
+      Rails.cache.fetch('profile_cryptocloud_order_ids_v1') do
+        {
+          regular30: jwt_encoder.encode(
+            payload: { uuid: current_user.uuid, plan: Subscription::REGULAR, days_period: 30 }
+          ),
+          regular365: jwt_encoder.encode(
+            payload: { uuid: current_user.uuid, plan: Subscription::REGULAR, days_period: 365 }
+          ),
+          unlimited30: jwt_encoder.encode(
+            payload: { uuid: current_user.uuid, plan: Subscription::UNLIMITED, days_period: 30 }
+          ),
+          unlimited365: jwt_encoder.encode(
+            payload: { uuid: current_user.uuid, plan: Subscription::UNLIMITED, days_period: 365 }
+          )
+        }
+      end
   end
+  # rubocop: enable Metrics/AbcSize
 
   def user_params
     params.require(:user).permit(:work_time_zone, :work_start_time, :work_end_time)

@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache(['welcome_page_v1', Current.user&.id, cookies[:pullmetry_subscriber_email]], expires_in: 24.hours) do %>
+  <% cache(['welcome_page_v2', Current.user&.id, cookies[:pullmetry_subscriber_email]], expires_in: 24.hours) do %>
     <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
       <div class="flex flex-col justify-center">
         <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
@@ -160,7 +160,7 @@
       <h2 class="text-center text-4xl mb-12">Pricing</h2>
       <p class="text-center mb-4">While PullKeeper is growing features list can grow too for both regular and premium plans.</p>
       <p class="text-center mb-12">Payment can be done from Profile page after login, but no rush, there is trial 100 days for checking application.</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="p-8 pb-2 border border-stone-200 rounded-xl">
           <div class="mb-12">
             <h3>Regular</h3>
@@ -188,6 +188,17 @@
             <li>12 insight metrics instead of 6</li>
             <li>15 tracking repositories</li>
             <li>comparing data with previous periods</li>
+          </ul>
+        </div>
+        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
+          <div class="mb-12">
+            <h3>Unlimited Premium</h3>
+            <p>&euro;20/month or &euro;200/year</p>
+          </div>
+          <p class="mb-4">Everything in premium, plus:</p>
+          <ul>
+            <li>unlimited repositories</li>
+            <li>priority support and new feature integration</li>
           </ul>
         </div>
         <div class="p-8 pb-2 border border-stone-200 rounded-xl">
