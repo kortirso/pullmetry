@@ -144,34 +144,28 @@
     @apply w-full;
   }
 
-  nav.pagination .page {
-    @apply inline-block rounded;
+  nav.pagy.nav a {
+    @apply inline-block text-black py-2 px-3 mr-2;
+    @apply bg-orange-200 border border-orange-300 rounded;
   }
 
-  nav.pagination .page.disabled, nav.pagination .page.active {
+  nav.pagy.nav a[aria-disabled="true"], nav.pagy.nav a.current {
     @apply py-2 px-3;
   }
 
-  nav.pagination .page a {
-    @apply inline-block text-black py-2 px-3;
-  }
-
-  nav.pagination .page {
-    @apply bg-orange-200 border border-orange-300;
-  }
-
-  nav.pagination .page.disabled,
-  nav.pagination .page.disabled:hover,
-  nav.pagination .page.gap:hover {
+  nav.pagy.nav a[aria-disabled="true"],
+  nav.pagy.nav a[aria-disabled="true"]:hover,
+  nav.pagy.nav a.gap:hover {
     @apply bg-orange-200;
   }
 
-  nav.pagination .page.active,
-  nav.pagination .page:hover {
+  nav.pagy.nav a.current,
+  nav.pagy.nav a.current:hover,
+  nav.pagy.nav a:hover {
     @apply bg-orange-300;
   }
 
-  nav.pagination .page.gap {
+  nav.pagy.nav a.gap {
     @apply py-2 px-3;
   }
 

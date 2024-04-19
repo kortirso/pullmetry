@@ -271,7 +271,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.4-x86_64-linux)
       racc (~> 1.4)
-    pagy (6.5.0)
+    pagy (8.2.2)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -504,7 +504,7 @@ DEPENDENCIES
   jwt (~> 2.5)
   kudos
   letter_opener
-  pagy (~> 6.0)
+  pagy (~> 8.0)
   pg (~> 1.4)
   pghero
   puma (~> 6.0)

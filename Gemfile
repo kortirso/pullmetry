@@ -80,7 +80,7 @@ gem 'store_model'
 gem 'kudos'
 
 # view pagination
-gem 'pagy', '~> 6.0'
+gem 'pagy', '~> 8.0'
 
 # database comments
 gem 'commento'
