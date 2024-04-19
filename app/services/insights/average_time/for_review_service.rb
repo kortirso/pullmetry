@@ -3,8 +3,6 @@
 module Insights
   module AverageTime
     class ForReviewService < BasisService
-      prepend ApplicationService
-
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
         @insightable = insightable
         @with_vacations = with_vacations
@@ -16,6 +14,8 @@ module Insights
           .where(pull_request_id: pull_requests_ids)
           .where.not(pull_requests: { pull_created_at: nil })
           .find_each { |review| handle_review(review) }
+
+        { result: @result }
       end
 
       private

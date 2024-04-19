@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Insights::AverageTime::ForMergeService, type: :service do
-  subject(:service_call) { described_class.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
+  subject(:service_call) { described_class.new.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
 
   let!(:identity) { create :identity }
   let!(:first_monday) {
@@ -36,16 +36,16 @@ describe Insights::AverageTime::ForMergeService, type: :service do
     let(:insightable) { repository }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call.result).to eq({ entity2.id => [90_000] })
-      expect(service_call.success?).to be_truthy
+      expect(service_call[:result]).to eq({ entity2.id => [90_000] })
+      expect(service_call[:errors]).to be_blank
     end
 
     context 'when some PR does not have pull_created_at' do
       before { pr2.update!(pull_created_at: nil) }
 
       it 'generates average time without such PRs and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({})
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({})
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -53,8 +53,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       before { pr2.update!(pull_created_at: first_monday + 2.days + 1.hour) }
 
       it 'generates less average time for such PRs and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [1] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [1] })
+        expect(service_call[:errors]).to be_blank
       end
     end
   end
@@ -63,8 +63,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
     let(:insightable) { repository.company }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call.result).to eq({ entity2.id => [90_000] })
-      expect(service_call.success?).to be_truthy
+      expect(service_call[:result]).to eq({ entity2.id => [90_000] })
+      expect(service_call[:errors]).to be_blank
     end
   end
 
@@ -82,8 +82,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       let(:insightable) { repository }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [32_400] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [32_400] })
+        expect(service_call[:errors]).to be_blank
       end
 
       context 'when company work time zone is not UTC' do
@@ -95,8 +95,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         end
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [32_400] }) # 9 work hours
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [32_400] }) # 9 work hours
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -109,8 +109,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         end
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [28_800] }) # 8 work hours
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
+          expect(service_call[:errors]).to be_blank
         end
 
         context 'when user work time zone is not UTC' do
@@ -119,8 +119,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           end
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [25_200] }) # 7 work hours
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [25_200] }) # 7 work hours
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -133,8 +133,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           end
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [32_400] }) # 9 work hours
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [32_400] }) # 9 work hours
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -144,8 +144,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       let(:insightable) { repository.company }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [32_400] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [32_400] })
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -156,8 +156,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         let(:insightable) { repository }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [50_400] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [50_400] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -165,8 +165,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         let(:insightable) { repository.company }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [50_400] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [50_400] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -177,8 +177,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [61_200] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [61_200] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -186,8 +186,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [61_200] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [61_200] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -199,16 +199,16 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [79_200] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [79_200] })
+            expect(service_call[:errors]).to be_blank
           end
 
           context 'with vacation for author' do
             before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
 
             it 'generates average time and succeeds', :aggregate_failures do
-              expect(service_call.result).to eq({ entity2.id => [18_000] })
-              expect(service_call.success?).to be_truthy
+              expect(service_call[:result]).to eq({ entity2.id => [18_000] })
+              expect(service_call[:errors]).to be_blank
             end
           end
         end
@@ -217,8 +217,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [79_200] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [79_200] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -235,8 +235,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -244,8 +244,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -267,8 +267,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       let(:insightable) { repository }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [28_800] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [28_800] })
+        expect(service_call[:errors]).to be_blank
       end
 
       context 'when company work time zone is not UTC' do
@@ -280,8 +280,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         end
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [28_800] }) # 8 work hours
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -294,8 +294,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         end
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [25_200] }) # 7 work hours
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [25_200] }) # 7 work hours
+          expect(service_call[:errors]).to be_blank
         end
 
         context 'when user work time zone is not UTC' do
@@ -304,8 +304,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           end
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [28_800] }) # 8 work hours
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -318,8 +318,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           end
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [28_800] }) # 8 work hours
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -329,8 +329,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
       let(:insightable) { repository.company }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [28_800] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [28_800] })
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -342,8 +342,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         let(:insightable) { repository }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [57_600] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [57_600] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -351,8 +351,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
         let(:insightable) { repository.company }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity2.id => [57_600] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity2.id => [57_600] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -363,8 +363,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [57_600] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [57_600] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -372,8 +372,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [57_600] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [57_600] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -385,16 +385,16 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [86_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [86_400] })
+            expect(service_call[:errors]).to be_blank
           end
 
           context 'with vacation for author' do
             before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
 
             it 'generates average time and succeeds', :aggregate_failures do
-              expect(service_call.result).to eq({ entity2.id => [28_800] })
-              expect(service_call.success?).to be_truthy
+              expect(service_call[:result]).to eq({ entity2.id => [28_800] })
+              expect(service_call[:errors]).to be_blank
             end
           end
         end
@@ -403,8 +403,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [86_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [86_400] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -421,8 +421,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -430,8 +430,8 @@ describe Insights::AverageTime::ForMergeService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end

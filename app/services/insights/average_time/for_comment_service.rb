@@ -3,8 +3,6 @@
 module Insights
   module AverageTime
     class ForCommentService < BasisService
-      prepend ApplicationService
-
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
         @insightable = insightable
         @with_vacations = with_vacations
@@ -19,6 +17,8 @@ module Insights
 
             handle_comment_or_review(comment, review)
           end
+
+        { result: @result }
       end
 
       private

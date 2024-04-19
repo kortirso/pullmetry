@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Insights::Generate::RepositoryService, type: :service do
-  subject(:service_call) { described_class.call(insightable: insightable) }
+  subject(:service_call) { described_class.new.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
   let!(:pr2) { create :pull_request, repository: repository, entity: entity1, changed_loc: 13 }
@@ -203,9 +203,5 @@ describe Insights::Generate::RepositoryService, type: :service do
         end
       end
     end
-  end
-
-  it 'succeeds' do
-    expect(service_call.success?).to be_truthy
   end
 end

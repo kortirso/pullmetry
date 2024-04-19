@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Insights::Generate::CompanyService, type: :service do
-  subject(:service_call) { described_class.call(insightable: insightable) }
+  subject(:service_call) { described_class.new.call(insightable: insightable) }
 
   let!(:repository) { create :repository }
   let!(:entity1) { create :entity, external_id: '1' }
@@ -31,9 +31,8 @@ describe Insights::Generate::CompanyService, type: :service do
   end
 
   context 'for unexisting insights' do
-    it 'creates 2 insights', :aggregate_failures do
+    it 'creates 2 insights' do
       expect { service_call }.to change(insightable.insights.visible, :count).by(2)
-      expect(service_call.success?).to be_truthy
     end
 
     context 'for private company' do
@@ -42,9 +41,8 @@ describe Insights::Generate::CompanyService, type: :service do
         insightable.save!
       end
 
-      it 'creates 2 insights', :aggregate_failures do
+      it 'creates 2 insights' do
         expect { service_call }.to change(insightable.insights.hidden, :count).by(2)
-        expect(service_call.success?).to be_truthy
       end
     end
   end
@@ -60,7 +58,6 @@ describe Insights::Generate::CompanyService, type: :service do
       expect(insight.changed_loc).to eq 11
       expect(insight.reviewed_loc).to eq 3
       expect(insight.reload.hidden).to be_falsy
-      expect(service_call.success?).to be_truthy
     end
 
     context 'for private company' do
@@ -72,7 +69,6 @@ describe Insights::Generate::CompanyService, type: :service do
       it 'creates 2 insights', :aggregate_failures do
         expect { service_call }.to change(insightable.insights.hidden, :count).by(2)
         expect(insight.reload.hidden).to be_truthy
-        expect(service_call.success?).to be_truthy
       end
     end
   end

@@ -3,8 +3,6 @@
 module Insights
   module AverageTime
     class ForMergeService < BasisService
-      prepend ApplicationService
-
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
         @insightable = insightable
         @with_vacations = with_vacations
@@ -15,6 +13,8 @@ module Insights
           .merged
           .where(id: pull_requests_ids)
           .find_each { |pull_request| handle_entity(pull_request) }
+
+        { result: @result }
       end
 
       private

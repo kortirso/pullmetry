@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Insights::AverageTime::ForReviewService, type: :service do
-  subject(:service_call) { described_class.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
+  subject(:service_call) { described_class.new.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
 
   let!(:first_monday) {
     date = DateTime.now.beginning_of_month + 7.days
@@ -29,16 +29,16 @@ describe Insights::AverageTime::ForReviewService, type: :service do
     let(:insightable) { repository }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call.result).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
-      expect(service_call.success?).to be_truthy
+      expect(service_call[:result]).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
+      expect(service_call[:errors]).to be_blank
     end
 
     context 'when some PR does not have pull_created_at' do
       before { pr1.update!(pull_created_at: nil) }
 
       it 'generates average time without such PRs and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity2.id => [3_600] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity2.id => [3_600] })
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -46,8 +46,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
       before { pr1.update!(pull_created_at: first_monday + 2.days + 1.hour) }
 
       it 'generates less average time for such PRs and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity1.id => [1, 1], entity2.id => [3_600] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity1.id => [1, 1], entity2.id => [3_600] })
+        expect(service_call[:errors]).to be_blank
       end
     end
   end
@@ -56,8 +56,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
     let(:insightable) { repository.company }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call.result).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
-      expect(service_call.success?).to be_truthy
+      expect(service_call[:result]).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
+      expect(service_call[:errors]).to be_blank
     end
   end
 
@@ -75,8 +75,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
       let(:insightable) { repository }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -84,8 +84,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
       let(:insightable) { repository.company }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call.result).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
-        expect(service_call.success?).to be_truthy
+        expect(service_call[:result]).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
+        expect(service_call[:errors]).to be_blank
       end
     end
 
@@ -96,8 +96,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
         let(:insightable) { repository }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -105,8 +105,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
         let(:insightable) { repository.company }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
-          expect(service_call.success?).to be_truthy
+          expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
+          expect(service_call[:errors]).to be_blank
         end
       end
 
@@ -117,8 +117,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -126,8 +126,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -139,8 +139,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -148,8 +148,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end
@@ -164,8 +164,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
 
@@ -173,8 +173,8 @@ describe Insights::AverageTime::ForReviewService, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call.result).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
-            expect(service_call.success?).to be_truthy
+            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
+            expect(service_call[:errors]).to be_blank
           end
         end
       end

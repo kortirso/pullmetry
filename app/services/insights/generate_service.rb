@@ -2,12 +2,10 @@
 
 module Insights
   class GenerateService
-    prepend ApplicationService
-
     def initialize(
-      average_comment_time_service: AverageTime::ForCommentService,
-      average_review_time_service: AverageTime::ForReviewService,
-      average_merge_time_service: AverageTime::ForMergeService,
+      average_comment_time_service: AverageTime::ForCommentService.new,
+      average_review_time_service: AverageTime::ForReviewService.new,
+      average_merge_time_service: AverageTime::ForMergeService.new,
       find_average_service: Pullmetry::Container['math.find_average']
     )
       @average_comment_time_service = average_comment_time_service
@@ -126,8 +124,7 @@ module Insights
       @average_review_seconds.fetch("#{date_from},#{date_to}") do |key|
         @average_review_seconds[key] =
           @average_review_time_service
-            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))
-            .result
+            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
             .transform_values! do |value|
               @find_average_service.call(values: value, type: @insightable.configuration.average_type)
             end
@@ -141,8 +138,7 @@ module Insights
       @average_merge_seconds.fetch("#{date_from},#{date_to}") do |key|
         @average_merge_seconds[key] =
           @average_merge_time_service
-            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))
-            .result
+            .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
             .transform_values! do |value|
               @find_average_service.call(values: value, type: @insightable.configuration.average_type)
             end

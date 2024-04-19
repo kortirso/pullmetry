@@ -124,8 +124,7 @@ module Insights
                   insightable: @insightable,
                   pull_requests_ids: pull_requests_ids(date_from, date_to),
                   with_vacations: false
-                )
-                .result
+                )[:result]
                 .values
 
             @find_average_service.call(
@@ -148,8 +147,7 @@ module Insights
                   insightable: @insightable,
                   pull_requests_ids: pull_requests_ids(date_from, date_to),
                   with_vacations: false
-                )
-                .result
+                )[:result]
                 .values.flatten
             @find_average_service.call(
               values: values,
@@ -167,8 +165,7 @@ module Insights
           @repository_average_merge_time[key] = begin
             values =
               @average_merge_time_service
-                .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))
-                .result
+                .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
                 .values.flatten
             @find_average_service.call(
               values: values,

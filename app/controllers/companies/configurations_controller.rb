@@ -2,7 +2,10 @@
 
 module Companies
   class ConfigurationsController < ApplicationController
-    include Boolable
+    include Deps[
+      update_form: 'forms.companies.configurations.update',
+      to_bool: 'to_bool'
+    ]
 
     before_action :find_company
 
@@ -19,15 +22,9 @@ module Companies
 
     def update
       # commento: companies.configuration
-      form = Companies::Configurations::UpdateForm.call(
-        company: @company,
-        params: configuration_params,
-        use_work_time: to_bool(params[:jsonb_columns_configuration][:use_work_time])
-      )
-      if form.success?
-        redirect_to companies_path
-      else
-        redirect_to edit_company_configuration_path(@company.uuid), alert: form.errors
+      case update_form.call(company: @company, params: configuration_params, use_work_time: use_work_time)
+      in { errors: errors } then redirect_to edit_company_configuration_path(@company.uuid), alert: errors
+      else redirect_to companies_path
       end
     end
 
@@ -114,6 +111,10 @@ module Companies
           :long_time_review_hours,
           insight_fields: {}
         )
+    end
+
+    def use_work_time
+      to_bool.call(params[:jsonb_columns_configuration][:use_work_time])
     end
   end
 end

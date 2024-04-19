@@ -2,7 +2,7 @@
 
 module Insights
   class VisibleQuery < ApplicationQuery
-    def initialize(relation: Insight.all) = super
+    def initialize(relation: Insight.none) = super
 
     # response contains actual and previous scopes
     def resolve(insightable:)

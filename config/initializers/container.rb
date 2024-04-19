@@ -19,6 +19,7 @@ module Pullmetry
     register('math.find_average') { Math::FindAverage.new }
     register('jwt_encoder') { JwtEncoder.new }
     register('dummy') { Dummy.new }
+    register('to_bool') { ToBool.new }
     register('api.github.auth_client') { GithubAuthApi::Client.new }
     register('api.github.client') { GithubApi::Client.new }
     register('api.gitlab.auth_client') { GitlabAuthApi::Client.new }
@@ -69,6 +70,8 @@ module Pullmetry
     register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
     register('forms.invites.create') { Invites::CreateForm.new }
     register('forms.subscribers.create') { Subscribers::CreateForm.new }
+    register('forms.users.update') { Users::UpdateForm.new }
+    register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
 
     # notifiers
     register('notifiers.slack_webhooks.admin.job_execution_report_payload') {

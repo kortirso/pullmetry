@@ -2,34 +2,38 @@
 
 module Users
   class UpdateForm
-    prepend ApplicationService
-
     def call(user:, params:, use_work_time:)
-      @params = params
+      params = convert_working_time(params, use_work_time)
+      error = validate_work_time(params, use_work_time)
+      return { errors: [error] } if error
 
-      convert_working_time(use_work_time)
-      return if use_work_time && validate_work_time && failure?
+      user.update!(params)
 
-      user.update!(@params)
+      { result: user.reload }
     end
 
     private
 
-    def convert_working_time(use_work_time)
-      @params[:work_start_time] = use_work_time ? DateTime.new(2023, 1, 1, time(:start, 4), time(:start, 5)) : nil
-      @params[:work_end_time] = use_work_time ? DateTime.new(2023, 1, 1, time(:end, 4), time(:end, 5)) : nil
+    def convert_working_time(params, use_work_time)
+      params[:work_start_time] = use_work_time ? generate_date(params, :start) : nil
+      params[:work_end_time] = use_work_time ? generate_date(params, :end) : nil
 
-      @params = @params.delete_if { |k, _v| k.include?('_time(') }
+      params.delete_if { |k, _v| k.include?('_time(') }
     end
 
-    def time(name, index)
-      @params["work_#{name}_time(#{index}i)"].to_i
+    def generate_date(params, position)
+      DateTime.new(2023, 1, 1, time(params, position, 4), time(params, position, 5))
     end
 
-    def validate_work_time
-      return if @params[:work_start_time] != @params[:work_end_time]
+    def time(params, name, index)
+      params["work_#{name}_time(#{index}i)"].to_i
+    end
 
-      fail!('Start and end time must be different')
+    def validate_work_time(params, use_work_time)
+      return unless use_work_time
+      return if params[:work_start_time] != params[:work_end_time]
+
+      'Start and end time must be different'
     end
   end
 end

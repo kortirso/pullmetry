@@ -12,7 +12,7 @@ describe Companies::Configurations::UpdateForm, type: :service do
       let(:params) { { fetch_period: nil } }
 
       it 'sets nil for fetch_period', :aggregate_failures do
-        expect(form.errors).to be_blank
+        expect(form[:errors]).to be_blank
         expect(company.reload.configuration.fetch_period).to be_nil
       end
     end
@@ -21,7 +21,7 @@ describe Companies::Configurations::UpdateForm, type: :service do
       let(:params) { { fetch_period: Insight::FETCH_DAYS_PERIOD } }
 
       it 'sets value for fetch_period', :aggregate_failures do
-        expect(form.errors).to be_blank
+        expect(form[:errors]).to be_blank
         expect(company.reload.configuration.fetch_period).to eq Insight::FETCH_DAYS_PERIOD
       end
     end
@@ -30,7 +30,7 @@ describe Companies::Configurations::UpdateForm, type: :service do
       let(:params) { { fetch_period: Insight::MAXIMUM_FETCH_DAYS_PERIOD } }
 
       it 'does not set value for fetch_period', :aggregate_failures do
-        expect(form.errors).not_to be_blank
+        expect(form[:errors]).not_to be_blank
         expect(company.reload.configuration.fetch_period).to be_nil
       end
 
@@ -38,7 +38,7 @@ describe Companies::Configurations::UpdateForm, type: :service do
         before { create :subscription, user: company.user }
 
         it 'sets value for fetch_period', :aggregate_failures do
-          expect(form.errors).to be_blank
+          expect(form[:errors]).to be_blank
           expect(company.reload.configuration.fetch_period).to eq Insight::MAXIMUM_FETCH_DAYS_PERIOD
         end
 
@@ -46,7 +46,7 @@ describe Companies::Configurations::UpdateForm, type: :service do
           let(:params) { { fetch_period: Insight::MAXIMUM_FETCH_DAYS_PERIOD + 1 } }
 
           it 'does not set value for fetch_period', :aggregate_failures do
-            expect(form.errors).not_to be_blank
+            expect(form[:errors]).not_to be_blank
             expect(company.reload.configuration.fetch_period).to be_nil
           end
         end

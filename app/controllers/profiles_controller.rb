@@ -2,10 +2,11 @@
 
 class ProfilesController < ApplicationController
   include Deps[
+    update_form: 'forms.users.update',
     destroy_service: 'services.persisters.users.destroy',
-    jwt_encoder: 'jwt_encoder'
+    jwt_encoder: 'jwt_encoder',
+    to_bool: 'to_bool'
   ]
-  include Boolable
 
   before_action :find_used_trial_subscription, only: %i[show]
   before_action :find_end_time, only: %i[show]
@@ -18,15 +19,9 @@ class ProfilesController < ApplicationController
 
   def update
     # commento: users.work_start_time, users.work_end_time, users.work_time_zone
-    service_call = Users::UpdateForm.call(
-      user: current_user,
-      params: user_params,
-      use_work_time: to_bool(params[:user][:use_work_time])
-    )
-    if service_call.success?
-      redirect_to profile_path
-    else
-      redirect_to profile_path, alert: service_call.errors
+    case update_form.call(user: current_user, params: user_params, use_work_time: use_work_time)
+    in { errors: errors } then redirect_to profile_path, alert: errors
+    else redirect_to profile_path
     end
   end
 
@@ -85,5 +80,9 @@ class ProfilesController < ApplicationController
 
   def user_params
     params.require(:user).permit(:work_time_zone, :work_start_time, :work_end_time)
+  end
+
+  def use_work_time
+    to_bool.call(params[:user][:use_work_time])
   end
 end
