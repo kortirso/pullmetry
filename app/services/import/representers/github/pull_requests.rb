@@ -21,7 +21,8 @@ module Import
               title: payload[:title],
               description: payload[:body],
               branch_name: payload.dig('head', 'ref'),
-              destination_branch_name: payload.dig('base', 'ref')
+              destination_branch_name: payload.dig('base', 'ref'),
+              last_commit_external_id: payload.dig('head', 'sha')
             }
           end
         end

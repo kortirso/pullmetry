@@ -21,7 +21,8 @@ module Import
               title: payload[:title],
               description: payload[:description],
               branch_name: payload[:source_branch],
-              destination_branch_name: payload[:target_branch]
+              destination_branch_name: payload[:target_branch],
+              last_commit_external_id: nil
             }
           end
         end
