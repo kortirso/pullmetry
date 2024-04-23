@@ -6,6 +6,7 @@ const SHORT_INSIGHT_NAMES = {
   required_reviews_count: 'Req reviews',
   comments_count: 'Comments',
   reviews_count: 'Reviews',
+  bad_reviews_count: 'Bad reviews',
   review_involving: 'Involving',
   average_review_seconds: 'Review time',
   reviewed_loc: 'Rev LOC',
@@ -21,6 +22,7 @@ const INSIGHT_TOOLTIPS = {
   required_reviews_count: 'Required reviews',
   comments_count: 'Total comments',
   reviews_count: 'Total reviews',
+  bad_reviews_count: 'Total bad reviews',
   review_involving: 'Review involving',
   average_review_seconds: 'Avg review time',
   reviewed_loc: 'Reviewed LOC',
@@ -37,6 +39,7 @@ const REVERSE_ORDER_ATTRIBUTES = [
   'average_review_seconds',
   'average_merge_seconds',
   'average_open_pr_comments',
+  'bad_reviews_count',
 ];
 const PERCENTILE_ATTRIBUTES = ['review_involving'];
 
