@@ -53,7 +53,7 @@ describe Import::Fetchers::Github::Reviews, type: :service do
     )
   end
 
-  it 'returns 2 objects' do
-    expect(service_call[:result].size).to eq 2
+  it 'returns 3 objects' do
+    expect(service_call[:result].size).to eq 3
   end
 end

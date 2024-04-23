@@ -25,6 +25,7 @@ module JsonbColumns
            required_reviews_count
            comments_count
            reviews_count
+           bad_reviews_count
            average_review_seconds
            review_involving
            reviewed_loc

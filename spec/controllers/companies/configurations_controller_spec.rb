@@ -157,6 +157,7 @@ describe Companies::ConfigurationsController do
               expect(configuration.insight_fields.attributes).to eq({
                 'comments_count' => true,
                 'reviews_count' => nil,
+                'bad_reviews_count' => nil,
                 'required_reviews_count' => nil,
                 'review_involving' => nil,
                 'reviewed_loc' => nil,

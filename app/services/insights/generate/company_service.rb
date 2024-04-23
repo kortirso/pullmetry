@@ -29,6 +29,14 @@ module Insights
         end
       end
 
+      def bad_reviews_count(date_from=@fetch_period, date_to=0)
+        @bad_reviews_count ||= {}
+
+        @bad_reviews_count.fetch("#{date_from},#{date_to}") do |key|
+          @bad_reviews_count[key] = sum_insights_attribute(date_to, :bad_reviews_count)
+        end
+      end
+
       def required_reviews_count(date_from=@fetch_period, date_to=0)
         @required_reviews_count ||= {}
 
@@ -92,6 +100,7 @@ module Insights
                 :entity_id,
                 :comments_count,
                 :reviews_count,
+                :bad_reviews_count,
                 :required_reviews_count,
                 :open_pull_requests_count,
                 :review_involving,

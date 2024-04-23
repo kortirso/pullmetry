@@ -8,6 +8,7 @@ module JsonbColumns
     attribute :required_reviews_count, :boolean
     attribute :comments_count, :boolean
     attribute :reviews_count, :boolean
+    attribute :bad_reviews_count, :boolean
     attribute :review_involving, :boolean
     attribute :average_review_seconds, :boolean
     attribute :reviewed_loc, :boolean

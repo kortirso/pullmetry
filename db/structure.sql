@@ -687,7 +687,8 @@ CREATE TABLE public.insights (
     average_reviewed_loc integer,
     changed_loc integer,
     average_changed_loc integer,
-    hidden boolean DEFAULT false NOT NULL
+    hidden boolean DEFAULT false NOT NULL,
+    bad_reviews_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -912,7 +913,8 @@ CREATE TABLE public.pull_requests (
     pull_merged_at timestamp(6) without time zone,
     entity_id bigint NOT NULL,
     pull_requests_comments_count integer DEFAULT 0 NOT NULL,
-    changed_loc integer DEFAULT 0 NOT NULL
+    changed_loc integer DEFAULT 0 NOT NULL,
+    last_commit_external_id character varying
 );
 
 
@@ -988,7 +990,9 @@ CREATE TABLE public.pull_requests_reviews (
     updated_at timestamp(6) without time zone NOT NULL,
     pull_request_id bigint NOT NULL,
     entity_id bigint NOT NULL,
-    required boolean DEFAULT false NOT NULL
+    required boolean DEFAULT false NOT NULL,
+    state integer DEFAULT 0 NOT NULL,
+    commit_external_id character varying
 );
 
 
@@ -2281,6 +2285,8 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240423084933'),
+('20240423080644'),
 ('20240410190722'),
 ('20240309093507'),
 ('20240308124848'),
