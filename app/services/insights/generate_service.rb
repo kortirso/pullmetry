@@ -85,6 +85,9 @@ module Insights
     # this method returns { entity_id => reviews_count }
     def reviews_count(...) = raise NotImplementedError
 
+    # this method returns { entity_id => bad_reviews_count }
+    def bad_reviews_count(...) = raise NotImplementedError
+
     # this method returns { entity_id => required_reviews_count }
     def required_reviews_count(...) = raise NotImplementedError
 

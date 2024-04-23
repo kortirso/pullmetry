@@ -7,7 +7,7 @@ module Import
         include Deps[entity_representer: 'services.import.representers.github.entity']
 
         STATE_MAPPER = {
-          'APPROVED' => ::PullRequests::Review::APPROVED,
+          'APPROVED' => ::PullRequests::Review::ACCEPTED,
           'DISMISSED' => ::PullRequests::Review::REJECTED
         }.freeze
 

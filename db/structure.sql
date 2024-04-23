@@ -687,7 +687,8 @@ CREATE TABLE public.insights (
     average_reviewed_loc integer,
     changed_loc integer,
     average_changed_loc integer,
-    hidden boolean DEFAULT false NOT NULL
+    hidden boolean DEFAULT false NOT NULL,
+    bad_reviews_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -2284,6 +2285,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240423084933'),
 ('20240423080644'),
 ('20240410190722'),
 ('20240309093507'),

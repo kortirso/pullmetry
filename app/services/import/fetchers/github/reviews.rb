@@ -25,7 +25,7 @@ module Import
             body = fetch_result[:body]
             break if body.blank?
 
-            result.concat(body.select { |review| review['state'] == 'APPROVED' })
+            result.concat(body)
             break if body.size != PER_PAGE
 
             page += 1

@@ -236,6 +236,20 @@ module Insights
           @reviews_count[key] =
             PullRequests::Review
               .approved
+              .accepted
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
+              .group(:entity_id).count
+        end
+      end
+
+      def bad_reviews_count(date_from=@fetch_period, date_to=0)
+        @bad_reviews_count ||= {}
+
+        @bad_reviews_count.fetch("#{date_from},#{date_to}") do |key|
+          @bad_reviews_count[key] =
+            PullRequests::Review
+              .approved
+              .rejected
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
         end
@@ -304,6 +318,7 @@ module Insights
           @reviewed_loc[key] =
             PullRequests::Review
               .approved
+              .accepted
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .includes(:pull_request)
               .group_by(&:entity_id)
