@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 class UserPolicy < ApplicationPolicy
-  def create_repository?
-    return false unless record.companies.exists?
+  authorize :amount, optional: true
 
-    objects_count = record.repositories.size
-    return objects_count < Subscription::FREE_REPOSITORIES_AMOUNT unless record.premium?
+  # rubocop: disable Metrics/AbcSize
+  def create_repository?
+    return false if !record.companies.exists? && amount.nil?
+
+    objects_count = record.repositories.size + (amount || 1)
+    return objects_count <= Subscription::FREE_REPOSITORIES_AMOUNT unless record.premium?
 
     plan_settings = record.plan_settings
     return true if plan_settings[:repositories_limit].nil?
 
-    objects_count < plan_settings[:repositories_limit]
+    objects_count <= plan_settings[:repositories_limit]
   end
+  # rubocop: enable Metrics/AbcSize
 end

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     resource :configuration, only: %i[edit update], module: 'companies'
     resources :repositories, only: %i[index], module: 'companies'
     resources :access_tokens, only: %i[new create]
+    resource :transfer, only: %i[create], module: 'companies'
   end
   resources :repositories, only: %i[index destroy] do
     resources :access_tokens, only: %i[new create]

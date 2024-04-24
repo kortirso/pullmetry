@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 describe UserPolicy do
+  let(:amount) { nil }
   let!(:user) { create :user }
 
   describe '#create_repository?' do
@@ -16,6 +17,22 @@ describe UserPolicy do
           context 'when user does not have too much repositories' do
             it 'returns true' do
               expect(policy_access).to be_truthy
+            end
+          end
+
+          context 'for available transfer' do
+            let(:amount) { 5 }
+
+            it 'returns true' do
+              expect(policy_access).to be_truthy
+            end
+          end
+
+          context 'for unavailable transfer' do
+            let(:amount) { 6 }
+
+            it 'returns false' do
+              expect(policy_access).to be_falsy
             end
           end
 
@@ -69,7 +86,7 @@ describe UserPolicy do
     end
 
     def policy_access
-      described_class.new(user, user: user).create_repository?
+      described_class.new(user, user: user, amount: amount).create_repository?
     end
   end
 end
