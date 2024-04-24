@@ -37,6 +37,7 @@ export const CompanyConfiguration = ({
   insightAttributesHtml,
   averageHtml,
   ratiosHtml,
+  transferHtml,
   excludeGroups,
   ignores,
   invites,
@@ -550,6 +551,7 @@ export const CompanyConfiguration = ({
           </div>
         </div>
       </Dropdown>
+      <Dropdown title="Transfer">{transferHtml}</Dropdown>
       <Modal
         show={pageState.ingoreFormIsOpen}
         onClose={() => setPageState({ ...pageState, ingoreFormIsOpen: false })}
