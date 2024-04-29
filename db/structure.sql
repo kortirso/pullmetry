@@ -257,7 +257,7 @@ CREATE TABLE public.access_tokens (
     uuid uuid NOT NULL,
     tokenable_id bigint NOT NULL,
     tokenable_type character varying NOT NULL,
-    value character varying NOT NULL,
+    value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -603,7 +603,7 @@ CREATE TABLE public.identities (
     user_id bigint NOT NULL,
     uid character varying NOT NULL,
     provider integer DEFAULT 0 NOT NULL,
-    email character varying,
+    email text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     login character varying
@@ -728,7 +728,7 @@ CREATE TABLE public.invites (
     inviteable_id bigint NOT NULL,
     inviteable_type character varying NOT NULL,
     receiver_id bigint,
-    email character varying,
+    email text,
     code character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -1162,7 +1162,7 @@ CREATE TABLE public.schema_migrations (
 
 CREATE TABLE public.subscribers (
     id bigint NOT NULL,
-    email character varying NOT NULL,
+    email text NOT NULL,
     unsubscribe_token character varying,
     unsubscribed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1238,7 +1238,7 @@ ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
 CREATE TABLE public.users (
     id bigint NOT NULL,
     uuid uuid NOT NULL,
-    email character varying DEFAULT ''::character varying NOT NULL,
+    email text DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     role integer DEFAULT 0 NOT NULL,
@@ -2285,6 +2285,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240429175135'),
 ('20240423084933'),
 ('20240423080644'),
 ('20240410190722'),

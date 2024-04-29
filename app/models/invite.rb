@@ -5,6 +5,8 @@ class Invite < ApplicationRecord
 
   has_secure_token :code, length: 24
 
+  encrypts :email, deterministic: true
+
   belongs_to :inviteable, polymorphic: true
   belongs_to :receiver, class_name: '::User', foreign_key: :receiver_id, inverse_of: :receive_invites, optional: true
 
