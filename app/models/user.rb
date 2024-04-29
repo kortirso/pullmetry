@@ -9,6 +9,8 @@ class User < ApplicationRecord
   REGULAR = 'regular'
   ADMIN = 'admin'
 
+  encrypts :email, deterministic: true
+
   # TODO: remember to modify Persisters::Users::DestroyService after adding new has_many
   has_many :users_sessions, class_name: 'Users::Session', dependent: :destroy
   has_many :receive_invites, class_name: 'Invite', foreign_key: :receiver_id, dependent: :nullify

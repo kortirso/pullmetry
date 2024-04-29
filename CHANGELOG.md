@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - transfering companies to another users
+- encrypting sensitive data
 
 ## [1.7.7] - 2024-04-23
 ### Added

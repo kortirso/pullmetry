@@ -8,5 +8,7 @@ class AccessToken < ApplicationRecord
     Providerable::GITLAB => 'glpat-'
   }.freeze
 
+  encrypts :value
+
   belongs_to :tokenable, polymorphic: true
 end

@@ -39,7 +39,7 @@ class SubscribersController < ApplicationController
   # to avoid subscribing one visitor with many emails
   def set_subscriber_in_cookies
     cookies[:pullmetry_subscriber_email] = {
-      value: subscriber_params[:email],
+      value: true,
       expires: 1.month.from_now
     }
   end

@@ -52,6 +52,10 @@ module Pullmetry
       g.helper false
     end
 
+    # allow encrypted and unencrypted data to co-exist
+    config.active_record.encryption.support_unencrypted_data = true
+    config.active_record.encryption.extend_queries = true
+
     # Catch 404s
     config.after_initialize do |app|
       app.routes.append { match '*path', to: 'application#not_found', via: :all }
