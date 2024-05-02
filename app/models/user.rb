@@ -27,6 +27,8 @@ class User < ApplicationRecord
 
   has_many :feedbacks, dependent: :destroy
 
+  has_many :api_access_tokens, dependent: :destroy
+
   enum role: { REGULAR => 0, ADMIN => 1 }
 
   def plan_settings

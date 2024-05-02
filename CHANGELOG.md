@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - transfering companies to another users
 - encrypting sensitive data
+- basis for API
 
 ## [1.7.7] - 2024-04-23
 ### Added

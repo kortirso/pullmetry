@@ -15,6 +15,7 @@ module Persisters
           user.kudos_users_achievements.destroy_all
           user.notifications.destroy_all
           user.feedbacks.destroy_all
+          user.api_access_tokens.destroy_all
         end
       end
       # rubocop: enable Metrics/AbcSize

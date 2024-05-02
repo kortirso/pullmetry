@@ -46,6 +46,9 @@ Rails.application.routes.draw do
       end
       resources :invites, only: %i[destroy]
     end
+    namespace :v1 do
+      resources :companies, only: %i[index]
+    end
   end
 
   namespace :webhooks do

@@ -283,6 +283,38 @@ ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
 
 
 --
+-- Name: api_access_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.api_access_tokens (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    value text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: api_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.api_access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: api_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.api_access_tokens_id_seq OWNED BY public.api_access_tokens.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1375,6 +1407,13 @@ ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: api_access_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.api_access_tokens_id_seq'::regclass);
+
+
+--
 -- Name: companies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1576,6 +1615,14 @@ ALTER TABLE ONLY public.webhooks ALTER COLUMN id SET DEFAULT nextval('public.web
 
 ALTER TABLE ONLY public.access_tokens
     ADD CONSTRAINT access_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_access_tokens api_access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_access_tokens
+    ADD CONSTRAINT api_access_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -1874,6 +1921,20 @@ CREATE UNIQUE INDEX index_access_tokens_on_tokenable_id_and_tokenable_type ON pu
 --
 
 CREATE UNIQUE INDEX index_access_tokens_on_uuid ON public.access_tokens USING btree (uuid);
+
+
+--
+-- Name: index_api_access_tokens_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_access_tokens_on_user_id ON public.api_access_tokens USING btree (user_id);
+
+
+--
+-- Name: index_api_access_tokens_on_value; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_access_tokens_on_value ON public.api_access_tokens USING btree (value);
 
 
 --
@@ -2285,6 +2346,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240501090856'),
 ('20240429175135'),
 ('20240423084933'),
 ('20240423080644'),
