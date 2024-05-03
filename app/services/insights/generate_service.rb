@@ -91,9 +91,6 @@ module Insights
     # this method returns { entity_id => required_reviews_count }
     def required_reviews_count(...) = raise NotImplementedError
 
-    # this method returns { entity_id => review_involving }
-    def review_involving(...) = raise NotImplementedError
-
     # this method returns { entity_id => open_pull_requests_count }
     def open_pull_requests_count(...) = raise NotImplementedError
 
@@ -103,20 +100,52 @@ module Insights
     # this method returns { entity_id => changed LOC in reviewed PRs }
     def reviewed_loc(...) = raise NotImplementedError
 
+    # this method returns { entity_id => review_involving }
+    # rubocop: disable Metrics/AbcSize
+    def review_involving(date_from=@fetch_period, date_to=0)
+      @review_involving ||= {}
+
+      @review_involving.fetch("#{date_from},#{date_to}") do |key|
+        @review_involving[key] =
+          entity_ids.each_with_object({}) do |entity_id, acc|
+            other_user_pulls = open_pull_requests_count(date_from, date_to).except(entity_id).values.sum
+            return 0 if other_user_pulls.zero?
+
+            commented_pulls_ids = Array(pulls_with_user_comments(date_from, date_to)[entity_id])
+            reviewed_pulls_ids = Array(pulls_with_user_reviews(date_from, date_to)[entity_id])
+            acc[entity_id] = 100 * (commented_pulls_ids + reviewed_pulls_ids).uniq.size / other_user_pulls
+          end
+      end
+    end
+    # rubocop: enable Metrics/AbcSize
+
+    # this method returns { entity_id => [ids of commented PRs] }
     def pulls_with_user_comments(date_from=@fetch_period, date_to=0)
       @pulls_with_user_comments ||= {}
 
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
         @pulls_with_user_comments[key] =
-          PullRequest
-            .where(id: pull_requests_ids(date_from, date_to))
-            .flat_map { |pull|
-              Entity
-                .joins(:pull_requests_comments)
-                .where(pull_requests_comments: { id: pull.pull_requests_comments })
-                .pluck(:id)
-                .uniq
-            }.tally
+          PullRequests::Comment
+            .where(pull_request_id: pull_requests_ids(date_from, date_to))
+            .hashable_pluck(:pull_request_id, :entity_id)
+            .group_by { |item| item[:entity_id] }
+            .transform_values { |values| values.pluck(:pull_request_id).uniq }
+      end
+    end
+
+    # this method returns { entity_id => [ids of reviewed PRs] }
+    def pulls_with_user_reviews(date_from=@fetch_period, date_to=0)
+      @pulls_with_user_reviews ||= {}
+
+      @pulls_with_user_reviews.fetch("#{date_from},#{date_to}") do |key|
+        @pulls_with_user_reviews[key] =
+          PullRequests::Review
+            .approved
+            .accepted
+            .where(pull_request_id: pull_requests_ids(date_from, date_to))
+            .hashable_pluck(:pull_request_id, :entity_id)
+            .group_by { |item| item[:entity_id] }
+            .transform_values { |values| values.pluck(:pull_request_id).uniq }
       end
     end
 

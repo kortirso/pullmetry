@@ -278,24 +278,6 @@ module Insights
         end
       end
 
-      # rubocop: disable Metrics/AbcSize
-      def review_involving(date_from=@fetch_period, date_to=0)
-        @review_involving ||= {}
-
-        @review_involving.fetch("#{date_from},#{date_to}") do |key|
-          @review_involving[key] =
-            entity_ids.each_with_object({}) do |entity_id, acc|
-              other_user_pulls = open_pull_requests_count(date_from, date_to).except(entity_id).values.sum
-              return 0 if other_user_pulls.zero?
-
-              commented_pulls = pulls_with_user_comments(date_from, date_to)[entity_id].to_i
-              reviewed_pulls = reviews_count(date_from, date_to)[entity_id].to_i
-              acc[entity_id] = 100 * (commented_pulls + reviewed_pulls) / other_user_pulls
-            end
-        end
-      end
-      # rubocop: enable Metrics/AbcSize
-
       def changed_loc(date_from=@fetch_period, date_to=0)
         @changed_loc ||= {}
 

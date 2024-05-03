@@ -53,14 +53,6 @@ module Insights
         end
       end
 
-      def review_involving(date_from=@fetch_period, date_to=0)
-        @review_involving ||= {}
-
-        @review_involving.fetch("#{date_from},#{date_to}") do |key|
-          @review_involving[key] = sum_insights_attribute(date_to, :review_involving)
-        end
-      end
-
       def changed_loc(date_from=@fetch_period, date_to=0)
         @changed_loc ||= {}
 
@@ -103,7 +95,6 @@ module Insights
                 :bad_reviews_count,
                 :required_reviews_count,
                 :open_pull_requests_count,
-                :review_involving,
                 :changed_loc,
                 :reviewed_loc
               )

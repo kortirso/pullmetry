@@ -195,7 +195,7 @@ describe Insights::Generate::RepositoryService, type: :service do
             expect(last_insight.open_pull_requests_count).to eq 1
             expect(last_insight.average_merge_seconds).to eq 10
             expect(last_insight.average_open_pr_comments).to eq 3
-            expect(last_insight.review_involving).to eq 100
+            expect(last_insight.review_involving).to eq 50
             expect(last_insight.changed_loc).to eq 11
             expect(last_insight.average_changed_loc).to eq 11
             expect(last_insight.average_reviewed_loc).to eq 13
