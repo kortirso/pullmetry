@@ -14,8 +14,19 @@ describe Insights::Generate::CompanyService, type: :service do
     create :pull_requests_comment, pull_request: pr1, entity: entity2
     create :pull_requests_comment, pull_request: pr2, entity: entity1
 
-    create :insight, insightable: repository, entity: entity1, comments_count: 1, changed_loc: 11, reviewed_loc: 3
-    create :insight, insightable: repository, entity: entity2, comments_count: 2, changed_loc: 2
+    create :insight,
+           insightable: repository,
+           entity: entity1,
+           comments_count: 1,
+           changed_loc: 11,
+           reviewed_loc: 3,
+           open_pull_requests_count: 2
+    create :insight,
+           insightable: repository,
+           entity: entity2,
+           comments_count: 2,
+           changed_loc: 2,
+           open_pull_requests_count: 1
 
     create :subscription, user: insightable.user
     insightable.configuration.insight_fields = {
@@ -54,10 +65,15 @@ describe Insights::Generate::CompanyService, type: :service do
 
     it 'creates 1 insight and updates existing insight', :aggregate_failures do
       expect { service_call }.to change(insightable.insights.visible, :count).by(1)
+
+      last_insight = insightable.insights.visible.last
+      expect(last_insight.review_involving).to eq 50
+
       expect(insight.reload.comments_count).to eq 1
       expect(insight.changed_loc).to eq 11
       expect(insight.reviewed_loc).to eq 3
-      expect(insight.reload.hidden).to be_falsy
+      expect(insight.review_involving).to eq 100
+      expect(insight.hidden).to be_falsy
     end
 
     context 'for private company' do
