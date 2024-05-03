@@ -9,8 +9,10 @@ module Import
         @pull_request = pull_request
         ActiveRecord::Base.transaction do
           destroy_old_reviews(data)
+          last_approved = find_last_approved_review(data)
           data.each do |payload|
             next if payload[:external_id].in?(existing_reviews)
+            next if payload[:state] == ::PullRequests::Review::ACCEPTED && last_approved.exclude?(payload[:external_id])
 
             entity = find_or_create_entity(payload.delete(:author))
             next if entity == author_entity
@@ -28,6 +30,16 @@ module Import
           .where.not(external_id: nil)
           .where.not(external_id: data.pluck(:external_id))
           .destroy_all
+      end
+
+      def find_last_approved_review(data)
+        data
+          .select { |item| item[:state] == ::PullRequests::Review::ACCEPTED }
+          .group_by { |item| item[:author][:external_id] }
+          .transform_values { |item| item.max_by { |element| element[:review_created_at] } }
+          .values
+          .flatten
+          .pluck(:external_id)
       end
 
       def existing_reviews
