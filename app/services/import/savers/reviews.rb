@@ -51,7 +51,7 @@ module Import
 
       def create_review(entity, payload)
         review = @pull_request.pull_requests_reviews.where(external_id: nil).find_or_initialize_by(entity_id: entity)
-        review.update!(external_id: payload[:external_id], review_created_at: payload[:review_created_at])
+        review.update!(payload.slice(:external_id, :review_created_at, :state, :commit_external_id))
       end
     end
   end

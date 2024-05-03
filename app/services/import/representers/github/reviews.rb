@@ -9,6 +9,7 @@ module Import
         STATE_MAPPER = {
           'APPROVED' => ::PullRequests::Review::ACCEPTED,
           'DISMISSED' => ::PullRequests::Review::REJECTED,
+          'CHANGES_REQUESTED' => ::PullRequests::Review::ACCEPTED,
           'COMMENTED' => ::PullRequests::Review::COMMENTED
         }.freeze
 
