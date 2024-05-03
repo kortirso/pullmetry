@@ -10,6 +10,7 @@ module Insights
 
         PullRequests::Review
           .approved
+          .accepted
           .joins(:pull_request)
           .where(pull_request_id: pull_requests_ids)
           .where.not(pull_requests: { pull_created_at: nil })

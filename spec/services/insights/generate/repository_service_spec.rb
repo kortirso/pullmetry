@@ -18,6 +18,12 @@ describe Insights::Generate::RepositoryService, type: :service do
     create :pull_requests_comment, entity: entity2, pull_request: pr2, comment_created_at: 2.minutes.after
 
     create :pull_requests_review,
+           state: PullRequests::Review::COMMENTED,
+           entity: entity1,
+           pull_request: pr3,
+           review_created_at: 1.minute.after
+
+    create :pull_requests_review,
            entity: entity2,
            pull_request: pr2,
            review_created_at: 10.seconds.after,
@@ -74,7 +80,7 @@ describe Insights::Generate::RepositoryService, type: :service do
       expect(last_insight.open_pull_requests_count).to eq 1
       expect(last_insight.average_merge_seconds).to eq 0
       # updates existing insight
-      expect(insight.reload.comments_count).to eq 1
+      expect(insight.reload.comments_count).to eq 2
     end
 
     context 'for premium account with ratio settings' do
@@ -110,8 +116,8 @@ describe Insights::Generate::RepositoryService, type: :service do
           expect(last_insight.average_comment_time).to eq 35
           expect(last_insight.average_review_time).to eq 10
           expect(last_insight.average_merge_time).to eq 10
-          expect(last_insight.comments_count).to eq 2
-          expect(last_insight.average_comments_count).to eq 0.67
+          expect(last_insight.comments_count).to eq 3
+          expect(last_insight.average_comments_count).to eq 1
           expect(last_insight.changed_loc).to eq 36
           expect(last_insight.average_changed_loc).to eq 12
         end
@@ -194,7 +200,7 @@ describe Insights::Generate::RepositoryService, type: :service do
             expect(last_insight.comments_count).to eq 1
             expect(last_insight.open_pull_requests_count).to eq 1
             expect(last_insight.average_merge_seconds).to eq 10
-            expect(last_insight.average_open_pr_comments).to eq 3
+            expect(last_insight.average_open_pr_comments).to eq 4
             expect(last_insight.review_involving).to eq 50
             expect(last_insight.changed_loc).to eq 11
             expect(last_insight.average_changed_loc).to eq 11

@@ -283,10 +283,21 @@ module Insights
       @pull_requests_stats ||= {}
 
       @pull_requests_stats.fetch("#{date_from},#{date_to}") do |key|
-        @pull_requests_stats[key] =
+        @pull_requests_stats[key] = begin
+          commented_reviews =
+            PullRequests::Review
+              .commented
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
+              .group(:pull_request_id).count
+
           PullRequest
             .where(id: pull_requests_ids(date_from, date_to))
-            .hashable_pluck(:entity_id, :pull_requests_comments_count, :changed_loc)
+            .hashable_pluck(:id, :entity_id, :pull_requests_comments_count, :changed_loc)
+            .map do |pull_request|
+              pull_request[:pull_requests_comments_count] += commented_reviews[pull_request[:id]].to_i
+              pull_request
+            end
+        end
       end
     end
   end

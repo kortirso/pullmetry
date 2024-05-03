@@ -83,7 +83,7 @@ module Insights
                 .where(pull_request_id: pull_requests_ids(date_from, date_to))
                 .pluck(:pull_request_id)
 
-            PullRequest.where(id: commented_pulls + reviewed_pulls).count
+            PullRequest.where(id: (commented_pulls + reviewed_pulls).uniq).count
           end
         end
       end
@@ -94,6 +94,8 @@ module Insights
         @repository_reviewed_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
           @repository_reviewed_pull_requests_count[key] =
             PullRequests::Review
+              .approved
+              .accepted
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .pluck(:pull_request_id)
               .uniq
@@ -222,10 +224,21 @@ module Insights
         @comments_count ||= {}
 
         @comments_count.fetch("#{date_from},#{date_to}") do |key|
-          @comments_count[key] =
-            PullRequests::Comment
-              .where(pull_request_id: pull_requests_ids(date_from, date_to))
-              .group(:entity_id).count
+          @comments_count[key] = begin
+            comments_by_entity =
+              PullRequests::Comment
+                .where(pull_request_id: pull_requests_ids(date_from, date_to))
+                .group(:entity_id).count
+
+            commented_reviews_by_entity =
+              PullRequests::Review
+                .approved
+                .commented
+                .where(pull_request_id: pull_requests_ids(date_from, date_to))
+                .group(:entity_id).count
+
+            comments_by_entity.merge(commented_reviews_by_entity) { |_, oldval, newval| oldval + newval }
+          end
         end
       end
 
