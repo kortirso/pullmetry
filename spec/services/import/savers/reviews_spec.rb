@@ -11,6 +11,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '3',
         review_created_at: '2011-04-11T20:09:31Z',
+        state: PullRequests::Review::ACCEPTED,
         author: {
           external_id: '1',
           provider: Providerable::GITHUB,
@@ -22,6 +23,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '2',
         review_created_at: '2011-04-10T20:09:31Z',
+        state: PullRequests::Review::ACCEPTED,
         author: {
           external_id: '2',
           provider: Providerable::GITHUB,
@@ -31,8 +33,21 @@ describe Import::Savers::Reviews, type: :service do
         }
       },
       {
+        external_id: '9',
+        review_created_at: '2011-04-10T20:09:31Z',
+        state: PullRequests::Review::ACCEPTED,
+        author: {
+          external_id: '10',
+          provider: Providerable::GITHUB,
+          login: 'octocat10',
+          avatar_url: 'https://github.com/images/error/octocat_happy.gif',
+          html_url: 'https://github.com/octocat'
+        }
+      },
+      {
         external_id: '10',
         review_created_at: '2011-04-10T20:09:31Z',
+        state: PullRequests::Review::ACCEPTED,
         author: {
           external_id: '10',
           provider: Providerable::GITHUB,

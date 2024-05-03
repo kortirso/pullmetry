@@ -12,6 +12,7 @@ describe Import::Synchronizers::Reviews::Github, type: :service do
       {
         'id' => 3,
         'submitted_at' => '2011-04-11T20:09:31Z',
+        'state' => 'APPROVED',
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -21,6 +22,7 @@ describe Import::Synchronizers::Reviews::Github, type: :service do
       {
         'id' => 2,
         'submitted_at' => '2011-04-10T20:09:31Z',
+        'state' => 'DISMISSED',
         'user' => {
           'login' => 'octocat',
           'id' => 1,
@@ -30,6 +32,7 @@ describe Import::Synchronizers::Reviews::Github, type: :service do
       {
         'id' => 10,
         'submitted_at' => '2011-04-10T20:09:31Z',
+        'state' => 'APPROVED',
         'user' => {
           'login' => 'octocat',
           'id' => 10,

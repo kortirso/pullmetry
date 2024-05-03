@@ -109,6 +109,7 @@ module Import
             required: true
           }
         end
+        # commento: pull_requests_reviews.required
         ::PullRequests::Review.upsert_all(result) if result.any?
       end
 
