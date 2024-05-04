@@ -8,6 +8,7 @@ describe Import::Representers::Github::Comments, type: :service do
       {
         'id' => 3,
         'created_at' => '2013-10-02T08:57:14Z',
+        'body' => '',
         'user' => {
           'id' => 1,
           'login' => 'octocat',
@@ -17,6 +18,7 @@ describe Import::Representers::Github::Comments, type: :service do
       {
         'id' => 2,
         'created_at' => '2013-10-02T08:57:14Z',
+        'body' => '',
         'user' => {
           'id' => 2,
           'login' => 'octocat2',
@@ -26,6 +28,7 @@ describe Import::Representers::Github::Comments, type: :service do
       {
         'id' => 1,
         'created_at' => '2013-10-02T08:57:14Z',
+        'body' => '**issue (non-blocking)**: Issue',
         'user' => {
           'id' => 3,
           'login' => 'octocat3',
@@ -42,6 +45,7 @@ describe Import::Representers::Github::Comments, type: :service do
         {
           external_id: '3',
           comment_created_at: '2013-10-02T08:57:14Z',
+          parsed_body: nil,
           author: {
             external_id: '1',
             provider: Providerable::GITHUB,
@@ -53,6 +57,7 @@ describe Import::Representers::Github::Comments, type: :service do
         {
           external_id: '2',
           comment_created_at: '2013-10-02T08:57:14Z',
+          parsed_body: nil,
           author: {
             external_id: '2',
             provider: Providerable::GITHUB,
@@ -64,6 +69,11 @@ describe Import::Representers::Github::Comments, type: :service do
         {
           external_id: '1',
           comment_created_at: '2013-10-02T08:57:14Z',
+          parsed_body: {
+            title: 'issue',
+            subject: 'Issue',
+            decorations: ['non-blocking']
+          },
           author: {
             external_id: '3',
             provider: Providerable::GITHUB,

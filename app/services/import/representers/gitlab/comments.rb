@@ -5,6 +5,7 @@ module Import
     module Gitlab
       class Comments
         include Deps[entity_representer: 'services.import.representers.gitlab.entity']
+        include Import::Concerns::CommentParseable
 
         def call(data:)
           data.map do |payload|
@@ -12,7 +13,8 @@ module Import
             {
               external_id: payload[:id].to_s,
               comment_created_at: payload[:created_at],
-              author: entity_representer.call(data: payload[:author])
+              author: entity_representer.call(data: payload[:author]),
+              parsed_body: parse_comment_body(payload[:body]&.lines&.first)
             }
           end
         end
