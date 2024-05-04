@@ -7,6 +7,7 @@ module JsonbColumns
     # attributes representing user reviewing
     attribute :required_reviews_count, :boolean
     attribute :comments_count, :boolean
+    attribute :conventional_comments_count, :boolean
     attribute :reviews_count, :boolean
     attribute :bad_reviews_count, :boolean
     attribute :review_involving, :boolean

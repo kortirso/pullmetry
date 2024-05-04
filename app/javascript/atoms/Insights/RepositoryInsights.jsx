@@ -88,6 +88,7 @@ export const RepositoryInsights = ({ insightTypes, insights, ratioType }) => {
       <div className="p-4 rounded border border-stone-200">
         <h4 className="mb-4">Additional stats</h4>
         <p>Comments - {renderRepositoryInsight('comments_count')}</p>
+        <p>Good comments - {renderRepositoryInsight('conventional_comments_count')}</p>
         <p>Avg comments - {renderRepositoryInsight('average_comments_count')}</p>
         <p>Changed LOC - {renderRepositoryInsight('changed_loc')}</p>
         <p>Avg changed LOC - {renderRepositoryInsight('average_changed_loc')}</p>

@@ -156,6 +156,7 @@ describe Companies::ConfigurationsController do
               expect(configuration.work_end_time).to eq DateTime.new(2023, 1, 1, 13, 0, 0)
               expect(configuration.insight_fields.attributes).to eq({
                 'comments_count' => true,
+                'conventional_comments_count' => nil,
                 'reviews_count' => nil,
                 'bad_reviews_count' => nil,
                 'required_reviews_count' => nil,

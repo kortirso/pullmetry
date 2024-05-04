@@ -14,6 +14,7 @@ class Insight < ApplicationRecord
   SHORT_ATTRIBUTE_NAMES = {
     required_reviews_count: 'Required reviews',
     comments_count: 'Comments count',
+    conventional_comments_count: 'Good comments',
     reviews_count: 'Reviews count',
     bad_reviews_count: 'Bad reviews count',
     review_involving: 'Review involving',

@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache('metrics_v2', expires_in: 24.hours) do %>
+  <% cache('metrics_v3', expires_in: 24.hours) do %>
     <section class="mx-auto my-12">
       <h1>Review quality metrics</h1>
       <p class="mb-12">These metrics reflects quality of review performed by developer with PRs of other developers.</p>
@@ -7,6 +7,8 @@
       <p class="mb-8">Some pull requests may have a list of developers who were required to conduct a review. This metric just shows amount of such PRs for each developer.</p>
       <h2 class="text-2xl">Comments count</h2>
       <p class="mb-8">This metric shows the number of comments that developer leaves in the PRs of other developers. Higher value is better and means that developer more thoroughly reviews the code (or maybe code quality of PRs are low).</p>
+      <h2 class="text-2xl">Conventional comments count</h2>
+      <p class="mb-8">This metric shows the number of comments match <a href="https://conventionalcomments.org/" class="simple-link">standard for formatting comments</a>, it's always good to have good formatted useful comments so higher value is better and means that developer more often makes great comments.</p>
       <h2 class="text-2xl">Reviews count</h2>
       <p class="mb-8">This metric shows the number of approved PRs by developer. Higher value is better and means that developer more often approves pull requests.</p>
       <h2 class="text-2xl">Bad reviews count</h2>

@@ -24,6 +24,7 @@ module JsonbColumns
          %i[
            required_reviews_count
            comments_count
+           conventional_comments_count
            reviews_count
            bad_reviews_count
            average_review_seconds

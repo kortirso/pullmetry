@@ -11,6 +11,7 @@ describe Import::Savers::Comments, type: :service do
       {
         external_id: '3',
         comment_created_at: '2011-04-11T20:09:31Z',
+        parsed_body: nil,
         author: {
           external_id: '1',
           provider: Providerable::GITHUB,
@@ -22,6 +23,7 @@ describe Import::Savers::Comments, type: :service do
       {
         external_id: '2',
         comment_created_at: '2011-04-10T20:09:31Z',
+        parsed_body: nil,
         author: {
           external_id: '2',
           provider: Providerable::GITHUB,
@@ -33,6 +35,11 @@ describe Import::Savers::Comments, type: :service do
       {
         external_id: '10',
         comment_created_at: '2011-04-10T20:09:31Z',
+        parsed_body: {
+          title: 'issue',
+          subject: 'Issue',
+          decorations: ['non-blocking']
+        },
         author: {
           external_id: '10',
           provider: Providerable::GITHUB,
@@ -78,15 +85,10 @@ describe Import::Savers::Comments, type: :service do
           create :pull_requests_comment, entity: entity2, external_id: '4'
         end
 
-        it 'creates 2 new comments' do
+        it 'creates 2 new comments and destroys old comments', :aggregate_failures do
           service_call
 
           expect(pull_request.pull_requests_comments.pluck(:external_id)).to match_array(%w[2 3])
-        end
-
-        it 'destroys old comments' do
-          service_call
-
           expect(pull_request.pull_requests_comments.where(external_id: %w[1 4])).to be_empty
         end
       end

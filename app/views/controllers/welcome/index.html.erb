@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache(['welcome_page_v2', Current.user&.id, cookies[:pullmetry_subscriber_email]], expires_in: 24.hours) do %>
+  <% cache(['welcome_page_v3', Current.user&.id, cookies[:pullmetry_subscriber_email]], expires_in: 24.hours) do %>
     <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
       <div class="flex flex-col justify-center">
         <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
@@ -167,11 +167,11 @@
             <p>Free</p>
           </div>
           <ul>
-            <li>6 insight metrics</li>
+            <li>7 insight metrics</li>
+            <li>12 repository insight metrics</li>
             <li>5 tracking repositories</li>
             <li>company metrics based on repositories</li>
-            <li>full access for developers</li>
-            <li>excluding developers for insights</li>
+            <li>easy access for developers</li>
             <li>configuring working time, vacations</li>
             <li>configuring exclude rules for PRs</li>
             <li>sending insights to Slack/Discord/Telegram</li>
@@ -185,7 +185,7 @@
           </div>
           <p class="mb-4">Everything in regular, plus:</p>
           <ul>
-            <li>12 insight metrics instead of 6</li>
+            <li>14 insight metrics instead of 7</li>
             <li>15 tracking repositories</li>
             <li>comparing data with previous periods</li>
           </ul>
