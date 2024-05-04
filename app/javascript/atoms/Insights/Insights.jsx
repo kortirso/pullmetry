@@ -5,6 +5,7 @@ import { Arrow } from '../../svg';
 const SHORT_INSIGHT_NAMES = {
   required_reviews_count: 'Req reviews',
   comments_count: 'Comments',
+  conventional_comments_count: 'Good comments',
   reviews_count: 'Reviews',
   bad_reviews_count: 'Bad reviews',
   review_involving: 'Involving',
@@ -21,6 +22,7 @@ const SHORT_INSIGHT_NAMES = {
 const INSIGHT_TOOLTIPS = {
   required_reviews_count: 'Required reviews',
   comments_count: 'Total comments',
+  conventional_comments_count: 'Good comments',
   reviews_count: 'Total reviews',
   bad_reviews_count: 'Total bad reviews',
   review_involving: 'Review involving',

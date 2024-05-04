@@ -21,6 +21,14 @@ module Insights
         end
       end
 
+      def conventional_comments_count(date_from=@fetch_period, date_to=0)
+        @conventional_comments_count ||= {}
+
+        @conventional_comments_count.fetch("#{date_from},#{date_to}") do |key|
+          @conventional_comments_count[key] = sum_insights_attribute(date_to, :conventional_comments_count)
+        end
+      end
+
       def reviews_count(date_from=@fetch_period, date_to=0)
         @reviews_count ||= {}
 
@@ -91,6 +99,7 @@ module Insights
               .hashable_pluck(
                 :entity_id,
                 :comments_count,
+                :conventional_comments_count,
                 :reviews_count,
                 :bad_reviews_count,
                 :required_reviews_count,

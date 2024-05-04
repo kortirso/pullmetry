@@ -186,6 +186,14 @@ module Insights
         end
       end
 
+      def repository_conventional_comments_count(date_from=@fetch_period, date_to=0)
+        @repository_conventional_comments_count ||= {}
+
+        @repository_conventional_comments_count.fetch("#{date_from},#{date_to}") do |key|
+          @repository_conventional_comments_count[key] = conventional_comments_count(date_from, date_to).values.sum
+        end
+      end
+
       def repository_average_comments_count(date_from=@fetch_period, date_to=0)
         @repository_average_comments_count ||= {}
 
@@ -239,6 +247,18 @@ module Insights
 
             comments_by_entity.merge(commented_reviews_by_entity) { |_, oldval, newval| oldval + newval }
           end
+        end
+      end
+
+      def conventional_comments_count(date_from=@fetch_period, date_to=0)
+        @conventional_comments_count ||= {}
+
+        @conventional_comments_count.fetch("#{date_from},#{date_to}") do |key|
+          @conventional_comments_count[key] =
+            PullRequests::Comment
+              .where(pull_request_id: pull_requests_ids(date_from, date_to))
+              .where.not(parsed_body: nil)
+              .group(:entity_id).count
         end
       end
 

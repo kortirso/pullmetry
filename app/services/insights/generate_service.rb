@@ -82,6 +82,9 @@ module Insights
     # this method returns { entity_id => comments_count_by_entity }
     def comments_count(...) = raise NotImplementedError
 
+    # this method returns { entity_id => conventional_comments_count_by_entity }
+    def conventional_comments_count(...) = raise NotImplementedError
+
     # this method returns { entity_id => reviews_count }
     def reviews_count(...) = raise NotImplementedError
 

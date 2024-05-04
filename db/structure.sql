@@ -734,7 +734,8 @@ CREATE TABLE public.insights (
     changed_loc integer,
     average_changed_loc integer,
     hidden boolean DEFAULT false NOT NULL,
-    bad_reviews_count integer DEFAULT 0 NOT NULL
+    bad_reviews_count integer DEFAULT 0 NOT NULL,
+    conventional_comments_count integer DEFAULT 0
 );
 
 
@@ -1171,7 +1172,8 @@ CREATE TABLE public.repositories_insights (
     changed_loc integer DEFAULT 0 NOT NULL,
     average_changed_loc numeric(8,2) DEFAULT 0.0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    conventional_comments_count integer DEFAULT 0
 );
 
 
@@ -2361,6 +2363,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240504185723'),
 ('20240504173744'),
 ('20240501090856'),
 ('20240429175135'),
