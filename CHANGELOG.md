@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - parsing body of comments with checking convention
+- rendering conventional comments count
 
 ### Modified
 - fetching commented and uniq accepted reviews from Github
