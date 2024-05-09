@@ -1,5 +1,6 @@
 # PullKeeper
-Application for getting relevant stats about PRs and reviewers
+
+[pullkeeper.dev](https://pullkeeper.dev) (or just PullKeeper) is a platform where software developers can get statistics of their pull requests in different repositories and collection of repositories, statistics contains data about approves, comments, changed lines of codes and other.
 
 ## Installation
 
@@ -73,4 +74,4 @@ policies - authorization logic
 
 ## License
 
-The source code is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Please see the [LICENSE](./LICENSE.md) file in our repository for the full text.
