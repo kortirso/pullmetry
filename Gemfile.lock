@@ -191,7 +191,8 @@ GEM
       dry-initializer (~> 3.0)
       dry-schema (>= 1.12, < 2)
       zeitwerk (~> 2.6)
-    emailbutler (0.7.6)
+    emailbutler (0.8.0)
+      dry-container (~> 0.11.0)
       pagy (> 4.0)
       rails (> 6.0.0)
       sassc-rails
@@ -290,7 +291,7 @@ GEM
       rails (> 6.0.0)
       sassc-rails
     racc (1.7.3)
-    rack (3.0.10)
+    rack (3.0.11)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -349,8 +350,8 @@ GEM
       connection_pool
     redis-store (1.10.0)
       redis (>= 4, < 6)
-    regexp_parser (2.9.0)
-    reline (0.5.5)
+    regexp_parser (2.9.1)
+    reline (0.5.6)
       io-console (~> 0.5)
     rexml (3.2.6)
     rspec (3.13.0)
@@ -374,7 +375,7 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.1)
-    rubocop (1.63.4)
+    rubocop (1.63.5)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
