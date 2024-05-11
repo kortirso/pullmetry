@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache(['welcome_page_v3', Current.user&.id, cookies[:pullmetry_subscriber_email]], expires_in: 24.hours) do %>
+  <% cache(['welcome_page_top_v1', Current.user&.id], expires_in: 24.hours) do %>
     <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
       <div class="flex flex-col justify-center">
         <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
@@ -72,25 +72,27 @@
       <p class="text-center mb-4 text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
       <p class="text-center text-lg">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
     </section>
-    <% unless cookies[:pullmetry_subscriber_email] %>
-      <div class="flex justify-center items-center mb-24">
-        <div class="p-8 border border-stone-200 rounded flex flex-col items-center">
-          <h2>Join newslist</h2>
-          <p class="mb-4">Receive latest project news about releases and new features.</p>
-          <%= form_with model: Subscriber.new, url: subscribers_path, method: :post, class: 'form-block' do |form| %>
-            <div class="flex flex-row gap-4 mb-8">
-              <div class="form-field m-0">
-                <%= form.text_field :email, required: true, placeholder: 'Email', class: 'form-value', data: { 'test-id' => 'join-newslist-email-value' } %>
-              </div>
-              <%= form.submit 'Join', class: 'btn-primary btn-small', data: { 'test-id' => 'join-newslist-link' } %>
-            </div>
+  <% end %>
+  <% unless cookies[:pullmetry_subscriber_email] %>
+    <div class="flex justify-center items-center mb-24">
+      <div class="p-8 border border-stone-200 rounded flex flex-col items-center">
+        <h2>Join newslist</h2>
+        <p class="mb-4">Receive latest project news about releases and new features.</p>
+        <%= form_with model: Subscriber.new, url: subscribers_path, method: :post, class: 'form-block' do |form| %>
+          <div class="flex flex-row gap-4 mb-8">
             <div class="form-field m-0">
-              <%= recaptcha_tags %>
+              <%= form.text_field :email, required: true, placeholder: 'Email', class: 'form-value', data: { 'test-id' => 'join-newslist-email-value' } %>
             </div>
-          <% end %>
-        </div>
+            <%= form.submit 'Join', class: 'btn-primary btn-small', data: { 'test-id' => 'join-newslist-link' } %>
+          </div>
+          <div class="form-field m-0">
+            <%= recaptcha_tags %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
+  <% end %>
+  <% cache('welcome_page_bottom_v1', expires_in: 24.hours) do %>
     <section class="mx-auto mb-8 xl:mb-24">
       <h2 class="text-center text-4xl mb-12">How it works</h2>
       <div class="flex flex-col md:flex-row md:gap-20 mb-16">
