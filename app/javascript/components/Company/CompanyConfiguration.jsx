@@ -471,7 +471,7 @@ export const CompanyConfiguration = ({
       <Dropdown convertChildren={false} title="Privacy">
         <div className="py-6 px-8">
           <div
-            dangerouslySetInnerHTML={{ __html: privacyHtml }}
+            dangerouslySetInnerHTML={{ __html: sanitize(privacyHtml) }}
           >
           </div>
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
@@ -504,7 +504,7 @@ export const CompanyConfiguration = ({
       <Dropdown convertChildren={false} title="Pull requests">
         <div className="py-6 px-8">
           <div
-            dangerouslySetInnerHTML={{ __html: fetchPeriodHtml }}
+            dangerouslySetInnerHTML={{ __html: sanitize(fetchPeriodHtml) }}
           >
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
@@ -528,7 +528,7 @@ export const CompanyConfiguration = ({
       <Dropdown convertChildren={false} title="Notifications">
         <div className="py-6 px-8">
           <div
-            dangerouslySetInnerHTML={{ __html: longTimeReviewHtml }}
+            dangerouslySetInnerHTML={{ __html: sanitize(longTimeReviewHtml) }}
           >
           </div>
           <div className="grid lg:grid-cols-2 gap-8">

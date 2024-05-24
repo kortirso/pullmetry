@@ -1,0 +1,26 @@
+{
+  "e5e17cede9a731da09a639c9c78af007_0": {
+    "author": "Bogdanov Anton",
+    "comment": "Application-level encryption is used",
+    "false_positive": true,
+    "ignored_at": "2024-05-24T07:19:13Z"
+  },
+  "e5e17cede9a731da09a639c9c78af007_1": {
+    "author": "Bogdanov Anton",
+    "comment": "Application-level encryption is used",
+    "false_positive": true,
+    "ignored_at": "2024-05-24T07:19:32Z"
+  },
+  "e5e17cede9a731da09a639c9c78af007_2": {
+    "author": "Bogdanov Anton",
+    "comment": "Application-level encryption is used",
+    "false_positive": true,
+    "ignored_at": "2024-05-24T07:19:42Z"
+  },
+  "e5e17cede9a731da09a639c9c78af007_3": {
+    "author": "Bogdanov Anton",
+    "comment": "Application-level encryption is used",
+    "false_positive": true,
+    "ignored_at": "2024-05-24T07:19:51Z"
+  }
+}

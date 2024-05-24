@@ -56,7 +56,7 @@ $ yarn run cypress run --project ./spec/e2e
 ### Sensitive information leaks
 
 ```bash
-$ bearer scan . --skip-rule javascript_react_dangerously_set_inner_html,javascript_lang_insufficiently_random_values
+$ bearer scan .
 ```
 
 ## Application layers
