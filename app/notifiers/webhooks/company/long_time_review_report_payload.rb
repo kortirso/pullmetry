@@ -32,7 +32,7 @@ module Webhooks
         insightable
           .pull_requests
           .opened
-          .where('pull_requests.created_at < ?', (insightable.configuration.long_time_review_hours || 48).hours.ago)
+          .where(pull_requests: { created_at: ...(insightable.configuration.long_time_review_hours || 48).hours.ago })
           .joins(:repository)
           .order(created_at: :asc)
           .hashable_pluck(:created_at, :pull_number, :repository_id, 'repositories.title')

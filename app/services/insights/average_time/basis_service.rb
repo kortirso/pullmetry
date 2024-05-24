@@ -156,7 +156,7 @@ module Insights
         return [] if vacations.blank?
 
         vacations
-          .where('start_time >= ?', end_time.beginning_of_day)
+          .where(start_time: end_time.beginning_of_day..)
           .flat_map { |vacation|
             (vacation.start_time.to_datetime..vacation.end_time.to_datetime)
               .map { |date| date.strftime('%Y-%m-%d') }
