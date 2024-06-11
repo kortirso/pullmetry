@@ -26,7 +26,7 @@ describe Invites::CreateForm, type: :service do
     end
 
     context 'for valid params' do
-      let(:params) { { email: 'email' } }
+      let(:params) { { email: 'email@gmail.com' } }
 
       it 'creates invite', :aggregate_failures do
         expect { form }.to change(Invite, :count).by(1)
@@ -36,7 +36,7 @@ describe Invites::CreateForm, type: :service do
       end
 
       context 'for existing invite' do
-        before { create :invite, email: 'email', inviteable: inviteable }
+        before { create :invite, email: 'email@gmail.com', inviteable: inviteable }
 
         it 'does not create invite', :aggregate_failures do
           expect { form }.not_to change(Invite, :count)
@@ -62,7 +62,7 @@ describe Invites::CreateForm, type: :service do
     end
 
     context 'for valid params' do
-      let(:params) { { email: 'email' } }
+      let(:params) { { email: 'email@gmail.com' } }
 
       it 'creates invite', :aggregate_failures do
         expect { form }.to change(Invite, :count).by(1)
@@ -72,7 +72,7 @@ describe Invites::CreateForm, type: :service do
       end
 
       context 'for existing invite' do
-        before { create :invite, email: 'email', inviteable: inviteable }
+        before { create :invite, email: 'email@gmail.com', inviteable: inviteable }
 
         it 'does not create invite', :aggregate_failures do
           expect { form }.not_to change(Invite, :count)

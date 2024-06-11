@@ -617,7 +617,9 @@ CREATE TABLE public.feedbacks (
     title character varying,
     description text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    email text,
+    answerable boolean DEFAULT false NOT NULL
 );
 
 
@@ -2363,6 +2365,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240611163102'),
 ('20240504185723'),
 ('20240504173744'),
 ('20240501090856'),

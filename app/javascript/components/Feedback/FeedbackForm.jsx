@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import { Modal } from '../../atoms';
+import { Modal, Checkbox } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
-export const FeedbackForm = ({ children }) => {
+export const FeedbackForm = ({ email, children }) => {
   const [pageState, setPageState] = useState({
     isOpen: false,
     title: '',
     description: '',
+    answerable: false,
+    email: '',
     errors: []
   });
 
@@ -20,7 +22,14 @@ export const FeedbackForm = ({ children }) => {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ feedback: { title: pageState.title, description: pageState.description } }),
+        body: JSON.stringify({
+          feedback: {
+            title: pageState.title,
+            description: pageState.description,
+            answerable: pageState.answerable,
+            email: pageState.email
+          }
+        }),
       },
     });
 
@@ -40,7 +49,6 @@ export const FeedbackForm = ({ children }) => {
       >
         <h1 className="mb-8">New feedback</h1>
         <p className="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" className="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" className="simple-link">Telegram</a> or just leave here.</p>
-        <p className="mb-4">You can ask to reply or not to reply to your feedback. Response can be sent to the email associated with your account.</p>
         <section className="inline-block w-full">
           <div className="form-field">
             <label className="form-label">Title</label>
@@ -60,6 +68,24 @@ export const FeedbackForm = ({ children }) => {
               className="form-value w-full"
               value={pageState.description}
               onChange={(e) => setPageState({ ...pageState, description: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <Checkbox
+              labelValue="Can answer by email?"
+              checked={pageState.answerable}
+              onEnable={() => setPageState({ ...pageState, answerable: true })}
+              onDisable={() => setPageState({ ...pageState, answerable: false })}
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">Email for answer</label>
+            <input
+              disabled={!pageState.answerable}
+              className="form-value w-full"
+              placeholder={email}
+              value={pageState.email}
+              onChange={(e) => setPageState({ ...pageState, email: e.target.value })}
             />
           </div>
           {pageState.errors.length > 0 ? (

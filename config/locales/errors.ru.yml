@@ -8,6 +8,10 @@ ru:
       excludes_rule: Исключение
       link: Ссылка
     errors:
+      invite:
+        rules:
+          email:
+            invalid: неверный формат
       subscriber:
         rules:
           email:

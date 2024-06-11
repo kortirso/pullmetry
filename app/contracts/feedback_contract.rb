@@ -5,5 +5,6 @@ class FeedbackContract < ApplicationContract
 
   params do
     required(:description).filled(:string)
+    optional(:email)
   end
 end
