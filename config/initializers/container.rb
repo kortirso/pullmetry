@@ -28,6 +28,8 @@ module Pullmetry
     register('api.discord.client') { DiscordApi::Client.new }
     register('api.telegram.client') { TelegramApi::Client.new }
     register('bot.telegram.client') { TelegramBot::Client.new }
+    register('api.google.auth_client') { GoogleAuthApi::Client.new }
+    register('api.google.client') { GoogleApi::Client.new }
     register('monitoring.providers.bugsnag') { Monitoring::Providers::Bugsnag.new }
     register('monitoring.client') { Monitoring::Client.new }
 
@@ -122,6 +124,7 @@ module Pullmetry
     register('services.auth.providers.github') { Auth::Providers::Github.new }
     register('services.auth.providers.gitlab') { Auth::Providers::Gitlab.new }
     register('services.auth.providers.telegram') { Auth::Providers::Telegram.new }
+    register('services.auth.providers.google') { Auth::Providers::Google.new }
 
     register('services.persisters.companies.update') { Persisters::Companies::UpdateService.new }
     register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }

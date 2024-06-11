@@ -9,7 +9,8 @@ module Users
       login_user: 'services.auth.login_user',
       github_provider: 'services.auth.providers.github',
       gitlab_provider: 'services.auth.providers.gitlab',
-      telegram_provider: 'services.auth.providers.telegram'
+      telegram_provider: 'services.auth.providers.telegram',
+      google_provider: 'services.auth.providers.google'
     ]
 
     skip_before_action :verify_authenticity_token
@@ -77,6 +78,7 @@ module Users
       when Providerable::GITHUB then github_provider
       when Providerable::GITLAB then gitlab_provider
       when Providerable::TELEGRAM then telegram_provider
+      when Providerable::GOOGLE then google_provider
       end
     end
 

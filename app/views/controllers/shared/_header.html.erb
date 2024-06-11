@@ -16,7 +16,8 @@
         <div class="flex">
           <span class="mr-4">Login with</span>
           <%= link_to image_tag('github.svg', width: 20, height: 20, alt: 'github'), omniauth_link(:github), 'aria-label': 'Login with Github', class: 'flex justify-center mr-4' %>
-          <%= link_to image_tag('gitlab.svg', width: 20, height: 20, alt: 'gitlab'), omniauth_link(:gitlab), 'aria-label': 'Login with Gitlab', class: 'flex justify-center' %>
+          <%= link_to image_tag('gitlab.svg', width: 20, height: 20, alt: 'gitlab'), omniauth_link(:gitlab), 'aria-label': 'Login with Gitlab', class: 'flex justify-center mr-4' %>
+          <%= link_to image_tag('google.svg', width: 20, height: 20, alt: 'google'), omniauth_link(:google), 'aria-label': 'Login with Google', class: 'flex justify-center' %>
         </div>
       <% end %>
     </div>

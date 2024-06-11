@@ -10,7 +10,7 @@ module Identities
 
       result = ActiveRecord::Base.transaction do
         identity = user.identities.create!(params)
-        attach_entities(identity)
+        attach_entities(identity) if identity.login.present?
         identity
       end
 
