@@ -7,6 +7,7 @@ module ApplicationHelper
     case provider
     when :github then github_oauth_link
     when :gitlab then gitlab_oauth_link
+    when :google then google_oauth_link
     end
   end
 
@@ -19,6 +20,10 @@ module ApplicationHelper
 
   def gitlab_oauth_link
     "https://gitlab.com/oauth/authorize?scope=read_user&response_type=code&client_id=#{value(:gitlab_oauth, :client_id)}&redirect_uri=#{value(:gitlab_oauth, :redirect_url)}"
+  end
+
+  def google_oauth_link
+    "https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code&client_id=#{value(:google_oauth, :client_id)}&redirect_uri=#{value(:google_oauth, :redirect_url)}"
   end
   # rubocop: enable Layout/LineLength
 

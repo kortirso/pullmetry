@@ -310,6 +310,60 @@ describe Users::OmniauthCallbacksController do
         end
       end
     end
+
+    context 'for google' do
+      let(:provider) { Providerable::GOOGLE }
+
+      context 'for blank code' do
+        it 'redirects to root_path', :aggregate_failures do
+          expect { request }.not_to change(User, :count)
+          expect(response).to redirect_to root_path
+        end
+      end
+
+      context 'for present code' do
+        let(:code) { 'code' }
+
+        before do
+          allow(Pullmetry::Container.resolve('services.auth.providers.google')).to(
+            receive(:call).and_return(google_auth_result)
+          )
+        end
+
+        context 'for invalid id' do
+          let(:google_auth_result) { { result: nil } }
+
+          it 'redirects to root_path', :aggregate_failures do
+            expect { request }.not_to change(User, :count)
+            expect(response).to redirect_to root_path
+          end
+        end
+
+        context 'for valid id' do
+          let(:google_auth_result) { { result: auth_payload } }
+
+          context 'for not logged user' do
+            context 'for valid payload' do
+              let(:auth_payload) do
+                {
+                  uid: '1',
+                  provider: 'google',
+                  email: 'email'
+                }
+              end
+
+              it 'redirects to companies_path', :aggregate_failures do
+                expect { request }.to(
+                  change(User, :count).by(1)
+                    .and(change(Identity, :count).by(1))
+                )
+                expect(response).to redirect_to companies_path
+              end
+            end
+          end
+        end
+      end
+    end
   end
 
   describe 'DELETE#destroy' do
