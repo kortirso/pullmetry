@@ -22,5 +22,11 @@
     "comment": "Application-level encryption is used",
     "false_positive": true,
     "ignored_at": "2024-05-24T07:19:51Z"
+  },
+  "e5e17cede9a731da09a639c9c78af007_4": {
+    "author": "Bogdanov Anton",
+    "comment": "users email already was encrypted",
+    "false_positive": true,
+    "ignored_at": "2024-06-11T17:12:45Z"
   }
 }
