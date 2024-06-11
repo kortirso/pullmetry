@@ -4,6 +4,9 @@
       <th>ID</th>
       <th>Title</th>
       <th>Description</th>
+      <th>Answerable</th>
+      <th>Email</th>
+      <th>Created</th>
       <th>User ID</th>
     </tr>
   </thead>
@@ -13,6 +16,9 @@
         <td><%= feedback.id %></td>
         <td><%= feedback.title %></td>
         <td><%= feedback.description %></td>
+        <td><%= feedback.answerable %></td>
+        <td><%= feedback.email %></td>
+        <td><%= feedback.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         <td><%= feedback.user_id %></td>
       </tr>
     <% end %>

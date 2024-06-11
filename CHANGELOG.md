@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Google oauth
 
+### Modified
+- feedback attributes
+
 ### Fixed
 - bug with unknown github's review state
 

@@ -7,6 +7,10 @@ en:
       excludes_rule: Exclude rule
       link: Link
     errors:
+      invite:
+        rules:
+          email:
+            invalid: has invalid format
       subscriber:
         rules:
           email:

@@ -39,7 +39,7 @@ describe Api::Frontend::InvitesController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, invite: { email: 'email' }, auth_token: access_token
+              company_id: company.uuid, invite: { email: 'email@gmail.com' }, auth_token: access_token
             }
           }
 

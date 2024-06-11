@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 
 import { Dropdown } from '../../components';
-import { Checkbox } from './Checkbox';
 import { Select } from './Select';
 
-import { Modal } from '../../atoms';
+import { Modal, Checkbox } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
 const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
