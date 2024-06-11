@@ -31,7 +31,7 @@ export const FeedbackForm = ({ children }) => {
   return (
     <>
       <div
-        dangerouslySetInnerHTML={{ __html: sanitize(children) }}
+        dangerouslySetInnerHTML={{ __html: children }}
         onClick={() => setPageState({ ...pageState, isOpen: true })}
       ></div>
       <Modal

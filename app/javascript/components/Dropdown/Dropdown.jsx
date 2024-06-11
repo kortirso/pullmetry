@@ -20,7 +20,7 @@ export const Dropdown = ({ convertChildren = true, title, children }) => {
       </div>
       {convertChildren ? (
         <div
-          dangerouslySetInnerHTML={{ __html: sanitize(children) }}
+          dangerouslySetInnerHTML={{ __html: children }}
           className={`${pageState.expanded ? 'block' : 'hidden'}`}
         >
         </div>

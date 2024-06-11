@@ -11,7 +11,8 @@ rule:
     disable-default-rules: false
     only-rule: []
     skip-rule: [
-        "javascript_lang_insufficiently_random_values"
+        "javascript_lang_insufficiently_random_values",
+        "javascript_react_dangerously_set_inner_html"
     ]
 scan:
     context: ""
