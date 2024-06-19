@@ -39,7 +39,7 @@ module Companies
     end
 
     def find_invites
-      @invites = @company.invites.hashable_pluck(:uuid, :email)
+      @invites = @company.invites.hashable_pluck(:uuid, :email, :access)
     end
 
     def find_notifications

@@ -28,6 +28,11 @@ const EXCLUDE_RULES_CONDITIONS = {
   not_contain: 'Not contain'
 }
 
+const INVITE_ACCESS_TARGETS = {
+  read: 'Read',
+  write: 'Write'
+};
+
 export const CompanyConfiguration = ({
   privacyHtml,
   fetchPeriodHtml,
@@ -57,6 +62,7 @@ export const CompanyConfiguration = ({
     webhookSource: 'slack',
     webhookUrl: '',
     inviteEmail: '',
+    inviteAccess: 'read',
     errors: [],
     notifications: notifications,
     excludeGroups: excludeGroups.data,
@@ -135,7 +141,13 @@ export const CompanyConfiguration = ({
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ company_id: companyUuid, invite: { email: pageState.inviteEmail } }),
+        body: JSON.stringify({
+          company_id: companyUuid,
+          invite: {
+            email: pageState.inviteEmail,
+            access: pageState.inviteAccess
+          }
+        }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
@@ -175,6 +187,7 @@ export const CompanyConfiguration = ({
         {pageState.invites.map((invite) => (
           <div className="zebra-list-element" key={invite.uuid}>
             <p>{invite.email}</p>
+            <p>{invite.access}</p>
             <p
               className="btn-danger btn-xs"
               onClick={() => onInviteRemove(invite.uuid)}
@@ -672,6 +685,16 @@ export const CompanyConfiguration = ({
               className="form-value w-full"
               value={pageState.inviteEmail}
               onChange={(e) => setPageState({ ...pageState, inviteEmail: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <p className="flex flex-row">
+              <label className="form-label">Access level</label>
+            </p>
+            <Select
+              items={INVITE_ACCESS_TARGETS}
+              onSelect={(value) => setPageState({ ...pageState, inviteAccess: value })}
+              selectedValue={pageState.inviteAccess}
             />
           </div>
           {pageState.errors.length > 0 ? (

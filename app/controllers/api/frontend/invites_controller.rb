@@ -9,7 +9,7 @@ module Api
       before_action :find_invite, only: %i[destroy]
 
       def create
-        # commento: invites.email
+        # commento: invites.email, invites.access
         case create_form.call(inviteable: @inviteable, params: invite_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result } then render json: { result: InviteSerializer.new(result).serializable_hash }, status: :ok
@@ -39,7 +39,7 @@ module Api
       end
 
       def invite_params
-        params.require(:invite).permit(:email)
+        params.require(:invite).permit(:email, :access)
       end
     end
   end
