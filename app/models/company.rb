@@ -17,6 +17,7 @@ class Company < ApplicationRecord
   has_many :ignores, as: :insightable, dependent: :destroy
   has_many :webhooks, as: :webhookable, dependent: :destroy
   has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
+  has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
 
   delegate :premium?, to: :user
 

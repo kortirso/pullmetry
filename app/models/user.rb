@@ -29,6 +29,8 @@ class User < ApplicationRecord
 
   has_many :api_access_tokens, dependent: :destroy
 
+  has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
+
   enum role: { REGULAR => 0, ADMIN => 1 }
 
   def plan_settings

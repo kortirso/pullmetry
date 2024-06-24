@@ -17,6 +17,7 @@ describe User do
     it { is_expected.to have_many(:subscriptions).dependent(:destroy) }
     it { is_expected.to have_many(:vacations).dependent(:destroy) }
     it { is_expected.to have_many(:api_access_tokens).dependent(:destroy) }
+    it { is_expected.to have_many(:companies_users).class_name('Companies::User').dependent(:destroy) }
   end
 
   describe '.premium?' do

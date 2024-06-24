@@ -25,11 +25,7 @@ module Invitationable
     return clear_invite_cookies if invite.friend? && invite.inviteable_id == user.id
     return clear_invite_cookies if invite.coworker? && invite.inviteable.user_id == user.id
 
-    invite.update!(
-      receiver: user,
-      email: nil,
-      code: nil
-    )
+    Pullmetry::Container['services.persisters.invites.accept'].call(invite: invite, user: user)
     clear_invite_cookies
   end
   # rubocop: enable Metrics/AbcSize, Metrics/CyclomaticComplexity
