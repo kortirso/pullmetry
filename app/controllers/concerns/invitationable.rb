@@ -22,7 +22,7 @@ module Invitationable
     invite = Invite.find_by(uuid: invite_uuid)
     return clear_invite_cookies if invite.nil?
     # skip self invites
-    return clear_invite_cookies if invite.friend? && invite.inviteable_id == user.id
+    return clear_invite_cookies if invite.coowner? && invite.inviteable_id == user.id
     return clear_invite_cookies if invite.coworker? && invite.inviteable.user_id == user.id
 
     Pullmetry::Container['services.persisters.invites.accept'].call(invite: invite, user: user)

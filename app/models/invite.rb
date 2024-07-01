@@ -16,7 +16,7 @@ class Invite < ApplicationRecord
   has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
 
   scope :coworker, -> { where(inviteable_type: 'Company') }
-  scope :friend, -> { where(inviteable_type: 'User') }
+  scope :coowner, -> { where(inviteable_type: 'User') }
   scope :accepted, -> { where.not(receiver_id: nil) }
 
   enum access: { READ => 0, WRITE => 1 }
@@ -25,7 +25,7 @@ class Invite < ApplicationRecord
     inviteable_type == 'Company'
   end
 
-  def friend?
+  def coowner?
     inviteable_type == 'User'
   end
 end

@@ -7,9 +7,15 @@ class CompanyPolicy < ApplicationPolicy
     relation.where(id: user.available_companies.select(:id))
   end
 
-  def update?
-    user.id == record.user_id
+  def edit?
+    user.id == record.user_id || record.companies_users.exists?(user_id: user.id)
   end
 
-  alias_rule :edit?, :destroy?, to: :update?
+  # company's owner can update
+  # user with write access can update
+  def update?
+    user.id == record.user_id || record.companies_users.write.exists?(user_id: user.id)
+  end
+
+  alias_rule :destroy?, to: :update?
 end

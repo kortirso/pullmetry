@@ -8,6 +8,7 @@ class ProfilesController < ApplicationController
     to_bool: 'to_bool'
   ]
 
+  before_action :find_invites, only: %[show]
   before_action :find_used_trial_subscription, only: %i[show]
   before_action :find_end_time, only: %i[show]
   before_action :find_vacations, only: %i[show]
@@ -32,6 +33,13 @@ class ProfilesController < ApplicationController
   end
 
   private
+
+  def find_invites
+    @accepted_invites =
+      current_user.companies_users.joins(:invite).hashable_pluck(:uuid, :access, 'invites.email', 'invites.uuid')
+    @invites =
+      current_user.invites.where.not(uuid: @accepted_invites.pluck(:invites_uuid)).hashable_pluck(:uuid, :email, :access)
+  end
 
   def find_used_trial_subscription
     @used_trial_subscription = current_user.subscriptions.exists?
