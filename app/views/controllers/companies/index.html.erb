@@ -1,7 +1,11 @@
 <%= render PageWrappers::UserComponent.new do %>
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Companies</h1>
-    <%= react_component 'CompanyForm' %>
+    <%=
+      react_component 'CompanyForm',
+        accountsForCompanies: @accounts_for_companies,
+        accountUuid: Current.user.uuid
+    %>
   </div>
   <% if @companies.any? { |company| company.user_id == Current.user.id && !company.accessable } %>
     <div class="badge mb-4 p-4">
