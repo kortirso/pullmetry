@@ -5,7 +5,7 @@
       <%=
         react_component 'RepositoryForm',
           company_uuid: @company&.uuid,
-          companies: Current.user.companies.hashable_pluck(:title, :uuid),
+          companies: @available_companies,
           providers: Repository.providers.map { |key, _| [key.capitalize, key] }
       %>
     <% end %>

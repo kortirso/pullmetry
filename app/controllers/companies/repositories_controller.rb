@@ -8,6 +8,7 @@ module Companies
 
     before_action :find_company, only: %i[index]
     before_action :find_repositories, only: %i[index]
+    before_action :find_available_companies, only: %i[index]
 
     def index
       render template: 'repositories/index'
@@ -27,6 +28,15 @@ module Companies
           ).includes(:access_token),
           items: PER_PAGE
         )
+    end
+
+    def find_available_companies
+      @available_companies =
+        Current.user.companies
+          .or(
+            Company.where(id: Current.user.companies_users.write.select(:company_id))
+          )
+          .hashable_pluck(:title, :uuid)
     end
   end
 end
