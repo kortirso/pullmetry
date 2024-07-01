@@ -33,6 +33,20 @@ describe Companies::ConfigurationsController do
         end
       end
 
+      context 'for existing company with user read access' do
+        before do
+          identity = create :identity, user: @current_user
+          entity = create :entity, identity: identity
+          create :insight, insightable: company, entity: entity
+        end
+
+        it 'renders 404 page' do
+          get :edit, params: { company_id: company.uuid, locale: 'en' }
+
+          expect(response).to render_template 'shared/404'
+        end
+      end
+
       context 'for existing user company' do
         before { company.update!(user: @current_user) }
 
