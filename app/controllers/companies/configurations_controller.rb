@@ -39,7 +39,10 @@ module Companies
     end
 
     def find_invites
-      @invites = @company.invites.hashable_pluck(:uuid, :email, :access)
+      @accepted_invites =
+        @company.companies_users.joins(:invite).hashable_pluck(:uuid, :access, 'invites.email', 'invites.uuid')
+      @invites =
+        @company.invites.where.not(uuid: @accepted_invites.pluck(:invites_uuid)).hashable_pluck(:uuid, :email, :access)
     end
 
     def find_notifications

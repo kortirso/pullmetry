@@ -44,6 +44,7 @@ export const CompanyConfiguration = ({
   transferHtml,
   excludeGroups,
   ignores,
+  acceptedInvites,
   invites,
   webhooks,
   companyUuid,
@@ -55,6 +56,7 @@ export const CompanyConfiguration = ({
     excludeFormIsOpen: false,
     inviteFormIsOpen: false,
     ignores: ignores,
+    acceptedInvites: acceptedInvites,
     invites: invites,
     webhooks: webhooks,
     entityValue: '',
@@ -184,6 +186,7 @@ export const CompanyConfiguration = ({
 
     return (
       <div className="zebra-list">
+        <p className="mb-2 font-medium">Sent invites</p>
         {pageState.invites.map((invite) => (
           <div className="zebra-list-element" key={invite.uuid}>
             <p>{invite.email}</p>
@@ -191,6 +194,45 @@ export const CompanyConfiguration = ({
             <p
               className="btn-danger btn-xs"
               onClick={() => onInviteRemove(invite.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const onAcceptedInviteRemove = async (uuid) => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/users/${uuid}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid),
+      errors: []
+    })
+  };
+
+  const renderAcceptedInvitesList = () => {
+    if (pageState.acceptedInvites.length === 0) return <></>;
+
+    return (
+      <div className="zebra-list pb-4 mb-4 border-b border-gray-200">
+        <p className="mb-2 font-medium">Accepted invites</p>
+        {pageState.acceptedInvites.map((invite) => (
+          <div className="zebra-list-element" key={invite.uuid}>
+            <p>{invite.invites_email}</p>
+            <p>{invite.access}</p>
+            <p
+              className="btn-danger btn-xs"
+              onClick={() => onAcceptedInviteRemove(invite.uuid)}
             >X</p>
           </div>
         ))}
@@ -488,6 +530,7 @@ export const CompanyConfiguration = ({
           </div>
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
             <div>
+              {renderAcceptedInvitesList()}
               {renderInvitesList()}
               <p
                 className="btn-primary btn-small mt-4"

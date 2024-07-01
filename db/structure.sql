@@ -2437,6 +2437,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240701132738'),
 ('20240624073726'),
 ('20240619082632'),
 ('20240611163102'),
