@@ -4,19 +4,17 @@ module Persisters
   module Invites
     class AcceptService
       def call(invite:, user:)
-        invite.update!(receiver: user, email: nil, code: nil)
-        attach_user_to_company(invite.inviteable, user, invite, invite.access) if invite.coworker?
+        # commento: invites.receiver, invites.code
+        invite.update!(receiver: user, code: nil)
+        attach_user_to_company(user, invite) if invite.coworker?
       end
 
       private
 
-      def attach_user_to_company(company, user, invite, access)
-        ::Companies::User.find_or_create_by(
-          company: company,
-          user: user,
-          invite: invite,
-          access: access
-        )
+      def attach_user_to_company(user, invite)
+        ::Companies::User
+          .create_with(access: invite.access)
+          .find_or_create_by(company: invite.inviteable, user: user, invite: invite)
       end
     end
   end
