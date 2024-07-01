@@ -18,6 +18,7 @@ class Invite < ApplicationRecord
   scope :coworker, -> { where(inviteable_type: 'Company') }
   scope :coowner, -> { where(inviteable_type: 'User') }
   scope :accepted, -> { where.not(receiver_id: nil) }
+  scope :waiting, -> { where(receiver_id: nil) }
 
   enum access: { READ => 0, WRITE => 1 }
 

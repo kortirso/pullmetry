@@ -25,7 +25,7 @@ module Api
       private
 
       def find_inviteable
-        find_company if params[:company_id]
+        params[:company_id] ? find_company : find_user
 
         page_not_found unless @inviteable
       end
@@ -36,6 +36,10 @@ module Api
 
       def find_company
         @inviteable = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
+      end
+
+      def find_user
+        @inviteable = current_user
       end
 
       def invite_params
