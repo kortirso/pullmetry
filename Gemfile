@@ -45,7 +45,7 @@ gem 'dry-container', '~> 0.11.0'
 gem 'dry-validation', '~> 1.10'
 
 # Catch unsafe migrations in development
-gem 'strong_migrations', '~> 1.4'
+gem 'strong_migrations', '~> 2.0'
 
 # Pretty print
 gem 'awesome_print'
