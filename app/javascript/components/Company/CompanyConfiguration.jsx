@@ -189,10 +189,10 @@ export const CompanyConfiguration = ({
         <p className="mb-2 font-medium">Sent invites</p>
         {pageState.invites.map((invite) => (
           <div className="zebra-list-element" key={invite.uuid}>
-            <p>{invite.email}</p>
-            <p>{invite.access}</p>
+            <p className="flex-1">{invite.email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
             <p
-              className="btn-danger btn-xs"
+              className="btn-danger btn-xs ml-8"
               onClick={() => onInviteRemove(invite.uuid)}
             >X</p>
           </div>
@@ -228,10 +228,10 @@ export const CompanyConfiguration = ({
         <p className="mb-2 font-medium">Accepted invites</p>
         {pageState.acceptedInvites.map((invite) => (
           <div className="zebra-list-element" key={invite.uuid}>
-            <p>{invite.invites_email}</p>
-            <p>{invite.access}</p>
+            <p className="flex-1">{invite.invites_email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
             <p
-              className="btn-danger btn-xs"
+              className="btn-danger btn-xs ml-8"
               onClick={() => onAcceptedInviteRemove(invite.uuid)}
             >X</p>
           </div>
