@@ -35,7 +35,7 @@ module Api
       end
 
       def find_company
-        authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
+        current_user.available_write_companies.find_by(uuid: params[:company_id])
       end
 
       def find_user

@@ -32,7 +32,7 @@ module Api
       end
 
       def find_company
-        @notifyable = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
+        @notifyable = current_user.available_write_companies.find_by!(uuid: params[:company_id])
       end
 
       def find_notification

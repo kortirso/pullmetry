@@ -53,6 +53,11 @@ class User < ApplicationRecord
       .or(Company.where(id: companies_users.select(:company_id)))
   end
 
+  def available_write_companies
+    Company.where(user_id: id)
+      .or(Company.where(id: companies_users.write.select(:company_id)))
+  end
+
   def available_repositories
     Repository.where(company_id: available_companies.select(:id))
   end
