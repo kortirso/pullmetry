@@ -11,4 +11,8 @@ class AccessToken < ApplicationRecord
   encrypts :value
 
   belongs_to :tokenable, polymorphic: true
+
+  def expired?
+    expired_at && expired_at < DateTime.now
+  end
 end

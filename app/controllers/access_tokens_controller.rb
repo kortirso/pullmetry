@@ -13,7 +13,7 @@ class AccessTokensController < ApplicationController
 
   def create
     authorize! @tokenable, to: :update?
-    # commento: access_tokens.value
+    # commento: access_tokens.value, access_tokens.expired_at
     case create_form.call(tokenable: @tokenable, params: access_token_params)
     in { errors: errors } then redirect_to fail_redirect_path, alert: errors
     else redirect_to success_redirect_path
@@ -50,6 +50,9 @@ class AccessTokensController < ApplicationController
   end
 
   def access_token_params
-    params.require(:access_token).permit(:value)
+    hashable_params = params.require(:access_token).permit(:value)
+    expired_at = params[:access_token][:expired_at]
+    hashable_params[:expired_at] = DateTime.parse(expired_at) if expired_at
+    hashable_params
   end
 end

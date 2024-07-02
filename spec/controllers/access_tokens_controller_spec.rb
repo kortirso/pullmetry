@@ -87,7 +87,11 @@ describe AccessTokensController do
           context 'for valid params' do
             let(:request) {
               post :create, params: {
-                company_id: company.uuid, access_token: { value: 'github_pat_*****_******' }
+                company_id: company.uuid,
+                access_token: {
+                  value: 'github_pat_*****_******',
+                  expired_at: '2024-01-31 13:45'
+                }
               }
             }
 
@@ -95,6 +99,7 @@ describe AccessTokensController do
               request
 
               expect(AccessToken.where(tokenable: company).size).to eq 1
+              expect(AccessToken.last.expired_at).to eq DateTime.new(2024, 1, 31, 13, 45)
               expect(response).to redirect_to companies_path
             end
           end
