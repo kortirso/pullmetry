@@ -6,8 +6,13 @@
         <%= form_with model: @access_token, url: @tokenable.is_a?(Company) ? company_access_tokens_path(@tokenable.uuid) : repository_access_tokens_path(@tokenable.uuid), method: :post, class: 'form-block inline-block w-full' do |form| %>
           <div class="form-field w-full">
             <%= form.label :value, 'Value', class: 'form-label' %>
-            <%= form.text_field :value, required: true, placeholder: "github_pat_****_******", class: 'form-value w-full' %>
+            <%= form.text_field :value, required: true, placeholder: 'github_pat_****_******', class: 'form-value w-full' %>
           </div>
+          <div class="form-field w-full">
+            <%= form.label :expired_at, 'Expiration time', class: 'form-label' %>
+            <%= form.text_field :expired_at, placeholder: '2024-01-31 13:45', class: 'form-value w-full' %>
+          </div>
+          <p class="-mt-4 text-sm">Expiration time can be set only for receiving notifications from PullKeeper</p>
           <%= form.submit 'Save access token', class: 'btn-primary mt-4' %>
         <% end %>
       </section>

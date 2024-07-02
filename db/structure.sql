@@ -273,7 +273,8 @@ CREATE TABLE public.access_tokens (
     tokenable_type character varying NOT NULL,
     value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    expired_at timestamp(6) without time zone
 );
 
 
@@ -2437,6 +2438,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240702074229'),
 ('20240701132738'),
 ('20240624073726'),
 ('20240619082632'),
