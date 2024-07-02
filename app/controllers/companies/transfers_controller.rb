@@ -22,7 +22,7 @@ module Companies
     end
 
     def find_target_user
-      @user = User.where.not(id: current_user.id).find_by!(uuid: params[:user_uuid])
+      @user = ::User.where.not(id: current_user.id).find_by!(uuid: params[:user_uuid])
     end
   end
 end
