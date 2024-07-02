@@ -25,6 +25,8 @@ describe Company do
     it {
       is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').through(:repositories)
     }
+
+    it { is_expected.to have_many(:companies_users).class_name('Companies::User').dependent(:destroy) }
   end
 
   describe '#find_fetch_period' do

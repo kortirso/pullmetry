@@ -10,6 +10,7 @@ module Companies
     before_action :find_company
 
     def edit
+      authorize! @company
       find_ignores
       find_invites
       find_notifications
@@ -21,6 +22,7 @@ module Companies
     end
 
     def update
+      authorize! @company
       # commento: companies.configuration
       case update_form.call(company: @company, params: configuration_params, use_work_time: use_work_time)
       in { errors: errors } then redirect_to edit_company_configuration_path(@company.uuid), alert: errors
@@ -31,7 +33,7 @@ module Companies
     private
 
     def find_company
-      @company = current_user.companies.find_by!(uuid: params[:company_id])
+      @company = Company.find_by!(uuid: params[:company_id])
     end
 
     def find_ignores
@@ -39,7 +41,8 @@ module Companies
     end
 
     def find_invites
-      @invites = @company.invites.hashable_pluck(:uuid, :email)
+      @accepted_invites = @company.companies_users.joins(:invite).hashable_pluck(:uuid, :access, 'invites.email')
+      @invites = @company.invites.waiting.hashable_pluck(:uuid, :email, :access)
     end
 
     def find_notifications

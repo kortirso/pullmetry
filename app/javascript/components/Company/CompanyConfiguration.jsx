@@ -28,6 +28,11 @@ const EXCLUDE_RULES_CONDITIONS = {
   not_contain: 'Not contain'
 }
 
+const INVITE_ACCESS_TARGETS = {
+  read: 'Read',
+  write: 'Write'
+};
+
 export const CompanyConfiguration = ({
   privacyHtml,
   fetchPeriodHtml,
@@ -39,6 +44,7 @@ export const CompanyConfiguration = ({
   transferHtml,
   excludeGroups,
   ignores,
+  acceptedInvites,
   invites,
   webhooks,
   companyUuid,
@@ -50,6 +56,7 @@ export const CompanyConfiguration = ({
     excludeFormIsOpen: false,
     inviteFormIsOpen: false,
     ignores: ignores,
+    acceptedInvites: acceptedInvites,
     invites: invites,
     webhooks: webhooks,
     entityValue: '',
@@ -57,6 +64,7 @@ export const CompanyConfiguration = ({
     webhookSource: 'slack',
     webhookUrl: '',
     inviteEmail: '',
+    inviteAccess: 'read',
     errors: [],
     notifications: notifications,
     excludeGroups: excludeGroups.data,
@@ -135,7 +143,13 @@ export const CompanyConfiguration = ({
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ company_id: companyUuid, invite: { email: pageState.inviteEmail } }),
+        body: JSON.stringify({
+          company_id: companyUuid,
+          invite: {
+            email: pageState.inviteEmail,
+            access: pageState.inviteAccess
+          }
+        }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
@@ -172,12 +186,53 @@ export const CompanyConfiguration = ({
 
     return (
       <div className="zebra-list">
+        <p className="mb-2 font-medium">Sent invites</p>
         {pageState.invites.map((invite) => (
           <div className="zebra-list-element" key={invite.uuid}>
-            <p>{invite.email}</p>
+            <p className="flex-1">{invite.email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
             <p
-              className="btn-danger btn-xs"
+              className="btn-danger btn-xs ml-8"
               onClick={() => onInviteRemove(invite.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const onAcceptedInviteRemove = async (uuid) => {
+    const result = await apiRequest({
+      url: `/api/frontend/companies/users/${uuid}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid),
+      errors: []
+    })
+  };
+
+  const renderAcceptedInvitesList = () => {
+    if (pageState.acceptedInvites.length === 0) return <></>;
+
+    return (
+      <div className="zebra-list pb-4 mb-4 border-b border-gray-200">
+        <p className="mb-2 font-medium">Accepted invites</p>
+        {pageState.acceptedInvites.map((invite) => (
+          <div className="zebra-list-element" key={invite.uuid}>
+            <p className="flex-1">{invite.invites_email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
+            <p
+              className="btn-danger btn-xs ml-8"
+              onClick={() => onAcceptedInviteRemove(invite.uuid)}
             >X</p>
           </div>
         ))}
@@ -475,6 +530,7 @@ export const CompanyConfiguration = ({
           </div>
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
             <div>
+              {renderAcceptedInvitesList()}
               {renderInvitesList()}
               <p
                 className="btn-primary btn-small mt-4"
@@ -672,6 +728,16 @@ export const CompanyConfiguration = ({
               className="form-value w-full"
               value={pageState.inviteEmail}
               onChange={(e) => setPageState({ ...pageState, inviteEmail: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <p className="flex flex-row">
+              <label className="form-label">Access level</label>
+            </p>
+            <Select
+              items={INVITE_ACCESS_TARGETS}
+              onSelect={(value) => setPageState({ ...pageState, inviteAccess: value })}
+              selectedValue={pageState.inviteAccess}
             />
           </div>
           {pageState.errors.length > 0 ? (

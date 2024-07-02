@@ -7,6 +7,7 @@ class RepositoriesController < ApplicationController
 
   before_action :find_repositories, only: %i[index]
   before_action :find_repository, only: %i[destroy]
+  before_action :find_available_companies, only: %i[index]
 
   def index; end
 
@@ -30,5 +31,14 @@ class RepositoriesController < ApplicationController
 
   def find_repository
     @repository = current_user.repositories.find_by!(uuid: params[:id])
+  end
+
+  def find_available_companies
+    @available_companies =
+      Current.user.companies
+        .or(
+          Company.where(id: Current.user.companies_users.write.select(:company_id))
+        )
+        .hashable_pluck(:title, :uuid)
   end
 end

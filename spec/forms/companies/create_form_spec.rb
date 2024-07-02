@@ -5,6 +5,7 @@ describe Companies::CreateForm, type: :service do
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
+  let!(:another_user) { create :user }
 
   context 'for invalid params' do
     let(:params) { { title: '' } }
@@ -19,6 +20,17 @@ describe Companies::CreateForm, type: :service do
 
     it 'creates company and succeeds' do
       expect { form }.to change(user.companies, :count).by(1)
+    end
+
+    context 'with user invites' do
+      before { create :invite, inviteable: user, receiver: another_user, code: nil }
+
+      it 'attaches receiver to company' do
+        expect { form }.to(
+          change(user.companies, :count).by(1)
+            .and(change(Companies::User, :count).by(1))
+        )
+      end
     end
   end
 end

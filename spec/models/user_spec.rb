@@ -17,6 +17,7 @@ describe User do
     it { is_expected.to have_many(:subscriptions).dependent(:destroy) }
     it { is_expected.to have_many(:vacations).dependent(:destroy) }
     it { is_expected.to have_many(:api_access_tokens).dependent(:destroy) }
+    it { is_expected.to have_many(:companies_users).class_name('Companies::User').dependent(:destroy) }
   end
 
   describe '.premium?' do
@@ -43,6 +44,7 @@ describe User do
     let!(:company2) { create :company }
     let!(:company3) { create :company }
     let!(:company4) { create :company }
+    let!(:company5) { create :company }
 
     before do
       create :company
@@ -51,10 +53,11 @@ describe User do
       create :insight, insightable: company2, entity: entity
       create :insight, insightable: company3, entity: entity, hidden: true
       create :invite, inviteable: company4, receiver: user
+      create :companies_user, company: company5, user: user
     end
 
     it 'returns 3 available companies' do
-      expect(user.available_companies.ids).to contain_exactly(company1.id, company2.id, company4.id)
+      expect(user.available_companies.ids).to contain_exactly(company1.id, company2.id, company5.id)
     end
   end
 

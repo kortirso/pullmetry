@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 
+import { Select } from './Select';
+
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
-export const CompanyForm = () => {
+export const CompanyForm = ({
+  accountsForCompanies,
+  accountUuid,
+}) => {
   const [pageState, setPageState] = useState({
     isOpen: false,
+    accountsForCompanies: accountsForCompanies,
+    accountUuid: accountUuid,
     title: '',
     errors: []
   });
@@ -19,7 +26,7 @@ export const CompanyForm = () => {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ company: { title: pageState.title } }),
+        body: JSON.stringify({ company: { title: pageState.title, user_uuid: pageState.accountUuid } }),
       },
     });
 
@@ -56,6 +63,18 @@ export const CompanyForm = () => {
               onChange={(e) => setPageState({ ...pageState, title: e.target.value })}
             />
           </div>
+          {Object.entries(accountsForCompanies).length > 1 ? (
+            <div className="form-field col-span-4">
+              <p className="flex flex-row">
+                <label className="form-label">Account</label>
+              </p>
+              <Select
+                items={pageState.accountsForCompanies}
+                onSelect={(value) => setPageState({ ...pageState, accountUuid: value })}
+                selectedValue={pageState.accountUuid}
+              />
+            </div>
+          ) : null}
           {pageState.errors.length > 0 ? (
             <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
           ) : null}

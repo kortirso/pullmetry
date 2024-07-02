@@ -29,6 +29,8 @@ class User < ApplicationRecord
 
   has_many :api_access_tokens, dependent: :destroy
 
+  has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
+
   enum role: { REGULAR => 0, ADMIN => 1 }
 
   def plan_settings
@@ -48,7 +50,12 @@ class User < ApplicationRecord
   def available_companies
     Company.where(user_id: id)
       .or(Company.where(id: insights.actual.visible.of_type('Company').select(:insightable_id)))
-      .or(Company.where(id: receive_invites.coworker.select(:inviteable_id)))
+      .or(Company.where(id: companies_users.select(:company_id)))
+  end
+
+  def available_write_companies
+    Company.where(user_id: id)
+      .or(Company.where(id: companies_users.write.select(:company_id)))
   end
 
   def available_repositories

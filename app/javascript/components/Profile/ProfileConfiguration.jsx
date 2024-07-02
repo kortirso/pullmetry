@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
 
 import { Dropdown } from '../../components';
+import { Select } from '../Company/Select';
 
 import { Modal } from '../../atoms';
 import { apiRequest, csrfToken, convertDate } from '../../helpers';
+
+const INVITE_ACCESS_TARGETS = {
+  read: 'Read',
+  write: 'Write'
+};
 
 export const ProfileConfiguration = ({
   premiumHtml,
   settingsHtml,
   deleteHtml,
-  vacations
+  vacations,
+  acceptedInvites,
+  invites,
 }) => {
   const [pageState, setPageState] = useState({
     vacationFormIsOpen: false,
+    inviteFormIsOpen: false,
     vacations: vacations.data.map((item) => item.attributes),
+    acceptedInvites: acceptedInvites,
+    invites: invites,
     startTime: '',
+    inviteEmail: '',
+    inviteAccess: 'read',
     endTime: '',
     errors: []
   });
@@ -78,8 +91,111 @@ export const ProfileConfiguration = ({
     )
   };
 
+  const onInviteSave = async () => {
+    const result = await apiRequest({
+      url: '/api/frontend/invites.json',
+      options: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+        body: JSON.stringify({
+          invite: {
+            email: pageState.inviteEmail,
+            access: pageState.inviteAccess
+          }
+        }),
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      inviteFormIsOpen: false,
+      invites: pageState.invites.concat(result.result.data.attributes),
+      inviteEmail: '',
+      errors: []
+    })
+  };
+
+  const onInviteRemove = async (uuid) => {
+    const result = await apiRequest({
+      url: `/api/frontend/invites/${uuid}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      invites: pageState.invites.filter((item) => item.uuid !== uuid),
+      errors: []
+    })
+  };
+
+  const renderInvitesList = () => {
+    if (pageState.invites.length === 0) return <p>You didn't specify any invites yet.</p>;
+
+    return (
+      <div className="zebra-list">
+        <p className="mb-2 font-medium">Sent invites</p>
+        {pageState.invites.map((invite) => (
+          <div className="zebra-list-element" key={invite.uuid}>
+            <p className="flex-1">{invite.email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
+            <p
+              className="btn-danger btn-xs ml-8"
+              onClick={() => onInviteRemove(invite.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const renderAcceptedInvitesList = () => {
+    if (pageState.acceptedInvites.length === 0) return <></>;
+
+    return (
+      <div className="zebra-list pb-4 mb-4 border-b border-gray-200">
+        <p className="mb-2 font-medium">Accepted invites</p>
+        {pageState.acceptedInvites.map((invite) => (
+          <div className="zebra-list-element" key={invite.uuid}>
+            <p className="flex-1">{invite.email}</p>
+            <p className="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
+            <p
+              className="btn-danger btn-xs ml-8"
+              onClick={() => onInviteRemove(invite.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
   return (
     <>
+      <Dropdown convertChildren={false} title="Privacy">
+        <div className="py-6 px-8">
+          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+            <div>
+              {renderAcceptedInvitesList()}
+              {renderInvitesList()}
+              <p
+                className="btn-primary btn-small mt-4"
+                onClick={() => setPageState({ ...pageState, inviteFormIsOpen: true })}
+              >Invite coowner</p>
+            </div>
+            <div>
+              <p>In this block you can specify coowners of your account.</p>
+            </div>
+          </div>
+        </div>
+      </Dropdown>
       <Dropdown title="Premium account">{premiumHtml}</Dropdown>
       <Dropdown convertChildren={false} title="Vacations">
         <div className="py-6 px-8">
@@ -134,6 +250,40 @@ export const ProfileConfiguration = ({
             <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
           ) : null}
           <p className="btn-primary mt-4" onClick={onVacationSave}>Save vacation</p>
+        </section>
+      </Modal>
+      <Modal
+        show={pageState.inviteFormIsOpen}
+        onClose={() => setPageState({ ...pageState, inviteFormIsOpen: false })}
+      >
+        <h1 className="mb-8">New invite</h1>
+        <p className="mb-4">Invite will be send to email and after submitting such person will have access to your account.</p>
+        <section className="inline-block w-full">
+          <div className="form-field">
+            <p className="flex flex-row">
+              <label className="form-label">Invite email</label>
+              <sup className="leading-4">*</sup>
+            </p>
+            <input
+              className="form-value w-full"
+              value={pageState.inviteEmail}
+              onChange={(e) => setPageState({ ...pageState, inviteEmail: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <p className="flex flex-row">
+              <label className="form-label">Access level</label>
+            </p>
+            <Select
+              items={INVITE_ACCESS_TARGETS}
+              onSelect={(value) => setPageState({ ...pageState, inviteAccess: value })}
+              selectedValue={pageState.inviteAccess}
+            />
+          </div>
+          {pageState.errors.length > 0 ? (
+            <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
+          ) : null}
+          <p className="btn-primary mt-4" onClick={onInviteSave}>Create invite</p>
         </section>
       </Modal>
     </>

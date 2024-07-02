@@ -26,10 +26,10 @@ describe Companies::ConfigurationsController do
       end
 
       context 'for not existing user company' do
-        it 'renders 404 page' do
+        it 'renders access page' do
           get :edit, params: { company_id: company.uuid, locale: 'en' }
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'shared/access'
         end
       end
 
@@ -40,10 +40,10 @@ describe Companies::ConfigurationsController do
           create :insight, insightable: company, entity: entity
         end
 
-        it 'renders 404 page' do
+        it 'renders access page' do
           get :edit, params: { company_id: company.uuid, locale: 'en' }
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'shared/access'
         end
       end
 
@@ -80,7 +80,7 @@ describe Companies::ConfigurationsController do
       end
 
       context 'for not existing user company' do
-        it 'renders 404 page' do
+        it 'renders access page' do
           patch :update, params: {
             company_id: company.uuid,
             jsonb_columns_configuration: {
@@ -90,7 +90,7 @@ describe Companies::ConfigurationsController do
             }
           }
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'shared/access'
         end
       end
 

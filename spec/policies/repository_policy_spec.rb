@@ -32,6 +32,26 @@ describe RepositoryPolicy do
       end
     end
 
+    context 'for company with read access' do
+      let(:policy) { described_class.new(repository2, user: user) }
+
+      before { create :companies_user, company: company2, user: user, access: Companies::User::READ }
+
+      it 'returns false' do
+        expect(policy_access).to be_falsy
+      end
+    end
+
+    context 'for company with write access' do
+      let(:policy) { described_class.new(repository2, user: user) }
+
+      before { create :companies_user, company: company2, user: user, access: Companies::User::WRITE }
+
+      it 'returns true' do
+        expect(policy_access).to be_truthy
+      end
+    end
+
     def policy_access
       policy.update?
     end

@@ -23,6 +23,25 @@ describe Api::Frontend::InvitesController do
         end
       end
 
+      context 'for read access in company' do
+        let(:request) {
+          post :create, params: {
+            company_id: company.uuid, invite: { email: 'email@gmail.com' }, auth_token: access_token
+          }
+        }
+
+        before do
+          company.update!(user: another_user)
+          create :companies_user, company: company, user: user, access: Companies::User::READ
+        end
+
+        it 'does not create invite', :aggregate_failures do
+          expect { request }.not_to change(Invite, :count)
+          expect(response).to have_http_status :not_found
+          expect(response.parsed_body.dig('errors', 0)).to eq 'Not found'
+        end
+      end
+
       context 'for valid company' do
         context 'for invalid params' do
           let(:request) {

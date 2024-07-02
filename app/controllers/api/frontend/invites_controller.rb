@@ -9,7 +9,7 @@ module Api
       before_action :find_invite, only: %i[destroy]
 
       def create
-        # commento: invites.email
+        # commento: invites.email, invites.access
         case create_form.call(inviteable: @inviteable, params: invite_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result } then render json: { result: InviteSerializer.new(result).serializable_hash }, status: :ok
@@ -25,7 +25,7 @@ module Api
       private
 
       def find_inviteable
-        find_company if params[:company_id]
+        @inviteable = params[:company_id] ? find_company : find_user
 
         page_not_found unless @inviteable
       end
@@ -35,11 +35,15 @@ module Api
       end
 
       def find_company
-        @inviteable = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
+        current_user.available_write_companies.find_by(uuid: params[:company_id])
+      end
+
+      def find_user
+        current_user
       end
 
       def invite_params
-        params.require(:invite).permit(:email)
+        params.require(:invite).permit(:email, :access)
       end
     end
   end

@@ -6,7 +6,9 @@
       premiumHtml: render(partial: 'premium').html_safe,
       settingsHtml: render(partial: 'user_settings').html_safe,
       deleteHtml: render(partial: 'delete').html_safe,
-      vacations: @vacations
+      vacations: @vacations,
+      acceptedInvites: @accepted_invites,
+      invites: @invites
   %>
   <script src="https://api.cryptocloud.plus/static/pay_btn/js/app.js"></script>
 <% end %>

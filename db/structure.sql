@@ -378,6 +378,41 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
+-- Name: companies_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.companies_users (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    company_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    invite_id bigint NOT NULL,
+    access integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: companies_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.companies_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: companies_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.companies_users_id_seq OWNED BY public.companies_users.id;
+
+
+--
 -- Name: emailbutler_messages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -780,7 +815,8 @@ CREATE TABLE public.invites (
     email text,
     code character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    access integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1440,6 +1476,13 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: companies_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.companies_users ALTER COLUMN id SET DEFAULT nextval('public.companies_users_id_seq'::regclass);
+
+
+--
 -- Name: emailbutler_messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1658,6 +1701,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: companies_users companies_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.companies_users
+    ADD CONSTRAINT companies_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -1968,6 +2019,27 @@ CREATE INDEX index_companies_on_user_id ON public.companies USING btree (user_id
 --
 
 CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uuid);
+
+
+--
+-- Name: index_companies_users_on_company_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_companies_users_on_company_id_and_user_id ON public.companies_users USING btree (company_id, user_id);
+
+
+--
+-- Name: index_companies_users_on_invite_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_companies_users_on_invite_id ON public.companies_users USING btree (invite_id);
+
+
+--
+-- Name: index_companies_users_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_companies_users_on_uuid ON public.companies_users USING btree (uuid);
 
 
 --
@@ -2365,6 +2437,9 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240701132738'),
+('20240624073726'),
+('20240619082632'),
 ('20240611163102'),
 ('20240504185723'),
 ('20240504173744'),

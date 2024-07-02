@@ -37,7 +37,7 @@ module Api
       end
 
       def find_company
-        @webhookable = authorized_scope(Company.order(id: :desc)).find_by!(uuid: params[:company_id])
+        @webhookable = current_user.available_write_companies.find_by!(uuid: params[:company_id])
       end
 
       def find_notification
@@ -45,7 +45,7 @@ module Api
       end
 
       def authorize_company
-        authorized_scope(Company.order(id: :desc)).find(@webhookable.notifyable_id)
+        current_user.available_write_companies.find(@webhookable.notifyable_id)
       end
 
       def find_webhook

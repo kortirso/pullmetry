@@ -6,7 +6,7 @@ class InvitesMailer < ApplicationMailer
     return if @invite.nil?
     return if @invite.email.blank?
 
-    @subject_email = @invite.friend? ? @invite.inviteable.email : @invite.inviteable.user.email
+    @subject_email = @invite.coowner? ? @invite.inviteable.email : @invite.inviteable.user.email
 
     mail(
       to: @invite.email,

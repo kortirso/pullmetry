@@ -1,8 +1,8 @@
 <p>Greeting, dear user!</p>
 <p>You are invited by person with email <%= @subject_email %> to PullKeeper - web service for pull requests analyzing.</p>
 <p>To join PullKeeper - please visit <%= link_to 'page', root_url(invite_email: @invite.email, invite_code: @invite.code) %>.</p>
-<% if @invite.friend? %>
-  <p></p>
+<% if @invite.coowner? %>
+  <p>After signin you will be co-owner of user's account.</p>
 <% elsif @invite.coworker? %>
   <p>After signin you will have access to <%= @invite.inviteable.title %> company insights.</p>
 <% end %>

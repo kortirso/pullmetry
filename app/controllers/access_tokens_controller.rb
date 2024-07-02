@@ -25,7 +25,7 @@ class AccessTokensController < ApplicationController
   def find_company
     return unless params[:company_id]
 
-    @tokenable = current_user.companies.find_by!(uuid: params[:company_id])
+    @tokenable = Company.find_by!(uuid: params[:company_id])
     redirect_to companies_path, alert: 'Valid company for access token is not found' unless @tokenable
   end
 
