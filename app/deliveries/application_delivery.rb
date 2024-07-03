@@ -3,15 +3,17 @@
 class ApplicationDelivery < ActiveDelivery::Base
   self.abstract_class = true
 
+  unregister_line :mailer
+
   register_line :webhook, ActiveDelivery::Lines::Notifier,
-                resolver_pattern: 'Webhooks::%{delivery_name}Notifier'
+                resolver_pattern: '%{delivery_name}WebhookNotifier'
 
-  register_line :slack_webhook, ActiveDelivery::Lines::Notifier,
-                resolver_pattern: 'SlackWebhooks::%{delivery_name}Notifier'
+  register_line :slack, ActiveDelivery::Lines::Notifier,
+                resolver_pattern: '%{delivery_name}SlackNotifier'
 
-  register_line :discord_webhook, ActiveDelivery::Lines::Notifier,
-                resolver_pattern: 'DiscordWebhooks::%{delivery_name}Notifier'
+  register_line :discord, ActiveDelivery::Lines::Notifier,
+                resolver_pattern: '%{delivery_name}DiscordNotifier'
 
   register_line :telegram, ActiveDelivery::Lines::Notifier,
-                resolver_pattern: 'Telegram::%{delivery_name}Notifier'
+                resolver_pattern: '%{delivery_name}TelegramNotifier'
 end
