@@ -74,6 +74,7 @@ module Pullmetry
     register('forms.subscribers.create') { Subscribers::CreateForm.new }
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
+    register('forms.api_access_tokens.create') { ApiAccessTokens::CreateForm.new }
 
     # notifiers reports
     register('notifiers.payloads.company') { Payloads::Company.new }

@@ -48,7 +48,9 @@ Rails.application.routes.draw do
         resources :users, only: %i[destroy]
       end
       resources :invites, only: %i[destroy]
+      resources :api_access_tokens, only: %i[create destroy]
     end
+
     namespace :v1 do
       resources :companies, only: %i[index]
     end

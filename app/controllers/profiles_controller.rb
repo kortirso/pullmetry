@@ -8,6 +8,7 @@ class ProfilesController < ApplicationController
     to_bool: 'to_bool'
   ]
 
+  before_action :find_api_access_tokens, only: %i[show]
   before_action :find_invites, only: %i[show]
   before_action :find_used_trial_subscription, only: %i[show]
   before_action :find_end_time, only: %i[show]
@@ -33,6 +34,10 @@ class ProfilesController < ApplicationController
   end
 
   private
+
+  def find_api_access_tokens
+    @api_access_tokens = current_user.api_access_tokens.hashable_pluck(:uuid, :value)
+  end
 
   def find_invites
     @accepted_invites = current_user.invites.accepted.hashable_pluck(:uuid, :email, :access)

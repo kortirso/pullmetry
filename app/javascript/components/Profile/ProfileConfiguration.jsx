@@ -18,6 +18,7 @@ export const ProfileConfiguration = ({
   vacations,
   acceptedInvites,
   invites,
+  apiAccessTokens,
 }) => {
   const [pageState, setPageState] = useState({
     vacationFormIsOpen: false,
@@ -25,6 +26,7 @@ export const ProfileConfiguration = ({
     vacations: vacations.data.map((item) => item.attributes),
     acceptedInvites: acceptedInvites,
     invites: invites,
+    apiAccessTokens: apiAccessTokens,
     startTime: '',
     inviteEmail: '',
     inviteAccess: 'read',
@@ -177,10 +179,78 @@ export const ProfileConfiguration = ({
     )
   };
 
+  const onCreateApiAccessToken = async () => {
+    const result = await apiRequest({
+      url: '/api/frontend/api_access_tokens.json',
+      options: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      apiAccessTokens: pageState.apiAccessTokens.concat(result.result.data.attributes),
+      errors: []
+    })
+  };
+
+  const onApiAccessTokenRemove = async (id) => {
+    const result = await apiRequest({
+      url: `/api/frontend/api_access_tokens/${id}.json`,
+      options: {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken(),
+        }
+      },
+    });
+    if (result.errors) setPageState({ ...pageState, errors: result.errors })
+    else setPageState({
+      ...pageState,
+      apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.uuid !== id),
+      errors: []
+    })
+  };
+
+  const renderApiAccessTokensList = () => {
+    if (pageState.apiAccessTokens.length === 0) return <p>You didn't specify any API access tokens yet.</p>;
+
+    return (
+      <div className="zebra-list">
+        {pageState.apiAccessTokens.map((apiAccessToken) => (
+          <div className="zebra-list-element" key={apiAccessToken.uuid}>
+            <p>{apiAccessToken.value}</p>
+            <p
+              className="btn-danger btn-xs"
+              onClick={() => onApiAccessTokenRemove(apiAccessToken.uuid)}
+            >X</p>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
   return (
     <>
       <Dropdown convertChildren={false} title="Privacy">
         <div className="py-6 px-8">
+          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+            <div>
+              {renderApiAccessTokensList()}
+              <p
+                className="btn-primary btn-small mt-4"
+                onClick={() => onCreateApiAccessToken()}
+              >Create API access token</p>
+            </div>
+            <div>
+              <p>In this block you can create access tokens for PullKeeper's API.</p>
+            </div>
+          </div>
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
             <div>
               {renderAcceptedInvitesList()}

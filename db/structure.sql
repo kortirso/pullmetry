@@ -306,7 +306,8 @@ CREATE TABLE public.api_access_tokens (
     user_id bigint NOT NULL,
     value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    uuid uuid NOT NULL
 );
 
 
@@ -2002,6 +2003,13 @@ CREATE INDEX index_api_access_tokens_on_user_id ON public.api_access_tokens USIN
 
 
 --
+-- Name: index_api_access_tokens_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_access_tokens_on_uuid ON public.api_access_tokens USING btree (uuid);
+
+
+--
 -- Name: index_api_access_tokens_on_value; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2438,6 +2446,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240703185841'),
 ('20240702074229'),
 ('20240701132738'),
 ('20240624073726'),
