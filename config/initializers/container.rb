@@ -75,46 +75,20 @@ module Pullmetry
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
 
-    # notifiers
-    # register('notifiers.slack_webhooks.admin.job_execution_report_payload') {
-    #   SlackWebhooks::Admin::JobExecutionReportPayload.new
-    # }
-    # register('notifiers.slack_webhooks.admin.feedback_created_payload') {
-    #   SlackWebhooks::Admin::FeedbackCreatedPayload.new
-    # }
-    # register('notifiers.telegram.admin.job_execution_report_payload') {
-    #   Telegram::Admin::JobExecutionReportPayload.new
-    # }
-    # register('notifiers.telegram.admin.feedback_created_payload') {
-    #   Telegram::Admin::FeedbackCreatedPayload.new
-    # }
-    # register('notifiers.webhooks.company.insights_report_payload') { Webhooks::Company::InsightsReportPayload.new }
-    # register('notifiers.telegram.company.insights_report_payload') { Telegram::Company::InsightsReportPayload.new }
-
-    # register('notifiers.webhooks.company.repository_insights_report_payload') {
-    #   Webhooks::Company::RepositoryInsightsReportPayload.new
-    # }
-    # register('notifiers.discord_webhooks.company.repository_insights_report_payload') {
-    #   DiscordWebhooks::Company::RepositoryInsightsReportPayload.new
-    # }
-    # register('notifiers.slack_webhooks.company.repository_insights_report_payload') {
-    #   SlackWebhooks::Company::RepositoryInsightsReportPayload.new
-    # }
-    # register('notifiers.telegram.company.repository_insights_report_payload') {
-    #   Telegram::Company::RepositoryInsightsReportPayload.new
-    # }
-    # register('notifiers.webhooks.company.long_time_review_report_payload') {
-    #   Webhooks::Company::LongTimeReviewReportPayload.new
-    # }
-    # register('notifiers.discord_webhooks.company.long_time_review_report_payload') {
-    #   DiscordWebhooks::Company::LongTimeReviewReportPayload.new
-    # }
-    # register('notifiers.slack_webhooks.company.long_time_review_report_payload') {
-    #   SlackWebhooks::Company::LongTimeReviewReportPayload.new
-    # }
-    # register('notifiers.telegram.company.long_time_review_report_payload') {
-    #   Telegram::Company::LongTimeReviewReportPayload.new
-    # }
+    # notifiers reports
+    register('notifiers.payloads.company') { Payloads::Company.new }
+    register('reports.company.custom.insights') { Reports::Company::Custom::Insights.new }
+    register('reports.company.custom.long_time_review') { Reports::Company::Custom::LongTimeReview.new }
+    register('reports.company.custom.repository_insights') { Reports::Company::Custom::RepositoryInsights.new }
+    register('reports.company.telegram.insights') { Reports::Company::Telegram::Insights.new }
+    register('reports.company.telegram.long_time_review') { Reports::Company::Telegram::LongTimeReview.new }
+    register('reports.company.telegram.repository_insights') { Reports::Company::Telegram::RepositoryInsights.new }
+    register('reports.company.discord.insights') { Reports::Company::Discord::Insights.new }
+    register('reports.company.discord.long_time_review') { Reports::Company::Discord::LongTimeReview.new }
+    register('reports.company.discord.repository_insights') { Reports::Company::Discord::RepositoryInsights.new }
+    register('reports.company.slack.insights') { Reports::Company::Slack::Insights.new }
+    register('reports.company.slack.long_time_review') { Reports::Company::Slack::LongTimeReview.new }
+    register('reports.company.slack.repository_insights') { Reports::Company::Slack::RepositoryInsights.new }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

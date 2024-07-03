@@ -46,6 +46,19 @@ module Reports
           ]
         end
 
+        def insights_blocks(insightable)
+          visible_insights(insightable).map { |insight|
+            {
+              type: 'context',
+              elements: [
+                avatar_element(insight[:entities_avatar_url]),
+                login_element(insight[:entities_login]),
+                insight_data(insight)
+              ]
+            }
+          }
+        end
+
         def insight_data(insight)
           {
             type: 'context',

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CompanyNotifier < AbstractNotifier::Base
+  include Deps[company_payload: 'notifiers.payloads.company']
+
   private
 
   def report(source)
@@ -8,7 +10,7 @@ class CompanyNotifier < AbstractNotifier::Base
     url = URI(path)
 
     notification(
-      **Payloads::Company.new.call(
+      **company_payload.call(
         type: source,
         path: path,
         url: url,

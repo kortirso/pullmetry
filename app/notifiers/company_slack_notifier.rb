@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CompanyDiscordNotifier < CompanyNotifier
+class CompanySlackNotifier < CompanyNotifier
   self.driver = proc do |data|
     Pullmetry::Container['api.slack.client'].send_message(
       path: data[:path],
