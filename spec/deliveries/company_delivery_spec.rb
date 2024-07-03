@@ -12,7 +12,7 @@ describe CompanyDelivery, type: :delivery do
     it 'does not deliver' do
       expect {
         described_class.with(insightable: company).insights_report.deliver_later
-      }.not_to deliver_via(:webhook, :slack_webhook, :discord_webhook, :mailer, :telegram)
+      }.not_to deliver_via(:webhook, :slack, :discord, :mailer, :telegram)
     end
 
     context 'with enabled notification' do
@@ -27,7 +27,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to slack_webhook' do
           expect {
             described_class.with(insightable: company).insights_report.deliver_later
-          }.to deliver_via(:slack_webhook)
+          }.to deliver_via(:slack)
         end
       end
 
@@ -43,7 +43,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :discord_webhook)
+          }.to deliver_via(:slack, :discord)
         end
       end
 
@@ -59,7 +59,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :webhook)
+          }.to deliver_via(:slack, :webhook)
         end
       end
 
@@ -75,7 +75,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :telegram)
+          }.to deliver_via(:slack, :telegram)
         end
       end
     end
@@ -85,7 +85,7 @@ describe CompanyDelivery, type: :delivery do
     it 'does not deliver' do
       expect {
         described_class.with(insightable: company).repository_insights_report.deliver_later
-      }.not_to deliver_via(:webhook, :slack_webhook, :discord_webhook, :mailer, :telegram)
+      }.not_to deliver_via(:webhook, :slack, :discord, :mailer, :telegram)
     end
 
     context 'with enabled notification' do
@@ -100,7 +100,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to slack_webhook' do
           expect {
             described_class.with(insightable: company).repository_insights_report.deliver_later
-          }.to deliver_via(:slack_webhook)
+          }.to deliver_via(:slack)
         end
       end
 
@@ -116,7 +116,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).repository_insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :discord_webhook)
+          }.to deliver_via(:slack, :discord)
         end
       end
 
@@ -132,7 +132,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).repository_insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :webhook)
+          }.to deliver_via(:slack, :webhook)
         end
       end
 
@@ -148,7 +148,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).repository_insights_report.deliver_later
-          }.to deliver_via(:slack_webhook, :telegram)
+          }.to deliver_via(:slack, :telegram)
         end
       end
     end
@@ -162,7 +162,7 @@ describe CompanyDelivery, type: :delivery do
     it 'does not deliver' do
       expect {
         described_class.with(insightable: company).long_time_review_report.deliver_later
-      }.not_to deliver_via(:webhook, :slack_webhook, :discord_webhook, :mailer, :telegram)
+      }.not_to deliver_via(:webhook, :slack, :discord, :mailer, :telegram)
     end
 
     context 'with enabled notification' do
@@ -177,7 +177,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to slack_webhook' do
           expect {
             described_class.with(insightable: company).long_time_review_report.deliver_later
-          }.to deliver_via(:slack_webhook)
+          }.to deliver_via(:slack)
         end
       end
 
@@ -193,7 +193,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).long_time_review_report.deliver_later
-          }.to deliver_via(:slack_webhook, :discord_webhook)
+          }.to deliver_via(:slack, :discord)
         end
       end
 
@@ -209,7 +209,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).long_time_review_report.deliver_later
-          }.to deliver_via(:slack_webhook, :webhook)
+          }.to deliver_via(:slack, :webhook)
         end
       end
 
@@ -225,7 +225,7 @@ describe CompanyDelivery, type: :delivery do
         it 'delivers to 2 webhooks' do
           expect {
             described_class.with(insightable: company).long_time_review_report.deliver_later
-          }.to deliver_via(:slack_webhook, :telegram)
+          }.to deliver_via(:slack, :telegram)
         end
       end
     end

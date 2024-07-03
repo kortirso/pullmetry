@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Modified
 - skip reseting invites email after accepting invite
+- deliveries/notifiers structure
 
 ## [1.7.10] - 2024-06-16
 ### Added
