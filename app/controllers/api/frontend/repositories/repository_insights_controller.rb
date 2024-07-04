@@ -19,8 +19,9 @@ module Api
                   no_entity: true
                 }
               }
-            ).serializable_hash
-          }, status: :ok
+            ).serializable_hash,
+            ratio_type: ratio_enabled? ? ratio_type : nil
+          }.compact, status: :ok
         end
 
         private

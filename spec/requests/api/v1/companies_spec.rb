@@ -83,5 +83,89 @@ describe 'api/v1/companies' do
       end
     end
   end
+
+  path '/api/v1/companies/{id}/insights' do
+    get('Insights of developers by company') do
+      tags 'Companies'
+
+      description 'List of developers insights by company'
+
+      produces 'application/json'
+      consumes 'application/json'
+
+      parameter name: :id, in: :path, type: :string, description: 'Company UUID', required: true
+      parameter name: :api_access_token, in: :query, type: :string, description: 'API access token', required: true
+
+      response(200, 'successful') do
+        let(:user) { create :user }
+        let(:api_access_token) { create(:api_access_token, user: user).value }
+        let(:company) { create(:company, user: user) }
+        let(:id) { company.uuid }
+        let(:insight) { create :insight, insightable: company }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+
+        schema type: :object, properties: {
+          data: {
+            type: :array,
+            items: {
+              type: :object,
+              properties: {
+                id: { type: :string },
+                type: { type: :string },
+                attributes: {
+                  type: :object,
+                  properties: {
+                    values: {
+                      type: :object
+                    },
+                    entity: {
+                      type: :object,
+                      properties: {
+                        login: { type: :string },
+                        html_url: { type: :string },
+                        avatar_url: { type: :string }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          ratio_type: { type: :string, nullable: true }
+        }
+
+        run_test!
+      end
+
+      response(401, 'Unauthorized') do
+        let(:api_access_token) { 'unexisting' }
+        let(:id) { 'unexisting' }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+
+        schema type: :object, properties: {
+          error: {
+            type: :array,
+            items: { type: :string }
+          }
+        }
+
+        run_test!
+      end
+    end
+  end
 end
 # rubocop: enable RSpec/EmptyExampleGroup, RSpec/ScatteredSetup

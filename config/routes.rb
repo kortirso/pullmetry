@@ -55,6 +55,12 @@ Rails.application.routes.draw do
 
     namespace :v1 do
       resources :companies, only: %i[index]
+      resources :companies, only: %i[] do
+        resources :insights, only: %i[index]
+      end
+      resources :repositories, only: %i[] do
+        resources :insights, only: %i[index]
+      end
     end
   end
 

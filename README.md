@@ -63,6 +63,12 @@ $ bearer scan .
 
 API documentation is available at [api-docs](https://pullkeeper.dev/api-docs).
 
+### Refresh API documentation
+
+```bash
+$ rails rswag:specs:swaggerize
+```
+
 ## Application layers
 
 contracts - model schemas for validators
