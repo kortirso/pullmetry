@@ -30,11 +30,11 @@ export const Company = ({
     const fetchInsights = async () => await insightsRequest(uuid);
 
     Promise.all([fetchInsights()]).then(([insightsData]) => {
-      const insightTypes = insightsData.length > 0 ? Object.keys(insightsData[0].values) : [];
-      const ratioType = insightsData.length > 0 ? insightsData[0].ratio_type : null;
+      const insightTypes = insightsData.data.length > 0 ? Object.keys(insightsData.data[0].values) : [];
+      const ratioType = insightsData.ratioType || null;
       setPageState({
         ...pageState,
-        entities: insightsData,
+        entities: insightsData.data,
         insightTypes: insightTypes,
         ratioType: ratioType,
       });

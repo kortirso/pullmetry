@@ -38,11 +38,11 @@ export const Repository = ({
 
     Promise.all([fetchInsights(), fetchRepositoryInsights()]).then(
       ([insightsData, repositoryInsightsData]) => {
-        const insightTypes = insightsData.length > 0 ? Object.keys(insightsData[0].values) : [];
-        const ratioType = insightsData.length > 0 ? insightsData[0].ratio_type : null;
+        const insightTypes = insightsData.data.length > 0 ? Object.keys(insightsData.data[0].values) : [];
+        const ratioType = insightsData.ratioType || null;
         setPageState({
           ...pageState,
-          entities: insightsData,
+          entities: insightsData.data,
           insights:
             Object.keys(repositoryInsightsData).length === 0 ? undefined : repositoryInsightsData,
           insightTypes: insightTypes,

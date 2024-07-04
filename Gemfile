@@ -97,9 +97,14 @@ gem 'active_delivery'
 # antibot captcha
 gem 'recaptcha', require: 'recaptcha/rails'
 
+# API documentation
+gem 'rswag-api'
+gem 'rswag-ui'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'cypress-on-rails', '~> 1.0'
+  gem 'rswag-specs'
   gem 'rubocop', '~> 1.35', require: false
   gem 'rubocop-factory_bot', '~> 2.0', require: false
   gem 'rubocop-performance', '~> 1.14', require: false

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module Frontend
-    class InsightsController < Api::Frontend::BaseController
+  module V1
+    class InsightsController < Api::V1Controller
       before_action :find_insightable
 
       def index

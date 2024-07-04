@@ -1,0 +1,208 @@
+---
+openapi: 3.0.1
+info:
+  title: PullKeeper API v1
+  version: v1
+paths:
+  "/api/v1/companies":
+    get:
+      summary: List available companies
+      tags:
+      - Companies
+      description: List of companies available for user
+      parameters:
+      - name: api_access_token
+        in: query
+        description: API access token
+        required: true
+        schema:
+          type: string
+      - name: include_fields
+        in: query
+        description: List of attributes should be included in response separated by
+          comma
+        required: false
+        schema:
+          type: string
+      - name: exclude_fields
+        in: query
+        description: List of attributes should be excluded from response separated
+          by comma
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        attributes:
+                          type: object
+                          properties:
+                            uuid:
+                              type: string
+                            title:
+                              type: string
+                            repositories_count:
+                              type: integer
+                              nullable: true
+                            accessable:
+                              type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: array
+                    items:
+                      type: string
+  "/api/v1/companies/{id}/insights":
+    get:
+      summary: Insights of developers by company
+      tags:
+      - Companies
+      description: List of developers insights by company
+      parameters:
+      - name: id
+        in: path
+        description: Company UUID
+        required: true
+        schema:
+          type: string
+      - name: api_access_token
+        in: query
+        description: API access token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        attributes:
+                          type: object
+                          properties:
+                            values:
+                              type: object
+                            entity:
+                              type: object
+                              properties:
+                                login:
+                                  type: string
+                                html_url:
+                                  type: string
+                                avatar_url:
+                                  type: string
+                  ratio_type:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: array
+                    items:
+                      type: string
+  "/api/v1/repositories/{id}/insights":
+    get:
+      summary: Insights of developers by repository
+      tags:
+      - Repositories
+      description: List of developers insights by repository
+      parameters:
+      - name: id
+        in: path
+        description: Repository UUID
+        required: true
+        schema:
+          type: string
+      - name: api_access_token
+        in: query
+        description: API access token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        attributes:
+                          type: object
+                          properties:
+                            values:
+                              type: object
+                            entity:
+                              type: object
+                              properties:
+                                login:
+                                  type: string
+                                html_url:
+                                  type: string
+                                avatar_url:
+                                  type: string
+                  ratio_type:
+                    type: string
+                    nullable: true
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: array
+                    items:
+                      type: string
+servers:
+- url: "{protocol}://{defaultHost}"
+  variables:
+    protocol:
+      default: https
+    defaultHost:
+      default: pullkeeper.dev
