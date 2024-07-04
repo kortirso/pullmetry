@@ -59,6 +59,10 @@ $ yarn run cypress run --project ./spec/e2e
 $ bearer scan .
 ```
 
+## API
+
+API documentation is available at [api-docs](https://pullkeeper.dev/api-docs).
+
 ## Application layers
 
 contracts - model schemas for validators

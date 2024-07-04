@@ -28,6 +28,7 @@
           <%= react_component 'FeedbackForm', email: Current.user.email, children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
           <% cache('user_navigation_bottom_v3', expires_in: 24.hours) do %>
             <%= link_to 'Metrics', metrics_path, class: 'user-navigation-link' %>
+            <a href="/api-docs" rel="noopener noreferrer" class="user-navigation-link">API docs</a>
             <%= link_to 'Privacy policy', privacy_path, class: 'user-navigation-link' %>
             <%= link_to t('components.page_wrappers.page_component.logout'), logout_path, class: 'user-navigation-link' %>
           <% end %>
