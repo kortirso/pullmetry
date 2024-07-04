@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - co-owners for accounts
 - expiration time for access tokens
 - creating/removing API access tokens
+- API documentation
 
 ### Modified
 - skip reseting invites email after accepting invite

@@ -3,6 +3,8 @@
 require 'que/view'
 
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   mount PgHero::Engine, at: 'pghero'
   mount Emailbutler::Engine => '/emailbutler'
   mount Que::View::Engine => '/que_view'
