@@ -4,6 +4,7 @@ describe Api::Frontend::NotificationsController do
   let!(:user) { create :user }
   let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
   let!(:company) { create :company, user: user }
+  let!(:webhook) { create :webhook, company: company }
   let!(:another_user) { create :user }
 
   describe 'POST#create' do
@@ -12,7 +13,8 @@ describe Api::Frontend::NotificationsController do
         let(:request) {
           post :create, params: {
             company_id: company.uuid,
-            notification: { source: 'custom', notification_type: '' },
+            webhook_id: 'unexisting',
+            notification: { notification_type: '' },
             auth_token: access_token
           }
         }
@@ -27,11 +29,29 @@ describe Api::Frontend::NotificationsController do
       end
 
       context 'for valid company' do
+        context 'for unexisting webhook' do
+          let(:request) {
+            post :create, params: {
+              company_id: company.uuid,
+              webhook_id: 'unexisting',
+              notification: { notification_type: '' },
+              auth_token: access_token
+            }
+          }
+
+          it 'does not create notification', :aggregate_failures do
+            expect { request }.not_to change(Notification, :count)
+            expect(response).to have_http_status :not_found
+            expect(response.parsed_body.dig('errors', 0)).to eq 'Not found'
+          end
+        end
+
         context 'for invalid params' do
           let(:request) {
             post :create, params: {
               company_id: company.uuid,
-              notification: { source: 'custom', notification_type: '' },
+              webhook_id: webhook.uuid,
+              notification: { notification_type: '' },
               auth_token: access_token
             }
           }
@@ -43,37 +63,32 @@ describe Api::Frontend::NotificationsController do
           end
         end
 
-        context 'for existing notification' do
-          let(:request) {
-            post :create, params: {
-              company_id: company.uuid,
-              notification: { source: 'slack', notification_type: 'insights_data' },
-              auth_token: access_token
-            }
-          }
-
-          before { create :notification, notifyable: company, source: 'slack', notification_type: 'insights_data' }
-
-          it 'does not create notification', :aggregate_failures do
-            expect { request }.not_to change(Notification, :count)
-            expect(response).to have_http_status :ok
-            expect(response.parsed_body['errors']).to eq(['Notification already exists'])
-          end
-        end
-
         context 'for valid params' do
           let(:request) {
             post :create, params: {
               company_id: company.uuid,
-              notification: { source: 'slack', notification_type: 'insights_data' },
+              webhook_id: webhook.uuid,
+              notification: { notification_type: 'insights_data' },
               auth_token: access_token
             }
           }
 
           it 'creates notification', :aggregate_failures do
-            expect { request }.to change(company.notifications.slack, :count).by(1)
+            expect { request }.to change(company.notifications, :count).by(1)
             expect(response).to have_http_status :ok
             expect(response.parsed_body['errors']).to be_nil
+          end
+
+          context 'for existing similar notification' do
+            before do
+              create :notification, notifyable: company, webhook: webhook, notification_type: 'insights_data'
+            end
+
+            it 'does not create notification', :aggregate_failures do
+              expect { request }.not_to change(Notification, :count)
+              expect(response).to have_http_status :ok
+              expect(response.parsed_body.dig('errors', 0)).to eq 'Notification already exists'
+            end
           end
         end
       end

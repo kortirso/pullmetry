@@ -9,5 +9,6 @@ describe Notification do
 
   describe 'associations' do
     it { is_expected.to belong_to(:notifyable) }
+    it { is_expected.to belong_to(:webhook) }
   end
 end

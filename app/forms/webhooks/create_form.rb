@@ -4,14 +4,14 @@ module Webhooks
   class CreateForm
     include Deps[validator: 'validators.webhook']
 
-    def call(webhookable:, params:)
+    def call(company:, params:)
       errors = validator.call(params: params)
       return { errors: errors } if errors.any?
 
       error = validate_url(params)
       return { errors: [error] } if error.present?
 
-      { result: Webhook.create!(params.merge(webhookable: webhookable)) }
+      { result: company.webhooks.create!(params) }
     rescue ActiveRecord::RecordNotUnique => _e
       { errors: ['Webhook already exists'] }
     end

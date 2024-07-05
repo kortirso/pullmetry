@@ -5,12 +5,13 @@ module Api
     class NotificationsController < Api::Frontend::BaseController
       include Deps[create_form: 'forms.notifications.create']
 
-      before_action :find_notifyable, only: %i[create]
+      before_action :find_company, only: %i[create]
+      before_action :find_webhook, only: %i[create]
       before_action :find_notification, only: %i[destroy]
 
       def create
-        # commento: notifications.source, notifications.notification_type
-        case create_form.call(notifyable: @notifyable, params: notification_params)
+        # commento: notifications.webhook_id, notifications.notification_type
+        case create_form.call(notifyable: @company, webhook: @webhook, params: notification_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: { result: NotificationSerializer.new(result).serializable_hash }, status: :ok
@@ -25,14 +26,12 @@ module Api
 
       private
 
-      def find_notifyable
-        find_company if params[:company_id]
-
-        page_not_found unless @notifyable
+      def find_company
+        @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])
       end
 
-      def find_company
-        @notifyable = current_user.available_write_companies.find_by!(uuid: params[:company_id])
+      def find_webhook
+        @webhook = @company.webhooks.find_by!(uuid: params[:webhook_id])
       end
 
       def find_notification
@@ -40,7 +39,7 @@ module Api
       end
 
       def notification_params
-        params.require(:notification).permit(:notification_type, :source)
+        params.require(:notification).permit(:notification_type)
       end
     end
   end

@@ -8,6 +8,6 @@ describe Webhook do
   end
 
   describe 'associations' do
-    it { is_expected.to belong_to(:webhookable) }
+    it { is_expected.to belong_to(:company) }
   end
 end

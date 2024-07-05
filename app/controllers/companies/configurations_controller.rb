@@ -46,23 +46,12 @@ module Companies
     end
 
     def find_notifications
-      @notifications = @company.notifications.hashable_pluck(:id, :uuid, :source, :notification_type)
+      @notifications =
+        @company.notifications.joins(:webhook).hashable_pluck(:uuid, :notification_type, 'webhooks.uuid')
     end
 
     def find_webhooks
-      @webhooks =
-        Webhook.where(webhookable: @company)
-          .or(
-            Webhook.where(webhookable_id: @notifications.pluck(:id), webhookable_type: 'Notification')
-          )
-          .hashable_pluck(:uuid, :source, :url, :webhookable_id, :webhookable_type)
-          .map { |webhook|
-            next webhook if webhook[:webhookable_type] == 'Company'
-
-            webhook.merge(
-              webhookable_uuid: @notifications.find { |element| element[:id] == webhook[:webhookable_id] }[:uuid]
-            )
-          }
+      @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
     end
 
     def find_excludes_groups

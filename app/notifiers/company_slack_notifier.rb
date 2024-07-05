@@ -2,13 +2,13 @@
 
 class CompanySlackNotifier < CompanyNotifier
   self.driver = proc do |data|
-    Pullmetry::Container['api.slack.client'].send_message(
-      path: data[:path],
-      body: data[:body]
-    )
+    data[:paths].each do |path|
+      Pullmetry::Container['api.slack.client'].send_message(
+        path: path,
+        body: data[:body]
+      )
+    end
   end
 
-  def insights_report = report(Webhook::SLACK)
-  def repository_insights_report = report(Webhook::SLACK)
-  def long_time_review_report = report(Webhook::SLACK)
+  def source = Webhook::SLACK
 end

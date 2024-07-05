@@ -9,11 +9,14 @@ module Deliveries
 
       def perform(delivery_service: CompanyDelivery)
         Company
-          .where.associated(:insights)
+          .joins(:notifications)
           .find_each do |company|
             next unless working_time?(company)
 
-            delivery_service.with(insightable: company).repository_insights_report.deliver_later
+            delivery_service
+              .with(company: company)
+              .repository_insights_report
+              .deliver_later
           end
       end
     end

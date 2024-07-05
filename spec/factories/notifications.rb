@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :notification do
     notification_type { Notification::REPOSITORY_ACCESS_ERROR }
-    source { Notification::SLACK }
     notifyable factory: %i[company]
+    webhook
   end
 end

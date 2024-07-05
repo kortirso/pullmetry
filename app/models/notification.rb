@@ -8,13 +8,13 @@ class Notification < ApplicationRecord
   REPOSITORY_INSIGHTS_DATA = 'repository_insights_data'
   LONG_TIME_REVIEW_DATA = 'long_time_review_data'
 
-  CUSTOM = 'custom'
-  SLACK = 'slack'
-  DISCORD = 'discord'
-  TELEGRAM = 'telegram'
-
-  INSIGHTABLE_SOURCES = [CUSTOM, SLACK, DISCORD, TELEGRAM].freeze
-  USER_SOURCES = [TELEGRAM].freeze
+  INSIGHTABLE_SOURCES = [
+    Webhook::CUSTOM,
+    Webhook::SLACK,
+    Webhook::DISCORD,
+    Webhook::TELEGRAM
+  ].freeze
+  USER_SOURCES = [Webhook::TELEGRAM].freeze
 
   INSIGHTABLE_NOTIFICATION_TYPES = [
     REPOSITORY_ACCESS_ERROR,
@@ -25,8 +25,9 @@ class Notification < ApplicationRecord
   USER_NOTIFICATION_TYPES = [].freeze
 
   belongs_to :notifyable, polymorphic: true
+  belongs_to :webhook
 
-  has_one :webhook, as: :webhookable, dependent: :destroy
+  delegate :source, to: :webhook
 
   enum notification_type: {
     REPOSITORY_ACCESS_ERROR => 0,
@@ -34,5 +35,4 @@ class Notification < ApplicationRecord
     REPOSITORY_INSIGHTS_DATA => 2,
     LONG_TIME_REVIEW_DATA => 3
   }
-  enum source: { CUSTOM => 0, SLACK => 1, DISCORD => 2, TELEGRAM => 3 }
 end

@@ -17,79 +17,87 @@ module Payloads
       custom_long_time_review: 'reports.company.custom.long_time_review',
     ]
 
-    def call(type:, path:, url:, insightable:, notification_name:)
+    def call(type:, company:, notification_name:, notifications:)
       case type
-      when Notification::TELEGRAM then telegram_payload(path, insightable, notification_name)
-      when Notification::DISCORD then discord_payload(path, insightable, notification_name)
-      when Notification::SLACK then slack_payload(path, insightable, notification_name)
-      when Notification::CUSTOM then custom_payload(url.path, insightable, notification_name)
+      when Webhook::TELEGRAM then telegram_payload(paths(notifications), company, notification_name)
+      when Webhook::DISCORD then discord_payload(paths(notifications), company, notification_name)
+      when Webhook::SLACK then slack_payload(paths(notifications), company, notification_name)
+      when Webhook::CUSTOM then custom_payload(urls(notifications), company, notification_name)
       end
     end
 
     private
 
-    def telegram_payload(path, insightable, notification_name)
+    def paths(notifications)
+      notifications.map { |notification| URI(notification.webhook.url).path }
+    end
+
+    def urls(notifications)
+      notifications.map { |notification| URI(notification.webhook.url) }
+    end
+
+    def telegram_payload(paths, company, notification_name)
       {
-        chat_id: path,
-        body: telegram_report(insightable, notification_name)
+        paths: paths,
+        body: telegram_report(company, notification_name)
       }
     end
 
-    def telegram_report(insightable, notification_name)
+    def telegram_report(company, notification_name)
       case notification_name
-      when :insights_report then telegram_insights.call(insightable: insightable)
-      when :repository_insights_report then telegram_repository_insights.call(insightable: insightable)
-      when :long_time_review_report then telegram_long_time_review.call(insightable: insightable)
+      when :insights_report then telegram_insights.call(insightable: company)
+      when :repository_insights_report then telegram_repository_insights.call(insightable: company)
+      when :long_time_review_report then telegram_long_time_review.call(insightable: company)
       end
     end
 
-    def discord_payload(path, insightable, notification_name)
+    def discord_payload(paths, company, notification_name)
       {
-        path: path,
+        paths: paths,
         body: {
           username: 'PullKeeper',
-          content: discord_report(insightable, notification_name)
+          content: discord_report(company, notification_name)
         }
       }
     end
 
-    def discord_report(insightable, notification_name)
+    def discord_report(company, notification_name)
       case notification_name
-      when :insights_report then discord_insights.call(insightable: insightable)
-      when :repository_insights_report then discord_repository_insights.call(insightable: insightable)
-      when :long_time_review_report then discord_long_time_review.call(insightable: insightable)
+      when :insights_report then discord_insights.call(insightable: company)
+      when :repository_insights_report then discord_repository_insights.call(insightable: company)
+      when :long_time_review_report then discord_long_time_review.call(insightable: company)
       end
     end
 
-    def slack_payload(path, insightable, notification_name)
+    def slack_payload(paths, company, notification_name)
       {
-        path: path,
-        body: slack_report(insightable, notification_name)
+        paths: paths,
+        body: slack_report(company, notification_name)
       }
     end
 
-    def slack_report(insightable, notification_name)
+    def slack_report(company, notification_name)
       case notification_name
-      when :insights_report then slack_insights.call(insightable: insightable)
-      when :repository_insights_report then slack_repository_insights.call(insightable: insightable)
-      when :long_time_review_report then slack_long_time_review.call(insightable: insightable)
+      when :insights_report then slack_insights.call(insightable: company)
+      when :repository_insights_report then slack_repository_insights.call(insightable: company)
+      when :long_time_review_report then slack_long_time_review.call(insightable: company)
       end
     end
 
-    def custom_payload(path, insightable, notification_name)
+    def custom_payload(paths, company, notification_name)
       {
-        path: path,
+        paths: paths,
         body: {
-          content: custom_report(insightable, notification_name)
+          content: custom_report(company, notification_name)
         }
       }
     end
 
-    def custom_report(insightable, notification_name)
+    def custom_report(company, notification_name)
       case notification_name
-      when :insights_report then custom_insights.call(insightable: insightable)
-      when :repository_insights_report then custom_repository_insights.call(insightable: insightable)
-      when :long_time_review_report then custom_long_time_review.call(insightable: insightable)
+      when :insights_report then custom_insights.call(insightable: company)
+      when :repository_insights_report then custom_repository_insights.call(insightable: company)
+      when :long_time_review_report then custom_long_time_review.call(insightable: company)
       end
     end
   end
