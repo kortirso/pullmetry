@@ -3,10 +3,8 @@ import React, { useState, useMemo } from 'react';
 import { Dropdown } from '../../components';
 import { Select } from './Select';
 
-import { Modal, Checkbox } from '../../atoms';
+import { Modal } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
-
-const NOTIFICATION_SOURCES = ['custom', 'slack', 'discord', 'telegram'];
 
 const NOTIFICATION_TYPES = {
   insights_data: 'Insights',
@@ -53,6 +51,7 @@ export const CompanyConfiguration = ({
   const [pageState, setPageState] = useState({
     ingoreFormIsOpen: false,
     webhookFormIsOpen: false,
+    notificationFormIsOpen: false,
     excludeFormIsOpen: false,
     inviteFormIsOpen: false,
     ignores: ignores,
@@ -60,9 +59,10 @@ export const CompanyConfiguration = ({
     invites: invites,
     webhooks: webhooks,
     entityValue: '',
-    webhookTargetUuid: null,
     webhookSource: 'slack',
     webhookUrl: '',
+    notificationType: 'insights_data',
+    notificationWebhookUuid: webhooks.length > 0 ? webhooks[0].uuid : null,
     inviteEmail: '',
     inviteAccess: 'read',
     errors: [],
@@ -71,9 +71,12 @@ export const CompanyConfiguration = ({
     excludeRules: []
   });
 
-  const currentWebhookNotification = useMemo(() => {
-    return pageState.notifications.find((element) => element.uuid === pageState.webhookTargetUuid);
-  }, [pageState.notifications, pageState.webhookTargetUuid]);
+  const webhooksForSelect = useMemo(() => {
+    return pageState.webhooks.reduce((result, webhook) => {
+      result[webhook.uuid] = `${webhook.source}: ${webhook.url}`
+      return result;
+    }, {});
+  }, [pageState.webhooks]);
 
   const onIgnoreSave = async () => {
     const result = await apiRequest({
@@ -241,7 +244,7 @@ export const CompanyConfiguration = ({
   };
 
   const onWebhookSave = async () => {
-    const url = pageState.webhookTargetUuid ? `/api/frontend/webhooks.json?notification_id=${pageState.webhookTargetUuid}` : `/api/frontend/webhooks.json?company_id=${companyUuid}`;
+    const url = '/api/frontend/webhooks.json';
     const result = await apiRequest({
       url: url,
       options: {
@@ -250,24 +253,34 @@ export const CompanyConfiguration = ({
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ webhook: { url: pageState.webhookUrl, source: pageState.webhookTargetUuid ? null : pageState.webhookSource } }),
+        body: JSON.stringify({
+          company_id: companyUuid,
+          webhook: {
+            url: pageState.webhookUrl,
+            source: pageState.webhookSource
+          }
+        }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
-    else setPageState({
-      ...pageState,
-      webhookFormIsOpen: false,
-      webhooks: pageState.webhooks.concat(result.result.data.attributes),
-      webhookTargetUuid: null,
-      webhookSource: 'slack',
-      webhookUrl: '',
-      errors: []
-    })
+    else {
+      const webhooks = pageState.webhooks.concat(result.result.data.attributes);
+      const notificationWebhookUuid = webhooks.length === 1 ? webhooks[0].uuid : pageState.notificationWebhookUuid;
+      setPageState({
+        ...pageState,
+        webhookFormIsOpen: false,
+        webhooks: webhooks,
+        webhookSource: 'slack',
+        webhookUrl: '',
+        notificationWebhookUuid: notificationWebhookUuid,
+        errors: []
+      })
+    }
   };
 
-  const onWebhookRemove = async (webhook) => {
+  const onWebhookRemove = async (uuid) => {
     const result = await apiRequest({
-      url: `/api/frontend/webhooks/${webhook.uuid}.json`,
+      url: `/api/frontend/webhooks/${uuid}.json`,
       options: {
         method: 'DELETE',
         headers: {
@@ -279,7 +292,8 @@ export const CompanyConfiguration = ({
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
-      webhooks: pageState.webhooks.filter((item) => item.uuid !== webhook.uuid),
+      webhooks: pageState.webhooks.filter((item) => item.uuid !== uuid),
+      notifications: pageState.notifications.filter((item) => item.webhooks_uuid !== uuid),
       errors: []
     })
   };
@@ -288,25 +302,35 @@ export const CompanyConfiguration = ({
     if (pageState.webhooks.length === 0) return <p>You didn't specify any webhooks yet.</p>;
 
     return (
-      <div className="zebra-list">
-        {pageState.webhooks.map((webhook) => {
-          const webhookableType = webhook.webhookable_type === 'Company' ? 'Company' : NOTIFICATION_TYPES[pageState.notifications.find((element) => element.uuid === webhook.webhookable_uuid)?.notification_type];
-
-          return (
-            <div className="zebra-list-element" key={webhook.uuid}>
-              <p>{webhookableType}:{webhook.source} - {webhook.url}</p>
-              <p
-                className="btn-danger btn-xs"
-                onClick={() => onWebhookRemove(webhook)}
-              >X</p>
-            </div>
-          )
-        })}
-      </div>
+      <table className="table zebra w-full">
+        <thead>
+          <tr>
+            <th>UUID</th>
+            <th>Source</th>
+            <th>Url</th>
+            <th className="w-12"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {pageState.webhooks.map((webhook) => (
+            <tr key={webhook.uuid}>
+              <td>{webhook.uuid}</td>
+              <td>{webhook.source}</td>
+              <td>{webhook.url}</td>
+              <td>
+                <p
+                  className="btn-danger btn-xs"
+                  onClick={() => onWebhookRemove(webhook.uuid)}
+                >X</p>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     )
   };
 
-  const onCreateNotification = async (notification_type, source) => {
+  const onNotificationSave = async () => {
     const result = await apiRequest({
       url: '/api/frontend/notifications.json',
       options: {
@@ -315,12 +339,19 @@ export const CompanyConfiguration = ({
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': csrfToken(),
         },
-        body: JSON.stringify({ company_id: companyUuid, notification: { notification_type: notification_type, source: source } }),
+        body: JSON.stringify({
+          company_id: companyUuid,
+          webhook_id: pageState.notificationWebhookUuid,
+          notification: {
+            notification_type: pageState.notificationType
+          }
+        }),
       },
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
+      notificationFormIsOpen: false,
       notifications: pageState.notifications.concat(result.result.data.attributes),
       errors: []
     });
@@ -341,54 +372,48 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       notifications: pageState.notifications.filter((item) => item.uuid !== uuid),
-      webhooks: pageState.webhooks.filter((item) => item.webhookable_uuid !== uuid),
       errors: []
     });
   };
 
-  const renderNotificationType = (title, notification_type) => (
-    <tr>
-      <td>{title}</td>
-      {NOTIFICATION_SOURCES.map((source) => {
-        const notification = pageState.notifications.find((item) => item.source === source && item.notification_type === notification_type);
-        return (
-          <td key={`${notification_type}-${source}`}>
-            <div className="flex">
-              <Checkbox
-                checked={!!notification}
-                onEnable={() => onCreateNotification(notification_type, source)}
-                onDisable={() => onRemoveNotification(notification.uuid)}
-              />
-            </div>
-          </td>
-        )
-      })}
-    </tr>
-  );
+  const renderNotificationsList = () => {
+    if (pageState.notifications.length === 0) return <p>You didn't specify any notifications yet.</p>;
 
-  const renderNotifications = () => (
-    <table className="table zebra w-full">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Custom</th>
-          <th>Slack</th>
-          <th>Discord</th>
-          <th>Telegram</th>
-        </tr>
-      </thead>
-      <tbody>
-        {renderNotificationType('Insights', 'insights_data')}
-        {renderNotificationType('Repository insights', 'repository_insights_data')}
-        {renderNotificationType('Long time review', 'long_time_review_data')}
-      </tbody>
-    </table>
-  );
+    return (
+      <table className="table zebra w-full">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Url</th>
+            <th>Type</th>
+            <th className="w-12"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {pageState.notifications.map((notification) => {
+            const webhook = pageState.webhooks.find((item) => item.uuid === notification.webhooks_uuid);
+            return (
+              <tr key={notification.uuid}>
+                <td>{webhook.source}</td>
+                <td>{webhook.url}</td>
+                <td>{NOTIFICATION_TYPES[notification.notification_type]}</td>
+                <td>
+                  <p
+                    className="btn-danger btn-xs"
+                    onClick={() => onRemoveNotification(notification.uuid)}
+                  >X</p>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+  };
 
   const renderWebhookUrlPlaceholder = () => {
-    const webhookSource = currentWebhookNotification ? currentWebhookNotification.source : pageState.webhookSource;
-    if (webhookSource === 'slack') return 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000';
-    if (webhookSource === 'discord') return 'https://discord.com/api/webhooks/000111222333444555/long-key';
+    if (pageState.webhookSource === 'slack') return 'https://hooks.slack.com/services/TTTTTTTTTTT/BBBBBBBBBBB/G00000000000000000000000';
+    if (pageState.webhookSource === 'discord') return 'https://discord.com/api/webhooks/000111222333444555/long-key';
     return '';
   };
 
@@ -588,12 +613,16 @@ export const CompanyConfiguration = ({
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h5 className="mb-4">Enabled notifications</h5>
-              {renderNotifications()}
-              <h5 className="mt-8 mb-4">Webhooks list</h5>
+              <h5 className="mb-4">Enabled notifications list</h5>
+              {renderNotificationsList()}
+              <p
+                className="btn-primary btn-small mt-4"
+                onClick={() => setPageState({ ...pageState, notificationFormIsOpen: true })}
+              >Add notification</p>
+              <h5 className="mt-12 mb-4">Webhooks list</h5>
               {renderWebhooksList()}
               <p
-                className="btn-primary btn-small mt-8"
+                className="btn-primary btn-small mt-4"
                 onClick={() => setPageState({ ...pageState, webhookFormIsOpen: true })}
               >Add webhook</p>
             </div>
@@ -640,40 +669,20 @@ export const CompanyConfiguration = ({
         <section className="inline-block w-full">
           <div className="form-field">
             <p className="flex flex-row">
-              <label className="form-label">Webhookable</label>
+              <label className="form-label">Source</label>
               <sup className="leading-4">*</sup>
             </p>
             <select
               className="form-value w-full"
-              value={currentWebhookNotification ? currentWebhookNotification.uuid : null}
-              onChange={e => setPageState({ ...pageState, webhookTargetUuid: e.target.value })}
+              value={pageState.webhookSource}
+              onChange={e => setPageState({ ...pageState, webhookSource: e.target.value })}
             >
-              <option value={null}>Company</option>
-              {pageState.notifications.filter((item) => item.enabled).map((notification) => (
-                <option value={`${notification.uuid}`}>
-                  {NOTIFICATION_TYPES[notification.notification_type]} - {notification.source}
-                </option>
-              ))}
+              <option value="custom">Custom</option>
+              <option value="slack">Slack</option>
+              <option value="discord">Discord</option>
+              <option value="telegram">Telegram</option>
             </select>
           </div>
-          {currentWebhookNotification ? null : (
-            <div className="form-field">
-              <p className="flex flex-row">
-                <label className="form-label">Source</label>
-                <sup className="leading-4">*</sup>
-              </p>
-              <select
-                className="form-value w-full"
-                value={pageState.webhookSource}
-                onChange={e => setPageState({ ...pageState, webhookSource: e.target.value })}
-              >
-                <option value="custom">Custom</option>
-                <option value="slack">Slack</option>
-                <option value="discord">Discord</option>
-                <option value="telegram">Telegram</option>
-              </select>
-            </div>
-          )}
           <div className="form-field">
             <p className="flex flex-row">
               <label className="form-label">Url</label>
@@ -745,6 +754,47 @@ export const CompanyConfiguration = ({
           ) : null}
           <p className="btn-primary mt-4" onClick={onInviteSave}>Create invite</p>
         </section>
+      </Modal>
+      <Modal
+        show={pageState.notificationFormIsOpen}
+        onClose={() => setPageState({ ...pageState, notificationFormIsOpen: false })}
+      >
+        <h1 className="mb-8">New notification</h1>
+        {pageState.webhooks.length > 0 ? (
+          <section className="inline-block w-full">
+            
+            <div className="form-field">
+              <p className="flex flex-row">
+                <label className="form-label">Type</label>
+              </p>
+              <Select
+                items={NOTIFICATION_TYPES}
+                onSelect={(value) => setPageState({ ...pageState, notificationType: value })}
+                selectedValue={pageState.notificationType}
+              />
+            </div>
+
+            <div className="form-field">
+              <p className="flex flex-row">
+                <label className="form-label">Webhook</label>
+              </p>
+              <Select
+                items={webhooksForSelect}
+                onSelect={(value) => setPageState({ ...pageState, notificationWebhookUuid: value })}
+                selectedValue={pageState.notificationWebhookUuid}
+              />
+            </div>
+
+            {pageState.errors.length > 0 ? (
+              <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
+            ) : null}
+            <p className="btn-primary mt-4" onClick={onNotificationSave}>Save notification</p>
+          </section>
+        ) : (
+          <section className="inline-block w-full">
+            <p>You need to create at least 1 webhook first.</p>
+          </section>
+        )}
       </Modal>
     </>
   );

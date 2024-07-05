@@ -5,6 +5,7 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
 
   let!(:user) { create :user }
   let!(:company) { create :company, user: user }
+  let!(:webhook) { create :webhook, company: company }
   let(:delivery_service) { double }
   let(:date) {
     value = DateTime.now
@@ -18,7 +19,7 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
     allow(delivery_service).to receive(:deliver_later)
   end
 
-  context 'without insights' do
+  context 'without notifications' do
     it 'does not calls service' do
       job_call
 
@@ -26,14 +27,19 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
     end
   end
 
-  context 'with insights' do
-    before { create :insight, insightable: company }
+  context 'with notifications' do
+    before do
+      create :notification,
+             notifyable: company,
+             webhook: webhook,
+             notification_type: Notification::REPOSITORY_INSIGHTS_DATA
+    end
 
     context 'without working time' do
       it 'calls service' do
         job_call
 
-        expect(CompanyDelivery).to have_received(:with).with(insightable: company)
+        expect(CompanyDelivery).to have_received(:with).with(company: company)
       end
     end
 
@@ -57,7 +63,7 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
         it 'calls service' do
           job_call
 
-          expect(CompanyDelivery).to have_received(:with).with(insightable: company)
+          expect(CompanyDelivery).to have_received(:with).with(company: company)
         end
       end
 

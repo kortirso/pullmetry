@@ -13,57 +13,20 @@ class CompanyDelivery < ApplicationDelivery
   private
 
   def ensure_webhook_enabled
-    return false if webhook_sources.exclude?(Webhook::CUSTOM)
-    return false if notification_sources.exclude?(Notification::CUSTOM)
-
-    true
+    sources.include?(Webhook::CUSTOM)
   end
 
   def ensure_slack_enabled
-    return false if webhook_sources.exclude?(Webhook::SLACK)
-    return false if notification_sources.exclude?(Notification::SLACK)
-
-    true
+    sources.include?(Webhook::SLACK)
   end
 
   def ensure_discord_enabled
-    return false if webhook_sources.exclude?(Webhook::DISCORD)
-    return false if notification_sources.exclude?(Notification::DISCORD)
-
-    true
+    sources.include?(Webhook::DISCORD)
   end
 
   def ensure_telegram_enabled
-    return false if webhook_sources.exclude?(Webhook::TELEGRAM)
-    return false if notification_sources.exclude?(Notification::TELEGRAM)
-
-    true
+    sources.include?(Webhook::TELEGRAM)
   end
 
-  def webhook_sources
-    @webhook_sources ||=
-      Webhook.where(webhookable: insightable)
-        .or(Webhook.where(webhookable_type: 'Notification', webhookable_id: notifications.pluck(:id)))
-        .pluck(:source)
-        .uniq
-  end
-
-  def notifications
-    @notifications ||=
-      insightable.notifications.where(notification_type: notification_type).hashable_pluck(:id, :source)
-  end
-
-  def notification_sources
-    @notification_sources ||= notifications.pluck(:source)
-  end
-
-  def notification_type
-    case notification_name
-    when :insights_report then Notification::INSIGHTS_DATA
-    when :repository_insights_report then Notification::REPOSITORY_INSIGHTS_DATA
-    when :long_time_review_report then Notification::LONG_TIME_REVIEW_DATA
-    end
-  end
-
-  def insightable = params[:insightable]
+  def sources = params[:company].notifications.joins(:webhook).pluck('webhooks.source').uniq
 end

@@ -958,10 +958,10 @@ CREATE TABLE public.notifications (
     notifyable_id bigint NOT NULL,
     notifyable_type character varying NOT NULL,
     notification_type integer NOT NULL,
-    source integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid NOT NULL
+    uuid uuid NOT NULL,
+    webhook_id bigint NOT NULL
 );
 
 
@@ -1432,8 +1432,7 @@ CREATE TABLE public.webhooks (
     url character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    webhookable_id bigint NOT NULL,
-    webhookable_type character varying NOT NULL
+    company_id bigint NOT NULL
 );
 
 
@@ -1968,20 +1967,6 @@ CREATE INDEX idx_on_inviteable_id_inviteable_type_receiver_id_700d475c99 ON publ
 
 
 --
--- Name: idx_on_notifyable_id_notifyable_type_notification_t_9be41a9006; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX idx_on_notifyable_id_notifyable_type_notification_t_9be41a9006 ON public.notifications USING btree (notifyable_id, notifyable_type, notification_type, source);
-
-
---
--- Name: idx_on_webhookable_id_webhookable_type_source_36c808bfb2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX idx_on_webhookable_id_webhookable_type_source_36c808bfb2 ON public.webhooks USING btree (webhookable_id, webhookable_type, source);
-
-
---
 -- Name: index_access_tokens_on_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2248,10 +2233,24 @@ CREATE INDEX index_kudos_users_achievements_on_kudos_achievement_id ON public.ku
 
 
 --
+-- Name: index_notifications_on_notifyable_id_and_notifyable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_notifyable_id_and_notifyable_type ON public.notifications USING btree (notifyable_id, notifyable_type);
+
+
+--
 -- Name: index_notifications_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_notifications_on_uuid ON public.notifications USING btree (uuid);
+
+
+--
+-- Name: index_notifications_on_webhook_id_and_notification_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_notifications_on_webhook_id_and_notification_type ON public.notifications USING btree (webhook_id, notification_type);
 
 
 --
@@ -2360,6 +2359,13 @@ CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id
 
 
 --
+-- Name: index_webhooks_on_company_id_and_source_and_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_webhooks_on_company_id_and_source_and_url ON public.webhooks USING btree (company_id, source, url);
+
+
+--
 -- Name: index_webhooks_on_uuid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2446,6 +2452,9 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240705181734'),
+('20240705181004'),
+('20240705100956'),
 ('20240703185841'),
 ('20240702074229'),
 ('20240701132738'),

@@ -15,9 +15,9 @@
         ignores: @ignores,
         acceptedInvites: @accepted_invites,
         invites: @invites,
-        webhooks: @webhooks.map { |notification| notification.except(:webhookable_id) },
+        webhooks: @webhooks,
         companyUuid: @company.uuid,
-        notifications: @notifications.map { |notification| notification.except(:id) }
+        notifications: @notifications
     %>
     <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
   <% end %>

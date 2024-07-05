@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :webhook do
     url { 'url' }
-    webhookable factory: %i[company]
+    company
   end
 end
