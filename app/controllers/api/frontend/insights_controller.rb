@@ -6,8 +6,33 @@ module Api
       before_action :find_insightable
 
       def index
-        render json: {
-          insights: InsightSerializer.new(
+        respond_to do |format|
+          format.json { render json: json_response, status: :ok }
+          format.pdf { send_data pdf_response, type: 'application/pdf', filename: 'insights.pdf' }
+        end
+      end
+
+      private
+
+      def json_response
+        {
+          insights: insights_json,
+          ratio_type: ratio_enabled? ? ratio_type : nil
+        }.compact
+      end
+
+      def pdf_response
+        Reports::Insights::Pdf.new(
+          page_size: Reports::Insights::Pdf::PAGE_SIZE,
+          page_layout: Reports::Insights::Pdf::PAGE_LAYOUT
+        ).to_pdf(
+          insights: insights_json,
+          insight_fields: insight_fields
+        )
+      end
+
+      def insights_json
+        InsightSerializer.new(
             actual_insights,
             {
               params: {
@@ -17,12 +42,8 @@ module Api
                 ratio_type: ratio_type
               }
             }
-          ).serializable_hash,
-          ratio_type: ratio_enabled? ? ratio_type : nil
-        }.compact, status: :ok
+          ).serializable_hash
       end
-
-      private
 
       def find_insightable
         find_company if params[:company_id]

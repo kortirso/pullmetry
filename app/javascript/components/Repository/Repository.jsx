@@ -80,12 +80,18 @@ export const Repository = ({
     if (pageState.entities.length === 0) return <p>There are no insights yet</p>;
 
     return (
-      <Insights
-        insightTypes={pageState.insightTypes}
-        entities={pageState.entities}
-        ratioType={pageState.ratioType}
-        mainAttribute={main_attribute}
-      />
+      <>
+        <Insights
+          insightTypes={pageState.insightTypes}
+          entities={pageState.entities}
+          ratioType={pageState.ratioType}
+          mainAttribute={main_attribute}
+        />
+        <a
+          className="btn-primary btn-small mt-4"
+          href={`/api/frontend/repositories/${uuid}/insights.pdf`}
+        >Download insights PDF</a>
+      </>
     );
   };
 

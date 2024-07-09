@@ -101,6 +101,10 @@ gem 'recaptcha', require: 'recaptcha/rails'
 gem 'rswag-api'
 gem 'rswag-ui'
 
+# PDF generating
+gem 'prawn'
+gem 'prawn-table'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'cypress-on-rails', '~> 1.0'
