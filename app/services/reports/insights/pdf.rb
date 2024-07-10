@@ -3,7 +3,7 @@
 module Reports
   module Insights
     class Pdf < Prawn::Document
-      PAGE_SIZE = 'A4'.freeze
+      PAGE_SIZE = 'A4'
       PAGE_LAYOUT = :landscape
 
       def to_pdf(insights:, insight_fields:)
@@ -14,18 +14,18 @@ module Reports
         data = []
         data << ['', 'Developer', *headers_data(insight_fields)]
 
-        insights[:data].each do |insight|
+        insights.each do |insight|
           data << [
-            { image: URI.open(insight.dig(:attributes, :entity, :avatar_url)), image_height: 12, image_width: 12 },
-            insight.dig(:attributes, :entity, :login),
-            *insight_data(insight.dig(:attributes, :values), insight_fields)
+            { image: URI.open(insight.dig('entity', 'avatar_url')), image_height: 12, image_width: 12 },
+            insight.dig('entity', 'login'),
+            *insight_data(insight['values'].symbolize_keys, insight_fields)
           ]
         end
 
         table(
           data,
           header: true,
-          row_colors: ['ffffff', 'f3f4f6'],
+          row_colors: %w[ffffff f3f4f6],
           cell_style: {
             border_width: 1,
             border_color: 'e5e7eb'
@@ -42,7 +42,7 @@ module Reports
       end
 
       def insight_data(values, insight_fields)
-        insight_fields.map { |insight_field| values.dig(insight_field, :value) }
+        insight_fields.map { |insight_field| values.dig(insight_field, 'value') }
       end
     end
   end

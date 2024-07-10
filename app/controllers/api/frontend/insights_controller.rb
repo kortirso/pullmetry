@@ -7,7 +7,7 @@ module Api
 
       def index
         respond_to do |format|
-          format.json { render json: json_response, status: :ok }
+          format.json { render json: Panko::Response.new(json_response), status: :ok }
           format.pdf { send_data pdf_response, type: 'application/pdf', filename: 'insights.pdf' }
         end
       end
@@ -16,9 +16,10 @@ module Api
 
       def json_response
         {
-          insights: insights_json,
+          insights: insights,
+          insight_fields: insight_fields,
           ratio_type: ratio_enabled? ? ratio_type : nil
-        }.compact
+        }
       end
 
       def pdf_response
@@ -26,23 +27,23 @@ module Api
           page_size: Reports::Insights::Pdf::PAGE_SIZE,
           page_layout: Reports::Insights::Pdf::PAGE_LAYOUT
         ).to_pdf(
-          insights: insights_json,
+          insights: JSON.parse(insights.to_json),
           insight_fields: insight_fields
         )
       end
 
-      def insights_json
-        InsightSerializer.new(
-            actual_insights,
-            {
-              params: {
-                previous_insights: previous_insights,
-                insight_fields: insight_fields,
-                ratio_enabled: ratio_enabled?,
-                ratio_type: ratio_type
-              }
-            }
-          ).serializable_hash
+      def insights
+        Panko::ArraySerializer.new(
+          actual_insights,
+          each_serializer: InsightSerializer,
+          only: %i[id values entity],
+          context: {
+            previous_insights: previous_insights,
+            insight_fields: insight_fields,
+            ratio_enabled: ratio_enabled?,
+            ratio_type: ratio_type
+          }
+        )
       end
 
       def find_insightable

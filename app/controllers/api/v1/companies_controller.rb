@@ -6,16 +6,19 @@ module Api
       SERIALIZER_FIELDS = %w[title repositories_count accessable].freeze
 
       def index
-        render json: { companies: companies }, status: :ok
+        render json: Panko::Response.new(
+          companies: Panko::ArraySerializer.new(
+            companies,
+            each_serializer: CompanySerializer,
+            **serializer_fields(CompanySerializer, SERIALIZER_FIELDS)
+          )
+        )
       end
 
       private
 
       def companies
-        CompanySerializer.new(
-          current_user.available_companies.order(id: :desc),
-          params: serializer_fields(CompanySerializer, SERIALIZER_FIELDS)
-        ).serializable_hash
+        current_user.available_companies.order(id: :desc)
       end
     end
   end

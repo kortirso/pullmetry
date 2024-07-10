@@ -7,24 +7,28 @@ module Api
         before_action :find_repository
 
         def index
-          render json: {
-            insights: InsightSerializer.new(
-              actual_insights,
-              {
-                params: {
-                  previous_insights: previous_insights,
-                  insight_fields: ::Repositories::Insight::DEFAULT_ATTRIBUTES,
-                  ratio_enabled: ratio_enabled?,
-                  ratio_type: ratio_type,
-                  no_entity: true
-                }
-              }
-            ).serializable_hash,
-            ratio_type: ratio_enabled? ? ratio_type : nil
-          }.compact, status: :ok
+          render json: Panko::Response.create { |response| json_response(response) }, status: :ok
         end
 
         private
+
+        def json_response(response)
+          {
+            insight: response.serializer(
+              actual_insight,
+              InsightSerializer,
+              only: %i[id values entity],
+              context: {
+                previous_insights: previous_insights,
+                insight_fields: ::Repositories::Insight::DEFAULT_ATTRIBUTES,
+                ratio_enabled: ratio_enabled?,
+                ratio_type: ratio_type,
+                no_entity: true
+              }
+            ),
+            ratio_type: ratio_enabled? ? ratio_type : nil
+          }
+        end
 
         def find_repository
           @repository = authorized_scope(Repository.order(id: :desc)).find_by!(uuid: params[:repository_id])
@@ -34,7 +38,7 @@ module Api
           @visible_insights ||= @repository.repository_insights.to_a
         end
 
-        def actual_insights
+        def actual_insight
           visible_insights.find(&:actual?)
         end
 

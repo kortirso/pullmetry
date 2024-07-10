@@ -17,14 +17,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: include_fields
+      - name: only_fields
         in: query
         description: List of attributes should be included in response separated by
           comma
         required: false
         schema:
           type: string
-      - name: exclude_fields
+      - name: except_fields
         in: query
         description: List of attributes should be excluded from response separated
           by comma
@@ -39,27 +39,20 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
+                  companies:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
+                        uuid:
                           type: string
-                        type:
+                        title:
                           type: string
-                        attributes:
-                          type: object
-                          properties:
-                            uuid:
-                              type: string
-                            title:
-                              type: string
-                            repositories_count:
-                              type: integer
-                              nullable: true
-                            accessable:
-                              type: boolean
+                        repositories_count:
+                          type: integer
+                          nullable: true
+                        accessable:
+                          type: boolean
         '401':
           description: Unauthorized
           content:
@@ -98,29 +91,22 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
+                  insights:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        attributes:
+                        values:
+                          type: object
+                        entity:
                           type: object
                           properties:
-                            values:
-                              type: object
-                            entity:
-                              type: object
-                              properties:
-                                login:
-                                  type: string
-                                html_url:
-                                  type: string
-                                avatar_url:
-                                  type: string
+                            login:
+                              type: string
+                            html_url:
+                              type: string
+                            avatar_url:
+                              type: string
                   ratio_type:
                     type: string
                     nullable: true
@@ -167,24 +153,17 @@ paths:
                     items:
                       type: object
                       properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        attributes:
+                        values:
+                          type: object
+                        entity:
                           type: object
                           properties:
-                            values:
-                              type: object
-                            entity:
-                              type: object
-                              properties:
-                                login:
-                                  type: string
-                                html_url:
-                                  type: string
-                                avatar_url:
-                                  type: string
+                            login:
+                              type: string
+                            html_url:
+                              type: string
+                            avatar_url:
+                              type: string
                   ratio_type:
                     type: string
                     nullable: true

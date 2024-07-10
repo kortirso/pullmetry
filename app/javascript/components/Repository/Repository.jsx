@@ -38,15 +38,12 @@ export const Repository = ({
 
     Promise.all([fetchInsights(), fetchRepositoryInsights()]).then(
       ([insightsData, repositoryInsightsData]) => {
-        const insightTypes = insightsData.data.length > 0 ? Object.keys(insightsData.data[0].values) : [];
-        const ratioType = insightsData.ratioType || null;
         setPageState({
           ...pageState,
-          entities: insightsData.data,
-          insights:
-            Object.keys(repositoryInsightsData).length === 0 ? undefined : repositoryInsightsData,
-          insightTypes: insightTypes,
-          ratioType: ratioType,
+          entities: insightsData.insights,
+          insights: repositoryInsightsData.insight.values,
+          insightTypes: insightsData.insight_fields,
+          ratioType: insightsData.ratio_type,
         });
       },
     );

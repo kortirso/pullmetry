@@ -25,9 +25,9 @@ module Helpers
 
     def change_value(insight, previous_insight, insight_field)
       method_name = ::Insight::DECIMAL_ATTRIBUTES.include?(insight_field) ? :to_f : :to_i
-      return insight[attribute].send(method_name) if previous_insight.nil?
+      return insight[insight_field].send(method_name) if previous_insight.nil?
 
-      insight[attribute].send(method_name) - previous_insight[insight_field].send(method_name)
+      insight[insight_field].send(method_name) - previous_insight[insight_field].send(method_name)
     end
   end
 end
