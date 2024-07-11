@@ -11,7 +11,7 @@ module Api
         case create_form.call(user: current_user)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
-          render json: { result: ApiAccessTokenSerializer.new(result).serializable_hash }, status: :ok
+          render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
         end
       end
 
@@ -21,6 +21,12 @@ module Api
       end
 
       private
+
+      def json_response(response, result)
+        {
+          result: response.serializer(result, ApiAccessTokenSerializer)
+        }
+      end
 
       def find_api_access_token
         @api_access_token = current_user.api_access_tokens.find_by!(uuid: params[:id])

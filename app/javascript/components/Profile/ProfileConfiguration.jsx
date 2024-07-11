@@ -23,7 +23,7 @@ export const ProfileConfiguration = ({
   const [pageState, setPageState] = useState({
     vacationFormIsOpen: false,
     inviteFormIsOpen: false,
-    vacations: vacations.data.map((item) => item.attributes),
+    vacations: vacations,
     acceptedInvites: acceptedInvites,
     invites: invites,
     apiAccessTokens: apiAccessTokens,
@@ -48,8 +48,9 @@ export const ProfileConfiguration = ({
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
+      ...pageState,
       vacationFormIsOpen: false,
-      vacations: pageState.vacations.concat(result.result.data.attributes),
+      vacations: pageState.vacations.concat(result.result),
       startTime: '',
       endTime: '',
       errors: []
@@ -114,7 +115,7 @@ export const ProfileConfiguration = ({
     else setPageState({
       ...pageState,
       inviteFormIsOpen: false,
-      invites: pageState.invites.concat(result.result.data.attributes),
+      invites: pageState.invites.concat(result.result),
       inviteEmail: '',
       errors: []
     })
@@ -193,7 +194,7 @@ export const ProfileConfiguration = ({
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else setPageState({
       ...pageState,
-      apiAccessTokens: pageState.apiAccessTokens.concat(result.result.data.attributes),
+      apiAccessTokens: pageState.apiAccessTokens.concat(result.result),
       errors: []
     })
   };

@@ -24,7 +24,7 @@ describe Api::V1::InsightsController do
           it 'returns data', :aggregate_failures do
             get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
 
-            response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+            response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
             expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
@@ -40,7 +40,7 @@ describe Api::V1::InsightsController do
             it 'returns data', :aggregate_failures do
               get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
 
-              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+              response_values = response.parsed_body.dig('insights', 0, 'values')
 
               expect(response).to have_http_status :ok
               expect(response_values.keys).to contain_exactly('comments_count', 'reviews_count')
@@ -57,7 +57,7 @@ describe Api::V1::InsightsController do
             it 'returns data', :aggregate_failures do
               get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
 
-              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+              response_values = response.parsed_body.dig('insights', 0, 'values')
 
               expect(response).to have_http_status :ok
               expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
@@ -78,7 +78,7 @@ describe Api::V1::InsightsController do
           it 'returns data', :aggregate_failures do
             get :index, params: { repository_id: repository.uuid, api_access_token: api_access_token.value }
 
-            response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+            response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
             expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)

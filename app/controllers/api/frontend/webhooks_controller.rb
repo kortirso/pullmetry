@@ -13,7 +13,7 @@ module Api
         case create_form.call(company: @company, params: webhook_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
-          render json: { result: WebhookSerializer.new(result).serializable_hash }, status: :ok
+          render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
         end
       end
 
@@ -24,6 +24,12 @@ module Api
       end
 
       private
+
+      def json_response(response, result)
+        {
+          result: response.serializer(result, WebhookSerializer)
+        }
+      end
 
       def find_company
         @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])

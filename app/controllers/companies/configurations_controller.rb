@@ -56,10 +56,15 @@ module Companies
 
     def find_excludes_groups
       @excludes_groups =
-        Excludes::GroupSerializer.new(
-          @company.excludes_groups.order(id: :desc),
-          params: { rules: excludes_rules }
-        ).serializable_hash
+        JSON.parse(
+          Panko::ArraySerializer.new(
+            @company.excludes_groups.order(id: :desc),
+            each_serializer: Excludes::GroupSerializer,
+            context: {
+              rules: excludes_rules
+            }
+          ).to_json
+        )
     end
 
     def excludes_rules

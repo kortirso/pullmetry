@@ -38,22 +38,15 @@ describe 'api/v1/repositories' do
             items: {
               type: :object,
               properties: {
-                id: { type: :string },
-                type: { type: :string },
-                attributes: {
+                values: {
+                  type: :object
+                },
+                entity: {
                   type: :object,
                   properties: {
-                    values: {
-                      type: :object
-                    },
-                    entity: {
-                      type: :object,
-                      properties: {
-                        login: { type: :string },
-                        html_url: { type: :string },
-                        avatar_url: { type: :string }
-                      }
-                    }
+                    login: { type: :string },
+                    html_url: { type: :string },
+                    avatar_url: { type: :string }
                   }
                 }
               }

@@ -38,15 +38,12 @@ export const Repository = ({
 
     Promise.all([fetchInsights(), fetchRepositoryInsights()]).then(
       ([insightsData, repositoryInsightsData]) => {
-        const insightTypes = insightsData.data.length > 0 ? Object.keys(insightsData.data[0].values) : [];
-        const ratioType = insightsData.ratioType || null;
         setPageState({
           ...pageState,
-          entities: insightsData.data,
-          insights:
-            Object.keys(repositoryInsightsData).length === 0 ? undefined : repositoryInsightsData,
-          insightTypes: insightTypes,
-          ratioType: ratioType,
+          entities: insightsData.insights,
+          insights: repositoryInsightsData.insight.values,
+          insightTypes: insightsData.insight_fields,
+          ratioType: insightsData.ratio_type,
         });
       },
     );
@@ -80,12 +77,18 @@ export const Repository = ({
     if (pageState.entities.length === 0) return <p>There are no insights yet</p>;
 
     return (
-      <Insights
-        insightTypes={pageState.insightTypes}
-        entities={pageState.entities}
-        ratioType={pageState.ratioType}
-        mainAttribute={main_attribute}
-      />
+      <>
+        <Insights
+          insightTypes={pageState.insightTypes}
+          entities={pageState.entities}
+          ratioType={pageState.ratioType}
+          mainAttribute={main_attribute}
+        />
+        <a
+          className="btn-primary btn-small mt-4"
+          href={`/api/frontend/repositories/${uuid}/insights.pdf`}
+        >Download insights PDF</a>
+      </>
     );
   };
 

@@ -30,13 +30,11 @@ export const Company = ({
     const fetchInsights = async () => await insightsRequest(uuid);
 
     Promise.all([fetchInsights()]).then(([insightsData]) => {
-      const insightTypes = insightsData.data.length > 0 ? Object.keys(insightsData.data[0].values) : [];
-      const ratioType = insightsData.ratioType || null;
       setPageState({
         ...pageState,
-        entities: insightsData.data,
-        insightTypes: insightTypes,
-        ratioType: ratioType,
+        entities: insightsData.insights,
+        insightTypes: insightsData.insight_fields,
+        ratioType: insightsData.ratio_type,
       });
     });
   }, [pageState, uuid]);
@@ -56,12 +54,18 @@ export const Company = ({
     if (pageState.insightTypes.length === 0) return <p>There are no selected insight attributes yet</p>;
 
     return (
-      <Insights
-        insightTypes={pageState.insightTypes}
-        entities={pageState.entities}
-        ratioType={pageState.ratioType}
-        mainAttribute={main_attribute}
-      />
+      <>
+        <Insights
+          insightTypes={pageState.insightTypes}
+          entities={pageState.entities}
+          ratioType={pageState.ratioType}
+          mainAttribute={main_attribute}
+        />
+        <a
+          className="btn-primary btn-small mt-4"
+          href={`/api/frontend/companies/${uuid}/insights.pdf`}
+        >Download insights PDF</a>
+      </>
     );
   };
 

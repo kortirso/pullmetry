@@ -89,7 +89,8 @@ gem 'commento'
 gem 'emailbutler'
 
 # api serializer
-gem 'jsonapi-serializer', '2.2.0'
+gem 'oj'
+gem 'panko_serializer'
 
 # notification layer
 gem 'active_delivery'
@@ -100,6 +101,10 @@ gem 'recaptcha', require: 'recaptcha/rails'
 # API documentation
 gem 'rswag-api'
 gem 'rswag-ui'
+
+# PDF generating
+gem 'prawn'
+gem 'prawn-table'
 
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'

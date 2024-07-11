@@ -14,12 +14,12 @@ describe 'api/v1/companies' do
       consumes 'application/json'
 
       parameter name: :api_access_token, in: :query, type: :string, description: 'API access token', required: true
-      parameter name: :include_fields,
+      parameter name: :only_fields,
                 in: :query,
                 type: :string,
                 description: 'List of attributes should be included in response separated by comma',
                 required: false
-      parameter name: :exclude_fields,
+      parameter name: :except_fields,
                 in: :query,
                 type: :string,
                 description: 'List of attributes should be excluded from response separated by comma',
@@ -37,22 +37,15 @@ describe 'api/v1/companies' do
         end
 
         schema type: :object, properties: {
-          data: {
+          companies: {
             type: :array,
             items: {
               type: :object,
               properties: {
-                id: { type: :string },
-                type: { type: :string },
-                attributes: {
-                  type: :object,
-                  properties: {
-                    uuid: { type: :string },
-                    title: { type: :string },
-                    repositories_count: { type: :integer, nullable: true },
-                    accessable: { type: :boolean }
-                  }
-                }
+                uuid: { type: :string },
+                title: { type: :string },
+                repositories_count: { type: :integer, nullable: true },
+                accessable: { type: :boolean }
               }
             }
           }
@@ -112,27 +105,20 @@ describe 'api/v1/companies' do
         end
 
         schema type: :object, properties: {
-          data: {
+          insights: {
             type: :array,
             items: {
               type: :object,
               properties: {
-                id: { type: :string },
-                type: { type: :string },
-                attributes: {
+                values: {
+                  type: :object
+                },
+                entity: {
                   type: :object,
                   properties: {
-                    values: {
-                      type: :object
-                    },
-                    entity: {
-                      type: :object,
-                      properties: {
-                        login: { type: :string },
-                        html_url: { type: :string },
-                        avatar_url: { type: :string }
-                      }
-                    }
+                    login: { type: :string },
+                    html_url: { type: :string },
+                    avatar_url: { type: :string }
                   }
                 }
               }

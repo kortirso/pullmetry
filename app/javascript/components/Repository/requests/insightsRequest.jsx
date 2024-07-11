@@ -4,8 +4,5 @@ export const insightsRequest = async (repositoryUuid) => {
   const result = await apiRequest({
     url: `/api/frontend/repositories/${repositoryUuid}/insights.json`,
   });
-  return {
-    data: result.insights.data.map((element) => element.attributes),
-    ratioType: result.insights.ratio_type
-  };
+  return result;
 };

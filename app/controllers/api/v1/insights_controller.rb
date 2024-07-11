@@ -6,23 +6,27 @@ module Api
       before_action :find_insightable
 
       def index
-        render json: {
-          insights: InsightSerializer.new(
-            actual_insights,
-            {
-              params: {
-                previous_insights: previous_insights,
-                insight_fields: insight_fields,
-                ratio_enabled: ratio_enabled?,
-                ratio_type: ratio_type
-              }
-            }
-          ).serializable_hash,
-          ratio_type: ratio_enabled? ? ratio_type : nil
-        }.compact, status: :ok
+        render json: Panko::Response.new(json_response), status: :ok
       end
 
       private
+
+      def json_response
+        {
+          insights: Panko::ArraySerializer.new(
+            actual_insights,
+            each_serializer: InsightSerializer,
+            only: %i[id values entity],
+            context: {
+              previous_insights: previous_insights,
+              insight_fields: insight_fields,
+              ratio_enabled: ratio_enabled?,
+              ratio_type: ratio_type
+            }
+          ),
+          ratio_type: ratio_enabled? ? ratio_type : nil
+        }
+      end
 
       def find_insightable
         find_company if params[:company_id]

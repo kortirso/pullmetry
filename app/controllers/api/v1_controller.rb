@@ -17,21 +17,21 @@ module Api
       Current.user ||= api_access_token.user
     end
 
-    def serializer_fields(serializer_class, default_include_fields=[], forbidden_fields=[])
-      @serializer_attributes = serializer_class.attributes_to_serialize.keys.map(&:to_s)
-      return {} if response_include_fields.any? && response_exclude_fields.any?
-      return { include_fields: response_include_fields - forbidden_fields } if response_include_fields.any?
-      return { exclude_fields: response_exclude_fields + forbidden_fields } if response_exclude_fields.any?
+    def serializer_fields(serializer_class, default_only_fields=[], forbidden_fields=[])
+      @serializer_attributes = serializer_class::ATTRIBUTES
+      return {} if only_fields.any? && except_fields.any?
+      return { only: (only_fields - forbidden_fields) } if only_fields.any?
+      return { except: (except_fields + forbidden_fields) } if except_fields.any?
 
-      { include_fields: default_include_fields }
+      { only: default_only_fields }
     end
 
-    def response_include_fields
-      @response_include_fields ||= params[:response_include_fields]&.split(',').to_a & @serializer_attributes
+    def only_fields
+      @only_fields ||= params[:only_fields]&.split(',').to_a.map(&:to_sym) & @serializer_attributes
     end
 
-    def response_exclude_fields
-      @response_exclude_fields ||= params[:response_exclude_fields]&.split(',').to_a & @serializer_attributes
+    def except_fields
+      @except_fields ||= params[:except_fields]&.split(',').to_a.map(&:to_sym) & @serializer_attributes
     end
 
     def authentication_error

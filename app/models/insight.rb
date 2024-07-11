@@ -10,6 +10,8 @@ class Insight < ApplicationRecord
     average_review_seconds average_merge_seconds average_open_pr_comments bad_reviews_count
   ].freeze
   DECIMAL_ATTRIBUTES = %i[average_open_pr_comments].freeze
+  TIME_ATTRIBUTES = %i[average_review_seconds average_merge_seconds].freeze
+  PERCENTILE_ATTRIBUTES = %i[review_involving].freeze
 
   SHORT_ATTRIBUTE_NAMES = {
     required_reviews_count: 'Required reviews',

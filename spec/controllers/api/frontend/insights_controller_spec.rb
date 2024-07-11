@@ -19,9 +19,9 @@ describe Api::Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { company_id: company.uuid, auth_token: access_token }
+            get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
 
-            response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+            response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
             expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
@@ -35,9 +35,9 @@ describe Api::Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, auth_token: access_token }
+              get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
 
-              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+              response_values = response.parsed_body.dig('insights', 0, 'values')
 
               expect(response).to have_http_status :ok
               expect(response_values.keys).to contain_exactly('comments_count', 'reviews_count')
@@ -52,9 +52,9 @@ describe Api::Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, auth_token: access_token }
+              get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
 
-              response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+              response_values = response.parsed_body.dig('insights', 0, 'values')
 
               expect(response).to have_http_status :ok
               expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
@@ -73,9 +73,9 @@ describe Api::Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { repository_id: repository.uuid, auth_token: access_token }
+            get :index, params: { repository_id: repository.uuid, auth_token: access_token, format: :json }
 
-            response_values = response.parsed_body.dig('insights', 'data', 0, 'attributes', 'values')
+            response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
             expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)

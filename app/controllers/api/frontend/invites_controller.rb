@@ -12,7 +12,8 @@ module Api
         # commento: invites.email, invites.access
         case create_form.call(inviteable: @inviteable, params: invite_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
-        in { result: result } then render json: { result: InviteSerializer.new(result).serializable_hash }, status: :ok
+        in { result: result }
+          render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
         end
       end
 
@@ -23,6 +24,12 @@ module Api
       end
 
       private
+
+      def json_response(response, result)
+        {
+          result: response.serializer(result, InviteSerializer)
+        }
+      end
 
       def find_inviteable
         @inviteable = params[:company_id] ? find_company : find_user
