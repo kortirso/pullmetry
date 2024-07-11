@@ -12,7 +12,7 @@ module Api
         case create_form.call(user: current_user, params: vacation_params)
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
-          render json: { result: VacationSerializer.new(result).serializable_hash }, status: :ok
+          render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
         end
       end
 
@@ -22,6 +22,12 @@ module Api
       end
 
       private
+
+      def json_response(response, result)
+        {
+          result: response.serializer(result, VacationSerializer)
+        }
+      end
 
       def find_vacation
         @vacation = current_user.vacations.find(params[:id])

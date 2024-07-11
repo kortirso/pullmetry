@@ -67,7 +67,7 @@ export const CompanyConfiguration = ({
     inviteAccess: 'read',
     errors: [],
     notifications: notifications,
-    excludeGroups: excludeGroups.data,
+    excludeGroups: excludeGroups,
     excludeRules: []
   });
 
@@ -94,7 +94,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       ingoreFormIsOpen: false,
-      ignores: pageState.ignores.concat(result.result.data.attributes),
+      ignores: pageState.ignores.concat(result.result),
       entityValue: '',
       errors: []
     })
@@ -159,7 +159,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       inviteFormIsOpen: false,
-      invites: pageState.invites.concat(result.result.data.attributes),
+      invites: pageState.invites.concat(result.result),
       inviteEmail: '',
       errors: []
     })
@@ -264,7 +264,7 @@ export const CompanyConfiguration = ({
     });
     if (result.errors) setPageState({ ...pageState, errors: result.errors })
     else {
-      const webhooks = pageState.webhooks.concat(result.result.data.attributes);
+      const webhooks = pageState.webhooks.concat(result.result);
       const notificationWebhookUuid = webhooks.length === 1 ? webhooks[0].uuid : pageState.notificationWebhookUuid;
       setPageState({
         ...pageState,
@@ -352,7 +352,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       notificationFormIsOpen: false,
-      notifications: pageState.notifications.concat(result.result.data.attributes),
+      notifications: pageState.notifications.concat(result.result),
       errors: []
     });
   };
@@ -433,7 +433,7 @@ export const CompanyConfiguration = ({
     else setPageState({
       ...pageState,
       excludeFormIsOpen: false,
-      excludeGroups: pageState.excludeGroups.concat(result.result.data),
+      excludeGroups: pageState.excludeGroups.concat(result.result),
       excludeRules: [],
       errors: []
     })
@@ -495,7 +495,7 @@ export const CompanyConfiguration = ({
         {pageState.excludeGroups.map((group) => (
           <div className="zebra-list-element" key={group.id}>
             <div className="flex flex-col">
-              {group.attributes.excludes_rules.map((excludeRule) => (
+              {group.excludes_rules.map((excludeRule) => (
                 <p key={excludeRule.uuid}>
                   {EXCLUDE_RULES_TARGETS[excludeRule.target]} {excludeRule.condition.split('_').join(' ')} {excludeRule.value}
                 </p>

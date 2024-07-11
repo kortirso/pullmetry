@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InsightSerializer < PankoApplicationSerializer
+class InsightSerializer < ApplicationSerializer
   include Helpers::Insight
 
   attributes :id, :values, :entity

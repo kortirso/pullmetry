@@ -89,7 +89,6 @@ gem 'commento'
 gem 'emailbutler'
 
 # api serializer
-gem 'jsonapi-serializer', '2.2.0'
 gem 'oj'
 gem 'panko_serializer'
 

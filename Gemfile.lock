@@ -226,8 +226,6 @@ GEM
     json_spec (1.1.5)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
-    jsonapi-serializer (2.2.0)
-      activesupport (>= 4.2)
     jwt (2.8.2)
       base64
     kudos (0.1.3)
@@ -528,7 +526,6 @@ DEPENDENCIES
   foreman
   jsbundling-rails (~> 1.0)
   json_spec (= 1.1.5)
-  jsonapi-serializer (= 2.2.0)
   jwt (~> 2.5)
   kudos
   letter_opener

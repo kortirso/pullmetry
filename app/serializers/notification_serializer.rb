@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class NotificationSerializer < ApplicationSerializer
-  attributes :uuid, :notification_type
+  attributes :uuid, :notification_type, :webhooks_uuid
 
-  attribute :webhooks_uuid do |object|
+  def webhooks_uuid
     object.webhook.uuid
   end
 end

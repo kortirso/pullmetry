@@ -20,7 +20,7 @@ describe Api::Frontend::Repositories::RepositoryInsightsController do
         it 'returns data', :aggregate_failures do
           get :index, params: { repository_id: repository.uuid, auth_token: access_token }
 
-          response_values = response.parsed_body.dig('insights', 'data', 'attributes', 'values')
+          response_values = response.parsed_body.dig('insight', 'values')
 
           expect(response).to have_http_status :ok
           expect(response_values.keys).to eq Repositories::Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
