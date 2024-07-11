@@ -11,25 +11,14 @@ module Reports
         move_down(18)
 
         font 'Courier', size: 8
-        data = []
-        data << ['', 'Developer', *headers_data(insight_fields)]
-
-        insights.each do |insight|
-          data << [
-            { image: URI.open(insight.dig('entity', 'avatar_url')), image_height: 12, image_width: 12 },
-            insight.dig('entity', 'login'),
-            *insight_data(insight['values'].symbolize_keys, insight_fields)
-          ]
-        end
+        headers_data = ['', 'Developer', *render_headers_data(insight_fields)]
+        insights.map! { |insight| render_insight(insight, insight_fields) }
 
         table(
-          data,
-          header: true,
-          row_colors: %w[ffffff f3f4f6],
-          cell_style: {
-            border_width: 1,
-            border_color: 'e5e7eb'
-          }
+          [
+            headers_data + insights
+          ],
+          **table_options
         )
 
         render
@@ -37,12 +26,33 @@ module Reports
 
       private
 
-      def headers_data(insight_fields)
+      def render_headers_data(insight_fields)
         insight_fields.map { |insight_field| Insight::SHORT_ATTRIBUTE_NAMES[insight_field] }
       end
 
-      def insight_data(values, insight_fields)
+      def render_insight(insight, insight_fields)
+        [
+          {
+            image: URI.parse(insight.dig('entity', 'avatar_url')).open, image_height: 12, image_width: 12
+          },
+          insight.dig('entity', 'login'),
+          *render_insight_values(insight['values'].symbolize_keys, insight_fields)
+        ]
+      end
+
+      def render_insight_values(values, insight_fields)
         insight_fields.map { |insight_field| values.dig(insight_field, 'value') }
+      end
+
+      def table_options
+        {
+          header: true,
+          row_colors: %w[ffffff f3f4f6],
+          cell_style: {
+            border_width: 1,
+            border_color: 'e5e7eb'
+          }
+        }
       end
     end
   end

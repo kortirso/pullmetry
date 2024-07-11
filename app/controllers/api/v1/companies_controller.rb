@@ -3,7 +3,7 @@
 module Api
   module V1
     class CompaniesController < Api::V1Controller
-      SERIALIZER_FIELDS = %w[title repositories_count accessable].freeze
+      SERIALIZER_FIELDS = %i[title repositories_count accessable].freeze
 
       def index
         render json: Panko::Response.new(

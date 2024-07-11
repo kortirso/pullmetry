@@ -16,7 +16,7 @@ describe Api::V1::CompaniesController do
 
       it 'returns companies data', :aggregate_failures do
         get :index, params: {
-          api_access_token: api_access_token.value, response_only_fields: 'uuid,title'
+          api_access_token: api_access_token.value, only_fields: 'uuid,title'
         }
 
         expect(response).to have_http_status :ok
