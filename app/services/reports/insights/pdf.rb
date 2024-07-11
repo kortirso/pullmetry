@@ -11,12 +11,13 @@ module Reports
         move_down(18)
 
         font 'Courier', size: 8
-        headers_data = ['', 'Developer', *render_headers_data(insight_fields)]
+        headers_data = ['Developer', *render_headers_data(insight_fields)]
         insights.map! { |insight| render_insight(insight, insight_fields) }
 
         table(
           [
-            headers_data + insights
+            headers_data,
+            *insights
           ],
           **table_options
         )
@@ -32,16 +33,19 @@ module Reports
 
       def render_insight(insight, insight_fields)
         [
-          {
-            image: URI.parse(insight.dig('entity', 'avatar_url')).open, image_height: 12, image_width: 12
-          },
           insight.dig('entity', 'login'),
           *render_insight_values(insight['values'].symbolize_keys, insight_fields)
         ]
       end
 
       def render_insight_values(values, insight_fields)
-        insight_fields.map { |insight_field| values.dig(insight_field, 'value') }
+        insight_fields.map do |insight_field|
+          value = values.dig(insight_field, 'value')
+          next "#{value}%" if Insight::PERCENTILE_ATTRIBUTES.include?(insight_field)
+          next time_representer.call(value: value.to_i) if Insight::TIME_ATTRIBUTES.include?(insight_field)
+
+          value
+        end
       end
 
       def table_options
@@ -54,6 +58,8 @@ module Reports
           }
         }
       end
+
+      def time_representer = ::Pullmetry::Container['services.converters.seconds_to_text']
     end
   end
 end

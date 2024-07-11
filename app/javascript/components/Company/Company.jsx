@@ -54,12 +54,18 @@ export const Company = ({
     if (pageState.insightTypes.length === 0) return <p>There are no selected insight attributes yet</p>;
 
     return (
-      <Insights
-        insightTypes={pageState.insightTypes}
-        entities={pageState.entities}
-        ratioType={pageState.ratioType}
-        mainAttribute={main_attribute}
-      />
+      <>
+        <Insights
+          insightTypes={pageState.insightTypes}
+          entities={pageState.entities}
+          ratioType={pageState.ratioType}
+          mainAttribute={main_attribute}
+        />
+        <a
+          className="btn-primary btn-small mt-4"
+          href={`/api/frontend/companies/${uuid}/insights.pdf`}
+        >Download insights PDF</a>
+      </>
     );
   };
 
