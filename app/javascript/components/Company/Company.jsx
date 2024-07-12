@@ -117,7 +117,7 @@ export const Company = ({
               <a
                 href={edit_links.access_token}
                 onClick={(event) => event.stopPropagation()}
-                className={`mr-2 ${edit_links.need_access_token ? 'p-0.5 bg-orange-300 rounded-lg text-white' : ''}`}
+                className={`mr-2 ${edit_links.need_access_token ? 'p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white' : ''}`}
               >
                 <Key />
               </a>

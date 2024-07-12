@@ -157,7 +157,7 @@ export const Repository = ({
               <a
                 href={edit_links.access_token}
                 onClick={(event) => event.stopPropagation()}
-                className={`mr-2 ${access_token_status === 'empty' && edit_links ? 'p-0.5 bg-orange-300 rounded-lg text-white' : ''}`}
+                className={`mr-2 ${access_token_status === 'empty' && edit_links ? 'p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white' : ''}`}
               >
                 <Key />
               </a>
