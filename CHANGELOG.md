@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Modified
 - Notification and Webhook models
 - edit form of notifications and webhooks
+- highlight access token button
+- frontend folders structure
 
 ## [1.8.0] - 2024-07-04
 ### Added

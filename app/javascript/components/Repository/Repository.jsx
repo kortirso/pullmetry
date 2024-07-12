@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 
+import { Insights, RepositoryInsights } from '../../components';
 import { convertDate, convertTime } from '../../helpers';
-import { Insights, RepositoryInsights } from '../../atoms';
-import { Chevron, Delete, Github, Gitlab, Key } from '../../svg';
+import { Chevron, Delete, Github, Gitlab, Key } from '../../assets';
 
 import { insightsRequest } from './requests/insightsRequest';
 import { repositoryInsightsRequest } from './requests/repositoryInsightsRequest';
@@ -118,22 +118,13 @@ export const Repository = ({
             </div>
             {access_token_status === 'valid' && !accessable ? (
               <span className="badge mt-4 sm:mt-0 sm:ml-4">
-                Access token does not include this repository or expired, refresh it
+                Access token's update is required
               </span>
             ) : null}
             {access_token_status === 'invalid' ? (
               <span className="badge mt-4 sm:mt-0 sm:ml-4">
-                Access token is invalid, refresh it
+                Access token's update is required
               </span>
-            ) : null}
-            {access_token_status === 'empty' && edit_links ? (
-              <a
-                href={edit_links.access_token}
-                className="badge mt-4 sm:mt-0 sm:ml-4"
-                onClick={(event) => event.stopPropagation()}
-              >
-                Need to add access token
-              </a>
             ) : null}
           </h2>
           <p className="flex items center">
@@ -153,11 +144,20 @@ export const Repository = ({
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (
           <div className="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
+            {access_token_status === 'empty' && edit_links ? (
+              <a
+                href={edit_links.access_token}
+                className="badge mt-4 sm:mt-0 sm:mr-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to add access token
+              </a>
+            ) : null}
             {edit_links.access_token ? (
               <a
                 href={edit_links.access_token}
                 onClick={(event) => event.stopPropagation()}
-                className="mr-2"
+                className={`mr-2 ${access_token_status === 'empty' && edit_links ? 'p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white' : ''}`}
               >
                 <Key />
               </a>

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dropdown } from '../../components';
-import { Select } from '../Company/Select';
-
-import { Modal } from '../../atoms';
+import { Dropdown, Modal, Select } from '../../atoms';
 import { apiRequest, csrfToken, convertDate } from '../../helpers';
 
 const INVITE_ACCESS_TARGETS = {
