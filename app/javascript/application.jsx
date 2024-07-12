@@ -9,10 +9,11 @@ import {
   FeedbackForm,
   Repository,
   RepositoryForm,
-  Dropdown,
-  Flash,
   ProfileConfiguration,
 } from './components';
+import {
+  Flash,
+} from './atoms';
 
 const components = {
   Company,
@@ -21,7 +22,6 @@ const components = {
   FeedbackForm,
   Repository,
   RepositoryForm,
-  Dropdown,
   Flash,
   ProfileConfiguration,
 };

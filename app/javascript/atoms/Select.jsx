@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Chevron } from '../../svg';
+import { Chevron } from '../assets';
 
 export const Select = ({ items, onSelect, selectedValue }) => {
   const [isOpen, setIsOpen] = useState(false);

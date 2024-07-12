@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import { Insights } from '../../atoms';
-import { Chevron, Delete, Edit, Key } from '../../svg';
+import { Insights } from '../../components';
+import { Chevron, Delete, Edit, Key } from '../../assets';
 
 import { insightsRequest } from './requests/insightsRequest';
 
@@ -78,19 +78,15 @@ export const Company = ({
         <div className="pr-4">
           <h2 className="sm:flex sm:flex-row sm:items-center">
             <div>{title}</div>
+            {is_private ? (
+              <span className="badge ml-4">
+                Private
+              </span>
+            ) : null}
             {unaccessable ? (
               <span className="badge mt-4 sm:mt-0 sm:ml-4">
                 Company has repositories with access error
               </span>
-            ) : null}
-            {repositories_count === 0 ? (
-              <a
-                href={repositories_url}
-                className="badge mt-4 sm:mt-0 sm:ml-4"
-                onClick={(event) => event.stopPropagation()}
-              >
-                Need to create repository
-              </a>
             ) : null}
           </h2>
           <span onClick={(event) => event.stopPropagation()}>
@@ -98,21 +94,30 @@ export const Company = ({
             <a href={repositories_url} className="underline text-orange-500">
               {repositories_count}
             </a>
+            {repositories_count === 0 ? (
+              <a
+                href={repositories_url}
+                className="badge sm:ml-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to create repository
+              </a>
+            ) : null}
           </span>
         </div>
         <Chevron rotated={pageState.expanded} />
         {edit_links ? (
           <div className="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
-            {is_private ? (
+            {edit_links.need_access_token ? (
               <span className="badge mr-4">
-                Private
+                Need to add access token
               </span>
             ) : null}
             {edit_links.access_token ? (
               <a
                 href={edit_links.access_token}
                 onClick={(event) => event.stopPropagation()}
-                className="mr-2"
+                className={`mr-2 ${edit_links.need_access_token ? 'p-0.5 bg-orange-300 rounded-lg text-white' : ''}`}
               >
                 <Key />
               </a>

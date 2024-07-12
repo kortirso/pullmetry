@@ -1,9 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { Dropdown } from '../../components';
-import { Select } from './Select';
-
-import { Modal } from '../../atoms';
+import { Dropdown, Modal, Select } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
 const NOTIFICATION_TYPES = {

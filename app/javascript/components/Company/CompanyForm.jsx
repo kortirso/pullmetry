@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import { Select } from './Select';
-
-import { Modal } from '../../atoms';
+import { Modal, Select } from '../../atoms';
 import { apiRequest, csrfToken } from '../../helpers';
 
 export const CompanyForm = ({

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { Arrow } from '../../svg';
+import { Arrow } from '../../assets';
 
 const SHORT_INSIGHT_NAMES = {
   required_reviews_count: 'Req reviews',

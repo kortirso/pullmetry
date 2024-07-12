@@ -29,4 +29,11 @@ class Company < ApplicationRecord
         .pluck('identities.user_id')
     end
   end
+
+  def all_access_tokens
+    AccessToken.where(tokenable_id: id, tokenable_type: 'Company')
+      .or(
+        AccessToken.where(tokenable_id: repositories.select(:id), tokenable_type: 'Repository')
+      )
+  end
 end

@@ -26,6 +26,7 @@
           is_private: !!company.configuration.private,
           main_attribute: company.configuration.main_attribute,
           edit_links: allowed_to?(:update?, company) ? {
+            need_access_token: !company.all_access_tokens.exists?,
             access_token: new_company_access_token_path(company.uuid),
             configuration: edit_company_configuration_path(company.uuid),
             destroy: company_path(company.uuid)
