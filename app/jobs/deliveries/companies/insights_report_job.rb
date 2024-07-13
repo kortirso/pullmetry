@@ -10,6 +10,7 @@ module Deliveries
       def perform(delivery_service: CompanyDelivery)
         Company
           .joins(:notifications)
+          .distinct
           .find_each do |company|
             next unless working_time?(company)
 
