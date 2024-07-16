@@ -7,6 +7,7 @@ ruby '3.2.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rack', '~> 3.0'
+gem 'rack-brotli'
 gem 'rack-session', '~> 2.0'
 gem 'rackup', '~> 2.1'
 gem 'rails', '~> 7.1'

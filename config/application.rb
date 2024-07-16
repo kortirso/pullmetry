@@ -27,6 +27,10 @@ module Pullmetry
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    config.middleware.use Rack::Deflater
+    # Rack::Brotli goes directly under Rack::Deflater, if Rack::Deflater is present
+    config.middleware.use Rack::Brotli
+
     I18n.available_locales = %i[en]
     config.i18n.default_locale = :en
 
