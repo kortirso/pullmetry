@@ -77,6 +77,25 @@ module Insights
         end
       end
 
+      def time_since_last_open_pull_seconds(date_from=@fetch_period, date_to=0)
+        @time_since_last_open_pull_seconds ||= {}
+
+        @time_since_last_open_pull_seconds.fetch("#{date_from},#{date_to}") do |key|
+          @time_since_last_open_pull_seconds[key] =
+            insights_data(date_to)
+              .each_with_object({}) do |element, acc|
+                entity_id = element[:entity_id]
+                time_since_last_open_pull_seconds = element[:time_since_last_open_pull_seconds]
+
+                next if time_since_last_open_pull_seconds.nil?
+                next acc[entity_id] = time_since_last_open_pull_seconds unless acc[entity_id]
+                next if time_since_last_open_pull_seconds >= acc[entity_id]
+
+                acc[entity_id] = time_since_last_open_pull_seconds
+              end
+        end
+      end
+
       def sum_insights_attribute(date_to, attribute_name)
         insights_data(date_to)
           .each_with_object({}) do |element, acc|
@@ -92,8 +111,7 @@ module Insights
 
         @insights_data.fetch(date_to) do |key|
           @insights_data[key] = begin
-            relation = Insight
-            relation = date_to.zero? ? relation.actual : relation.previous
+            relation = date_to.zero? ? Insight.actual : Insight.previous
             relation
               .where(insightable: @insightable.repositories)
               .hashable_pluck(
@@ -105,7 +123,8 @@ module Insights
                 :required_reviews_count,
                 :open_pull_requests_count,
                 :changed_loc,
-                :reviewed_loc
+                :reviewed_loc,
+                :time_since_last_open_pull_seconds
               )
           end
         end

@@ -781,7 +781,8 @@ CREATE TABLE public.insights (
     average_changed_loc integer,
     hidden boolean DEFAULT false NOT NULL,
     bad_reviews_count integer DEFAULT 0 NOT NULL,
-    conventional_comments_count integer DEFAULT 0
+    conventional_comments_count integer DEFAULT 0,
+    time_since_last_open_pull_seconds integer DEFAULT 0
 );
 
 
@@ -790,6 +791,13 @@ CREATE TABLE public.insights (
 --
 
 COMMENT ON COLUMN public.insights.hidden IS 'Flag for hiding insights, if true - available only for owner';
+
+
+--
+-- Name: COLUMN insights.time_since_last_open_pull_seconds; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.insights.time_since_last_open_pull_seconds IS 'Time since last open pull request';
 
 
 --
@@ -2459,6 +2467,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240718070046'),
 ('20240705181734'),
 ('20240705181004'),
 ('20240705100956'),

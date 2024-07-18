@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module Insights
-  module AverageTime
-    class ForReviewService < BasisService
+  module Time
+    class ForReview < BasisService
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
-        @insightable = insightable
-        @with_vacations = with_vacations
-        @result = {}
+        super(insightable: insightable, with_vacations: with_vacations)
 
         PullRequests::Review
           .approved
@@ -23,12 +21,12 @@ module Insights
 
       def handle_review(review)
         entity_id = review.entity_id
-        update_result_with_total_review_time(
+        update_result_with_value(
           entity_id,
-          calculate_merge_seconds(
-            review.pull_request,
+          calculate_seconds(
             review.pull_request.pull_created_at,
             review.review_created_at,
+            review.pull_request.entity.identity&.user,
             @with_vacations ? review.entity.identity&.user&.vacations : nil
           )
         )

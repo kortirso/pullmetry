@@ -121,7 +121,7 @@ module Insights
         @repository_average_comment_time.fetch("#{date_from},#{date_to}") do |key|
           @repository_average_comment_time[key] = begin
             values =
-              @average_comment_time_service
+              @comment_time_service
                 .call(
                   insightable: @insightable,
                   pull_requests_ids: pull_requests_ids(date_from, date_to),
@@ -144,7 +144,7 @@ module Insights
         @repository_average_review_time.fetch("#{date_from},#{date_to}") do |key|
           @repository_average_review_time[key] = begin
             values =
-              @average_review_time_service
+              @review_time_service
                 .call(
                   insightable: @insightable,
                   pull_requests_ids: pull_requests_ids(date_from, date_to),
@@ -166,7 +166,7 @@ module Insights
         @repository_average_merge_time.fetch("#{date_from},#{date_to}") do |key|
           @repository_average_merge_time[key] = begin
             values =
-              @average_merge_time_service
+              @merge_time_service
                 .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
                 .values.flatten
             @find_average_service.call(
@@ -340,6 +340,20 @@ module Insights
               .transform_values do |reviews|
                 reviews.sum { |review| review.pull_request.changed_loc }
               end
+        end
+      end
+
+      def time_since_last_open_pull_seconds(date_from=@fetch_period, date_to=0)
+        @time_since_last_open_pull_seconds ||= {}
+
+        @time_since_last_open_pull_seconds.fetch("#{date_from},#{date_to}") do |key|
+          @time_since_last_open_pull_seconds[key] =
+            @since_last_pull_service
+              .call(
+                insightable: @insightable,
+                pull_requests_ids: pull_requests_ids(date_from, date_to),
+                with_vacations: true
+              )[:result]
         end
       end
     end

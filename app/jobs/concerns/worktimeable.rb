@@ -7,7 +7,7 @@ module Worktimeable
 
   def working_time?(company)
     return true unless company.with_work_time?
-    return false if current_time.wday.in?(Insights::AverageTime::BasisService::WEEKEND_DAYS_INDEXES)
+    return false if current_time.wday.in?(Insights::Time::BasisService::WEEKEND_DAYS_INDEXES)
 
     configuration = company.configuration
     return day_work_condition(configuration) if configuration.work_start_time <= configuration.work_end_time
@@ -32,8 +32,8 @@ module Worktimeable
 
   def offset_minutes(configuration)
     ActiveSupport::TimeZone[
-      configuration.work_time_zone || Insights::AverageTime::BasisService::DEFAULT_WORK_TIME_ZONE
-    ].utc_offset / Insights::AverageTime::BasisService::MINUTES_IN_HOUR
+      configuration.work_time_zone || Insights::Time::BasisService::DEFAULT_WORK_TIME_ZONE
+    ].utc_offset / Insights::Time::BasisService::MINUTES_IN_HOUR
   end
 
   def current_minutes
@@ -41,7 +41,7 @@ module Worktimeable
   end
 
   def minutes_of_day(time)
-    (time.hour * Insights::AverageTime::BasisService::MINUTES_IN_HOUR) + time.min
+    (time.hour * Insights::Time::BasisService::MINUTES_IN_HOUR) + time.min
   end
 
   def current_time

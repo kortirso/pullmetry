@@ -1,5 +1,5 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache('metrics_v3', expires_in: 24.hours) do %>
+  <% cache('metrics_v4', expires_in: 24.hours) do %>
     <section class="mx-auto my-12">
       <h1>Review quality metrics</h1>
       <p class="mb-12">These metrics reflects quality of review performed by developer with PRs of other developers.</p>
@@ -23,6 +23,8 @@
       <p class="mb-12">These metrics reflects code quality of developer's pull requests.</p>
       <h2 class="text-2xl">Open pull requests</h2>
       <p class="mb-8">This metric shows the number of PRs opened by developer.</p>
+      <h2 class="text-2xl">Time since last open pull request</h2>
+      <p class="mb-8">This metric shows the time since developer opened last pull request.</p>
       <h2 class="text-2xl">Average merge time</h2>
       <p class="mb-8">This metric shows average time that developer spends on merging PRs (time between creating and merging). Lower value is better and means that developer closes tasks very quickly and more code are delivered to production.</p>
       <h2 class="text-2xl">Average PR comments</h2>
