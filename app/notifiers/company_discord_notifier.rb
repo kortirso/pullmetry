@@ -2,13 +2,9 @@
 
 class CompanyDiscordNotifier < CompanyNotifier
   self.driver = proc do |data|
-    data[:paths].each do |path|
-      Pullmetry::Container['api.discord.client'].send_message(
-        path: path,
-        body: data[:body]
-      )
-    end
+    Pullmetry::Container['api.discord.client'].send_message(
+      path: data[:path],
+      body: data[:body]
+    )
   end
-
-  def source = Webhook::DISCORD
 end

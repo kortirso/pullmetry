@@ -2,21 +2,21 @@
 
 module Deliveries
   module Companies
-    class InsightsReportJob < ApplicationJob
+    class NoNewPullsReportJob < ApplicationJob
       include Worktimeable
 
       queue_as :default
 
       def perform(delivery_service: CompanyDelivery)
         Notification
-          .insights_data
+          .no_new_pulls_data
           .preload(:notifyable)
           .find_each do |notification|
             next unless working_time?(notification.notifyable)
 
             delivery_service
               .with(notification: notification)
-              .insights_report
+              .no_new_pulls_report
               .deliver_later
           end
       end

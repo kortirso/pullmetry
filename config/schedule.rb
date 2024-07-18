@@ -22,6 +22,9 @@ every 4.hours do
 
   # Send long time review notifications
   runner 'Deliveries::Companies::LongTimeReviewReportJob.perform_later'
+
+  # Send long time review notifications
+  runner 'Deliveries::Companies::NoNewPullsReportJob.perform_later'
 end
 
 # Clear expired users sessions
