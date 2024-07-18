@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Insights::AverageTime::ForReviewService, type: :service do
+describe Insights::Time::ForReview, type: :service do
   subject(:service_call) { described_class.new.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
 
   let!(:first_monday) {

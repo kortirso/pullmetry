@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module Insights
-  module AverageTime
-    class ForMergeService < BasisService
+  module Time
+    class ForMerge < BasisService
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
-        @insightable = insightable
-        @with_vacations = with_vacations
-        @result = {}
+        super(insightable: insightable, with_vacations: with_vacations)
 
         PullRequest
           .created
@@ -21,12 +19,12 @@ module Insights
 
       def handle_entity(pull_request)
         entity_id = pull_request.entity_id
-        update_result_with_total_review_time(
+        update_result_with_value(
           entity_id,
-          calculate_merge_seconds(
-            pull_request,
+          calculate_seconds(
             pull_request.pull_created_at,
             pull_request.pull_merged_at,
+            pull_request.entity.identity&.user,
             @with_vacations ? pull_request.entity&.identity&.user&.vacations : nil
           )
         )

@@ -8,14 +8,14 @@ module Deliveries
       queue_as :default
 
       def perform(delivery_service: CompanyDelivery)
-        Company
-          .joins(:notifications)
-          .distinct
-          .find_each do |company|
-            next unless working_time?(company)
+        Notification
+          .long_time_review_data
+          .preload(:notifyable)
+          .find_each do |notification|
+            next unless working_time?(notification.notifyable)
 
             delivery_service
-              .with(company: company)
+              .with(notification: notification)
               .long_time_review_report
               .deliver_later
           end

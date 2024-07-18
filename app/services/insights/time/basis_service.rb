@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Insights
-  module AverageTime
+  module Time
     class BasisService
       include Deps[find_average: 'math.find_average']
 
@@ -12,17 +12,23 @@ module Insights
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
       DEFAULT_WORK_TIME_ZONE = 'UTC'
 
+      def call(insightable:, with_vacations: true)
+        @insightable = insightable
+        @with_vacations = with_vacations
+        @result = {}
+      end
+
       private
 
       attr_reader :work_start_time, :work_end_time
 
-      def calculate_merge_seconds(pull_request, from, till, vacations=nil)
+      def calculate_seconds(from, till, user=nil, vacations=nil)
         # if PR merge was made before PR changed state from draft to open
         # in such cases time spend for merge is 1 second
         return 1 if from >= till
         return till.to_i - from.to_i unless @insightable.with_work_time?
 
-        find_using_work_time(pull_request)
+        find_using_work_time(user)
         seconds_between_times(
           convert_time(from, true),
           convert_time(till, false),
@@ -32,8 +38,7 @@ module Insights
 
       # working time can be based on company working time
       # or at user's
-      def find_using_work_time(pull_request)
-        user = pull_request.entity.identity&.user
+      def find_using_work_time(user)
         @work_start_time, @work_end_time, @time_offset =
           if user&.with_work_time? && !@insightable.configuration.ignore_users_work_time
             user_work_time_params(user)
@@ -164,8 +169,9 @@ module Insights
           }
       end
 
-      def update_result_with_total_review_time(entity_id, review_seconds)
-        @result[entity_id] = @result.key?(entity_id) ? @result[entity_id].push(review_seconds) : [review_seconds]
+      def update_result_with_value(entity_id, value)
+        @result[entity_id] ||= []
+        @result[entity_id] << value
       end
 
       def work_start_time_minutes

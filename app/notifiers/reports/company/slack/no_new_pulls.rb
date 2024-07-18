@@ -3,7 +3,7 @@
 module Reports
   module Company
     module Slack
-      class Insights < Reports::Company::Insights
+      class NoNewPulls < Reports::Company::NoNewPulls
         include Deps[time_representer: 'services.converters.seconds_to_text']
 
         def call(insightable:)
@@ -76,14 +76,10 @@ module Reports
         end
 
         def insight_element(insight)
-          average_time = time_representer.call(value: insight[:average_review_seconds].to_i)
+          time = time_representer.call(value: insight[:time_since_last_open_pull_seconds].to_i)
           {
             type: 'mrkdwn',
-            text: [
-              "*Total comments:* #{insight[:comments_count].to_i}",
-              "*Total reviews:* #{insight[:reviews_count].to_i}",
-              "*Average review time:* #{average_time}"
-            ].join(', ')
+            text: "*Time since last open pull request:* #{time}"
           }
         end
 

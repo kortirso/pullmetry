@@ -27,16 +27,28 @@ describe Deliveries::Companies::InsightsReportJob, type: :service do
     end
   end
 
-  context 'with notifications' do
+  context 'with another notification' do
     before do
-      create :notification, notifyable: company, webhook: webhook, notification_type: Notification::INSIGHTS_DATA
+      create :notification, notifyable: company, webhook: webhook, notification_type: Notification::NO_NEW_PULLS_DATA
     end
+
+    it 'does not calls service' do
+      job_call
+
+      expect(CompanyDelivery).not_to have_received(:with)
+    end
+  end
+
+  context 'with notifications' do
+    let!(:notification) {
+      create :notification, notifyable: company, webhook: webhook, notification_type: Notification::INSIGHTS_DATA
+    }
 
     context 'without working time' do
       it 'calls service' do
         job_call
 
-        expect(CompanyDelivery).to have_received(:with).with(company: company)
+        expect(CompanyDelivery).to have_received(:with).with(notification: notification)
       end
     end
 
@@ -60,7 +72,7 @@ describe Deliveries::Companies::InsightsReportJob, type: :service do
         it 'calls service' do
           job_call
 
-          expect(CompanyDelivery).to have_received(:with).with(company: company)
+          expect(CompanyDelivery).to have_received(:with).with(notification: notification)
         end
       end
 

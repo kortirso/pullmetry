@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Insights::AverageTime::ForMergeService, type: :service do
+describe Insights::Time::ForMerge, type: :service do
   subject(:service_call) { described_class.new.call(insightable: insightable, pull_requests_ids: pull_requests_ids) }
 
   let!(:identity) { create :identity }

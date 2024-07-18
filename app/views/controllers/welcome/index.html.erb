@@ -93,7 +93,7 @@
       </div>
     </div>
   <% end %>
-  <% cache('welcome_page_bottom_v1', expires_in: 24.hours) do %>
+  <% cache('welcome_page_bottom_v2', expires_in: 24.hours) do %>
     <section class="mx-auto mb-8 xl:mb-24">
       <h2 class="text-center text-4xl mb-12">How it works</h2>
       <div class="flex flex-col md:flex-row md:gap-20 mb-16">
@@ -170,9 +170,9 @@
             <p>Free</p>
           </div>
           <ul>
-            <li>7 insight metrics</li>
+            <li><%= Insight::DEFAULT_ATTRIBUTES.size %> insight metrics</li>
             <li>12 repository insight metrics</li>
-            <li>5 tracking repositories</li>
+            <li><%= Subscription::FREE_REPOSITORIES_AMOUNT %> tracking repositories</li>
             <li>company metrics based on repositories</li>
             <li>easy access for developers</li>
             <li>configuring working time, vacations</li>
@@ -188,7 +188,7 @@
           </div>
           <p class="mb-4">Everything in regular, plus:</p>
           <ul>
-            <li>14 insight metrics instead of 7</li>
+            <li><%= Insight::SHORT_ATTRIBUTE_NAMES.size %> insight metrics instead of <%= Insight::DEFAULT_ATTRIBUTES.size %></li>
             <li>15 tracking repositories</li>
             <li>comparing data with previous periods</li>
           </ul>

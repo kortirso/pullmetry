@@ -181,7 +181,8 @@ describe Companies::ConfigurationsController do
                 'average_review_seconds' => nil,
                 'average_merge_seconds' => nil,
                 'changed_loc' => nil,
-                'average_changed_loc' => nil
+                'average_changed_loc' => nil,
+                'time_since_last_open_pull_seconds' => nil
               })
               expect(configuration.insight_ratio).to be_truthy
               expect(configuration.insight_ratio_type).to eq 'change'

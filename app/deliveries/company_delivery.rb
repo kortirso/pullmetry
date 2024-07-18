@@ -9,24 +9,25 @@ class CompanyDelivery < ApplicationDelivery
   delivers :insights_report
   delivers :repository_insights_report
   delivers :long_time_review_report
+  delivers :no_new_pulls_report
 
   private
 
   def ensure_webhook_enabled
-    sources.include?(Webhook::CUSTOM)
+    webhook.custom?
   end
 
   def ensure_slack_enabled
-    sources.include?(Webhook::SLACK)
+    webhook.slack?
   end
 
   def ensure_discord_enabled
-    sources.include?(Webhook::DISCORD)
+    webhook.discord?
   end
 
   def ensure_telegram_enabled
-    sources.include?(Webhook::TELEGRAM)
+    webhook.telegram?
   end
 
-  def sources = params[:company].notifications.joins(:webhook).pluck('webhooks.source').uniq
+  def webhook = params[:notification].webhook
 end

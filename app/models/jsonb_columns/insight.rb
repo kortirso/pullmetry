@@ -17,6 +17,7 @@ module JsonbColumns
 
     # attributes representing user PRs quality
     attribute :open_pull_requests_count, :boolean
+    attribute :time_since_last_open_pull_seconds, :boolean
     attribute :average_merge_seconds, :boolean
     attribute :average_open_pr_comments, :boolean
     attribute :changed_loc, :boolean

@@ -32,6 +32,7 @@ module JsonbColumns
            reviewed_loc
            average_reviewed_loc
            open_pull_requests_count
+           time_since_last_open_pull_seconds
            average_merge_seconds
            average_open_pr_comments
            changed_loc

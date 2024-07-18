@@ -7,6 +7,7 @@ class Notification < ApplicationRecord
   INSIGHTS_DATA = 'insights_data'
   REPOSITORY_INSIGHTS_DATA = 'repository_insights_data'
   LONG_TIME_REVIEW_DATA = 'long_time_review_data'
+  NO_NEW_PULLS_DATA = 'no_new_pulls_data'
 
   INSIGHTABLE_SOURCES = [
     Webhook::CUSTOM,
@@ -20,7 +21,8 @@ class Notification < ApplicationRecord
     REPOSITORY_ACCESS_ERROR,
     INSIGHTS_DATA,
     REPOSITORY_INSIGHTS_DATA,
-    LONG_TIME_REVIEW_DATA
+    LONG_TIME_REVIEW_DATA,
+    NO_NEW_PULLS_DATA
   ].freeze
   USER_NOTIFICATION_TYPES = [].freeze
 
@@ -33,6 +35,7 @@ class Notification < ApplicationRecord
     REPOSITORY_ACCESS_ERROR => 0,
     INSIGHTS_DATA => 1,
     REPOSITORY_INSIGHTS_DATA => 2,
-    LONG_TIME_REVIEW_DATA => 3
+    LONG_TIME_REVIEW_DATA => 3,
+    NO_NEW_PULLS_DATA => 4
   }
 end

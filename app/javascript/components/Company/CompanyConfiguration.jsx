@@ -6,7 +6,8 @@ import { apiRequest, csrfToken } from '../../helpers';
 const NOTIFICATION_TYPES = {
   insights_data: 'Insights',
   repository_insights_data: 'Repo insights',
-  long_time_review_data: 'Long time review'
+  long_time_review_data: 'Long time review',
+  no_new_pulls_data: 'No new pull requests'
 };
 
 const EXCLUDE_RULES_TARGETS = {

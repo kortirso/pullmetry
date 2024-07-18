@@ -81,15 +81,19 @@ module Pullmetry
     register('reports.company.custom.insights') { Reports::Company::Custom::Insights.new }
     register('reports.company.custom.long_time_review') { Reports::Company::Custom::LongTimeReview.new }
     register('reports.company.custom.repository_insights') { Reports::Company::Custom::RepositoryInsights.new }
+    register('reports.company.custom.no_new_pulls') { Reports::Company::Custom::NoNewPulls.new }
     register('reports.company.telegram.insights') { Reports::Company::Telegram::Insights.new }
     register('reports.company.telegram.long_time_review') { Reports::Company::Telegram::LongTimeReview.new }
     register('reports.company.telegram.repository_insights') { Reports::Company::Telegram::RepositoryInsights.new }
+    register('reports.company.telegram.no_new_pulls') { Reports::Company::Telegram::NoNewPulls.new }
     register('reports.company.discord.insights') { Reports::Company::Discord::Insights.new }
     register('reports.company.discord.long_time_review') { Reports::Company::Discord::LongTimeReview.new }
     register('reports.company.discord.repository_insights') { Reports::Company::Discord::RepositoryInsights.new }
+    register('reports.company.discord.no_new_pulls') { Reports::Company::Discord::NoNewPulls.new }
     register('reports.company.slack.insights') { Reports::Company::Slack::Insights.new }
     register('reports.company.slack.long_time_review') { Reports::Company::Slack::LongTimeReview.new }
     register('reports.company.slack.repository_insights') { Reports::Company::Slack::RepositoryInsights.new }
+    register('reports.company.slack.no_new_pulls') { Reports::Company::Slack::NoNewPulls.new }
 
     # services
     register('services.auth.attach_identity') { Auth::AttachIdentityService.new }

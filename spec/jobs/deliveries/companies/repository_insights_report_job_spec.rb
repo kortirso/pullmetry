@@ -28,18 +28,18 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
   end
 
   context 'with notifications' do
-    before do
+    let!(:notification) {
       create :notification,
              notifyable: company,
              webhook: webhook,
              notification_type: Notification::REPOSITORY_INSIGHTS_DATA
-    end
+    }
 
     context 'without working time' do
       it 'calls service' do
         job_call
 
-        expect(CompanyDelivery).to have_received(:with).with(company: company)
+        expect(CompanyDelivery).to have_received(:with).with(notification: notification)
       end
     end
 
@@ -63,7 +63,7 @@ describe Deliveries::Companies::RepositoryInsightsReportJob, type: :service do
         it 'calls service' do
           job_call
 
-          expect(CompanyDelivery).to have_received(:with).with(company: company)
+          expect(CompanyDelivery).to have_received(:with).with(notification: notification)
         end
       end
 

@@ -17,6 +17,7 @@ const SHORT_INSIGHT_NAMES = {
   average_open_pr_comments: 'Avg commenting',
   changed_loc: 'Changed LOC',
   average_changed_loc: 'Avg changed LOC',
+  time_since_last_open_pull_seconds: 'Time since last pull',
 };
 
 const INSIGHT_TOOLTIPS = {
@@ -34,14 +35,16 @@ const INSIGHT_TOOLTIPS = {
   average_open_pr_comments: 'Avg received comments',
   changed_loc: 'Changed LOC',
   average_changed_loc: 'Avg changed LOC',
+  time_since_last_open_pull_seconds: 'Time since last pull',
 };
 
-const TIME_ATTRIBUTES = ['average_review_seconds', 'average_merge_seconds'];
+const TIME_ATTRIBUTES = ['average_review_seconds', 'average_merge_seconds', 'time_since_last_open_pull_seconds'];
 const REVERSE_ORDER_ATTRIBUTES = [
   'average_review_seconds',
   'average_merge_seconds',
   'average_open_pr_comments',
   'bad_reviews_count',
+  'time_since_last_open_pull_seconds',
 ];
 const PERCENTILE_ATTRIBUTES = ['review_involving'];
 
