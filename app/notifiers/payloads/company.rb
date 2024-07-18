@@ -54,7 +54,7 @@ module Payloads
       when :insights_report then telegram_insights.call(insightable: company)
       when :repository_insights_report then telegram_repository_insights.call(insightable: company)
       when :long_time_review_report then telegram_long_time_review.call(insightable: company)
-      when :no_new_pulls_report then '1'
+      when :no_new_pulls_report then telegram_no_new_pulls.call(insightable: company)
       end
     end
 
@@ -73,7 +73,7 @@ module Payloads
       when :insights_report then discord_insights.call(insightable: company)
       when :repository_insights_report then discord_repository_insights.call(insightable: company)
       when :long_time_review_report then discord_long_time_review.call(insightable: company)
-      when :no_new_pulls_report then '1'
+      when :no_new_pulls_report then discord_no_new_pulls.call(insightable: company)
       end
     end
 
@@ -89,7 +89,7 @@ module Payloads
       when :insights_report then slack_insights.call(insightable: company)
       when :repository_insights_report then slack_repository_insights.call(insightable: company)
       when :long_time_review_report then slack_long_time_review.call(insightable: company)
-      when :no_new_pulls_report then '1'
+      when :no_new_pulls_report then slack_no_new_pulls.call(insightable: company)
       end
     end
 
@@ -107,7 +107,7 @@ module Payloads
       when :insights_report then custom_insights.call(insightable: company)
       when :repository_insights_report then custom_repository_insights.call(insightable: company)
       when :long_time_review_report then custom_long_time_review.call(insightable: company)
-      when :no_new_pulls_report then '1'
+      when :no_new_pulls_report then custom_no_new_pulls.call(insightable: company)
       end
     end
   end
