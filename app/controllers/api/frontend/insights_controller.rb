@@ -27,6 +27,7 @@ module Api
           page_size: Reports::Insights::Pdf::PAGE_SIZE,
           page_layout: Reports::Insights::Pdf::PAGE_LAYOUT
         ).to_pdf(
+          insightable: @insightable,
           insights: JSON.parse(insights.to_json),
           insight_fields: insight_fields
         )
@@ -79,7 +80,7 @@ module Api
 
       def insight_fields
         if @insightable.premium? && @insightable.configuration.insight_fields.present?
-          @insightable.selected_insight_fields
+          @insightable.selected_insight_fields.map(&:to_sym)
         else
           Insight::DEFAULT_ATTRIBUTES
         end

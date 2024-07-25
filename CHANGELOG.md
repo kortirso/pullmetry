@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - multiple notifications sending
+- bug with rendering insights in PDF
 
 ## [1.8.1] - 2024-07-12
 ### Added
