@@ -6,12 +6,18 @@ module Reports
       PAGE_SIZE = 'A4'
       PAGE_LAYOUT = :landscape
 
-      def to_pdf(insights:, insight_fields:)
-        text 'Insights report'
+      def to_pdf(insightable:, insights:, insight_fields:)
+        text(
+          [
+            'Insights report',
+            "#{insightable.class.name.downcase} #{insightable.title}",
+            current_time
+          ].join(', ')
+        )
         move_down(18)
 
-        font 'Courier', size: 8
-        headers_data = ['Developer', *render_headers_data(insight_fields)]
+        font 'Courier', size: 7
+        headers_data = ['', *render_headers_data(insight_fields)]
         insights.map! { |insight| render_insight(insight, insight_fields) }
 
         table(
@@ -26,6 +32,10 @@ module Reports
       end
 
       private
+
+      def current_time
+        "#{DateTime.now.utc.strftime('%Y.%m.%d %H:%M')} UTC"
+      end
 
       def render_headers_data(insight_fields)
         insight_fields.map { |insight_field| Insight::SHORT_ATTRIBUTE_NAMES[insight_field] }

@@ -8,7 +8,7 @@
         <% @identities.each do |identity| %>
           <div class="flex justify-between items-center py-1">
             <p>
-              <%= identity[:provider].capitalize %> identity is created <%= identity[:created_at].strftime('%d.%m.%Y') %> at <%= identity[:created_at].strftime('%H:%M') %> UTC
+              <%= identity[:provider].capitalize %> identity is created <%= identity[:created_at].strftime('%Y.%m.%d') %> at <%= identity[:created_at].strftime('%H:%M') %> UTC
             </p>
             <% if @must_be_identities.size > 1 || Providerable::CAN_BE_ALWAYS_DELETED.include?(identity[:provider]) %>
               <%= button_to 'X', identity_path(identity[:id]), class: 'btn-danger btn-xs', method: :delete %>
