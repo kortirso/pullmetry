@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_feedbacks
-      @pagy, @feedbacks = pagy(Feedback.order(id: :desc), items: PER_PAGE)
+      @pagy, @feedbacks = pagy(Feedback.order(id: :desc), limit: PER_PAGE)
     end
   end
 end

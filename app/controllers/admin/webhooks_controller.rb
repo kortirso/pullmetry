@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_webhooks
-      @pagy, @webhooks = pagy(Webhook.order(id: :desc), items: PER_PAGE)
+      @pagy, @webhooks = pagy(Webhook.order(id: :desc), limit: PER_PAGE)
     end
   end
 end

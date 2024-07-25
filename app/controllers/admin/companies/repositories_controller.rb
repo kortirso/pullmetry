@@ -24,7 +24,7 @@ module Admin
         @pagy, @repositories =
           pagy(
             @company.repositories.order(id: :desc).includes(:access_token),
-            items: PER_PAGE
+            limit: PER_PAGE
           )
       end
     end
