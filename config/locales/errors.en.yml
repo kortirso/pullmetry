@@ -6,6 +6,7 @@ en:
       notification_type: Notification type
       excludes_rule: Exclude rule
       link: Link
+      access_token: Access token
     errors:
       invite:
         rules:

@@ -3,12 +3,12 @@
 module Api
   module Frontend
     class ApiAccessTokensController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.api_access_tokens.create']
+      include Deps[add_api_access_token: 'commands.add_api_access_token']
 
       before_action :find_api_access_token, only: %i[destroy]
 
       def create
-        case create_form.call(user: current_user)
+        case add_api_access_token.call({ user: current_user })
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok

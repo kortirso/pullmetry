@@ -2,7 +2,7 @@
 
 module Auth
   class LoginUserService
-    include Deps[create_form: 'forms.identities.create']
+    include Deps[add_identity: 'commands.add_identity']
 
     def call(auth:)
       identity = Identity.find_by(uid: auth[:uid], provider: auth[:provider])
@@ -13,7 +13,7 @@ module Auth
 
       user = User.find_or_create_by!(email: email)
       # commento: identities.uid, identities.provider, identities.email, identities.login
-      create_form.call(user: user, params: auth)
+      add_identity.call(auth.merge(user: user))
 
       { result: user }
     end

@@ -5,7 +5,7 @@ class AddAccessTokenCommand < BaseCommand
 
   use_contract do
     params do
-      required(:tokenable).filled(type?: ::ApplicationRecord)
+      required(:tokenable).filled(type?: ApplicationRecord)
       required(:value).filled(:string)
       optional(:expired_at).maybe(:string)
     end
@@ -27,12 +27,12 @@ class AddAccessTokenCommand < BaseCommand
   end
 
   def do_persist(input)
-    result = ActiveRecord::Base.transaction do
+    access_token = ActiveRecord::Base.transaction do
       remove_access_token.call(access_token: input[:tokenable].access_token) if input[:tokenable].access_token
       AccessToken.create!(input)
     end
 
-    { result: result }
+    { result: access_token }
   end
 
   def validate_tokenable_type(input)

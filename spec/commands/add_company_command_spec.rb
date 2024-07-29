@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Companies::CreateForm, type: :service do
-  subject(:form) { instance.call(user: user, params: params) }
+describe AddCompanyCommand do
+  subject(:command) { instance.call(params.merge(user: user)) }
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
@@ -11,7 +11,7 @@ describe Companies::CreateForm, type: :service do
     let(:params) { { title: '' } }
 
     it 'does not create company and fails' do
-      expect { form }.not_to change(Company, :count)
+      expect { command }.not_to change(Company, :count)
     end
   end
 
@@ -19,14 +19,14 @@ describe Companies::CreateForm, type: :service do
     let(:params) { { title: 'Title' } }
 
     it 'creates company and succeeds' do
-      expect { form }.to change(user.companies, :count).by(1)
+      expect { command }.to change(user.companies, :count).by(1)
     end
 
     context 'with user invites' do
       before { create :invite, inviteable: user, receiver: another_user, code: nil }
 
       it 'attaches receiver to company' do
-        expect { form }.to(
+        expect { command }.to(
           change(user.companies, :count).by(1)
             .and(change(Companies::User, :count).by(1))
         )

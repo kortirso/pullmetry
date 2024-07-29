@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Repositories::CreateForm, type: :service do
-  subject(:form) { instance.call(company: company, params: params) }
+describe AddRepositoryCommand do
+  subject(:command) { instance.call(params.merge(company: company)) }
 
   let!(:instance) { described_class.new }
   let!(:company) { create :company }
@@ -10,8 +10,8 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: '', link: '' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { form }.not_to change(Repository, :count)
-      expect(form[:errors]).not_to be_empty
+      expect { command }.not_to change(Repository, :count)
+      expect(command[:errors]).not_to be_empty
     end
   end
 
@@ -19,8 +19,8 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { form }.not_to change(Repository, :count)
-      expect(form[:errors]).not_to be_empty
+      expect { command }.not_to change(Repository, :count)
+      expect(command[:errors]).not_to be_empty
     end
   end
 
@@ -28,8 +28,8 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'github' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { form }.not_to change(Repository, :count)
-      expect(form[:errors]).not_to be_empty
+      expect { command }.not_to change(Repository, :count)
+      expect(command[:errors]).not_to be_empty
     end
   end
 
@@ -37,8 +37,8 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: 'Title', link: 'https://gitlab.com.git', provider: 'github' } }
 
     it 'does not create repository and fails', :aggregate_failures do
-      expect { form }.not_to change(Repository, :count)
-      expect(form[:errors]).not_to be_empty
+      expect { command }.not_to change(Repository, :count)
+      expect(command[:errors]).not_to be_empty
     end
   end
 
@@ -46,8 +46,8 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab', external_id: '1' } }
 
     it 'creates repository and succeeds', :aggregate_failures do
-      expect { form }.to change(company.repositories, :count).by(1)
-      expect(form[:errors]).to be_blank
+      expect { command }.to change(company.repositories, :count).by(1)
+      expect(command[:errors]).to be_blank
     end
   end
 
@@ -56,7 +56,7 @@ describe Repositories::CreateForm, type: :service do
     let(:params) { { title: 'Title', link: 'https://github.com', provider: 'github' } }
 
     it 'creates repository and destroys old repository', :aggregate_failures do
-      form
+      command
 
       expect(Repository.find_by(id: repository.id)).to be_nil
       expect(company.repositories.count).to eq 1
@@ -66,7 +66,7 @@ describe Repositories::CreateForm, type: :service do
       before { repository.update!(company: company) }
 
       it 'does not create repository and fails' do
-        expect { form }.not_to change(Repository, :count)
+        expect { command }.not_to change(Repository, :count)
       end
     end
 
@@ -74,7 +74,7 @@ describe Repositories::CreateForm, type: :service do
       let!(:insight) { create :insight, insightable: repository }
 
       it 'does not create repository and fails' do
-        expect { form }.not_to change(Repository, :count)
+        expect { command }.not_to change(Repository, :count)
       end
 
       context 'when insight is old' do
@@ -84,7 +84,7 @@ describe Repositories::CreateForm, type: :service do
         end
 
         it 'creates repository and destroys old repository', :aggregate_failures do
-          form
+          command
 
           expect(Repository.find_by(id: repository.id)).to be_nil
           expect(company.repositories.count).to eq 1

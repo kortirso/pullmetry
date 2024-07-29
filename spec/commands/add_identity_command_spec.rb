@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Identities::CreateForm, type: :service do
-  subject(:form) { instance.call(user: user, params: params) }
+describe AddIdentityCommand, type: :service do
+  subject(:command) { instance.call(params.merge(user: user)) }
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
@@ -10,8 +10,8 @@ describe Identities::CreateForm, type: :service do
     let(:params) { { uid: '' } }
 
     it 'does not create identity and fails', :aggregate_failures do
-      expect { form }.not_to change(Identity, :count)
-      expect(form[:errors]).not_to be_blank
+      expect { command }.not_to change(Identity, :count)
+      expect(command[:errors]).not_to be_blank
     end
   end
 
@@ -20,13 +20,13 @@ describe Identities::CreateForm, type: :service do
 
     context 'without entities' do
       it 'creates identity and succeeds', :aggregate_failures do
-        expect { form }.to change(user.identities, :count).by(1)
-        expect(form[:result].is_a?(Identity)).to be_truthy
+        expect { command }.to change(user.identities, :count).by(1)
+        expect(command[:result].is_a?(Identity)).to be_truthy
       end
 
       it 'does not attach entities', :aggregate_failures do
-        expect { form }.not_to change(user.entities, :count)
-        expect(form[:result].is_a?(Identity)).to be_truthy
+        expect { command }.not_to change(user.entities, :count)
+        expect(command[:result].is_a?(Identity)).to be_truthy
       end
     end
 
@@ -36,11 +36,11 @@ describe Identities::CreateForm, type: :service do
       end
 
       it 'creates identity', :aggregate_failures do
-        expect { form }.to(
+        expect { command }.to(
           change(user.identities, :count).by(1)
             .and(change(user.entities, :count).by(1))
         )
-        expect(form[:result].is_a?(Identity)).to be_truthy
+        expect(command[:result].is_a?(Identity)).to be_truthy
       end
     end
   end

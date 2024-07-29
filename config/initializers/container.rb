@@ -36,46 +36,40 @@ module Pullmetry
     # commands
     register('commands.add_access_token') { AddAccessTokenCommand.new }
     register('commands.remove_access_token') { RemoveAccessTokenCommand.new }
+    register('commands.add_api_access_token') { AddApiAccessTokenCommand.new }
+    register('commands.add_company') { AddCompanyCommand.new }
+    register('commands.attach_user_to_company') { AttachUserToCompanyCommand.new }
+    register('commands.add_identity') { AddIdentityCommand.new }
+    register('commands.associate_entities_with_identity') { AssociateEntitiesWithIdentityCommand.new }
+    register('commands.add_repository') { AddRepositoryCommand.new }
+    register('commands.add_webhook') { AddWebhookCommand.new }
 
     # contracts
-    register('contracts.companies.create') { Companies::CreateContract.new }
-    register('contracts.identity') { IdentityContract.new }
-    register('contracts.repository') { RepositoryContract.new }
     register('contracts.feedback') { FeedbackContract.new }
     register('contracts.ignore') { IgnoreContract.new }
-    register('contracts.webhook') { WebhookContract.new }
     register('contracts.notification') { NotificationContract.new }
     register('contracts.excludes.rule') { Excludes::RuleContract.new }
     register('contracts.invite') { InviteContract.new }
     register('contracts.subscribers.create') { Subscribers::CreateContract.new }
 
     # validators
-    register('validators.companies.create') { Companies::CreateValidator.new }
-    register('validators.identity') { IdentityValidator.new }
-    register('validators.repository') { RepositoryValidator.new }
     register('validators.feedback') { FeedbackValidator.new }
     register('validators.ignore') { IgnoreValidator.new }
-    register('validators.webhook') { WebhookValidator.new }
     register('validators.notification') { NotificationValidator.new }
     register('validators.excludes.rules.create') { Excludes::Rules::CreateValidator.new }
     register('validators.invite') { InviteValidator.new }
     register('validators.subscribers.create') { Subscribers::CreateValidator.new }
 
     # forms
-    register('forms.companies.create') { Companies::CreateForm.new }
-    register('forms.identities.create') { Identities::CreateForm.new }
-    register('forms.repositories.create') { Repositories::CreateForm.new }
     register('forms.vacations.create') { Vacations::CreateForm.new }
     register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
     register('forms.ignores.create') { Ignores::CreateForm.new }
-    register('forms.webhooks.create') { Webhooks::CreateForm.new }
     register('forms.notifications.create') { Notifications::CreateForm.new }
     register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
     register('forms.invites.create') { Invites::CreateForm.new }
     register('forms.subscribers.create') { Subscribers::CreateForm.new }
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
-    register('forms.api_access_tokens.create') { ApiAccessTokens::CreateForm.new }
 
     # notifiers reports
     register('notifiers.payloads.company') { Payloads::Company.new }

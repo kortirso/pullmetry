@@ -2,7 +2,7 @@
 
 module Auth
   class AttachIdentityService
-    include Deps[create_form: 'forms.identities.create']
+    include Deps[add_identity: 'commands.add_identity']
 
     def call(user:, auth:)
       identity = Identity.find_by(uid: auth[:uid], provider: auth[:provider])
@@ -10,7 +10,7 @@ module Auth
 
       auth[:email] = user.email if auth[:email].nil?
       # commento: identities.uid, identities.provide, identities.email, identities.login
-      { result: create_form.call(user: user, params: auth)[:result] }
+      { result: add_identity.call(auth.merge(user: user))[:result] }
     end
   end
 end

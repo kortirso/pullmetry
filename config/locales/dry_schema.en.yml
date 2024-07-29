@@ -1,0 +1,14 @@
+en:
+  dry_schema:
+    rules:
+      access_token: Access token
+    errors:
+      type?: has invalid type
+      rules:
+        access_token:
+          type?: has invalid type
+        external_id:
+          empty: can't be blank
+        link:
+          invalid_host: must start with https://github.com or https://gitlab.com
+          invalid_git: should not end with .git

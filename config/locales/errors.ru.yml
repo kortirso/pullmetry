@@ -7,6 +7,7 @@ ru:
       entity_value: Entity value
       excludes_rule: Исключение
       link: Ссылка
+      access_token: Токен доступа
     errors:
       invite:
         rules:

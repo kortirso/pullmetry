@@ -11,7 +11,7 @@ describe RemoveAccessTokenCommand do
 
     it 'does not destroy access token', :aggregate_failures do
       expect { command }.not_to change(AccessToken, :count)
-      expect(command[:errors]).to eq ['Access_token must be accesstoken']
+      expect(command[:errors]).to eq ['Access token has invalid type']
       expect(command[:result]).to be_nil
     end
   end
