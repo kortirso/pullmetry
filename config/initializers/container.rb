@@ -33,9 +33,12 @@ module Pullmetry
     register('monitoring.providers.bugsnag') { Monitoring::Providers::Bugsnag.new }
     register('monitoring.client') { Monitoring::Client.new }
 
+    # commands
+    register('commands.add_access_token') { AddAccessTokenCommand.new }
+    register('commands.remove_access_token') { RemoveAccessTokenCommand.new }
+
     # contracts
     register('contracts.companies.create') { Companies::CreateContract.new }
-    register('contracts.access_token') { AccessTokenContract.new }
     register('contracts.identity') { IdentityContract.new }
     register('contracts.repository') { RepositoryContract.new }
     register('contracts.feedback') { FeedbackContract.new }
@@ -48,7 +51,6 @@ module Pullmetry
 
     # validators
     register('validators.companies.create') { Companies::CreateValidator.new }
-    register('validators.access_token') { AccessTokenValidator.new }
     register('validators.identity') { IdentityValidator.new }
     register('validators.repository') { RepositoryValidator.new }
     register('validators.feedback') { FeedbackValidator.new }
@@ -61,7 +63,6 @@ module Pullmetry
 
     # forms
     register('forms.companies.create') { Companies::CreateForm.new }
-    register('forms.access_tokens.create') { AccessTokens::CreateForm.new }
     register('forms.identities.create') { Identities::CreateForm.new }
     register('forms.repositories.create') { Repositories::CreateForm.new }
     register('forms.vacations.create') { Vacations::CreateForm.new }

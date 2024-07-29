@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
-describe AccessTokens::CreateForm, type: :service do
-  subject(:form) { instance.call(tokenable: tokenable, params: params) }
+describe AddAccessTokenCommand do
+  subject(:command) { instance.call(params.merge(tokenable: tokenable)) }
 
   let!(:instance) { described_class.new }
   let!(:company) { create :company }
+
+  context 'for invalid tokenable' do
+    let(:tokenable) { create :user }
+    let(:params) { { value: 'glpa-*****-******' } }
+
+    it 'does not create access token', :aggregate_failures do
+      expect { command }.not_to change(AccessToken, :count)
+      expect(command[:errors]).to eq ['Tokenable is not supported']
+    end
+  end
 
   context 'for company' do
     let(:tokenable) { company }
@@ -14,8 +24,8 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'glpa-*****-******' } }
 
         it 'does not create access token', :aggregate_failures do
-          expect { form }.not_to change(AccessToken, :count)
-          expect(form[:errors]).to eq ['Invalid PAT token format']
+          expect { command }.not_to change(AccessToken, :count)
+          expect(command[:errors]).to eq ['Invalid PAT token format']
         end
       end
 
@@ -23,8 +33,28 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'github_pat_*****_******' } }
 
         it 'creates access token and succeeds', :aggregate_failures do
-          expect { form }.to change(AccessToken.where(tokenable: company), :count).by(1)
-          expect(form[:errors]).to be_nil
+          expect { command }.to change(AccessToken.where(tokenable: company), :count).by(1)
+          expect(command[:errors]).to be_nil
+        end
+
+        context 'with valid expired_at value' do
+          let(:params) { { value: 'github_pat_*****_******', expired_at: '2024.11.01' } }
+
+          it 'creates access token and succeeds', :aggregate_failures do
+            expect { command }.to change(AccessToken.where(tokenable: company), :count).by(1)
+            expect(command[:errors]).to be_nil
+            expect(AccessToken.last.expired_at).to eq DateTime.new(2024, 11, 1)
+          end
+        end
+
+        context 'with invalid expired_at value' do
+          let(:params) { { value: 'github_pat_*****_******', expired_at: '' } }
+
+          it 'creates access token and succeeds', :aggregate_failures do
+            expect { command }.to change(AccessToken.where(tokenable: company), :count).by(1)
+            expect(command[:errors]).to be_nil
+            expect(AccessToken.last.expired_at).to be_nil
+          end
         end
       end
     end
@@ -36,8 +66,8 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: '' } }
 
         it 'does not create access token', :aggregate_failures do
-          expect { form }.not_to change(AccessToken, :count)
-          expect(form[:errors]).to eq ['Value must be filled']
+          expect { command }.not_to change(AccessToken, :count)
+          expect(command[:errors]).to eq ['Value must be filled']
         end
       end
 
@@ -45,8 +75,8 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'glpat-*****-******' } }
 
         it 'does not create access token', :aggregate_failures do
-          expect { form }.not_to change(AccessToken, :count)
-          expect(form[:errors]).to eq ['Invalid PAT token format']
+          expect { command }.not_to change(AccessToken, :count)
+          expect(command[:errors]).to eq ['Invalid PAT token format']
         end
       end
 
@@ -54,7 +84,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'github_pat_*****_******' } }
 
         it 'creates access token and succeeds', :aggregate_failures do
-          expect(form[:errors]).to be_nil
+          expect(command[:errors]).to be_nil
           expect(AccessToken.where(tokenable: company).size).to eq 1
         end
 
@@ -62,7 +92,7 @@ describe AccessTokens::CreateForm, type: :service do
           let!(:access_token) { create :access_token, tokenable: company }
 
           it 'replaces old token with new one', :aggregate_failures do
-            expect(form[:errors]).to be_nil
+            expect(command[:errors]).to be_nil
             expect(AccessToken.where(tokenable: company).size).to eq 1
             expect(AccessToken.find_by(id: access_token.id)).to be_nil
           end
@@ -72,8 +102,8 @@ describe AccessTokens::CreateForm, type: :service do
           before { create :repository, company: company, provider: Providerable::GITLAB }
 
           it 'does not create access token and fails', :aggregate_failures do
-            expect { form }.not_to change(AccessToken, :count)
-            expect(form[:errors]).to eq ['Company has repositories of multiple providers']
+            expect { command }.not_to change(AccessToken, :count)
+            expect(command[:errors]).to eq ['Company has repositories of multiple providers']
           end
         end
       end
@@ -89,7 +119,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: '' } }
 
         it 'does not create access token and fails' do
-          expect { form }.not_to change(AccessToken, :count)
+          expect { command }.not_to change(AccessToken, :count)
         end
       end
 
@@ -97,7 +127,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'some_random_key' } }
 
         it 'does not create access token and fails' do
-          expect { form }.not_to change(AccessToken, :count)
+          expect { command }.not_to change(AccessToken, :count)
         end
       end
 
@@ -105,7 +135,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'github_pat_*****_******' } }
 
         it 'creates access token and succeeds' do
-          form
+          command
 
           expect(AccessToken.where(tokenable: repository).size).to eq 1
         end
@@ -114,7 +144,7 @@ describe AccessTokens::CreateForm, type: :service do
           let!(:access_token) { create :access_token, tokenable: repository }
 
           it 'replaces old token with new one', :aggregate_failures do
-            form
+            command
 
             expect(AccessToken.where(tokenable: repository).size).to eq 1
             expect(AccessToken.find_by(id: access_token.id)).to be_nil
@@ -130,7 +160,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: '' } }
 
         it 'does not create access token and fails' do
-          expect { form }.not_to change(AccessToken, :count)
+          expect { command }.not_to change(AccessToken, :count)
         end
       end
 
@@ -138,7 +168,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'some_random_key' } }
 
         it 'does not create access token and fails' do
-          expect { form }.not_to change(AccessToken, :count)
+          expect { command }.not_to change(AccessToken, :count)
         end
       end
 
@@ -146,7 +176,7 @@ describe AccessTokens::CreateForm, type: :service do
         let(:params) { { value: 'glpat-***********' } }
 
         it 'creates access token and succeeds' do
-          form
+          command
 
           expect(AccessToken.where(tokenable: repository).size).to eq 1
         end
@@ -155,7 +185,7 @@ describe AccessTokens::CreateForm, type: :service do
           let!(:access_token) { create :access_token, tokenable: repository }
 
           it 'replaces old token with new one', :aggregate_failures do
-            form
+            command
 
             expect(AccessToken.where(tokenable: repository).size).to eq 1
             expect(AccessToken.find_by(id: access_token.id)).to be_nil
