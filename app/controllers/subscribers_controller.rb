@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SubscribersController < ApplicationController
-  include Deps[create_form: 'forms.subscribers.create']
+  include Deps[add_subscriber: 'commands.add_subscriber']
 
   skip_before_action :authenticate
   before_action :check_recaptcha, only: %i[create]
@@ -10,7 +10,7 @@ class SubscribersController < ApplicationController
 
   def create
     # commento: subscribers.email
-    case create_form.call(params: subscriber_params)
+    case add_subscriber.call(subscriber_params)
     in { errors: errors } then redirect_to root_path, alert: errors
     else
       set_subscriber_in_cookies
@@ -45,6 +45,6 @@ class SubscribersController < ApplicationController
   end
 
   def subscriber_params
-    params.require(:subscriber).permit(:email)
+    params.require(:subscriber).permit(:email).to_h
   end
 end

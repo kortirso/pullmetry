@@ -3,7 +3,7 @@
 module Api
   module Frontend
     class NotificationsController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.notifications.create']
+      include Deps[add_notification: 'commands.add_notification']
 
       before_action :find_company, only: %i[create]
       before_action :find_webhook, only: %i[create]
@@ -11,7 +11,7 @@ module Api
 
       def create
         # commento: notifications.webhook_id, notifications.notification_type
-        case create_form.call(notifyable: @company, webhook: @webhook, params: notification_params)
+        case add_notification.call(notification_params.merge(notifyable: @company, webhook: @webhook))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
@@ -45,7 +45,7 @@ module Api
       end
 
       def notification_params
-        params.require(:notification).permit(:notification_type)
+        params.require(:notification).permit(:notification_type).to_h
       end
     end
   end

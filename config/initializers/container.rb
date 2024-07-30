@@ -43,31 +43,21 @@ module Pullmetry
     register('commands.associate_entities_with_identity') { AssociateEntitiesWithIdentityCommand.new }
     register('commands.add_repository') { AddRepositoryCommand.new }
     register('commands.add_webhook') { AddWebhookCommand.new }
+    register('commands.add_feedback') { AddFeedbackCommand.new }
+    register('commands.add_notification') { AddNotificationCommand.new }
+    register('commands.add_invite') { AddInviteCommand.new }
+    register('commands.add_subscriber') { AddSubscriberCommand.new }
+    register('commands.add_ignore') { AddIgnoreCommand.new }
 
     # contracts
-    register('contracts.feedback') { FeedbackContract.new }
-    register('contracts.ignore') { IgnoreContract.new }
-    register('contracts.notification') { NotificationContract.new }
     register('contracts.excludes.rule') { Excludes::RuleContract.new }
-    register('contracts.invite') { InviteContract.new }
-    register('contracts.subscribers.create') { Subscribers::CreateContract.new }
 
     # validators
-    register('validators.feedback') { FeedbackValidator.new }
-    register('validators.ignore') { IgnoreValidator.new }
-    register('validators.notification') { NotificationValidator.new }
     register('validators.excludes.rules.create') { Excludes::Rules::CreateValidator.new }
-    register('validators.invite') { InviteValidator.new }
-    register('validators.subscribers.create') { Subscribers::CreateValidator.new }
 
     # forms
     register('forms.vacations.create') { Vacations::CreateForm.new }
-    register('forms.feedbacks.create') { Feedbacks::CreateForm.new }
-    register('forms.ignores.create') { Ignores::CreateForm.new }
-    register('forms.notifications.create') { Notifications::CreateForm.new }
     register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
-    register('forms.invites.create') { Invites::CreateForm.new }
-    register('forms.subscribers.create') { Subscribers::CreateForm.new }
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
 

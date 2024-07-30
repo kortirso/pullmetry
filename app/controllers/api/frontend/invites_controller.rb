@@ -3,14 +3,14 @@
 module Api
   module Frontend
     class InvitesController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.invites.create']
+      include Deps[add_invite: 'commands.add_invite']
 
       before_action :find_inviteable, only: %i[create]
       before_action :find_invite, only: %i[destroy]
 
       def create
         # commento: invites.email, invites.access
-        case create_form.call(inviteable: @inviteable, params: invite_params)
+        case add_invite.call(invite_params.merge(inviteable: @inviteable))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
@@ -50,7 +50,7 @@ module Api
       end
 
       def invite_params
-        params.require(:invite).permit(:email, :access)
+        params.require(:invite).permit(:email, :access).to_h
       end
     end
   end

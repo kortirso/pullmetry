@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Ignores::CreateForm, type: :service do
-  subject(:form) { instance.call(company: company, params: params) }
+describe AddIgnoreCommand, type: :service do
+  subject(:command) { instance.call(params.merge(insightable: company)) }
 
   let!(:instance) { described_class.new }
   let!(:company) { create :company }
@@ -20,8 +20,8 @@ describe Ignores::CreateForm, type: :service do
     let(:params) { { entity_value: '' } }
 
     it 'does not create ignore', :aggregate_failures do
-      expect { form }.not_to change(Ignore, :count)
-      expect(form[:errors]).not_to be_blank
+      expect { command }.not_to change(Ignore, :count)
+      expect(command[:errors]).not_to be_blank
     end
   end
 
@@ -29,12 +29,12 @@ describe Ignores::CreateForm, type: :service do
     let(:params) { { entity_value: 'octocat[bot]' } }
 
     it 'creates ignore', :aggregate_failures do
-      expect { form }.to(
+      expect { command }.to(
         change(company.ignores, :count).by(1)
           .and(change(company.insights, :count).by(-1))
           .and(change(repository.insights, :count).by(-1))
       )
-      expect(form[:result].is_a?(Ignore)).to be_truthy
+      expect(command[:result].is_a?(Ignore)).to be_truthy
     end
   end
 end

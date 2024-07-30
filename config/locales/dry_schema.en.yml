@@ -2,6 +2,8 @@ en:
   dry_schema:
     rules:
       access_token: Access token
+      notification_type: Notification type
+      entity_value: Entity value
     errors:
       type?: has invalid type
       rules:
@@ -12,3 +14,5 @@ en:
         link:
           invalid_host: must start with https://github.com or https://gitlab.com
           invalid_git: should not end with .git
+        email:
+          invalid_format: has invalid format

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Invites::CreateForm, type: :service do
-  subject(:form) { instance.call(inviteable: inviteable, params: params) }
+describe AddInviteCommand do
+  subject(:command) { instance.call(params.merge(inviteable: inviteable)) }
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
@@ -19,8 +19,8 @@ describe Invites::CreateForm, type: :service do
       let(:params) { { email: '' } }
 
       it 'does not create invite', :aggregate_failures do
-        expect { form }.not_to change(Invite, :count)
-        expect(form[:errors]).not_to be_blank
+        expect { command }.not_to change(Invite, :count)
+        expect(command[:errors]).not_to be_blank
         expect(InvitesMailer).not_to have_received(:create_email)
       end
     end
@@ -29,9 +29,9 @@ describe Invites::CreateForm, type: :service do
       let(:params) { { email: 'email@gmail.com' } }
 
       it 'creates invite', :aggregate_failures do
-        expect { form }.to change(Invite, :count).by(1)
-        expect(form[:result].is_a?(Invite)).to be_truthy
-        expect(form[:errors]).to be_blank
+        expect { command }.to change(Invite, :count).by(1)
+        expect(command[:result].is_a?(Invite)).to be_truthy
+        expect(command[:errors]).to be_blank
         expect(InvitesMailer).to have_received(:create_email)
       end
 
@@ -39,8 +39,8 @@ describe Invites::CreateForm, type: :service do
         before { create :invite, email: 'email@gmail.com', inviteable: inviteable }
 
         it 'does not create invite', :aggregate_failures do
-          expect { form }.not_to change(Invite, :count)
-          expect(form[:errors]).not_to be_blank
+          expect { command }.not_to change(Invite, :count)
+          expect(command[:errors]).not_to be_blank
           expect(InvitesMailer).not_to have_received(:create_email)
         end
       end
@@ -55,8 +55,8 @@ describe Invites::CreateForm, type: :service do
       let(:params) { { email: '' } }
 
       it 'does not create invite', :aggregate_failures do
-        expect { form }.not_to change(Invite, :count)
-        expect(form[:errors]).not_to be_blank
+        expect { command }.not_to change(Invite, :count)
+        expect(command[:errors]).not_to be_blank
         expect(InvitesMailer).not_to have_received(:create_email)
       end
     end
@@ -65,9 +65,9 @@ describe Invites::CreateForm, type: :service do
       let(:params) { { email: 'email@gmail.com' } }
 
       it 'creates invite', :aggregate_failures do
-        expect { form }.to change(Invite, :count).by(1)
-        expect(form[:result].is_a?(Invite)).to be_truthy
-        expect(form[:errors]).to be_blank
+        expect { command }.to change(Invite, :count).by(1)
+        expect(command[:result].is_a?(Invite)).to be_truthy
+        expect(command[:errors]).to be_blank
         expect(InvitesMailer).to have_received(:create_email)
       end
 
@@ -75,8 +75,8 @@ describe Invites::CreateForm, type: :service do
         before { create :invite, email: 'email@gmail.com', inviteable: inviteable }
 
         it 'does not create invite', :aggregate_failures do
-          expect { form }.not_to change(Invite, :count)
-          expect(form[:errors]).not_to be_blank
+          expect { command }.not_to change(Invite, :count)
+          expect(command[:errors]).not_to be_blank
           expect(InvitesMailer).not_to have_received(:create_email)
         end
       end

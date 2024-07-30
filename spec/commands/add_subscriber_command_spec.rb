@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Subscribers::CreateForm, type: :service do
-  subject(:form) { instance.call(params: params) }
+describe AddSubscriberCommand, type: :service do
+  subject(:command) { instance.call(params) }
 
   let!(:instance) { described_class.new }
   let(:mail) { double }
@@ -15,8 +15,8 @@ describe Subscribers::CreateForm, type: :service do
     let(:params) { { email: '' } }
 
     it 'does not create subscriber', :aggregate_failures do
-      expect { form }.not_to change(Subscriber, :count)
-      expect(form[:errors]).not_to be_blank
+      expect { command }.not_to change(Subscriber, :count)
+      expect(command[:errors]).not_to be_blank
       expect(SubscribersMailer).not_to have_received(:create_email)
     end
   end
@@ -25,9 +25,9 @@ describe Subscribers::CreateForm, type: :service do
     let(:params) { { email: 'email@gmail.com' } }
 
     it 'creates subscriber', :aggregate_failures do
-      expect { form }.to change(Subscriber, :count).by(1)
-      expect(form[:result].is_a?(Subscriber)).to be_truthy
-      expect(form[:errors]).to be_blank
+      expect { command }.to change(Subscriber, :count).by(1)
+      expect(command[:result].is_a?(Subscriber)).to be_truthy
+      expect(command[:errors]).to be_blank
       expect(SubscribersMailer).to have_received(:create_email)
     end
   end
