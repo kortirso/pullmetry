@@ -4,11 +4,15 @@ class AddRepositoryCommand < BaseCommand
   HOURS_FOR_OLD_INSIGHTS = 12
 
   use_contract do
+    config.messages.namespace = :repository
+
+    Providers = Dry::Types['strict.string'].enum(Providerable::GITHUB, Providerable::GITLAB)
+
     params do
       required(:company).filled(type?: Company)
       required(:title).filled(:string)
       required(:link).filled(:string)
-      required(:provider).filled(:string)
+      required(:provider).filled(Providers)
       optional(:external_id)
     end
 

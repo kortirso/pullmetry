@@ -15,6 +15,15 @@ describe AddIdentityCommand, type: :service do
     end
   end
 
+  context 'for unexisting provider' do
+    let(:params) { { uid: '1234', login: 'name', provider: 'fake-github', email: user.email } }
+
+    it 'does not create identity and fails', :aggregate_failures do
+      expect { command }.not_to change(Identity, :count)
+      expect(command[:errors]).to eq(['Provider must be one of: github, gitlab, telegram, google'])
+    end
+  end
+
   context 'for valid params' do
     let(:params) { { uid: '1234', login: 'name', provider: 'github', email: user.email } }
 

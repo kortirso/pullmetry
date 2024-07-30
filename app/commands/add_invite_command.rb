@@ -2,10 +2,12 @@
 
 class AddInviteCommand < BaseCommand
   use_contract do
+    Accesses = Dry::Types['strict.string'].enum(*Invite.accesses.keys)
+
     params do
       required(:inviteable).filled(type?: ApplicationRecord)
       required(:email).filled(:string)
-      optional(:access).maybe(:string)
+      optional(:access).maybe(Accesses)
     end
 
     rule(:email) do

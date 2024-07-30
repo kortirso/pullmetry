@@ -2,6 +2,8 @@
 
 class RemoveAccessTokenCommand < BaseCommand
   use_contract do
+    config.messages.namespace = :access_token
+
     params do
       required(:access_token).filled(type?: AccessToken)
     end

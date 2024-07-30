@@ -42,6 +42,15 @@ describe AddRepositoryCommand do
     end
   end
 
+  context 'for unexisting provider' do
+    let(:params) { { title: 'Title', link: 'https://github.com', provider: 'fake-github' } }
+
+    it 'does not create repository and fails', :aggregate_failures do
+      expect { command }.not_to change(Repository, :count)
+      expect(command[:errors]).not_to be_empty
+    end
+  end
+
   context 'for valid external id' do
     let(:params) { { title: 'Title', link: 'https://gitlab.com', provider: 'gitlab', external_id: '1' } }
 

@@ -48,16 +48,10 @@ module Pullmetry
     register('commands.add_invite') { AddInviteCommand.new }
     register('commands.add_subscriber') { AddSubscriberCommand.new }
     register('commands.add_ignore') { AddIgnoreCommand.new }
-
-    # contracts
-    register('contracts.excludes.rule') { Excludes::RuleContract.new }
-
-    # validators
-    register('validators.excludes.rules.create') { Excludes::Rules::CreateValidator.new }
+    register('commands.add_excludes_group') { AddExcludesGroupCommand.new }
 
     # forms
     register('forms.vacations.create') { Vacations::CreateForm.new }
-    register('forms.excludes.groups.create') { Excludes::Groups::CreateForm.new }
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
 

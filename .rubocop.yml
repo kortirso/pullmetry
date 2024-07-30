@@ -224,6 +224,9 @@ RSpec/MultipleMemoizedHelpers:
 Lint/MissingSuper:
   Enabled: false
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
 RSpec/InstanceVariable:
   Enabled: false
 

@@ -2,16 +2,14 @@
 
 class AddWebhookCommand < BaseCommand
   use_contract do
+    config.messages.namespace = :webhook
+
+    Sources = Dry::Types['strict.string'].enum(*Webhook.sources.keys)
+
     params do
       required(:company).filled(type?: Company)
-      required(:source).filled(:string)
+      required(:source).filled(Sources)
       required(:url).filled(:string)
-    end
-
-    rule(:source) do
-      if Webhook.sources.keys.exclude?(values[:source])
-        key(:source).failure(:unexisting)
-      end
     end
   end
 

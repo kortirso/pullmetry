@@ -40,6 +40,22 @@ describe Api::Frontend::WebhooksController do
           end
         end
 
+        context 'for unexisting source' do
+          let(:request) {
+            post :create, params: {
+              company_id: company.uuid, webhook: { source: 'unexisting', url: '1123' }, auth_token: access_token
+            }
+          }
+
+          it 'does not create webhook', :aggregate_failures do
+            expect { request }.not_to change(Webhook, :count)
+            expect(response).to have_http_status :ok
+            expect(response.parsed_body.dig('errors', 0)).to eq(
+              'Source must be one of: custom, slack, discord, telegram'
+            )
+          end
+        end
+
         context 'for invalid url format' do
           let(:request) {
             post :create, params: {

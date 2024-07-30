@@ -2,10 +2,12 @@
 
 class AddNotificationCommand < BaseCommand
   use_contract do
+    NotificationTypes = Dry::Types['strict.string'].enum(*Notification.notification_types.keys)
+
     params do
       required(:notifyable).filled(type?: ApplicationRecord)
       required(:webhook).filled(type?: Webhook)
-      required(:notification_type).filled(:string)
+      required(:notification_type).filled(NotificationTypes)
     end
   end
 

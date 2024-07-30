@@ -25,6 +25,16 @@ describe AddInviteCommand do
       end
     end
 
+    context 'for invalid access value' do
+      let(:params) { { email: 'email@gmail.com', access: 'full' } }
+
+      it 'does not create invite', :aggregate_failures do
+        expect { command }.not_to change(Invite, :count)
+        expect(command[:errors]).to eq(['Access must be one of: read, write'])
+        expect(InvitesMailer).not_to have_received(:create_email)
+      end
+    end
+
     context 'for valid params' do
       let(:params) { { email: 'email@gmail.com' } }
 

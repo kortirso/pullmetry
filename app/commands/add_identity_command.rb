@@ -4,10 +4,14 @@ class AddIdentityCommand < BaseCommand
   include Deps[associate_entities_with_identity: 'commands.associate_entities_with_identity']
 
   use_contract do
+    config.messages.namespace = :identity
+
+    Providers = Dry::Types['strict.string'].enum(*Identity.providers.keys)
+
     params do
       required(:user).filled(type?: User)
       required(:uid).filled(:string)
-      required(:provider).filled(:string)
+      required(:provider).filled(Providers)
       required(:email).filled(:string)
       optional(:login).filled(:string)
     end
