@@ -4,14 +4,14 @@ module Api
   module Frontend
     module Excludes
       class GroupsController < Api::Frontend::BaseController
-        include Deps[create_form: 'forms.excludes.groups.create']
+        include Deps[add_excludes_group: 'commands.add_excludes_group']
 
         before_action :find_company, only: %i[create]
         before_action :find_excludes_group, only: %i[destroy]
 
         def create
           # commento: excludes_rules.target, excludes_rules.condition, excludes_rules.value
-          case create_form.call(company: @company, excludes_rules: create_excludes_rules_params)
+          case add_excludes_group.call({ company: @company, excludes_rules: create_excludes_rules_params })
           in { errors: errors } then render json: { errors: errors }, status: :ok
           in { result: result }
             render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok

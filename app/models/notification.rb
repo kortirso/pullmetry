@@ -3,6 +3,11 @@
 class Notification < ApplicationRecord
   include Uuidable
 
+  NOTIFYABLE_TYPES = %w[
+    Company
+    Repository
+  ].freeze
+
   REPOSITORY_ACCESS_ERROR = 'repository_access_error'
   INSIGHTS_DATA = 'insights_data'
   REPOSITORY_INSIGHTS_DATA = 'repository_insights_data'

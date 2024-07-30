@@ -71,13 +71,8 @@ $ rails rswag:specs:swaggerize
 
 ## Application layers
 
-contracts - model schemas for validators
-schemas - model schemas for validating controller params
-validators - model validations
-forms - service object to interact with user form input
-
+commands - persisters layer with validations and persisting
 deliveries, notifiers - delivery layer with different providers
-
 queries - separated database queries
 services - business logic layer
 policies - authorization logic

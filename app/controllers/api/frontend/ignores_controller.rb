@@ -3,14 +3,14 @@
 module Api
   module Frontend
     class IgnoresController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.ignores.create']
+      include Deps[add_ignore: 'commands.add_ignore']
 
       before_action :find_company, only: %i[create]
       before_action :find_ignore, only: %i[destroy]
 
       def create
         # commento: ignores.entity_value
-        case create_form.call(company: @company, params: ignore_params)
+        case add_ignore.call(ignore_params.merge(insightable: @company))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
@@ -40,7 +40,7 @@ module Api
       end
 
       def ignore_params
-        params.require(:ignore).permit(:entity_value)
+        params.require(:ignore).permit(:entity_value).to_h
       end
     end
   end

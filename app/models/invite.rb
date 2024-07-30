@@ -3,6 +3,11 @@
 class Invite < ApplicationRecord
   include Uuidable
 
+  INVITEABLE_TYPES = %w[
+    User
+    Company
+  ].freeze
+
   READ = 'read'
   WRITE = 'write'
 

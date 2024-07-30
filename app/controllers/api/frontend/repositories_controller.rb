@@ -3,14 +3,14 @@
 module Api
   module Frontend
     class RepositoriesController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.repositories.create']
+      include Deps[add_repository: 'commands.add_repository']
 
       before_action :find_company, only: %i[create]
 
       def create
         authorize! current_user, to: :create_repository?
         # commento: repositories.title, repositories.link, repositories.provider, repositories.external_id
-        case create_form.call(company: @company, params: repository_params)
+        case add_repository.call(repository_params.merge(company: @company))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         else render json: { redirect_path: repositories_path }, status: :ok
         end
@@ -23,7 +23,7 @@ module Api
       end
 
       def repository_params
-        params.require(:repository).permit(:title, :link, :provider, :external_id)
+        params.require(:repository).permit(:title, :link, :provider, :external_id).to_h
       end
     end
   end

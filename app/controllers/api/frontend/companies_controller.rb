@@ -3,11 +3,11 @@
 module Api
   module Frontend
     class CompaniesController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.companies.create']
+      include Deps[add_company: 'commands.add_company']
 
       def create
         # commento: companies.title, companies.user_id
-        case create_form.call(user: user, params: company_params)
+        case add_company.call(company_params.merge(user: user))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         else render json: { redirect_path: companies_path }, status: :ok
         end
@@ -28,7 +28,7 @@ module Api
       end
 
       def company_params
-        params.require(:company).permit(:title)
+        params.require(:company).permit(:title).to_h
       end
     end
   end

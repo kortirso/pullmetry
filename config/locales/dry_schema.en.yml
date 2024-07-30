@@ -1,0 +1,27 @@
+en:
+  dry_schema:
+    rules:
+      access_token: Access token
+      notification_type: Notification type
+      entity_value: Entity value
+      external_id: External ID
+    errors:
+      type?: has invalid type
+      rules:
+        email:
+          invalid_format: has invalid format
+      access_token:
+        rules:
+          access_token:
+            type?: has invalid type
+      repository:
+        rules:
+          external_id:
+            empty: "can't be blank"
+          link:
+            invalid_host: must start with https://github.com or https://gitlab.com
+            invalid_git: should not end with .git
+      identity:
+        rules:
+          login:
+            empty: "can't be blank"

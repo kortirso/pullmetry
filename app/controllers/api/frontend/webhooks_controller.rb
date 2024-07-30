@@ -3,14 +3,14 @@
 module Api
   module Frontend
     class WebhooksController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.webhooks.create']
+      include Deps[add_webhook: 'commands.add_webhook']
 
       before_action :find_company, only: %i[create]
       before_action :find_webhook, only: %i[destroy]
 
       def create
         # commento: webhooks.source, webhooks.url, webhooks.company_id
-        case create_form.call(company: @company, params: webhook_params)
+        case add_webhook.call(webhook_params.merge(company: @company))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
@@ -40,7 +40,7 @@ module Api
       end
 
       def webhook_params
-        params.require(:webhook).permit(:source, :url)
+        params.require(:webhook).permit(:source, :url).to_h
       end
     end
   end
