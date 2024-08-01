@@ -13,9 +13,12 @@ module Api
         private
 
         def json_response(response)
+          insight = actual_insight
+          return { insight: nil, ratio_type: nil } if insight.nil?
+
           {
             insight: response.serializer(
-              actual_insight,
+              insight,
               InsightSerializer,
               only: %i[id values entity],
               context: {
