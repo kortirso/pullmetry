@@ -41,7 +41,7 @@ export const Repository = ({
         setPageState({
           ...pageState,
           entities: insightsData.insights,
-          insights: repositoryInsightsData.insight.values,
+          insights: repositoryInsightsData.insight?.values,
           insightTypes: insightsData.insight_fields,
           ratioType: insightsData.ratio_type,
         });
