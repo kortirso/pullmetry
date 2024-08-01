@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - commands layer for validating and persisting objects
 
 ### Fixed
+- rendering webhooks page for admins
 - bug while rendering empty repository insights
 
 ## [1.8.2] - 2024-07-25
