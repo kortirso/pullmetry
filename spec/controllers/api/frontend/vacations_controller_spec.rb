@@ -2,7 +2,8 @@
 
 describe Api::Frontend::VacationsController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'POST#create' do
     it_behaves_like 'required frontend auth'
@@ -11,7 +12,7 @@ describe Api::Frontend::VacationsController do
       context 'for invalid params' do
         let(:request) {
           post :create, params: {
-            vacation: { start_time: '03-01-2023', end_time: '02-01-2023' }, auth_token: access_token
+            vacation: { start_time: '03-01-2023', end_time: '02-01-2023' }, pullmetry_access_token: access_token
           }
         }
 
@@ -24,7 +25,7 @@ describe Api::Frontend::VacationsController do
       context 'for valid params' do
         let(:request) {
           post :create, params: {
-            vacation: { start_time: '01-01-2023', end_time: '02-01-2023' }, auth_token: access_token
+            vacation: { start_time: '01-01-2023', end_time: '02-01-2023' }, pullmetry_access_token: access_token
           }
         }
 
@@ -45,7 +46,7 @@ describe Api::Frontend::VacationsController do
 
     context 'for logged users' do
       let!(:vacation) { create :vacation }
-      let(:request) { delete :destroy, params: { id: vacation.id, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: vacation.id, pullmetry_access_token: access_token } }
 
       context 'for not user vacation' do
         it 'does not destroy vacation', :aggregate_failures do

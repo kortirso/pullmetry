@@ -1,5 +1,5 @@
-<%= render PageWrappers::UserComponent.new do %>
-  <h1 class="mb-8">Profile <%= Current.user.uuid %></h1>
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
+  <h1 class="mb-8">Profile <%= current_user.uuid %></h1>
   <%= render(partial: 'identities') %>
   <%=
     react_component 'ProfileConfiguration',

@@ -107,6 +107,9 @@ gem 'rswag-ui'
 gem 'prawn'
 gem 'prawn-table'
 
+# engines
+gem 'authkeeper', path: 'engines/authkeeper'
+
 group :development, :test do
   gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
   gem 'cypress-on-rails', '~> 1.0'

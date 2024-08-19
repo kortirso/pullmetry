@@ -2,7 +2,8 @@
 
 describe Api::Frontend::NotificationsController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
   let!(:company) { create :company, user: user }
   let!(:webhook) { create :webhook, company: company }
   let!(:another_user) { create :user }
@@ -15,7 +16,7 @@ describe Api::Frontend::NotificationsController do
             company_id: company.uuid,
             webhook_id: 'unexisting',
             notification: { notification_type: '' },
-            auth_token: access_token
+            pullmetry_access_token: access_token
           }
         }
 
@@ -35,7 +36,7 @@ describe Api::Frontend::NotificationsController do
               company_id: company.uuid,
               webhook_id: 'unexisting',
               notification: { notification_type: '' },
-              auth_token: access_token
+              pullmetry_access_token: access_token
             }
           }
 
@@ -52,7 +53,7 @@ describe Api::Frontend::NotificationsController do
               company_id: company.uuid,
               webhook_id: webhook.uuid,
               notification: { notification_type: '' },
-              auth_token: access_token
+              pullmetry_access_token: access_token
             }
           }
 
@@ -69,7 +70,7 @@ describe Api::Frontend::NotificationsController do
               company_id: company.uuid,
               webhook_id: webhook.uuid,
               notification: { notification_type: 'insights_data' },
-              auth_token: access_token
+              pullmetry_access_token: access_token
             }
           }
 
@@ -100,10 +101,10 @@ describe Api::Frontend::NotificationsController do
 
     context 'for logged users' do
       let!(:notification) { create :notification, notifyable: company }
-      let(:request) { delete :destroy, params: { id: notification.uuid, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: notification.uuid, pullmetry_access_token: access_token } }
 
       context 'for not existing notification' do
-        let(:request) { delete :destroy, params: { id: 'unexisting', auth_token: access_token } }
+        let(:request) { delete :destroy, params: { id: 'unexisting', pullmetry_access_token: access_token } }
 
         it 'does not destroy notification', :aggregate_failures do
           expect { request }.not_to change(Notification, :count)

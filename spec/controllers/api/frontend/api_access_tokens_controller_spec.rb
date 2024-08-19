@@ -2,13 +2,14 @@
 
 describe Api::Frontend::ApiAccessTokensController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'POST#create' do
     it_behaves_like 'required frontend auth'
 
     context 'for logged users' do
-      let(:request) { post :create, params: { auth_token: access_token } }
+      let(:request) { post :create, params: { pullmetry_access_token: access_token } }
 
       it 'creates api access token', :aggregate_failures do
         expect { request }.to change(user.api_access_tokens, :count).by(1)
@@ -29,7 +30,7 @@ describe Api::Frontend::ApiAccessTokensController do
       let!(:api_access_token) { create :api_access_token }
 
       context 'for unexisting api access token' do
-        let(:request) { delete :destroy, params: { id: 'unexisting', auth_token: access_token } }
+        let(:request) { delete :destroy, params: { id: 'unexisting', pullmetry_access_token: access_token } }
 
         it 'does not destroy api access token', :aggregate_failures do
           expect { request }.not_to change(ApiAccessToken, :count)
@@ -38,7 +39,7 @@ describe Api::Frontend::ApiAccessTokensController do
       end
 
       context 'for not own api access token' do
-        let(:request) { delete :destroy, params: { id: api_access_token.uuid, auth_token: access_token } }
+        let(:request) { delete :destroy, params: { id: api_access_token.uuid, pullmetry_access_token: access_token } }
 
         it 'does not destroy api access token', :aggregate_failures do
           expect { request }.not_to change(ApiAccessToken, :count)
@@ -47,7 +48,7 @@ describe Api::Frontend::ApiAccessTokensController do
       end
 
       context 'for own api access token' do
-        let(:request) { delete :destroy, params: { id: api_access_token.uuid, auth_token: access_token } }
+        let(:request) { delete :destroy, params: { id: api_access_token.uuid, pullmetry_access_token: access_token } }
 
         before { api_access_token.update!(user: user) }
 

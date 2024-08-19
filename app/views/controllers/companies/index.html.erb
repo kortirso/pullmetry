@@ -1,13 +1,13 @@
-<%= render PageWrappers::UserComponent.new do %>
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Companies</h1>
     <%=
       react_component 'CompanyForm',
         accountsForCompanies: @accounts_for_companies,
-        accountUuid: Current.user.uuid
+        accountUuid: current_user.uuid
     %>
   </div>
-  <% if @companies.any? { |company| company.user_id == Current.user.id && !company.accessable } %>
+  <% if @companies.any? { |company| company.user_id == current_user.id && !company.accessable } %>
     <div class="badge mb-4 p-4">
       <p>One of your company has access error because of invalid access token permissions.</p>
       <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>

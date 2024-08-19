@@ -1,4 +1,4 @@
-<%= render PageWrappers::UserComponent.new do %>
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <h1 class="mb-12">Your payment has been successfully completed.</h1>
   <p class="mb-8">In the next few minutes we will receive confirmation of payment and your premium account information will be updated.</p>
   <p class="mb-8">If nothing happen please contact us with feedback form.</p>

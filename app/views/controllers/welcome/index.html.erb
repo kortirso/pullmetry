@@ -1,10 +1,10 @@
 <%= render PageWrappers::GuestComponent.new do %>
-  <% cache(['welcome_page_top_v1', Current.user&.id], expires_in: 24.hours) do %>
+  <% cache(['welcome_page_top_v1', current_user&.id], expires_in: 24.hours) do %>
     <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
       <div class="flex flex-col justify-center">
         <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
         <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
-        <% unless Current.user %>
+        <% unless current_user %>
           <div class="flex flex-col sm:flex-row justify-center xl:justify-start">
             <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>
             <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>

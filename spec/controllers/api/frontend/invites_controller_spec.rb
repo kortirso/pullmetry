@@ -2,7 +2,8 @@
 
 describe Api::Frontend::InvitesController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'POST#create' do
     context 'for logged users' do
@@ -11,7 +12,7 @@ describe Api::Frontend::InvitesController do
 
       context 'for invalid company' do
         let(:request) {
-          post :create, params: { company_id: company.uuid, invite: { email: '' }, auth_token: access_token }
+          post :create, params: { company_id: company.uuid, invite: { email: '' }, pullmetry_access_token: access_token }
         }
 
         before { company.update!(user: another_user) }
@@ -26,7 +27,7 @@ describe Api::Frontend::InvitesController do
       context 'for read access in company' do
         let(:request) {
           post :create, params: {
-            company_id: company.uuid, invite: { email: 'email@gmail.com' }, auth_token: access_token
+            company_id: company.uuid, invite: { email: 'email@gmail.com' }, pullmetry_access_token: access_token
           }
         }
 
@@ -45,7 +46,7 @@ describe Api::Frontend::InvitesController do
       context 'for valid company' do
         context 'for invalid params' do
           let(:request) {
-            post :create, params: { company_id: company.uuid, invite: { email: '' }, auth_token: access_token }
+            post :create, params: { company_id: company.uuid, invite: { email: '' }, pullmetry_access_token: access_token }
           }
 
           it 'does not create invite', :aggregate_failures do
@@ -58,7 +59,7 @@ describe Api::Frontend::InvitesController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, invite: { email: 'email@gmail.com' }, auth_token: access_token
+              company_id: company.uuid, invite: { email: 'email@gmail.com' }, pullmetry_access_token: access_token
             }
           }
 
@@ -77,7 +78,7 @@ describe Api::Frontend::InvitesController do
 
     context 'for logged users' do
       let!(:invite) { create :invite }
-      let(:request) { delete :destroy, params: { id: invite.uuid, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: invite.uuid, pullmetry_access_token: access_token } }
 
       context 'for user invite' do
         context 'for not own invite' do

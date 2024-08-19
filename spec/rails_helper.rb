@@ -48,5 +48,6 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.extend ControllerMacros, type: :controller
+  config.extend RequestMacros, type: :request
   config.include ClientHelpers, type: :client
 end

@@ -20,16 +20,12 @@ module Pullmetry
     register('jwt_encoder') { JwtEncoder.new }
     register('dummy') { Dummy.new }
     register('to_bool') { ToBool.new }
-    register('api.github.auth_client') { GithubAuthApi::Client.new }
     register('api.github.client') { GithubApi::Client.new }
-    register('api.gitlab.auth_client') { GitlabAuthApi::Client.new }
     register('api.gitlab.client') { GitlabApi::Client.new }
     register('api.slack.client') { SlackHooksApi::Client.new }
     register('api.discord.client') { DiscordApi::Client.new }
     register('api.telegram.client') { TelegramApi::Client.new }
     register('bot.telegram.client') { TelegramBot::Client.new }
-    register('api.google.auth_client') { GoogleAuthApi::Client.new }
-    register('api.google.client') { GoogleApi::Client.new }
     register('monitoring.providers.bugsnag') { Monitoring::Providers::Bugsnag.new }
     register('monitoring.client') { Monitoring::Client.new }
 
@@ -75,15 +71,6 @@ module Pullmetry
     register('reports.company.slack.no_new_pulls') { Reports::Company::Slack::NoNewPulls.new }
 
     # services
-    register('services.auth.attach_identity') { Auth::AttachIdentityService.new }
-    register('services.auth.fetch_session') { Auth::FetchSessionService.new }
-    register('services.auth.generate_token') { Auth::GenerateTokenService.new }
-    register('services.auth.login_user') { Auth::LoginUserService.new }
-    register('services.auth.providers.github') { Auth::Providers::Github.new }
-    register('services.auth.providers.gitlab') { Auth::Providers::Gitlab.new }
-    register('services.auth.providers.telegram') { Auth::Providers::Telegram.new }
-    register('services.auth.providers.google') { Auth::Providers::Google.new }
-
     register('services.persisters.companies.update') { Persisters::Companies::UpdateService.new }
     register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }
     register('services.persisters.subscriptions.add') { Persisters::Subscriptions::AddService.new }

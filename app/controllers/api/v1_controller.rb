@@ -6,6 +6,8 @@ module Api
 
     skip_before_action :find_invite
 
+    attr_reader :current_user
+
     private
 
     def set_current_user
@@ -14,7 +16,7 @@ module Api
       api_access_token = ApiAccessToken.find_by(value: params[:api_access_token])
       return unless api_access_token
 
-      Current.user ||= api_access_token.user
+      @current_user = api_access_token.user
     end
 
     def serializer_fields(serializer_class, default_only_fields=[], forbidden_fields=[])

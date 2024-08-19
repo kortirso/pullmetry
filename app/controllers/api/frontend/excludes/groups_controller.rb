@@ -3,7 +3,7 @@
 module Api
   module Frontend
     module Excludes
-      class GroupsController < Api::Frontend::BaseController
+      class GroupsController < Api::FrontendController
         include Deps[add_excludes_group: 'commands.add_excludes_group']
 
         before_action :find_company, only: %i[create]

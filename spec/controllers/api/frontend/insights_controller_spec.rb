@@ -5,7 +5,8 @@ describe Api::Frontend::InsightsController do
     context 'for logged users' do
       let!(:company) { create :company, configuration: { insight_ratio: true } }
       let!(:user) { create :user }
-      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+      let!(:users_session) { create :users_session, user: user }
+      let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
       before { create :subscription, user: user }
 
@@ -19,7 +20,7 @@ describe Api::Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
+            get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -35,7 +36,7 @@ describe Api::Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
+              get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -52,7 +53,7 @@ describe Api::Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, auth_token: access_token, format: :json }
+              get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -73,7 +74,7 @@ describe Api::Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { repository_id: repository.uuid, auth_token: access_token, format: :json }
+            get :index, params: { repository_id: repository.uuid, pullmetry_access_token: access_token, format: :json }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 

@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class ApiAccessTokensController < Api::Frontend::BaseController
+    class ApiAccessTokensController < Api::FrontendController
       include Deps[add_api_access_token: 'commands.add_api_access_token']
 
       before_action :find_api_access_token, only: %i[destroy]

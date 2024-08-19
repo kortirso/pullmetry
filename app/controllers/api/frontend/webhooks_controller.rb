@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class WebhooksController < Api::Frontend::BaseController
+    class WebhooksController < Api::FrontendController
       include Deps[add_webhook: 'commands.add_webhook']
 
       before_action :find_company, only: %i[create]

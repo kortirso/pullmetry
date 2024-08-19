@@ -2,7 +2,6 @@
 
 module GitlabApi
   class Client < HttpService::Client
-    include Requests::User
     include Requests::PullRequests
     include Requests::PullRequestComments
     include Requests::PullRequestReviews

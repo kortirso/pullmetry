@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class VacationsController < Api::Frontend::BaseController
+    class VacationsController < Api::FrontendController
       include Deps[create_form: 'forms.vacations.create']
 
       before_action :find_vacation, only: %i[destroy]

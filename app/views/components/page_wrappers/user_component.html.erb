@@ -25,7 +25,7 @@
           </section>
         <% end %>
         <section class="flex flex-col lg:pb-8">
-          <%= react_component 'FeedbackForm', email: Current.user.email, children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
+          <%= react_component 'FeedbackForm', email: current_user.email, children: ("<span class='user-navigation-link cursor-pointer'>Feedback</span>").html_safe %>
           <% cache('user_navigation_bottom_v3', expires_in: 24.hours) do %>
             <%= link_to 'Metrics', metrics_path, class: 'user-navigation-link' %>
             <a href="/api-docs" rel="noopener noreferrer" class="user-navigation-link">API docs</a>

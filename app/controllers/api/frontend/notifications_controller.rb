@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class NotificationsController < Api::Frontend::BaseController
+    class NotificationsController < Api::FrontendController
       include Deps[add_notification: 'commands.add_notification']
 
       before_action :find_company, only: %i[create]

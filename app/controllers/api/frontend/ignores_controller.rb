@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class IgnoresController < Api::Frontend::BaseController
+    class IgnoresController < Api::FrontendController
       include Deps[add_ignore: 'commands.add_ignore']
 
       before_action :find_company, only: %i[create]

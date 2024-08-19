@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class RepositoriesController < Api::Frontend::BaseController
+    class RepositoriesController < Api::FrontendController
       include Deps[add_repository: 'commands.add_repository']
 
       before_action :find_company, only: %i[create]
