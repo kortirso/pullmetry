@@ -8,12 +8,12 @@ module Import
       sync_repository_from_github: Pullmetry::Container['services.import.synchronizers.repositories.github'],
       sync_repository_from_gitlab: Pullmetry::Container['services.import.synchronizers.repositories.gitlab'],
       generate_insights_service: Insights::Generate::CompanyService.new,
-      update_service: Pullmetry::Container['services.persisters.companies.update']
+      change_company: Pullmetry::Container['commands.change_company']
     )
       @sync_repository_from_github = sync_repository_from_github
       @sync_repository_from_gitlab = sync_repository_from_gitlab
       @generate_insights_service = generate_insights_service
-      @update_service = update_service
+      @change_company = change_company
     end
 
     def call(company:)
@@ -44,12 +44,10 @@ module Import
     def update_company_accessable(company, accessable)
       not_accessable_ticks = accessable ? 0 : (company.not_accessable_ticks + 1)
       # commento: companies.accessable, companies.not_accessable_ticks
-      @update_service.call(
+      @change_company.call(
         company: company,
-        params: {
-          accessable: accessable,
-          not_accessable_ticks: not_accessable_ticks
-        }
+        accessable: accessable,
+        not_accessable_ticks: not_accessable_ticks
       )
       # rubocop: disable Style/RedundantReturn
       return if not_accessable_ticks != NOT_ACCESSABLE_LIMIT_TICKS

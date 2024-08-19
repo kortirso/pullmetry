@@ -45,9 +45,12 @@ module Pullmetry
     register('commands.add_subscriber') { AddSubscriberCommand.new }
     register('commands.add_ignore') { AddIgnoreCommand.new }
     register('commands.add_excludes_group') { AddExcludesGroupCommand.new }
+    register('commands.change_company') { ChangeCompanyCommand.new }
+    register('commands.change_repository') { ChangeRepositoryCommand.new }
+    register('commands.remove_user') { RemoveUserCommand.new }
+    register('commands.add_vacation') { AddVacationCommand.new }
 
     # forms
-    register('forms.vacations.create') { Vacations::CreateForm.new }
     register('forms.users.update') { Users::UpdateForm.new }
     register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
 
@@ -71,10 +74,7 @@ module Pullmetry
     register('reports.company.slack.no_new_pulls') { Reports::Company::Slack::NoNewPulls.new }
 
     # services
-    register('services.persisters.companies.update') { Persisters::Companies::UpdateService.new }
-    register('services.persisters.repositories.update') { Persisters::Repositories::UpdateService.new }
     register('services.persisters.subscriptions.add') { Persisters::Subscriptions::AddService.new }
-    register('services.persisters.users.destroy') { Persisters::Users::DestroyService.new }
     register('services.persisters.invites.accept') { Persisters::Invites::AcceptService.new }
 
     register('services.converters.seconds_to_text') { Converters::SecondsToTextService.new }

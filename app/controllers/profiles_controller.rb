@@ -3,7 +3,7 @@
 class ProfilesController < ApplicationController
   include Deps[
     update_form: 'forms.users.update',
-    destroy_service: 'services.persisters.users.destroy',
+    remove_user: 'commands.remove_user',
     jwt_encoder: 'jwt_encoder',
     to_bool: 'to_bool'
   ]
@@ -28,8 +28,8 @@ class ProfilesController < ApplicationController
   end
 
   def destroy
-    destroy_service.call(user: current_user)
-    cookies.delete(:pullmetry_token)
+    remove_user.call(user: current_user)
+    cookies.delete(Authkeeper.configuration.access_token_name)
     redirect_to root_path
   end
 

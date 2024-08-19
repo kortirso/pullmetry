@@ -9,7 +9,7 @@ module Import
           sync_comments_service: 'services.import.synchronizers.comments.github',
           sync_reviews_service: 'services.import.synchronizers.reviews.github',
           sync_files_service: 'services.import.synchronizers.files.github',
-          update_service: 'services.persisters.repositories.update'
+          change_repository: 'commands.change_repository'
         ]
       end
     end

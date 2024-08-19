@@ -9,7 +9,7 @@ module Import
           sync_comments_service: 'services.import.synchronizers.comments.gitlab',
           sync_reviews_service: 'services.import.synchronizers.reviews.gitlab',
           sync_files_service: 'dummy',
-          update_service: 'services.persisters.repositories.update'
+          change_repository: 'commands.change_repository'
         ]
       end
     end

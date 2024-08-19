@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe RemoveAccessTokenCommand do
-  subject(:command) { instance.call({ access_token: access_token }) }
+  subject(:command) { instance.call(access_token: access_token) }
 
   let!(:instance) { described_class.new }
 
