@@ -60,6 +60,8 @@ module Pullmetry
     config.active_record.encryption.support_unencrypted_data = true
     config.active_record.encryption.extend_queries = true
 
+    config.yjit = false
+
     # Catch 404s
     config.after_initialize do |app|
       app.routes.append { match '*path', to: 'application#not_found', via: :all }
