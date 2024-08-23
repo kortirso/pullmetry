@@ -48,7 +48,7 @@ module TelegramBot
     end
 
     def bot_secret
-      @bot_secret ||= Rails.application.credentials.dig(:telegram_oauth, Rails.env.to_sym, :bot_secret)
+      @bot_secret ||= Rails.application.credentials.dig(Rails.env.to_sym, :oauth, :telegram, :bot_secret)
     end
   end
 end

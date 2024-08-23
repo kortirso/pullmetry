@@ -32,9 +32,9 @@ module Companies
 
     def find_available_companies
       @available_companies =
-        Current.user.companies
+        current_user.companies
           .or(
-            Company.where(id: Current.user.companies_users.write.select(:company_id))
+            Company.where(id: current_user.companies_users.write.select(:company_id))
           )
           .hashable_pluck(:title, :uuid)
     end

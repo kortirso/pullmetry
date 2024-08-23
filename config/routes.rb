@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   mount Emailbutler::Engine => '/emailbutler'
   mount Que::View::Engine => '/que_view'
 
+  mount Authkeeper::Engine => '/authkeeper'
+
   get 'auth/:provider/callback', to: 'users/omniauth_callbacks#create'
   get 'logout', to: 'users/omniauth_callbacks#destroy'
 

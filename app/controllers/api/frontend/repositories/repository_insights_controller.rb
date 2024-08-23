@@ -3,7 +3,7 @@
 module Api
   module Frontend
     module Repositories
-      class RepositoryInsightsController < Api::Frontend::BaseController
+      class RepositoryInsightsController < Api::FrontendController
         before_action :find_repository
 
         def index

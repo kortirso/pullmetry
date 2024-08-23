@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class FeedbacksController < Api::Frontend::BaseController
+    class FeedbacksController < Api::FrontendController
       include Deps[add_feedback: 'commands.add_feedback']
 
       def create

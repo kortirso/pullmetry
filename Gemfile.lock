@@ -25,6 +25,12 @@ GIT
       redis-actionpack (>= 3.0, < 8)
       redis-activesupport (>= 3.0, < 8)
 
+PATH
+  remote: engines/authkeeper
+  specs:
+    authkeeper (0.1.0)
+      rails (>= 7.1.3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -509,6 +515,7 @@ PLATFORMS
 DEPENDENCIES
   action_policy
   active_delivery
+  authkeeper!
   awesome_print
   bcrypt (~> 3.1)
   bootsnap (>= 1.4.4)

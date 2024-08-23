@@ -1,7 +1,7 @@
-<%= render PageWrappers::UserComponent.new do %>
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Repositories</h1>
-    <% if allowed_to?(:create_repository?, Current.user) %>
+    <% if allowed_to?(:create_repository?, current_user) %>
       <%=
         react_component 'RepositoryForm',
           company_uuid: @company&.uuid,
@@ -10,7 +10,7 @@
       %>
     <% end %>
   </div>
-  <% if @repositories.any? { |repository| repository.company.user_id == Current.user.id && !repository.accessable } %>
+  <% if @repositories.any? { |repository| repository.company.user_id == current_user.id && !repository.accessable } %>
     <div class="badge mb-4 p-4">
       <p>One of your repository has access error because of invalid access token permissions.</p>
       <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>

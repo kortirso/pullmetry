@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class InsightsController < Api::Frontend::BaseController
+    class InsightsController < Api::FrontendController
       before_action :find_insightable
 
       def index

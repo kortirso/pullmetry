@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class CompaniesController < Api::Frontend::BaseController
+    class CompaniesController < Api::FrontendController
       include Deps[add_company: 'commands.add_company']
 
       def create

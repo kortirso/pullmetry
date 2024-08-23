@@ -1,5 +1,5 @@
 <div class="py-6 px-8">
-  <%= form_with model: Current.user, url: profile_path, method: :patch do |form| %>
+  <%= form_with model: current_user, url: profile_path, method: :patch do |form| %>
     <div class="grid lg:grid-cols-2 gap-8">
       <div>
         <%=
@@ -7,7 +7,7 @@
             form: form,
             label: 'Use work time',
             field: :use_work_time,
-            checked: Current.user.with_work_time?
+            checked: current_user.with_work_time?
           )
         %>
         <div class="flex flex-col sm:flex-row mt-4">

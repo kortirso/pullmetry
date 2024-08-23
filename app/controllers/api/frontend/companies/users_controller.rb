@@ -3,7 +3,7 @@
 module Api
   module Frontend
     module Companies
-      class UsersController < Api::Frontend::BaseController
+      class UsersController < Api::FrontendController
         before_action :find_companies_user, only: %i[destroy]
 
         def destroy

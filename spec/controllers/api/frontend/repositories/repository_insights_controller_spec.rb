@@ -6,7 +6,8 @@ describe Api::Frontend::Repositories::RepositoryInsightsController do
       let!(:company) { create :company, configuration: { insight_ratio: true } }
       let!(:repository) { create :repository, company: company }
       let!(:user) { create :user }
-      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+      let!(:users_session) { create :users_session, user: user }
+      let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
       before do
         create :subscription, user: user
@@ -18,7 +19,7 @@ describe Api::Frontend::Repositories::RepositoryInsightsController do
         before { company.update!(user: user) }
 
         it 'returns data', :aggregate_failures do
-          get :index, params: { repository_id: repository.uuid, auth_token: access_token }
+          get :index, params: { repository_id: repository.uuid, pullmetry_access_token: access_token }
 
           response_values = response.parsed_body.dig('insight', 'values')
 

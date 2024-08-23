@@ -1,4 +1,4 @@
-<%= render PageWrappers::UserComponent.new do %>
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <h1 class="mb-8">Edit configuration</h1>
   <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
     <%=

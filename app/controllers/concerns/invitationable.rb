@@ -11,7 +11,7 @@ module Invitationable
     invite = Invite.find_by(code: params[:invite_code], email: params[:invite_email])
     return if invite.blank?
 
-    Current.user ? accept_invite(Current.user, invite.uuid) : save_invite_cookies(invite)
+    current_user ? accept_invite(current_user, invite.uuid) : save_invite_cookies(invite)
   end
 
   # rubocop: disable Metrics/AbcSize, Metrics/CyclomaticComplexity

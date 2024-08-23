@@ -2,7 +2,8 @@
 
 describe Api::Frontend::WebhooksController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'POST#create' do
     context 'for logged users' do
@@ -12,7 +13,7 @@ describe Api::Frontend::WebhooksController do
       context 'for invalid company' do
         let(:request) {
           post :create, params: {
-            company_id: company.uuid, webhook: { source: 'custom', url: '' }, auth_token: access_token
+            company_id: company.uuid, webhook: { source: 'custom', url: '' }, pullmetry_access_token: access_token
           }
         }
 
@@ -29,7 +30,7 @@ describe Api::Frontend::WebhooksController do
         context 'for invalid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, webhook: { source: 'custom', url: '' }, auth_token: access_token
+              company_id: company.uuid, webhook: { source: 'custom', url: '' }, pullmetry_access_token: access_token
             }
           }
 
@@ -43,7 +44,7 @@ describe Api::Frontend::WebhooksController do
         context 'for unexisting source' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, webhook: { source: 'unexisting', url: '1123' }, auth_token: access_token
+              company_id: company.uuid, webhook: { source: 'unexisting', url: '1123' }, pullmetry_access_token: access_token
             }
           }
 
@@ -59,7 +60,7 @@ describe Api::Frontend::WebhooksController do
         context 'for invalid url format' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, webhook: { source: 'slack', url: '1123' }, auth_token: access_token
+              company_id: company.uuid, webhook: { source: 'slack', url: '1123' }, pullmetry_access_token: access_token
             }
           }
 
@@ -73,7 +74,7 @@ describe Api::Frontend::WebhooksController do
         context 'for invalid custom url format' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, webhook: { source: 'custom', url: '1123' }, auth_token: access_token
+              company_id: company.uuid, webhook: { source: 'custom', url: '1123' }, pullmetry_access_token: access_token
             }
           }
 
@@ -89,7 +90,7 @@ describe Api::Frontend::WebhooksController do
             post :create, params: {
               company_id: company.uuid,
               webhook: { source: 'slack', url: 'https://hooks.slack.com/services/url' },
-              auth_token: access_token
+              pullmetry_access_token: access_token
             }
           }
 
@@ -127,7 +128,7 @@ describe Api::Frontend::WebhooksController do
             post :create, params: {
               company_id: company.uuid,
               webhook: { source: 'custom', url: 'https://hooks.slack.com/services/url' },
-              auth_token: access_token
+              pullmetry_access_token: access_token
             }
           }
 
@@ -146,7 +147,7 @@ describe Api::Frontend::WebhooksController do
 
     context 'for logged users' do
       let!(:webhook) { create :webhook, source: Webhook::SLACK }
-      let(:request) { delete :destroy, params: { id: webhook.uuid, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: webhook.uuid, pullmetry_access_token: access_token } }
 
       context 'for not user webhook' do
         it 'does not destroy webhook', :aggregate_failures do

@@ -20,12 +20,10 @@ module Import
 
       def update_repository(repository)
         # commento: repositories.synced_at, repositories.pull_requests_count
-        update_service.call(
+        change_repository.call(
           repository: repository,
-          params: {
-            synced_at: DateTime.now,
-            pull_requests_count: repository.pull_requests.actual(repository.find_fetch_period).count
-          }
+          synced_at: DateTime.now,
+          pull_requests_count: repository.pull_requests.actual(repository.find_fetch_period).count
         )
       end
 

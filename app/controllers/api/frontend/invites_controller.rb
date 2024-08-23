@@ -2,7 +2,7 @@
 
 module Api
   module Frontend
-    class InvitesController < Api::Frontend::BaseController
+    class InvitesController < Api::FrontendController
       include Deps[add_invite: 'commands.add_invite']
 
       before_action :find_inviteable, only: %i[create]

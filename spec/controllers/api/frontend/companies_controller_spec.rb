@@ -5,10 +5,11 @@ describe Api::Frontend::CompaniesController do
     context 'for logged users' do
       let!(:user) { create :user }
       let!(:another_user) { create :user }
-      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+      let!(:users_session) { create :users_session, user: user }
+      let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
       context 'for invalid params' do
-        let(:request) { post :create, params: { company: { title: '' }, auth_token: access_token } }
+        let(:request) { post :create, params: { company: { title: '' }, pullmetry_access_token: access_token } }
 
         it 'does not create company', :aggregate_failures do
           expect { request }.not_to change(Company, :count)
@@ -18,7 +19,7 @@ describe Api::Frontend::CompaniesController do
       end
 
       context 'for valid params' do
-        let(:request) { post :create, params: { company: { title: 'Title' }, auth_token: access_token } }
+        let(:request) { post :create, params: { company: { title: 'Title' }, pullmetry_access_token: access_token } }
 
         it 'creates company', :aggregate_failures do
           expect { request }.to change(user.companies, :count).by(1)
@@ -29,7 +30,7 @@ describe Api::Frontend::CompaniesController do
         context 'for external account' do
           let(:request) {
             post :create, params: {
-              company: { title: 'Title', user_uuid: another_user.uuid }, auth_token: access_token
+              company: { title: 'Title', user_uuid: another_user.uuid }, pullmetry_access_token: access_token
             }
           }
 

@@ -95,5 +95,8 @@ jobs:
           RAILS_ENV=test bundle exec rails db:create
           RAILS_ENV=test bundle exec rails db:schema:load
 
+      - name: Precompile assets
+        run: bundle exec rails assets:precompile
+
       - name: Run all tests
         run: bundle exec rspec

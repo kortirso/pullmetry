@@ -2,7 +2,8 @@
 
 describe Api::Frontend::IgnoresController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'POST#create' do
     context 'for logged users' do
@@ -11,7 +12,7 @@ describe Api::Frontend::IgnoresController do
 
       context 'for invalid company' do
         let(:request) {
-          post :create, params: { company_id: company.uuid, ignore: { entity_value: '' }, auth_token: access_token }
+          post :create, params: { company_id: company.uuid, ignore: { entity_value: '' }, pullmetry_access_token: access_token }
         }
 
         before { company.update!(user: another_user) }
@@ -26,7 +27,7 @@ describe Api::Frontend::IgnoresController do
       context 'for valid company' do
         context 'for invalid params' do
           let(:request) {
-            post :create, params: { company_id: company.uuid, ignore: { entity_value: '' }, auth_token: access_token }
+            post :create, params: { company_id: company.uuid, ignore: { entity_value: '' }, pullmetry_access_token: access_token }
           }
 
           it 'does not create ignore', :aggregate_failures do
@@ -39,7 +40,7 @@ describe Api::Frontend::IgnoresController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, ignore: { entity_value: 'value' }, auth_token: access_token
+              company_id: company.uuid, ignore: { entity_value: 'value' }, pullmetry_access_token: access_token
             }
           }
 
@@ -58,7 +59,7 @@ describe Api::Frontend::IgnoresController do
 
     context 'for logged users' do
       let!(:ignore) { create :ignore }
-      let(:request) { delete :destroy, params: { id: ignore.uuid, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: ignore.uuid, pullmetry_access_token: access_token } }
 
       context 'for not user ignore' do
         it 'does not destroy ignore', :aggregate_failures do

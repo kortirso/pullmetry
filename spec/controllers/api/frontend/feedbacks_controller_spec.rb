@@ -12,10 +12,11 @@ describe Api::Frontend::FeedbacksController do
 
     context 'for logged users' do
       let!(:user) { create :user }
-      let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+      let!(:users_session) { create :users_session, user: user }
+      let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
       context 'for invalid params' do
-        let(:request) { post :create, params: { feedback: { title: '', description: '' }, auth_token: access_token } }
+        let(:request) { post :create, params: { feedback: { title: '', description: '' }, pullmetry_access_token: access_token } }
 
         it 'does not create feedback', :aggregate_failures do
           expect { request }.not_to change(Feedback, :count)
@@ -26,7 +27,7 @@ describe Api::Frontend::FeedbacksController do
 
       context 'for valid params' do
         let(:request) {
-          post :create, params: { feedback: { title: 'Title', description: 'Text' }, auth_token: access_token }
+          post :create, params: { feedback: { title: 'Title', description: 'Text' }, pullmetry_access_token: access_token }
         }
 
         it 'creates feedback', :aggregate_failures do

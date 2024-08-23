@@ -2,14 +2,14 @@
 
 module Api
   module Frontend
-    class VacationsController < Api::Frontend::BaseController
-      include Deps[create_form: 'forms.vacations.create']
+    class VacationsController < Api::FrontendController
+      include Deps[add_vacation: 'commands.add_vacation']
 
       before_action :find_vacation, only: %i[destroy]
 
       def create
         # commento: vacations.start_time, vacations.end_time
-        case create_form.call(user: current_user, params: vacation_params)
+        case add_vacation.call(vacation_params.merge(user: current_user))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }
           render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
@@ -34,7 +34,7 @@ module Api
       end
 
       def vacation_params
-        params.require(:vacation).permit(:start_time, :end_time)
+        params.require(:vacation).permit(:start_time, :end_time).to_h
       end
     end
   end

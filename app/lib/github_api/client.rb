@@ -2,8 +2,6 @@
 
 module GithubApi
   class Client < HttpService::Client
-    include Requests::User
-    include Requests::UserEmails
     include Requests::PullRequests
     include Requests::PullRequestComments
     include Requests::PullRequestReviews

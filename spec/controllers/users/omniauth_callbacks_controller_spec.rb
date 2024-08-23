@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 describe Users::OmniauthCallbacksController do
+  let(:configuration) { Authkeeper::Configuration.new }
+
+  before do
+    allow(Authkeeper).to receive_messages(configuration: configuration)
+
+    configuration.omniauth_providers = %w[github gitlab telegram google]
+    configuration.access_token_name = :pullmetry_access_token
+  end
+
   describe 'POST#create' do
     let(:code) { nil }
     let(:request) { post :create, params: { provider: provider, code: code } }
@@ -28,7 +37,7 @@ describe Users::OmniauthCallbacksController do
         let(:code) { 'code' }
 
         before do
-          allow(Pullmetry::Container.resolve('services.auth.providers.github')).to(
+          allow(Authkeeper::Container.resolve('services.providers.github')).to(
             receive(:call).and_return(github_auth_result)
           )
         end
@@ -73,8 +82,43 @@ describe Users::OmniauthCallbacksController do
               end
 
               it 'redirects to companies path', :aggregate_failures do
-                expect { request }.to change(User, :count).by(1)
+                expect { request }.to(
+                  change(User, :count).by(1)
+                    .and(change(Identity, :count).by(1))
+                )
                 expect(response).to redirect_to companies_path
+              end
+
+              context 'for existed user without identity' do
+                let!(:user) { create :user, email: auth_payload[:email] }
+
+                it 'does not create new User' do
+                  expect { request }.not_to change(User, :count)
+                end
+
+                it 'new Identity has params from oauth and belongs to existed user', :aggregate_failures do
+                  expect { request }.to change(Identity, :count).by(1)
+
+                  identity = Identity.last
+
+                  expect(identity.uid).to eq auth_payload[:uid]
+                  expect(identity.provider).to eq auth_payload[:provider]
+                  expect(identity.user).to eq user
+                end
+              end
+
+              context 'for existed user with identity' do
+                let!(:user) { create :user, email: auth_payload[:email] }
+
+                before { create :identity, uid: auth_payload[:uid], user: user }
+
+                it 'does not create new User', :aggregate_failures do
+                  expect { request }.not_to change(User, :count)
+                end
+
+                it 'does not create new Identity' do
+                  expect { request }.not_to change(Identity, :count)
+                end
               end
 
               context 'with invite uuid in session' do
@@ -149,7 +193,7 @@ describe Users::OmniauthCallbacksController do
         let(:code) { 'code' }
 
         before do
-          allow(Pullmetry::Container.resolve('services.auth.providers.gitlab')).to(
+          allow(Authkeeper::Container.resolve('services.providers.gitlab')).to(
             receive(:call).and_return(github_auth_result)
           )
         end
@@ -255,7 +299,7 @@ describe Users::OmniauthCallbacksController do
         let(:id) { 'id' }
 
         before do
-          allow(Pullmetry::Container.resolve('services.auth.providers.telegram')).to(
+          allow(Authkeeper::Container.resolve('services.providers.telegram')).to(
             receive(:call).and_return(telegram_auth_result)
           )
         end
@@ -325,7 +369,7 @@ describe Users::OmniauthCallbacksController do
         let(:code) { 'code' }
 
         before do
-          allow(Pullmetry::Container.resolve('services.auth.providers.google')).to(
+          allow(Authkeeper::Container.resolve('services.providers.google')).to(
             receive(:call).and_return(google_auth_result)
           )
         end

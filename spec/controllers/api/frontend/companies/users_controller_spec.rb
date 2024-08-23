@@ -2,7 +2,8 @@
 
 describe Api::Frontend::Companies::UsersController do
   let!(:user) { create :user }
-  let(:access_token) { Auth::GenerateTokenService.new.call(user: user)[:result] }
+  let!(:users_session) { create :users_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
 
   describe 'DELETE#destroy' do
     it_behaves_like 'required frontend auth'
@@ -10,7 +11,7 @@ describe Api::Frontend::Companies::UsersController do
     context 'for logged users' do
       let!(:company) { create :company }
       let!(:companies_user) { create :companies_user }
-      let(:request) { delete :destroy, params: { id: companies_user.uuid, auth_token: access_token } }
+      let(:request) { delete :destroy, params: { id: companies_user.uuid, pullmetry_access_token: access_token } }
 
       context 'for company invite' do
         before { companies_user.invite.update!(inviteable: company) }
