@@ -5,7 +5,7 @@
   <div class="flex flex-wrap grid-x gap-8 mb-8 sm:mb-0">
     <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer">Support in Telegram</a>
     <% if current_user %>
-      <%= react_component 'FeedbackForm', email: current_user.email, children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
+      <%= js_component 'FeedbackForm', email: current_user.email, children: ("<span class='cursor-pointer'>Feedback</span>").html_safe %>
     <% end %>
     <%= link_to 'Metrics', metrics_path, data: { 'test-id' => 'footer-metrics-link' } %>
     <a href="/api-docs" rel="noopener noreferrer">API docs</a>

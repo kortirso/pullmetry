@@ -1,99 +1,14 @@
-import React, { useState } from 'react';
+export function FeedbackForm(props) {
 
-import { Modal, Checkbox } from '../../atoms';
-import { apiRequest, csrfToken } from '../../helpers';
-
-export const FeedbackForm = ({ email, children }) => {
-  const [pageState, setPageState] = useState({
-    isOpen: false,
-    title: '',
-    description: '',
-    answerable: false,
-    email: '',
-    errors: []
-  });
-
-  const onSubmit = async () => {
-    const result = await apiRequest({
-      url: '/api/frontend/feedback.json',
-      options: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken(),
-        },
-        body: JSON.stringify({
-          feedback: {
-            title: pageState.title,
-            description: pageState.description,
-            answerable: pageState.answerable,
-            email: pageState.email
-          }
-        }),
-      },
-    });
-
-    if (result.errors) setPageState({ ...pageState, errors: result.errors })
-    else setPageState({ ...pageState, isOpen: false });
-  };
+  console.log('props');
+  console.log(props.children);
 
   return (
     <>
       <div
-        dangerouslySetInnerHTML={{ __html: children }}
-        onClick={() => setPageState({ ...pageState, isOpen: true })}
+        dangerouslySetInnerHTML={{ __html: props.children }}
       ></div>
-      <Modal
-        show={pageState.isOpen}
-        onClose={() => setPageState({ ...pageState, isOpen: false })}
-      >
-        <h1 className="mb-8">New feedback</h1>
-        <p className="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" className="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" className="simple-link">Telegram</a> or just leave here.</p>
-        <section className="inline-block w-full">
-          <div className="form-field">
-            <label className="form-label">Title</label>
-            <input
-              className="form-value w-full"
-              value={pageState.title}
-              onChange={(e) => setPageState({ ...pageState, title: e.target.value })}
-            />
-          </div>
-          <div className="form-field">
-            <p className="flex flex-row">
-              <label className="form-label">Description</label>
-              <sup className="leading-4">*</sup>
-            </p>
-            <textarea
-              rows="7"
-              className="form-value w-full"
-              value={pageState.description}
-              onChange={(e) => setPageState({ ...pageState, description: e.target.value })}
-            />
-          </div>
-          <div className="form-field">
-            <Checkbox
-              labelValue="Can answer by email?"
-              checked={pageState.answerable}
-              onEnable={() => setPageState({ ...pageState, answerable: true })}
-              onDisable={() => setPageState({ ...pageState, answerable: false })}
-            />
-          </div>
-          <div className="form-field">
-            <label className="form-label">Email for answer</label>
-            <input
-              disabled={!pageState.answerable}
-              className="form-value w-full"
-              placeholder={email}
-              value={pageState.email}
-              onChange={(e) => setPageState({ ...pageState, email: e.target.value })}
-            />
-          </div>
-          {pageState.errors.length > 0 ? (
-            <p className="text-sm text-orange-600">{pageState.errors[0]}</p>
-          ) : null}
-          <p className="btn-primary mt-4" onClick={onSubmit}>Send feedback</p>
-        </section>
-      </Modal>
+      <p>123</p>
     </>
   );
 };
