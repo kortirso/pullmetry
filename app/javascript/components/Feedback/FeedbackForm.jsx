@@ -1,14 +1,7 @@
-export function FeedbackForm(props) {
-
-  console.log('props');
-  console.log(props.children);
-
+export const FeedbackForm = (props) => {
   return (
     <>
-      <div
-        dangerouslySetInnerHTML={{ __html: props.children }}
-      ></div>
-      <p>123</p>
+      <div innerHTML={props.children}></div>
     </>
   );
 };

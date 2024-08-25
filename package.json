@@ -2,26 +2,20 @@
   "name": "pullkeeper",
   "private": "false",
   "scripts": {
-    "build": "esbuild app/javascript/application.jsx --bundle --minify --sourcemap --outdir=app/assets/builds",
+    "start": "node esbuild.config.js",
     "format": "prettier --write 'app/javascript/**/*.{js,jsx,json}'",
     "lint": "eslint -c .eslintrc.json app/javascript --ext .js,.jsx"
   },
   "dependencies": {
-    "esbuild": "^0.20.0",
     "solid-js": "^1.8.21"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "babel-preset-solid": "^1.8.19",
     "cypress": "^13.6.4",
     "cypress-on-rails": "^0.1.0",
-    "eslint": "^8.47.0",
+    "esbuild": "^0.23.0",
+    "esbuild-plugin-solid": "^0.6.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.2"
-  },
-  "babel": {
-    "presets": [
-      "solid"
-    ]
+    "prettier": "^3.3.0"
   }
 }
