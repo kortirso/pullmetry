@@ -1,10 +1,12 @@
 import { render } from 'solid-js/web';
 
 import {
+  CompanyForm,
   FeedbackForm
 } from './components';
 
 const components = {
+  CompanyForm,
   FeedbackForm
 };
 
