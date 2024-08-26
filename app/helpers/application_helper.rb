@@ -12,8 +12,8 @@ module ApplicationHelper
       data: {
         js_component: component_name,
         props: props.except(:component_id, :component_class, :children).to_json,
-        children: props[:children]&.to_json || ''
-      }
+        children: props[:children]&.to_json
+      }.compact
     ) { '' }
   end
 end

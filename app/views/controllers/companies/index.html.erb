@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Companies</h1>
     <%=
-      react_component 'CompanyForm',
+      js_component 'CompanyForm',
         accountsForCompanies: @accounts_for_companies,
         accountUuid: current_user.uuid
     %>
@@ -17,7 +17,7 @@
   <section>
     <% @companies.each do |company| %>
       <%=
-        react_component 'Company',
+        js_component 'Company',
           uuid: company.uuid,
           title: company.title,
           repositories_count: company.repositories.size,

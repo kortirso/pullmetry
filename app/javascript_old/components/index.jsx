@@ -1,7 +1,6 @@
 export * from './Company/Company';
 export * from './Company/CompanyForm';
 export * from './Company/CompanyConfiguration';
-export * from './Feedback/FeedbackForm';
 export * from './Insights/Insights';
 export * from './Insights/RepositoryInsights';
 export * from './Repository/Repository';
