@@ -1,2 +1,2 @@
-export * from './Company/CompanyForm';
-export * from './Feedback/FeedbackForm';
+export * from './compounds/Company/CompanyForm';
+export * from './compounds/Feedback/FeedbackForm';

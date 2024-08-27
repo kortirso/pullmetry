@@ -1,6 +1,6 @@
-import { apiRequest, csrfToken } from '../../../helpers';
+import { apiRequest, csrfToken } from '../../../../helpers';
 
-export const createCompanyRequest = async ({ title, user_uuid }) => {
+export const createCompanyRequest = async (payload) => {
   return await apiRequest({
     url: '/api/frontend/companies.json',
     options: {
@@ -9,7 +9,7 @@ export const createCompanyRequest = async ({ title, user_uuid }) => {
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken(),
       },
-      body: JSON.stringify({ company: { title: title, user_uuid: user_uuid } }),
+      body: JSON.stringify({ company: payload }),
     },
   });
 };

@@ -2,7 +2,8 @@ import { createSignal } from 'solid-js';
 
 import { createModal, Checkbox } from '../../atoms';
 import { FormInputField, FormDescriptionField } from '../../molecules';
-import { apiRequest, csrfToken } from '../../helpers';
+
+import { createFeedbackRequest } from './requests/createFeedbackRequest';
 
 export const FeedbackForm = (props) => {
   const { Modal, openModal, closeModal } = createModal();
@@ -21,23 +22,11 @@ export const FeedbackForm = (props) => {
       return;
     }
 
-    const result = await apiRequest({
-      url: '/api/frontend/feedback.json',
-      options: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken(),
-        },
-        body: JSON.stringify({
-          feedback: {
-            title: pageState().title,
-            description: pageState().description,
-            answerable: pageState().answerable,
-            email: pageState().email
-          }
-        }),
-      },
+    const result = createFeedbackRequest({
+      title: pageState().title,
+      description: pageState().description,
+      answerable: pageState().answerable,
+      email: pageState().email
     });
 
     if (result.errors) setPageState({ ...pageState(), errors: result.errors })
