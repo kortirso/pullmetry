@@ -1,7 +1,7 @@
 import { FormLabel, FormTextArea } from '../atoms';
 
 export const FormDescriptionField = (props) => (
-  <div className="form-field">
+  <div class="form-field">
     {props.labelText ? (
       <FormLabel required={props.required} value={props.labelText} />
     ) : null}

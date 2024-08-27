@@ -15,11 +15,11 @@ export const createModal = () => {
       return (
         <Portal>
           <Show when={isOpen()}>
-            <div className="fixed top-0 left-0 w-full h-full z-50 bg-stone-700/75 flex items-center justify-center">
-              <div className="modal">
-                <div className="modal-content">
+            <div class="fixed top-0 left-0 w-full h-full z-50 bg-stone-700/75 flex items-center justify-center">
+              <div class="modal">
+                <div class="modal-content">
                   <button
-                    className="btn-primary btn-small absolute top-4 right-4 px-3 rounded z-10"
+                    class="btn-primary btn-small absolute top-4 right-4 px-3 rounded z-10"
                     onClick={() => setIsOpen(false)}
                   >
                     X

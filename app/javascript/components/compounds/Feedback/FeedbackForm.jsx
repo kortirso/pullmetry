@@ -37,11 +37,11 @@ export const FeedbackForm = (props) => {
 
   return (
     <>
-      <button className={`cursor-pointer ${props.class_list}`} onClick={openModal}>Feedback</button>
+      <button class={`cursor-pointer ${props.class_list}`} onClick={openModal}>Feedback</button>
       <Modal>
-        <h1 className="mb-8">New feedback</h1>
-        <p className="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" className="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" className="simple-link">Telegram</a> or just leave here.</p>
-        <section className="inline-block w-full">
+        <h1 class="mb-8">New feedback</h1>
+        <p class="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" class="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" class="simple-link">Telegram</a> or just leave here.</p>
+        <section class="inline-block w-full">
           <FormInputField
             labelText="Title"
             onChange={(value) => setPageState({ ...pageState(), title: value })}
@@ -51,7 +51,7 @@ export const FeedbackForm = (props) => {
             labelText="Title"
             onChange={(value) => setPageState({ ...pageState(), description: value })}
           />
-          <div className="form-field">
+          <div class="form-field">
             <Checkbox
               left
               labelText="Can answer by email?"
@@ -66,9 +66,9 @@ export const FeedbackForm = (props) => {
             onChange={(value) => setPageState({ ...pageState(), email: value })}
           />
           {pageState().errors.length > 0 ? (
-            <p className="text-sm text-orange-600">{pageState().errors[0]}</p>
+            <p class="text-sm text-orange-600">{pageState().errors[0]}</p>
           ) : null}
-          <button className="btn-primary mt-4" onClick={onSubmit}>Send feedback</button>
+          <button class="btn-primary mt-4" onClick={onSubmit}>Send feedback</button>
         </section>
       </Modal>
     </>

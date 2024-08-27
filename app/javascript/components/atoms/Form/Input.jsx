@@ -1,6 +1,6 @@
 export const FormInput = (props) => (
   <input
-    className="form-value w-full"
+    class="form-value w-full"
     required={props.required}
     disabled={props.disabled}
     placeholder={props.placeholder}
