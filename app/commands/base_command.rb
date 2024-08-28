@@ -12,7 +12,7 @@ class BaseCommand
     return { errors: errors } if errors.present?
 
     do_prepare(input)
-      .then { |input| do_persist(input) }
+    do_persist(input)
   end
 
   private

@@ -4,7 +4,7 @@ import globals from 'globals';
 
 export default [
   {
-    files: ["app/javascript/**/*.jsx", "app/javascript/**/*.js"],
+    files: ['app/javascript/**/*.jsx', 'app/javascript/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.document,

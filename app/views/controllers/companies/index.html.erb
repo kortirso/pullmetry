@@ -3,8 +3,8 @@
     <h1 class="m-0">Companies</h1>
     <%=
       js_component 'CompanyForm',
-        accountsForCompanies: @accounts_for_companies,
-        accountUuid: current_user.uuid
+        accounts_for_companies: @accounts_for_companies,
+        account_uuid: current_user.uuid
     %>
   </div>
   <% if @companies.any? { |company| company.user_id == current_user.id && !company.accessable } %>

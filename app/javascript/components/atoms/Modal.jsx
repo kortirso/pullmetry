@@ -1,5 +1,5 @@
 import { Portal } from 'solid-js/web';
-import { createSignal, Show } from 'solid-js';
+import { createSignal, Show, children } from 'solid-js';
 
 export const createModal = () => {
   const [isOpen, setIsOpen] = createSignal(false);
@@ -12,6 +12,8 @@ export const createModal = () => {
       setIsOpen(false);
     },
     Modal(props) {
+      const safeChildren = children(() => props.children);
+
       return (
         <Portal>
           <Show when={isOpen()}>
@@ -24,7 +26,7 @@ export const createModal = () => {
                   >
                     X
                   </button>
-                  {props.children}
+                  {safeChildren()}
                 </div>
               </div>
             </div>

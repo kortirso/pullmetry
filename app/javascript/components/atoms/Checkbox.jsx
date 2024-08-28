@@ -1,8 +1,10 @@
+import { Show } from 'solid-js';
+
 export const Checkbox = (props) => (
   <div class="flex items-center" onClick={() => props.onToggle()}>
-    {props.labelText && props.left ? (
+    <Show when={props.labelText && props.left}>
       <label class="mr-2 cursor-pointer">{props.labelText}</label>
-    ) : null}
+    </Show>
     <div class="toggle">
       <input
         checked={props.value}
@@ -12,8 +14,8 @@ export const Checkbox = (props) => (
       />
       <label class="toggle-label" />
     </div>
-    {props.labelText && props.right ? (
+    <Show when={props.labelText && props.right}>
       <label class="ml-2 cursor-pointer">{props.labelText}</label>
-    ) : null}
+    </Show>
   </div>
 );

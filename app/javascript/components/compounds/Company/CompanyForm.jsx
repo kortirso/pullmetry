@@ -1,4 +1,5 @@
-import { createSignal } from 'solid-js';
+import { createSignal, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
 
 import { createModal } from '../../atoms';
 import { FormInputField } from '../../molecules';
@@ -8,20 +9,21 @@ import { createCompanyRequest } from './requests/createCompanyRequest';
 export const CompanyForm = (props) => {
   const { Modal, openModal } = createModal();
 
-  const [pageState, setPageState] = createSignal({
-    title: '',
-    errors: []
+  const [formErrors, setFormErrors] = createSignal([]);
+
+  const [formStore, setFormStore] = createStore({
+    title: ''
   });
 
   const onSubmit = async () => {
-    if (pageState().title.length === 0) {
-      setPageState({ ...pageState(), errors: ['Title is required'] });
+    if (formStore.title.length === 0) {
+      setFormErrors(['Title is required']);
       return;
     }
 
-    const result = createCompanyRequest({ title: pageState().title, user_uuid: props.accountUuid });
+    const result = createCompanyRequest({ ...formStore, user_uuid: props.accountUuid });
 
-    if (result.errors) setPageState({ ...pageState(), errors: result.errors })
+    if (result.errors) setFormErrors(result.errors);
     else window.location = result.redirect_path;
   };
 
@@ -37,11 +39,11 @@ export const CompanyForm = (props) => {
             required
             placeholder="Company's title"
             labelText="Title"
-            onChange={(value) => setPageState({ ...pageState(), title: value })}
+            onChange={(value) => setFormStore('title', value)}
           />
-          {pageState().errors.length > 0 ? (
-            <p class="text-sm text-orange-600">{pageState().errors[0]}</p>
-          ) : null}
+          <Show when={formErrors().length > 0}>
+            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
+          </Show>
           <button class="btn-primary mt-4" onClick={onSubmit}>Save company</button>
         </section>
       </Modal>

@@ -1,6 +1,6 @@
-const path = require('path');
-const { context } = require('esbuild');
-const { solidPlugin } = require('esbuild-plugin-solid');
+import path from 'path';
+import { context } from 'esbuild';
+import { solidPlugin } from 'esbuild-plugin-solid';
 
 async function build() {
   let ctx = await context({

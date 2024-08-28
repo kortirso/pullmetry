@@ -5,11 +5,16 @@ class AddFeedbackCommand < BaseCommand
     params do
       required(:user).filled(type?: User)
       required(:description).filled(:string)
+      optional(:answerable).filled(:bool)
       optional(:email)
     end
   end
 
   private
+
+  def do_prepare(input)
+    input.delete(:email) unless input[:answerable]
+  end
 
   def do_persist(input)
     feedback = Feedback.create!(input)

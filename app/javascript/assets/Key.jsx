@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Key = () => (
   <svg
     viewBox="0 0 25 25"
@@ -14,27 +12,27 @@ export const Key = () => (
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-    ></path>
+    />
     <path
       d="M8 19.32L6 17.32"
       stroke="#000000"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-    ></path>
+    />
     <path
       d="M5 22.32L3 20.32"
       stroke="#000000"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-    ></path>
+    />
     <path
       d="M3 20.32L10.76 12.56"
       stroke="#000000"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-    ></path>
+    />
   </svg>
 );

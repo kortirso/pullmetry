@@ -1,10 +1,12 @@
+import { Show } from 'solid-js';
+
 import { FormLabel, FormTextArea } from '../atoms';
 
 export const FormDescriptionField = (props) => (
   <div class="form-field">
-    {props.labelText ? (
+    <Show when={props.labelText}>
       <FormLabel required={props.required} value={props.labelText} />
-    ) : null}
+    </Show>
     <FormTextArea
       required={props.required}
       onChange={(value) => props.onChange ? props.onChange(value) : null}
