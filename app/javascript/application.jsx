@@ -3,7 +3,7 @@ import { render } from 'solid-js/web';
 import {
   Company,
   CompanyForm,
-  FeedbackForm
+  FeedbackForm,
 } from './components';
 
 const components = {

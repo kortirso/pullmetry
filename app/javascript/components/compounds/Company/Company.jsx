@@ -1,6 +1,7 @@
-import { createEffect, Show, batch } from 'solid-js';
+import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
+import { DeveloperInsights } from '../../../components';
 import { Chevron, Delete, Edit, Key } from '../../../assets';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
@@ -20,12 +21,25 @@ export const Company = (props) => {
     const fetchInsights = async () => await fetchInsightsRequest(props.uuid);
 
     Promise.all([fetchInsights()]).then(([insightsData]) => {
-      batch(() => {
-        setPageState('insightTypes', insightsData.insight_fields);
-        setPageState('entities', insightsData.insights);
-        setPageState('ratioType', insightsData.ratio_type);
+      setPageState({
+        insightTypes: insightsData.insight_fields,
+        entities: insightsData.insights,
+        ratioType: insightsData.ratio_type
       });
     });
+  });
+
+  const developerInsights = createMemo(() => {
+    if (pageState.entities === undefined) return <></>;
+
+    return (
+      <DeveloperInsights
+        insightTypes={pageState.insightTypes}
+        entities={pageState.entities}
+        ratioType={pageState.ratioType}
+        mainAttribute={props.mainAttribute}
+      />
+    )
   });
 
   const toggle = () => setPageState('isExpanded', !pageState.isExpanded);
@@ -35,27 +49,6 @@ export const Company = (props) => {
   //   event.stopPropagation();
 
   //   if (window.confirm('Are you sure you wish to delete company?')) form.current.submit();
-  // };
-
-  // const renderInsightsData = () => {
-  //   if (pageState.entities === undefined) return <></>;
-  //   if (pageState.entities.length === 0) return <p>There are no insights yet</p>;
-  //   if (pageState.insightTypes.length === 0) return <p>There are no selected insight attributes yet</p>;
-
-  //   return (
-  //     <>
-  //       <Insights
-  //         insightTypes={pageState.insightTypes}
-  //         entities={pageState.entities}
-  //         ratioType={pageState.ratioType}
-  //         mainAttribute={main_attribute}
-  //       />
-  //       <a
-  //         class="btn-primary btn-small mt-4"
-  //         href={`/api/frontend/companies/${uuid}/insights.pdf`}
-  //       >Download insights PDF</a>
-  //     </>
-  //   );
   // };
 
   return (
@@ -143,7 +136,27 @@ export const Company = (props) => {
         <div class="pt-4 px-8 pb-8">
           <div class="relative">
             <h3 class="absolute top-0">Developer insights</h3>
-            <div class="overflow-x-scroll pt-14" />
+            <div class="overflow-x-scroll pt-14">
+              <Switch fallback={
+                <>
+                  {developerInsights()}
+                  <a
+                    class="btn-primary btn-small mt-4"
+                    href={`/api/frontend/companies/${props.uuid}/insights.pdf`}
+                  >Download insights PDF</a>
+                </>
+              }>
+                <Match when={pageState.entities === undefined}>
+                  <></>
+                </Match>
+                <Match when={pageState.entities.length === 0}>
+                  <p>There are no insights yet</p>
+                </Match>
+                <Match when={pageState.insightTypes.length === 0}>
+                  <p>There are no selected insight attributes yet</p>
+                </Match>
+              </Switch>
+            </div>
           </div>
         </div>
       </Show>
