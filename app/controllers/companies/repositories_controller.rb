@@ -36,7 +36,8 @@ module Companies
           .or(
             Company.where(id: current_user.companies_users.write.select(:company_id))
           )
-          .hashable_pluck(:title, :uuid)
+          .pluck(:uuid, :title)
+          .to_h
     end
   end
 end

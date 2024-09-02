@@ -2,6 +2,9 @@ import { Show, For, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { Arrow } from '../../../assets';
+import { toFormattedTime } from '../../../helpers';
+
+import { valueSign, ratioClass } from './helpers/ratio';
 
 const SHORT_INSIGHT_NAMES = {
   required_reviews_count: 'Req reviews',
@@ -49,12 +52,6 @@ const REVERSE_ORDER_ATTRIBUTES = [
 ];
 const PERCENTILE_ATTRIBUTES = ['review_involving'];
 
-const SECONDS_IN_MINUTE = 60;
-const SECONDS_IN_HOUR = 3_600;
-const SECONDS_IN_DAY = 86_400;
-const MINUTES_IN_HOUR = 60;
-const HOURS_IN_DAY = 24;
-
 export const DeveloperInsights = (props) => {
   // eslint-disable-next-line solid/reactivity
   const entities = props.entities;
@@ -91,33 +88,6 @@ export const DeveloperInsights = (props) => {
         sortedEntities: sortEntities(insightType, 'desc')
       });
     };
-  };
-
-  const toTime = (value) => {
-    if (value < 60) return '1m';
-
-    const minutes = Math.floor((value / SECONDS_IN_MINUTE) % MINUTES_IN_HOUR);
-    if (value < SECONDS_IN_HOUR) return `${minutes}m`;
-
-    const hours = Math.floor((value / SECONDS_IN_HOUR) % HOURS_IN_DAY);
-    if (value < SECONDS_IN_DAY) return `${hours}h ${minutes}m`;
-
-    return `${Math.floor(value / SECONDS_IN_DAY)}d ${hours}h ${minutes}m`;
-  };
-
-  const valueSign = (value, insightType) => {
-    if (value === 0) return '';
-    if (value < 0 && REVERSE_ORDER_ATTRIBUTES.includes(insightType)) return '+';
-    if (value > 0 && !REVERSE_ORDER_ATTRIBUTES.includes(insightType)) return '+';
-
-    return '-';
-  };
-
-  const ratioClass = (value, insightType) => {
-    if (value < 0 && !REVERSE_ORDER_ATTRIBUTES.includes(insightType)) return 'text-red-500';
-    if (value > 0 && REVERSE_ORDER_ATTRIBUTES.includes(insightType)) return 'text-red-500';
-
-    return 'text-green-500';
   };
 
   return (
@@ -173,7 +143,7 @@ export const DeveloperInsights = (props) => {
                           <>{insight.value}</>
                         }>
                           <Match when={TIME_ATTRIBUTES.includes(insightType)}>
-                            <>{toTime(insight.value)}</>
+                            <>{toFormattedTime(insight.value)}</>
                           </Match>
                           <Match when={PERCENTILE_ATTRIBUTES.includes(insightType)}>
                             <>{`${insight.value}%`}</>
@@ -184,7 +154,7 @@ export const DeveloperInsights = (props) => {
                           <sup class={`${ratioClass(insight.ratio_value, insightType)} ml-1 text-xs`}>
                             {valueSign(insight.ratio_value)}
                             {props.ratioType === 'change' && TIME_ATTRIBUTES.includes(insightType)
-                              ? toTime(Math.abs(insight.ratio_value))
+                              ? toFormattedTime(Math.abs(insight.ratio_value))
                               : Math.abs(insight.ratio_value)}
                             {props.ratioType === 'change' ? '' : '%'}
                           </sup>

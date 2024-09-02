@@ -4,6 +4,7 @@ import {
   Company,
   CompanyForm,
   FeedbackForm,
+  Repository,
   RepositoryForm
 } from './components';
 
@@ -11,6 +12,7 @@ const components = {
   Company,
   CompanyForm,
   FeedbackForm,
+  Repository,
   RepositoryForm
 };
 
