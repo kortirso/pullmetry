@@ -4,12 +4,14 @@ import {
   Company,
   CompanyForm,
   FeedbackForm,
+  RepositoryForm
 } from './components';
 
 const components = {
   Company,
   CompanyForm,
-  FeedbackForm
+  FeedbackForm,
+  RepositoryForm
 };
 
 document.addEventListener('DOMContentLoaded', () => {

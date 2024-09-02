@@ -21,7 +21,7 @@ export const CompanyForm = (props) => {
       return;
     }
 
-    const result = createCompanyRequest({ ...formStore, user_uuid: props.accountUuid });
+    const result = await createCompanyRequest({ ...formStore, userUuid: props.accountUuid });
 
     if (result.errors) setFormErrors(result.errors);
     else window.location = result.redirect_path;

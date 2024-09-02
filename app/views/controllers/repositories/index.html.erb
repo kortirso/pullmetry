@@ -3,10 +3,10 @@
     <h1 class="m-0">Repositories</h1>
     <% if allowed_to?(:create_repository?, current_user) %>
       <%=
-        react_component 'RepositoryForm',
+        js_component 'RepositoryForm',
           company_uuid: @company&.uuid,
           companies: @available_companies,
-          providers: Repository.providers.map { |key, _| [key.capitalize, key] }
+          providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
       %>
     <% end %>
   </div>
@@ -20,7 +20,7 @@
   <section>
     <% @repositories.each do |repository| %>
       <%=
-        react_component 'Repository',
+        js_component 'Repository',
           uuid: repository.uuid,
           avatar_url: repository.owner_avatar_url,
           title: repository.title,
