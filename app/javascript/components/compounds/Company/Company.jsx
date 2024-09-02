@@ -7,6 +7,8 @@ import { Chevron, Delete, Edit, Key } from '../../../assets';
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
 
 export const Company = (props) => {
+  let deleteForm;
+
   const [pageState, setPageState] = createStore({
     isExpanded: false,
     insightTypes: [],
@@ -44,12 +46,12 @@ export const Company = (props) => {
 
   const toggle = () => setPageState('isExpanded', !pageState.isExpanded);
 
-  // const handleConfirm = (event) => {
-  //   event.preventDefault();
-  //   event.stopPropagation();
+  const handleConfirm = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-  //   if (window.confirm('Are you sure you wish to delete company?')) form.current.submit();
-  // };
+    if (window.confirm('Are you sure you wish to delete company?')) deleteForm.submit();
+  };
 
   return (
     <div class="mb-4 bg-white rounded border border-stone-200">
@@ -76,13 +78,18 @@ export const Company = (props) => {
               <a
                 href={props.repositoriesUrl}
                 class="badge"
+                onClick={(event) => event.stopPropagation()}
               >
                 Need to create repository
               </a>
             ) : (
               <>
                 Repositories count -{' '}
-                <a href={props.repositoriesUrl} class="underline text-orange-500">
+                <a
+                  href={props.repositoriesUrl}
+                  class="underline text-orange-500"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   {props.repositoriesCount}
                 </a>
               </>
@@ -90,12 +97,14 @@ export const Company = (props) => {
           </span>
         </div>
         <Chevron rotated={pageState.isExpanded} />
-        {props.editLinks ? (
+        <Show when={props.editLinks}>
           <div class="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
             <Show when={props.editLinks.accessToken}>
               <a
                 href={props.editLinks.accessToken}
-                class={`mr-2 ${props.editLinks.needAccessToken ? 'p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white' : ''}`}
+                class="mr-2"
+                classList={{ ['p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white']: props.editLinks.needAccessToken }}
+                onClick={(event) => event.stopPropagation()}
               >
                 <Key />
               </a>
@@ -104,33 +113,33 @@ export const Company = (props) => {
               <a
                 href={props.editLinks.configuration}
                 class="mr-2"
+                onClick={(event) => event.stopPropagation()}
               >
                 <Edit />
               </a>
             </Show>
             <Show when={props.editLinks.destroy}>
               <form
+                ref={deleteForm}
                 method="post"
                 action={props.editLinks.destroy}
                 class="w-6 h-6"
+                onSubmit={(event) => handleConfirm(event)}
               >
                 <input type="hidden" name="_method" value="delete" autoComplete="off" />
                 <input
                   type="hidden"
                   name="authenticity_token"
-                  value={
-                    document.querySelector("meta[name='csrf-token']")?.getAttribute('content') ||
-                    ''
-                  }
+                  value={document.querySelector("meta[name='csrf-token']")?.getAttribute('content') || ''}
                   autoComplete="off"
                 />
-                <button type="submit">
+                <button type="submit" onClick={(event) => event.stopPropagation()}>
                   <Delete />
                 </button>
               </form>
             </Show>
           </div>
-        ) : null}
+        </Show>
       </div>
       <Show when={pageState.isExpanded}>
         <div class="pt-4 px-8 pb-8">
