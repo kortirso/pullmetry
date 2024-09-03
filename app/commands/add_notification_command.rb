@@ -13,12 +13,8 @@ class AddNotificationCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_notifyable_type(input)
-    [error] if error
+  def validate_content(input)
+    validate_notifyable_type(input)
   end
 
   def do_persist(input)

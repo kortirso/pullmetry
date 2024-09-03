@@ -39,6 +39,7 @@ export const CompanyForm = (props) => {
             required
             placeholder="Company's title"
             labelText="Title"
+            value={formStore.title}
             onChange={(value) => setFormStore('title', value)}
           />
           <Show when={formErrors().length > 0}>

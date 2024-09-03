@@ -2,7 +2,6 @@
 
 class ProfilesController < ApplicationController
   include Deps[
-    update_form: 'forms.users.update',
     remove_user: 'commands.remove_user',
     jwt_encoder: 'jwt_encoder',
     to_bool: 'to_bool'
@@ -18,14 +17,6 @@ class ProfilesController < ApplicationController
   before_action :generate_order_ids, only: %i[show]
 
   def show; end
-
-  def update
-    # commento: users.work_start_time, users.work_end_time, users.work_time_zone
-    case update_form.call(user: current_user, params: user_params, use_work_time: use_work_time)
-    in { errors: errors } then redirect_to profile_path, alert: errors
-    else redirect_to profile_path
-    end
-  end
 
   def destroy
     remove_user.call(user: current_user)
@@ -45,7 +36,7 @@ class ProfilesController < ApplicationController
   end
 
   def find_used_trial_subscription
-    @used_trial_subscription = current_user.subscriptions.exists?
+    @trial_subscription_is_used = current_user.subscriptions.exists?
   end
 
   def find_end_time

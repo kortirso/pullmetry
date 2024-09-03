@@ -29,10 +29,7 @@ export const FeedbackForm = (props) => {
     if (result.errors) setFormErrors(result.errors);
     else {
       batch(() => {
-        setFormStore('title', '');
-        setFormStore('description', '');
-        setFormStore('answerable', false);
-        setFormStore('email', '');
+        setFormStore({ title: '', description: '', answerable: false, email: '' })
         setFormErrors([]);
         closeModal();
       });
@@ -48,11 +45,13 @@ export const FeedbackForm = (props) => {
         <section class="inline-block w-full">
           <FormInputField
             labelText="Title"
+            value={formStore.title}
             onChange={(value) => setFormStore('title', value)}
           />
           <FormDescriptionField
             required
             labelText="Description"
+            value={formStore.description}
             onChange={(value) => setFormStore('description', value)}
           />
           <div class="form-field">
@@ -67,6 +66,7 @@ export const FeedbackForm = (props) => {
             disabled={!formStore.answerable}
             labelText="Email for answer"
             placeholder={props.email}
+            value={formStore.email}
             onChange={(value) => setFormStore('email', value)}
           />
           <Show when={formErrors().length > 0}>

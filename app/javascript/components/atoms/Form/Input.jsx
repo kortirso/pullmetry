@@ -4,6 +4,7 @@ export const FormInput = (props) => (
     required={props.required}
     disabled={props.disabled}
     placeholder={props.placeholder}
+    value={props.value}
     onInput={(e) => props.onChange ? props.onChange(e.target.value) : null}
   />
 )

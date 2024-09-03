@@ -3,7 +3,7 @@ import { createStore } from 'solid-js/store';
 
 import { DeveloperInsights, RepositoryInsights } from '../../../components';
 import { Chevron, Delete, Github, Gitlab, Key } from '../../../assets';
-import { convertDate, convertTime } from '../../../helpers';
+import { convertDate, convertTime, csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
 import { fetchRepositoryInsightsRequest } from './requests/fetchRepositoryInsightsRequest';
@@ -28,6 +28,7 @@ export const Repository = (props) => {
     Promise.all([fetchInsights(), fetchRepositoryInsights()]).then(
       ([insightsData, repositoryInsightsData]) => {
         setPageState({
+          ...pageState,
           insightTypes: insightsData.insight_fields,
           entities: insightsData.insights,
           ratioType: insightsData.ratio_type,
@@ -150,7 +151,7 @@ export const Repository = (props) => {
                 <input
                   type="hidden"
                   name="authenticity_token"
-                  value={document.querySelector("meta[name='csrf-token']")?.getAttribute('content') || ''}
+                  value={csrfToken()}
                   autoComplete="off"
                 />
                 <button type="submit" onClick={(event) => event.stopPropagation()}>

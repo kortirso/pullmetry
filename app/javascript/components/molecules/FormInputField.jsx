@@ -11,6 +11,7 @@ export const FormInputField = (props) => (
       required={props.required}
       disabled={props.disabled}
       placeholder={props.placeholder}
+      value={props.value}
       onChange={(value) => props.onChange ? props.onChange(value) : null}
     />
   </div>

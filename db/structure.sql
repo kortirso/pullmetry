@@ -1348,7 +1348,10 @@ CREATE TABLE public.users (
     role integer DEFAULT 0 NOT NULL,
     work_start_time time without time zone,
     work_end_time time without time zone,
-    work_time_zone character varying
+    work_time_zone character varying,
+    start_time character varying,
+    end_time character varying,
+    time_zone character varying
 );
 
 
@@ -2467,6 +2470,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240903124912'),
 ('20240718070046'),
 ('20240705181734'),
 ('20240705181004'),

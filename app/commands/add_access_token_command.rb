@@ -13,17 +13,12 @@ class AddAccessTokenCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_tokenable_type(input) || validate_pat_token(input)
-    [error] if error
+  def validate_content(input)
+    validate_tokenable_type(input) || validate_pat_token(input)
   end
 
   def do_prepare(input)
     input[:expired_at] = transform_expired_at(input[:expired_at]) if input[:expired_at]
-    input
   end
 
   def do_persist(input)

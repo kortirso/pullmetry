@@ -64,12 +64,14 @@ export const RepositoryForm = (props) => {
             required
             placeholder="Repository's title"
             labelText="Title"
+            value={formStore.title}
             onChange={(value) => setFormStore('title', value)}
           />
           <FormInputField
             required
             placeholder="https://github.com/company_name/repo_name"
             labelText="Link"
+            value={formStore.link}
             onChange={(value) => setFormStore('link', value)}
           />
           <Select
@@ -81,6 +83,7 @@ export const RepositoryForm = (props) => {
           />
           <FormInputField
             labelText="External id"
+            value={formStore.externalId}
             onChange={(value) => setFormStore('externalId', value)}
           />
           <Show when={formErrors().length > 0}>

@@ -37,12 +37,8 @@ class AddRepositoryCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_existing_link(input[:company].user, input[:link])
-    [error] if error
+  def validate_content(input)
+    validate_existing_link(input[:company].user, input[:link])
   end
 
   def do_persist(input)

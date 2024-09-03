@@ -78,6 +78,7 @@ export const DeveloperInsights = (props) => {
     if (pageState.sortBy === insightType) {
       const sortDirection = pageState.sortDirection === 'asc' ? 'desc' : 'asc';
       setPageState({
+        ...pageState,
         sortDirection: sortDirection,
         sortedEntities: sortEntities(pageState.sortBy, sortDirection)
       });

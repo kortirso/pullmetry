@@ -3,6 +3,7 @@ import { createStore } from 'solid-js/store';
 
 import { DeveloperInsights } from '../../../components';
 import { Chevron, Delete, Edit, Key } from '../../../assets';
+import { csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
 
@@ -24,6 +25,7 @@ export const Company = (props) => {
 
     Promise.all([fetchInsights()]).then(([insightsData]) => {
       setPageState({
+        ...pageState,
         insightTypes: insightsData.insight_fields,
         entities: insightsData.insights,
         ratioType: insightsData.ratio_type
@@ -130,7 +132,7 @@ export const Company = (props) => {
                 <input
                   type="hidden"
                   name="authenticity_token"
-                  value={document.querySelector("meta[name='csrf-token']")?.getAttribute('content') || ''}
+                  value={csrfToken()}
                   autoComplete="off"
                 />
                 <button type="submit" onClick={(event) => event.stopPropagation()}>

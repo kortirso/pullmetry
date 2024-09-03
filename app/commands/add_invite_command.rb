@@ -17,12 +17,8 @@ class AddInviteCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_inviteable_type(input) || validate_existing_invite(input)
-    [error] if error
+  def validate_content(input)
+    validate_inviteable_type(input) || validate_existing_invite(input)
   end
 
   def do_persist(input)

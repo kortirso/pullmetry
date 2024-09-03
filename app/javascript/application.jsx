@@ -5,7 +5,12 @@ import {
   CompanyForm,
   FeedbackForm,
   Repository,
-  RepositoryForm
+  RepositoryForm,
+  ProfilePrivacy,
+  ProfilePremium,
+  ProfileDelete,
+  ProfileVacations,
+  ProfileSettings
 } from './components';
 
 const components = {
@@ -13,7 +18,12 @@ const components = {
   CompanyForm,
   FeedbackForm,
   Repository,
-  RepositoryForm
+  RepositoryForm,
+  ProfilePrivacy,
+  ProfilePremium,
+  ProfileDelete,
+  ProfileVacations,
+  ProfileSettings
 };
 
 document.addEventListener('DOMContentLoaded', () => {

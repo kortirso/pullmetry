@@ -16,14 +16,13 @@ class AddExcludesGroupCommand < BaseCommand
 
   private
 
-  def do_validate(input)
+  def validate_contract(input)
     error = validate_existing_groups_amount(input[:company])
     [error] if error
   end
 
   def do_prepare(input)
     input[:excludes_rules] = filter_rules(input[:excludes_rules])
-    input
   end
 
   def do_persist(input)

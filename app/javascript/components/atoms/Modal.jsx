@@ -10,6 +10,9 @@ export const createModal = () => {
     openModal() {
       setIsOpen(true);
     },
+    closeModal() {
+      setIsOpen(false);
+    },
     Modal(props) {
       const safeChildren = children(() => props.children);
 

@@ -4,3 +4,4 @@ export * from './Form/TextArea';
 export * from './Modal';
 export * from './Checkbox';
 export * from './Select';
+export * from './Dropdown';

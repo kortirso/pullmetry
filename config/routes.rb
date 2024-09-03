@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :frontend do
+      resource :profile, only: %i[update]
       resources :companies, only: %i[create] do
         resources :insights, only: %i[index]
       end
@@ -86,7 +87,7 @@ Rails.application.routes.draw do
     resources :access_tokens, only: %i[new create]
   end
 
-  resource :profile, only: %i[show update destroy]
+  resource :profile, only: %i[show destroy]
   resource :achievements, only: %i[show]
   resources :identities, only: %i[destroy]
   resources :subscribers, only: %i[create]
