@@ -1,8 +1,8 @@
 import path from 'path';
-import { context } from 'esbuild';
+import { build } from 'esbuild';
 import { solidPlugin } from 'esbuild-plugin-solid';
 
-context({
+build({
   entryPoints: [path.join(process.cwd(), 'app/javascript/application.jsx')],
   bundle: true,
   minify: true,
