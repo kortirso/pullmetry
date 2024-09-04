@@ -4,7 +4,8 @@
   "type": "module",
   "browser": true,
   "scripts": {
-    "start": "node esbuild.config.js",
+    "watch": "node esbuild.watch.config.js",
+    "build": "node esbuild.config.js",
     "lint": "eslint app/javascript"
   },
   "dependencies": {
