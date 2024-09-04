@@ -36,7 +36,7 @@ class Notification < ApplicationRecord
 
   delegate :source, to: :webhook
 
-  enum notification_type: {
+  enum :notification_type, {
     REPOSITORY_ACCESS_ERROR => 0,
     INSIGHTS_DATA => 1,
     REPOSITORY_INSIGHTS_DATA => 2,

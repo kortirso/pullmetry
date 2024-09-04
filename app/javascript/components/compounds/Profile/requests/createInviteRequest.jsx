@@ -1,4 +1,4 @@
-import { apiRequest, csrfToken } from '../../../../helpers';
+import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helpers';
 
 export const createInviteRequest = async (payload) => {
   return await apiRequest({
@@ -9,7 +9,7 @@ export const createInviteRequest = async (payload) => {
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken(),
       },
-      body: JSON.stringify({ invite: payload }),
+      body: JSON.stringify(objectKeysToSnakeCase(payload)),
     },
   });
 };

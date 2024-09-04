@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     namespace :frontend do
       resource :profile, only: %i[update]
       resources :companies, only: %i[create] do
+        resource :configuration, only: %i[update], module: 'companies'
         resources :insights, only: %i[index]
       end
       resources :repositories, only: %i[create] do
@@ -78,7 +79,7 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: %i[index destroy] do
-    resource :configuration, only: %i[edit update], module: 'companies'
+    resource :configuration, only: %i[edit], module: 'companies'
     resources :repositories, only: %i[index], module: 'companies'
     resources :access_tokens, only: %i[new create]
     resource :transfer, only: %i[create], module: 'companies'

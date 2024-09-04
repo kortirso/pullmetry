@@ -1,4 +1,3 @@
-import { createSignal, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { Dropdown, Select } from '../../atoms';
@@ -17,19 +16,19 @@ const TIME_ZONES = {
 }
 
 export const ProfileSettings = (props) => {
-  const [formErrors, setFormErrors] = createSignal([]);
-
   const [formStore, setFormStore] = createStore({
+    // eslint-disable-next-line solid/reactivity
     startTime: props.startTime,
+    // eslint-disable-next-line solid/reactivity
     endTime: props.endTime,
+    // eslint-disable-next-line solid/reactivity
     timeZone: props.timeZone
   });
 
   const UpdateSettings = async () => {
     const result = await updateProfileRequest(formStore);
 
-    if (result.errors) setFormErrors(result.errors);
-    else window.location = result.redirect_path;
+    if (result.redirect_path) window.location = result.redirect_path;
   };
 
   return (

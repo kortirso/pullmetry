@@ -13,6 +13,6 @@ module Companies
     belongs_to :user
     belongs_to :invite
 
-    enum access: { READ => 0, WRITE => 1 }
+    enum :access, { READ => 0, WRITE => 1 }
   end
 end

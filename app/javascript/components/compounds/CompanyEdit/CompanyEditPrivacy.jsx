@@ -1,28 +1,27 @@
 import { createSignal, Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { Dropdown, createModal, Select } from '../../atoms';
+import { Dropdown, createModal, Select, Checkbox } from '../../atoms';
 import { FormInputField } from '../../molecules';
 
-import { createApiAccessTokenRequest } from './requests/createApiAccessTokenRequest';
-import { createInviteRequest } from './requests/createInviteRequest';
-import { removeApiAccessTokenRequest } from './requests/removeApiAccessTokenRequest';
-import { removeInviteRequest } from './requests/removeInviteRequest';
-import { removeAcceptedInviteRequest } from './requests/removeAcceptedInviteRequest';
+import { createInviteRequest } from '../Profile/requests/createInviteRequest';
+import { removeInviteRequest } from '../Profile/requests/removeInviteRequest';
+import { removeAcceptedInviteRequest } from '../Profile/requests/removeAcceptedInviteRequest';
+import { updateCompanyConfigurationRequest } from './requests/updateCompanyConfigurationRequest';
 
 const INVITE_ACCESS_TARGETS = {
   read: 'Read',
   write: 'Write'
 };
 
-export const ProfilePrivacy = (props) => {
+export const CompanyEditPrivacy = (props) => {
   const [pageState, setPageState] = createStore({
     // eslint-disable-next-line solid/reactivity
     acceptedInvites: props.acceptedInvites,
     // eslint-disable-next-line solid/reactivity
     invites: props.invites,
     // eslint-disable-next-line solid/reactivity
-    apiAccessTokens: props.apiAccessTokens,
+    private: props.private,
     errors: []
   });
 
@@ -35,8 +34,21 @@ export const ProfilePrivacy = (props) => {
 
   const { Modal, openModal, closeModal } = createModal();
 
+  const togglePrivate = async () => {
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { private: !pageState.private });
+
+    if (result.errors) setFormErrors(result.errors);
+    else {
+      setPageState({
+        ...pageState,
+        private: !pageState.private,
+        errors: []
+      });
+    }
+  };
+
   const onInviteCreate = async () => {
-    const result = await createInviteRequest({ invite: formStore });
+    const result = await createInviteRequest({ invite: formStore, companyId: props.companyUuid });
 
     if (result.errors) setFormErrors(result.errors);
     else {
@@ -74,60 +86,21 @@ export const ProfilePrivacy = (props) => {
     })
   };
 
-  const onApiAccessTokenCreate = async () => {
-    const result = await createApiAccessTokenRequest();
-
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      apiAccessTokens: pageState.apiAccessTokens.concat(result.result),
-      errors: []
-    })
-  };
-
-  const onApiAccessTokenRemove = async (id) => {
-    const result = await removeApiAccessTokenRequest(id);
-
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.uuid !== id),
-      errors: []
-    })
-  };
-
   return (
     <>
       <Dropdown title="Privacy">
         <div class="py-6 px-8">
           <div class="grid lg:grid-cols-2 gap-8 mb-8">
             <div>
-              <Show
-                when={pageState.apiAccessTokens.length > 0}
-                fallback={<p>You didn't specify any API access tokens yet.</p>}
-              >
-                <div class="zebra-list">
-                  <For each={pageState.apiAccessTokens}>
-                    {(apiAccessToken) =>
-                      <div class="zebra-list-element">
-                        <p>{apiAccessToken.value}</p>
-                        <p
-                          class="btn-danger btn-xs"
-                          onClick={() => onApiAccessTokenRemove(apiAccessToken.uuid)}
-                        >X</p>
-                      </div>
-                    }
-                  </For>
-                </div>
-              </Show>
-              <p
-                class="btn-primary btn-small mt-4"
-                onClick={onApiAccessTokenCreate}
-              >Create API access token</p>
+              <Checkbox
+                left
+                labelText="Private"
+                value={pageState.private}
+                onToggle={togglePrivate}
+              />
             </div>
             <div>
-              <p class="mb-4">In this block you can create access tokens for PullKeeper's API.</p>
-              <p>For getting list of available enpoints you can check <a href="https://pullkeeper.dev/api-docs/index.html" class="simple-link">API documentation</a>.</p>
+              <p>If this configuration enabled then company's developers can't have access to insights. If disabled - developers will see insights immediately after login. Access permissions will change after the next synchronization.</p>
             </div>
           </div>
           <div class="grid lg:grid-cols-2 gap-8 mb-2">
@@ -138,7 +111,7 @@ export const ProfilePrivacy = (props) => {
                   <For each={pageState.acceptedInvites}>
                     {(invite) =>
                       <div class="zebra-list-element">
-                        <p class="flex-1">{invite.email}</p>
+                        <p class="flex-1">{invite.invitesEmail}</p>
                         <p class="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
                         <p
                           class="btn-danger btn-xs ml-8"
@@ -172,17 +145,17 @@ export const ProfilePrivacy = (props) => {
               <p
                 class="btn-primary btn-small mt-4"
                 onClick={openModal}
-              >Invite coowner</p>
+              >Invite coworker</p>
             </div>
             <div>
-              <p>In this block you can specify coowners of your account.</p>
+              <p>In this block you can specify coworkers from company that don't have insights but it requires for them to see statistics.</p>
             </div>
           </div>
         </div>
       </Dropdown>
       <Modal>
         <h1 class="mb-8">New invite</h1>
-        <p class="mb-4">Invite will be send to email and after submitting such person will have access to your account.</p>
+        <p class="mb-4">Invite will be send to email and after submitting such person will have access to company insights.</p>
         <section class="inline-block w-full">
           <FormInputField
             required

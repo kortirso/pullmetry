@@ -1,5 +1,3 @@
-import { Show } from 'solid-js';
-
 import { Dropdown } from '../../atoms';
 import { csrfToken } from '../../../helpers';
 

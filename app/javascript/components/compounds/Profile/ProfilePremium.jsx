@@ -38,7 +38,7 @@ export const ProfilePremium = (props) => (
             amount="25"
             text_btn="Pay for regular 30 days"
             order_id={props.cryptocloudOrderIds.regular30}
-          ></vue-widget>
+          />
           <div class="my-2">
             <vue-widget
               shop_id="eRba0IjxBVaqvZUG"
@@ -52,7 +52,7 @@ export const ProfilePremium = (props) => (
               amount="250"
               text_btn="Pay for regular 365 days"
               order_id={props.cryptocloudOrderIds.regular365}
-            ></vue-widget>
+            />
           </div>
           <vue-widget
             shop_id="eRba0IjxBVaqvZUG"
@@ -66,7 +66,7 @@ export const ProfilePremium = (props) => (
             amount="50"
             text_btn="Pay for unlimited 30 days"
             order_id={props.cryptocloudOrderIds.unlimited30}
-          ></vue-widget>
+          />
           <div class="mt-2">
             <vue-widget
               shop_id="eRba0IjxBVaqvZUG"
@@ -80,7 +80,7 @@ export const ProfilePremium = (props) => (
               amount="500"
               text_btn="Pay for unlimited 365 days"
               order_id={props.cryptocloudOrderIds.regular365}
-            ></vue-widget>
+            />
           </div>
         </div>
         <div>

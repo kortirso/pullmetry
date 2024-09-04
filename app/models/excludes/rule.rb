@@ -20,14 +20,14 @@ module Excludes
 
     belongs_to :excludes_group, class_name: 'Excludes::Group'
 
-    enum target: {
+    enum :target, {
       TITLE_TARGET => 0,
       DESCRIPTION_TARGET => 1,
       BRANCH_NAME_TARGET => 2,
       DESTINATION_BRANCH_NAME_TARGET => 3
     }
 
-    enum condition: {
+    enum :condition, {
       EQUAL_CONDITION => 0,
       NOT_EQUAL_CONDITION => 1,
       CONTAIN_CONDITION => 2,

@@ -1,24 +1,10 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <h1 class="mb-8">Edit configuration</h1>
-  <%= form_with model: @company.configuration, url: company_configuration_path(@company.uuid), method: :patch do |form| %>
-    <%=
-      react_component 'CompanyConfiguration',
-        privacyHtml: render(partial: 'access', locals: { form: form }).html_safe,
-        fetchPeriodHtml: render(partial: 'fetch_period', locals: { form: form }).html_safe,
-        longTimeReviewHtml: render(partial: 'long_time_review', locals: { form: form }).html_safe,
-        workTimeHtml: render(partial: 'work_time', locals: { form: form }).html_safe,
-        insightAttributesHtml: render(partial: 'insights', locals: { form: form }).html_safe,
-        averageHtml: render(partial: 'average', locals: { form: form }).html_safe,
-        ratiosHtml: render(partial: 'ratios', locals: { form: form }).html_safe,
-        transferHtml: render(partial: 'transfer').html_safe,
-        excludeGroups: @excludes_groups,
-        ignores: @ignores,
-        acceptedInvites: @accepted_invites,
-        invites: @invites,
-        webhooks: @webhooks,
-        companyUuid: @company.uuid,
-        notifications: @notifications
-    %>
-    <%= form.submit 'Update configuration', class: 'btn-primary mt-8' %>
-  <% end %>
+  <%=
+    js_component 'CompanyEditPrivacy',
+      company_uuid: @company.uuid,
+      private: @company.configuration.private,
+      accepted_invites: @accepted_invites,
+      invites: @invites
+  %>
 <% end %>

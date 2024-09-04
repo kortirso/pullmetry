@@ -12,6 +12,6 @@ module Providerable
   CAN_BE_ALWAYS_DELETED = [TELEGRAM].freeze
 
   included do
-    enum provider: { GITHUB => 0, GITLAB => 1, TELEGRAM => 2, GOOGLE => 3 }
+    enum :provider, { GITHUB => 0, GITLAB => 1, TELEGRAM => 2, GOOGLE => 3 }
   end
 end

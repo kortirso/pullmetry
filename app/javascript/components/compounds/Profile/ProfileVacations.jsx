@@ -1,7 +1,7 @@
 import { createSignal, Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { Dropdown, createModal, Select } from '../../atoms';
+import { Dropdown, createModal } from '../../atoms';
 import { FormInputField } from '../../molecules';
 import { convertDate } from '../../../helpers';
 
@@ -65,10 +65,10 @@ export const ProfileVacations = (props) => {
                 <div class="zebra-list">
                   <For each={pageState.vacations}>
                     {(vacation) =>
-                      <div className="zebra-list-element">
+                      <div class="zebra-list-element">
                         <p>{convertDate(vacation.startTime)} - {convertDate(vacation.endTime)}</p>
                         <p
-                          className="btn-danger btn-xs"
+                          class="btn-danger btn-xs"
                           onClick={() => onVacationRemove(vacation.id)}
                         >X</p>
                       </div>
@@ -88,9 +88,9 @@ export const ProfileVacations = (props) => {
         </div>
       </Dropdown>
       <Modal>
-        <h1 className="mb-8">New vacation</h1>
-        <p className="mb-4">Format of time can be 2023-01-01, 01-01-2023 or 01.01.2023.</p>
-        <section className="inline-block w-full">
+        <h1 class="mb-8">New vacation</h1>
+        <p class="mb-4">Format of time can be 2023-01-01, 01-01-2023 or 01.01.2023.</p>
+        <section class="inline-block w-full">
           <FormInputField
             required
             labelText="Start date"
@@ -104,9 +104,9 @@ export const ProfileVacations = (props) => {
             onChange={(value) => setFormStore('endTime', value)}
           />
           {formErrors().length > 0 ? (
-            <p className="text-sm text-orange-600">{formErrors()[0]}</p>
+            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
           ) : null}
-          <button className="btn-primary mt-4" onClick={onVacationCreate}>Save vacation</button>
+          <button class="btn-primary mt-4" onClick={onVacationCreate}>Save vacation</button>
         </section>
       </Modal>
     </>
