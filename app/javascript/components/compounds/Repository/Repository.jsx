@@ -71,18 +71,6 @@ export const Repository = (props) => {
     if (window.confirm('Are you sure you wish to delete repository?')) deleteForm.submit();
   };
 
-  const renderSyncedAt = () => {
-    if (props.syncedAt === null) return <span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>;
-
-    return <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>;
-  }
-
-  const renderRepositoryProviderLogo = () => {
-    if (props.provider === 'gitlab') return <Gitlab />;
-
-    return <Github />;
-  };
-
   return (
     <div class="mb-4 bg-white rounded border border-stone-200">
       <div
@@ -121,9 +109,18 @@ export const Repository = (props) => {
               onClick={(event) => event.stopPropagation()}
               class="mr-2 flex items-center"
             >
-              {renderRepositoryProviderLogo()}
+              <Switch fallback={<Github />}>
+                <Match when={props.provider === 'gitlab'}>
+                  <Gitlab />
+                </Match>
+              </Switch>
             </a>
-            {renderSyncedAt()}
+            <Show
+              when={props.syncedAt}
+              fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
+            >
+              <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
+            </Show>
           </p>
         </div>
         <Chevron rotated={pageState.isExpanded} />
@@ -164,16 +161,16 @@ export const Repository = (props) => {
       </div>
       <Show when={pageState.isExpanded}>
         <div class="pt-4 px-8 pb-8">
-          <h3 class="mb-4">Repository insights</h3>
+          <h3 class="mb-8">Repository insights</h3>
           {repositoryInsights()}
           <div class="relative">
             <h3 class="absolute top-0">Developer insights</h3>
-            <div class="overflow-x-scroll pt-14">
+            <div class="overflow-x-scroll pt-16">
               <Switch fallback={
                 <>
                   {developerInsights()}
                   <a
-                    class="btn-primary btn-small mt-4"
+                    class="btn-primary btn-small mt-8"
                     href={`/api/frontend/repositories/${props.uuid}/insights.pdf`}
                   >Download insights PDF</a>
                 </>

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class CompaniesController < Api::V1Controller
+    class CompaniesController < Api::V1::BaseController
       SERIALIZER_FIELDS = %i[title repositories_count accessable].freeze
 
       def index

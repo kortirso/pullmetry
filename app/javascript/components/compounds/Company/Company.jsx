@@ -152,7 +152,7 @@ export const Company = (props) => {
                 <>
                   {developerInsights()}
                   <a
-                    class="btn-primary btn-small mt-4"
+                    class="btn-primary btn-small mt-8"
                     href={`/api/frontend/companies/${props.uuid}/insights.pdf`}
                   >Download insights PDF</a>
                 </>

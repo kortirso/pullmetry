@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const createCompanyRequest = async (payload) => {
   return await apiRequest({
-    url: '/api/frontend/companies.json',
+    url: '/frontend/companies.json',
     options: {
       method: 'POST',
       headers: {

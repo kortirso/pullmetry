@@ -12,7 +12,7 @@ module Admin
     def authorize_admin
       return if current_user.admin?
 
-      authentication_error
+      access_denied
     end
   end
 end

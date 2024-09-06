@@ -5,7 +5,7 @@ class AddAccessTokenCommand < BaseCommand
 
   use_contract do
     params do
-      required(:tokenable).filled(type?: ApplicationRecord)
+      required(:tokenable).filled(type_included_in?: [Company, Repository])
       required(:value).filled(:string)
       optional(:expired_at).maybe(:string)
     end
@@ -14,7 +14,7 @@ class AddAccessTokenCommand < BaseCommand
   private
 
   def validate_content(input)
-    validate_tokenable_type(input) || validate_pat_token(input)
+    validate_pat_token(input)
   end
 
   def do_prepare(input)
@@ -28,12 +28,6 @@ class AddAccessTokenCommand < BaseCommand
     end
 
     { result: access_token }
-  end
-
-  def validate_tokenable_type(input)
-    return if input[:tokenable].class.name.in?(AccessToken::TOKENABLE_TYPES)
-
-    'Tokenable is not supported'
   end
 
   def validate_pat_token(input)

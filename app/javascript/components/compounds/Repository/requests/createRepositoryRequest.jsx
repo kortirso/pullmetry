@@ -3,7 +3,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 export const createRepositoryRequest = async (payload) => {
   console.log(payload);
   return await apiRequest({
-    url: '/api/frontend/repositories.json',
+    url: '/frontend/repositories.json',
     options: {
       method: 'POST',
       headers: {

@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const updateProfileRequest = async (payload) => {
   return await apiRequest({
-    url: '/api/frontend/profile.json',
+    url: '/frontend/profile.json',
     options: {
       method: 'PATCH',
       headers: {

@@ -8,13 +8,10 @@ en:
       inviteable: Inviteable
     errors:
       type?: has invalid type
+      type_included_in?: has invalid type
       rules:
         email:
           invalid_format: has invalid format
-      invite:
-        rules:
-          inviteable:
-            invalid: is not supported
       access_token:
         rules:
           access_token:

@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const createVacationRequest = async (payload) => {
   return await apiRequest({
-    url: '/api/frontend/vacations.json',
+    url: '/frontend/vacations.json',
     options: {
       method: 'POST',
       headers: {

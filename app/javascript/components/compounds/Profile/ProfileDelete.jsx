@@ -31,7 +31,7 @@ export const ProfileDelete = (props) => {
           />
           <button
             type="submit"
-            class="btn-danger btn-small mt-4"
+            class="btn-danger btn-small mt-8"
             onClick={(event) => event.stopPropagation()}
           >Delete account</button>
         </form>

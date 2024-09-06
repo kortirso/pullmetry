@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const updateCompanyConfigurationRequest = async (companyUuid, payload) => {
   return await apiRequest({
-    url: `/api/frontend/companies/${companyUuid}/configuration.json`,
+    url: `/frontend/companies/${companyUuid}/configuration.json`,
     options: {
       method: 'PATCH',
       headers: {

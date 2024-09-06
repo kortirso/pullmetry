@@ -7,13 +7,9 @@ class AddInviteCommand < BaseCommand
     Accesses = Dry::Types['strict.string'].enum(*Invite.accesses.keys)
 
     params do
-      required(:inviteable).filled
+      required(:inviteable).filled(type_included_in?: [Company, User])
       required(:email).filled(:string)
       optional(:access).maybe(Accesses)
-    end
-
-    rule(:inviteable) do
-      key.failure(:invalid) unless value.class.name.in?(Invite::INVITEABLE_TYPES)
     end
 
     rule(:email) do

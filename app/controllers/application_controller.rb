@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   authorize :user, through: :current_user
 
-  # TODO: remember to skip redundant before actions in Api::V1Controller, Api::FrontendController, Admin::BaseController
+  # TODO: remember to skip redundant before actions in Api::V1::BaseController, Frontend::BaseController, Admin::BaseController
   before_action :authenticate, except: %i[not_found]
   before_action :find_invite, except: %i[not_found]
 
@@ -27,10 +27,10 @@ class ApplicationController < ActionController::Base
   private
 
   def page_not_found
-    render template: 'shared/404', status: :not_found, formats: [:html]
+    render template: 'web/shared/404', status: :not_found, formats: [:html]
   end
 
   def access_denied
-    render template: 'shared/access', status: :unauthorized, formats: [:html]
+    render template: 'web/shared/access', status: :forbidden, formats: [:html]
   end
 end

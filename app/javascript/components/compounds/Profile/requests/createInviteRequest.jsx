@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const createInviteRequest = async (payload) => {
   return await apiRequest({
-    url: '/api/frontend/invites.json',
+    url: '/frontend/invites.json',
     options: {
       method: 'POST',
       headers: {
