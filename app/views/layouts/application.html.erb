@@ -15,6 +15,7 @@
     <%= javascript_include_tag 'application' %>
   </head>
   <body class="relative flex flex-col m-0 p-0 min-h-screen">
+    <%= js_component 'WebFlash', value: flash %>
     <%= yield %>
   </body>
 </html>

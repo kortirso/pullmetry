@@ -15,7 +15,8 @@ import {
   ProfilePremium,
   ProfileDelete,
   ProfileVacations,
-  ProfileSettings
+  ProfileSettings,
+  WebFlash
 } from './components';
 
 const components = {
@@ -33,7 +34,8 @@ const components = {
   ProfilePremium,
   ProfileDelete,
   ProfileVacations,
-  ProfileSettings
+  ProfileSettings,
+  WebFlash
 };
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,14 +1,6 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
   <div class="flex justify-between items-center mb-8">
     <h1 class="m-0">Repositories</h1>
-    <% if allowed_to?(:create_repository?, current_user) %>
-      <%=
-        js_component 'RepositoryForm',
-          company_uuid: @company&.uuid,
-          companies: @available_companies,
-          providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
-      %>
-    <% end %>
   </div>
   <% if @repositories.any? { |repository| repository.company.user_id == current_user.id && !repository.accessable } %>
     <div class="badge mb-4 p-4">
@@ -37,8 +29,20 @@
           } : nil
       %>
     <% end %>
-    <% if @pagy.pages > 1 %>
-      <div class="mt-6"><%== pagy_nav(@pagy) %></div>
-    <% end %>
+    <div class="mt-6 flex justify-between items-center">
+      <% if @pagy.pages > 1 %>
+        <div><%== pagy_nav(@pagy) %></div>
+      <% else %>
+        <div></div>
+      <% end %>
+      <% if allowed_to?(:create_repository?, current_user) %>
+        <%=
+          js_component 'RepositoryForm',
+            company_uuid: @company&.uuid,
+            companies: @available_companies,
+            providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
+        %>
+      <% end %>
+    </div>
   </section>
 <% end %>

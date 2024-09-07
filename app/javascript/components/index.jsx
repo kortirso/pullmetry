@@ -15,3 +15,4 @@ export * from './compounds/Profile/ProfilePremium';
 export * from './compounds/Profile/ProfileDelete';
 export * from './compounds/Profile/ProfileVacations';
 export * from './compounds/Profile/ProfileSettings';
+export * from './compounds/Flash/WebFlash';

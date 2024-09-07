@@ -10,9 +10,9 @@ module Web
         if user
           sign_in(user) if current_user.nil?
           accept_invite(user)
-          redirect_to(current_user.nil? ? companies_path : profile_path)
+          redirect_to((current_user.nil? ? companies_path : profile_path), notice: 'Authentication succeed')
         else
-          redirect_to root_path
+          redirect_to root_path, alert: 'Authentication failed'
         end
       end
 
