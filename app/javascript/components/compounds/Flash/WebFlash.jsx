@@ -16,7 +16,7 @@ export const WebFlash = (props) => {
     <div class="fixed top-8 right-8">
       <Show when={message().length > 0}>
         <div
-          class='relative mb-2 py-4 pl-8 pr-12 rounded border'
+          class="relative mb-2 py-4 pl-8 pr-12 rounded border"
           classList={{ 'bg-orange-300 border-orange-400': messageType() === 'alert', 'bg-green-300 border-green-400': messageType() === 'notice' }}
         >
           <p>{messageValue()}</p>
