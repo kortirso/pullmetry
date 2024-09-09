@@ -3,10 +3,7 @@
 module Frontend
   module Companies
     class ConfigurationsController < Frontend::BaseController
-      include Deps[
-        change_company_configuration: 'commands.change_company_configuration',
-        to_bool: 'to_bool'
-      ]
+      include Deps[change_company_configuration: 'commands.change_company_configuration']
 
       before_action :find_company
 
@@ -29,7 +26,12 @@ module Frontend
         params
           .require(:configuration)
           .permit(
-            :private
+            :private,
+            :main_attribute,
+            :average_type,
+            :insight_ratio,
+            :insight_ratio_type,
+            insight_fields: []
           ).to_h
       end
     end

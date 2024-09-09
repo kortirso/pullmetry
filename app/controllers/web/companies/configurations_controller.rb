@@ -12,9 +12,6 @@ module Web
         # find_notifications
         # find_webhooks
         find_excludes_groups
-        # find_insight_ratio_type_values
-        # find_average_type_values
-        # find_main_attribute_values
       end
 
       private
@@ -61,22 +58,6 @@ module Web
           .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
           .group_by { |rule| rule[:excludes_groups_uuid] }
       end
-
-      # def find_insight_ratio_type_values
-      #   @insight_ratio_type_values = @company.configuration.insight_ratio_type_values.map { |key, _v| transform_key(key) }
-      # end
-
-      # def find_average_type_values
-      #   @average_type_values = @company.configuration.average_type_values.map { |key, _v| transform_key(key) }
-      # end
-
-      # def find_main_attribute_values
-      #   @main_attribute_values = @company.configuration.main_attribute_values.map { |key, _v| transform_key(key) }
-      # end
-
-      # def transform_key(key)
-      #   [key.to_s.capitalize.split('_').join(' '), key]
-      # end
     end
   end
 end

@@ -452,9 +452,6 @@ export const CompanyConfiguration = ({
           </div>
         </div>
       </Dropdown>
-      <Dropdown title="Insight attributes">{insightAttributesHtml}</Dropdown>
-      <Dropdown title="Average type">{averageHtml}</Dropdown>
-      <Dropdown title="Insights ratios">{ratiosHtml}</Dropdown>
       <Dropdown convertChildren={false} title="Notifications">
         <div className="py-6 px-8">
           <div
@@ -485,7 +482,6 @@ export const CompanyConfiguration = ({
           </div>
         </div>
       </Dropdown>
-      <Dropdown title="Transfer">{transferHtml}</Dropdown>
       <Modal
         show={pageState.ingoreFormIsOpen}
         onClose={() => setPageState({ ...pageState, ingoreFormIsOpen: false })}
