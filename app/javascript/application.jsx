@@ -49,10 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const props = dataset['props'] ? JSON.parse(dataset['props']) : {};
       const childrenData = dataset['children'] ? JSON.parse(dataset['children']) : null;
 
-      render(
-        () => <Component {...props}>{childrenData}</Component>,
-        mountPoint
-      );
+      render(() => (
+        <Component {...props}>
+          {childrenData}
+        </Component>
+      ), mountPoint);
     }
   });
 
