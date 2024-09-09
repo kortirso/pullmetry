@@ -2,16 +2,20 @@
 
 module Users
   class OmniauthCallbacksController < Authkeeper::OmniauthCallbacksController
-    include Deps[add_identity: 'commands.add_identity']
+    include Deps[
+      add_identity: 'commands.add_identity',
+      monitoring: 'monitoring.client'
+    ]
 
     def create
       user = auth_login(auth, current_user)
-      if user
+      if !user
         sign_in(user) if current_user.nil?
         accept_invite(user)
         redirect_to(current_user.nil? ? companies_path : profile_path)
       else
-        redirect_to root_path
+        monitoring_failed_auth(auth)
+        redirect_to root_path, alert: 'Failed authentication'
       end
     end
 
@@ -34,5 +38,13 @@ module Users
       user
     end
     # rubocop: enable Metrics/AbcSize
+
+    def monitor_unknown_state(auth)
+      monitoring.notify(
+        exception: 'Failed authentication',
+        metadata: { provider: params[:provider], payload: auth },
+        severity: :info
+      )
+    end
   end
 end
