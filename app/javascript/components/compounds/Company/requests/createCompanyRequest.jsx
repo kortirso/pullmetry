@@ -7,9 +7,9 @@ export const createCompanyRequest = async (payload) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ company: objectKeysToSnakeCase(payload) }),
-    },
+      body: JSON.stringify({ company: objectKeysToSnakeCase(payload) })
+    }
   });
-};
+}

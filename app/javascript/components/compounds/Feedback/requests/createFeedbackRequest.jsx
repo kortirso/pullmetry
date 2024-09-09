@@ -7,9 +7,9 @@ export const createFeedbackRequest = async (payload) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ feedback: payload }),
-    },
+      body: JSON.stringify({ feedback: payload })
+    }
   })
-};
+}

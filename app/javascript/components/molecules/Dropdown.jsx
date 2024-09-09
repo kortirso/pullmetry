@@ -23,4 +23,4 @@ export const Dropdown = (props) => {
       </Show>
     </div>
   );
-};
+}

@@ -7,9 +7,9 @@ export const updateCompanyConfigurationRequest = async (companyUuid, payload) =>
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ configuration: objectKeysToSnakeCase(payload) }),
-    },
+      body: JSON.stringify({ configuration: objectKeysToSnakeCase(payload) })
+    }
   });
-};
+}

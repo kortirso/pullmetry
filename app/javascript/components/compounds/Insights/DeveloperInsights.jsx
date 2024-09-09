@@ -66,7 +66,7 @@ export const DeveloperInsights = (props) => {
       if (sorting && compare || !sorting && !compare) return -1;
       return 1;
     });
-  };
+  }
 
   const [pageState, setPageState] = createStore({
     sortBy: defaultSortBy,
@@ -88,8 +88,8 @@ export const DeveloperInsights = (props) => {
         sortDirection: 'desc',
         sortedEntities: sortEntities(insightType, 'desc')
       });
-    };
-  };
+    }
+  }
 
   return (
     <table class="table" cellSpacing="0">
@@ -171,4 +171,4 @@ export const DeveloperInsights = (props) => {
       </tbody>
     </table>
   );
-};
+}

@@ -31,7 +31,7 @@ export const RepositoryInsights = (props) => {
         </Show>
       </>
     );
-  };
+  }
 
   return (
     <div class="text-sm md:text-base grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -58,4 +58,4 @@ export const RepositoryInsights = (props) => {
       </div>
     </div>
   );
-};
+}

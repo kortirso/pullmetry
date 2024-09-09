@@ -7,9 +7,9 @@ export const updateProfileRequest = async (payload) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ user: objectKeysToSnakeCase(payload) }),
-    },
+      body: JSON.stringify({ user: objectKeysToSnakeCase(payload) })
+    }
   });
-};
+}

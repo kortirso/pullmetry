@@ -7,8 +7,8 @@ export const removeAcceptedInviteRequest = async (uuid) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       }
-    },
+    }
   });
-};
+}

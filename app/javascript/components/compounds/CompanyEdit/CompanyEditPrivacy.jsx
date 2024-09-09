@@ -1,8 +1,8 @@
-import { createSignal, Show, For, batch } from 'solid-js';
+import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { Dropdown, createModal, Select, Checkbox } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { Checkbox, Flash } from '../../atoms';
+import { FormInputField, Dropdown, createModal, Select } from '../../molecules';
 
 import { createInviteRequest } from '../Profile/requests/createInviteRequest';
 import { removeInviteRequest } from '../Profile/requests/removeInviteRequest';
@@ -25,8 +25,6 @@ export const CompanyEditPrivacy = (props) => {
     errors: []
   });
 
-  const [formErrors, setFormErrors] = createSignal([]);
-
   const [formStore, setFormStore] = createStore({
     email: '',
     access: 'read'
@@ -34,10 +32,14 @@ export const CompanyEditPrivacy = (props) => {
 
   const { Modal, openModal, closeModal } = createModal();
 
+  const onCloseError = (errorIndex) => {
+    setPageState('errors', pageState.errors.slice().filter((item, index) => index !== errorIndex));
+  }
+
   const togglePrivate = async () => {
     const result = await updateCompanyConfigurationRequest(props.companyUuid, { private: !pageState.private });
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) setPageState('errors', result.errors);
     else {
       setPageState({
         ...pageState,
@@ -45,24 +47,24 @@ export const CompanyEditPrivacy = (props) => {
         errors: []
       });
     }
-  };
+  }
 
   const onInviteCreate = async () => {
     const result = await createInviteRequest({ invite: formStore, companyId: props.companyUuid });
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) setPageState('errors', result.errors);
     else {
       batch(() => {
         setPageState({
           ...pageState,
-          invites: pageState.invites.concat(result.result)
+          invites: pageState.invites.concat(result.result),
+          errors: []
         });
-        setFormErrors([]);
         setFormStore({ email: '', access: 'read' });
         closeModal();
       });
     }
-  };
+  }
 
   const onInviteRemove = async (uuid) => {
     const result = await removeInviteRequest(uuid);
@@ -72,8 +74,8 @@ export const CompanyEditPrivacy = (props) => {
       ...pageState,
       invites: pageState.invites.filter((item) => item.uuid !== uuid),
       errors: []
-    })
-  };
+    });
+  }
 
   const onAcceptedInviteRemove = async (uuid) => {
     const result = await removeAcceptedInviteRequest(uuid);
@@ -83,8 +85,8 @@ export const CompanyEditPrivacy = (props) => {
       ...pageState,
       acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid),
       errors: []
-    })
-  };
+    });
+  }
 
   return (
     <>
@@ -153,6 +155,7 @@ export const CompanyEditPrivacy = (props) => {
           </div>
         </div>
       </Dropdown>
+      <Flash errors={pageState.errors} onCloseError={onCloseError} />
       <Modal>
         <h1 class="mb-8">New invite</h1>
         <p class="mb-4">Invite will be send to email and after submitting such person will have access to company insights.</p>
@@ -170,13 +173,10 @@ export const CompanyEditPrivacy = (props) => {
             selectedValue={formStore.access}
             onSelect={(value) => setFormStore('access', value)}
           />
-          <Show when={formErrors().length > 0}>
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          </Show>
           <button class="btn-primary mt-4" onClick={onInviteCreate}>Create invite</button>
         </section>
       </Modal>
     </>
-  )
-};
+  );
+}
 

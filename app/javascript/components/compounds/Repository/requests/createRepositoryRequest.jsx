@@ -8,9 +8,9 @@ export const createRepositoryRequest = async (payload) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
       body: JSON.stringify({ repository: objectKeysToSnakeCase(payload) }),
-    },
+    }
   });
-};
+}

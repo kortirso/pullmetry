@@ -9,7 +9,8 @@
   %>
   <%=
     js_component 'CompanyEditPullRequests',
-      company_uuid: @company.uuid
+      company_uuid: @company.uuid,
+      fetch_period: @company.configuration.fetch_period
   %>
   <%=
     js_component 'CompanyEditInsights',

@@ -7,9 +7,9 @@ export const transferCompanyRequest = async (companyUuid, payload) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify(objectKeysToSnakeCase(payload)),
-    },
+      body: JSON.stringify(objectKeysToSnakeCase(payload))
+    }
   });
-};
+}

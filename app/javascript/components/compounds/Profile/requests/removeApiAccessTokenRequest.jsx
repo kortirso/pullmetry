@@ -7,8 +7,8 @@ export const removeApiAccessTokenRequest = async (id) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       }
-    },
+    }
   });
-};
+}

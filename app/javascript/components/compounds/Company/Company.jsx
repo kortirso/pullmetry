@@ -43,7 +43,7 @@ export const Company = (props) => {
         ratioType={pageState.ratioType}
         mainAttribute={props.mainAttribute}
       />
-    )
+    );
   });
 
   const toggle = () => setPageState('isExpanded', !pageState.isExpanded);
@@ -53,7 +53,7 @@ export const Company = (props) => {
     event.stopPropagation();
 
     if (window.confirm('Are you sure you wish to delete company?')) deleteForm.submit();
-  };
+  }
 
   return (
     <div class="mb-4 bg-white rounded border border-stone-200">
@@ -173,4 +173,4 @@ export const Company = (props) => {
       </Show>
     </div>
   );
-};
+}

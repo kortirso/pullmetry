@@ -34,7 +34,7 @@ export const Repository = (props) => {
           ratioType: insightsData.ratio_type,
           repositoryInsights: repositoryInsightsData.insight?.values,
         });
-      },
+      }
     );
   });
 
@@ -48,7 +48,7 @@ export const Repository = (props) => {
         ratioType={pageState.ratioType}
         mainAttribute={props.mainAttribute}
       />
-    )
+    );
   });
 
   const repositoryInsights = createMemo(() => {
@@ -59,7 +59,7 @@ export const Repository = (props) => {
         insights={pageState.repositoryInsights}
         ratioType={pageState.ratioType}
       />
-    )
+    );
   });
 
   const toggle = () => setPageState('isExpanded', !pageState.isExpanded);
@@ -69,7 +69,7 @@ export const Repository = (props) => {
     event.stopPropagation();
 
     if (window.confirm('Are you sure you wish to delete repository?')) deleteForm.submit();
-  };
+  }
 
   return (
     <div class="mb-4 bg-white rounded border border-stone-200">
@@ -191,4 +191,4 @@ export const Repository = (props) => {
       </Show>
     </div>
   );
-};
+}

@@ -18,4 +18,4 @@ export const Checkbox = (props) => (
       <label class="ml-2 cursor-pointer" onClick={() => props.onToggle()}>{props.labelText}</label>
     </Show>
   </div>
-);
+)

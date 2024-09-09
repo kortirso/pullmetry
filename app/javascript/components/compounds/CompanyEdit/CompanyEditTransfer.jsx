@@ -1,7 +1,6 @@
 import { createStore } from 'solid-js/store';
 
-import { Dropdown } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { FormInputField, Dropdown } from '../../molecules';
 
 import { transferCompanyRequest } from './requests/transferCompanyRequest';
 
@@ -14,7 +13,7 @@ export const CompanyEditTransfer = (props) => {
     const result = await transferCompanyRequest(props.companyUuid, formStore);
 
     console.log(result);
-  };
+  }
 
   return (
     <Dropdown title="Transfer">
@@ -37,5 +36,5 @@ export const CompanyEditTransfer = (props) => {
         </div>
       </div>
     </Dropdown>
-  )
+  );
 }

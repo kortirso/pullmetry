@@ -1,7 +1,7 @@
-import { Dropdown } from '../../atoms';
+import { Dropdown } from '../../molecules';
 
 export const CompanyEditNotifications = () => {
   return (
     <Dropdown title="Notifications" />
-  )
+  );
 }

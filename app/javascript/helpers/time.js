@@ -32,4 +32,4 @@ export const toFormattedTime = (value) => {
   if (value < SECONDS_IN_DAY) return `${hours}h ${minutes}m`;
 
   return `${Math.floor(value / SECONDS_IN_DAY)}d ${hours}h ${minutes}m`;
-};
+}

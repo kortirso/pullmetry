@@ -1,6 +1,6 @@
 import { Show } from 'solid-js';
 
-import { Dropdown } from '../../atoms';
+import { Dropdown } from '../../molecules';
 
 export const ProfilePremium = (props) => (
   <Dropdown title="Premium">

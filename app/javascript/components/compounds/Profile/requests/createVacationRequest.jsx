@@ -7,9 +7,9 @@ export const createVacationRequest = async (payload) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken(),
+        'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ vacation: objectKeysToSnakeCase(payload) }),
-    },
+      body: JSON.stringify({ vacation: objectKeysToSnakeCase(payload) })
+    }
   });
-};
+}

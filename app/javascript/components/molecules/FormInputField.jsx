@@ -1,18 +1,16 @@
-import { Show } from 'solid-js';
+import { Show, splitProps } from 'solid-js';
 
 import { FormLabel, FormInput } from '../atoms';
 
-export const FormInputField = (props) => (
-  <div class="form-field">
-    <Show when={props.labelText}>
-      <FormLabel required={props.required} value={props.labelText} />
-    </Show>
-    <FormInput
-      required={props.required}
-      disabled={props.disabled}
-      placeholder={props.placeholder}
-      value={props.value}
-      onChange={(value) => props.onChange ? props.onChange(value) : null}
-    />
-  </div>
-)
+export const FormInputField = (props) => {
+  const [labelProps, formInputProps] = splitProps(props, ['labelText']);
+
+  return (
+    <div class="form-field">
+      <Show when={labelProps.labelText}>
+        <FormLabel required={props.required} value={labelProps.labelText} />
+      </Show>
+      <FormInput { ...formInputProps } />
+    </div>
+  );
+}

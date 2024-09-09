@@ -1,8 +1,8 @@
 import { createSignal, Show, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { createModal, Checkbox } from '../../atoms';
-import { FormInputField, FormDescriptionField } from '../../molecules';
+import { Checkbox } from '../../atoms';
+import { FormInputField, FormDescriptionField, createModal } from '../../molecules';
 
 import { createFeedbackRequest } from './requests/createFeedbackRequest';
 
@@ -33,12 +33,15 @@ export const FeedbackForm = (props) => {
         setFormErrors([]);
         closeModal();
       });
-    };
-  };
+    }
+  }
 
   return (
     <>
-      <button class={`cursor-pointer ${props.classList}`} onClick={openModal}>Feedback</button>
+      <button
+        class={[props.classList, 'cursor-pointer'].join(' ')}
+        onClick={openModal}
+      >Feedback</button>
       <Modal>
         <h1 class="mb-8">New feedback</h1>
         <p class="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" class="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" class="simple-link">Telegram</a> or just leave here.</p>
@@ -77,4 +80,4 @@ export const FeedbackForm = (props) => {
       </Modal>
     </>
   );
-};
+}

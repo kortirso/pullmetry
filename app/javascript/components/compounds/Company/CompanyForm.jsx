@@ -1,8 +1,7 @@
 import { createSignal, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { createModal } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { FormInputField, createModal } from '../../molecules';
 
 import { createCompanyRequest } from './requests/createCompanyRequest';
 
@@ -25,7 +24,7 @@ export const CompanyForm = (props) => {
 
     if (result.errors) setFormErrors(result.errors);
     else window.location = result.redirect_path;
-  };
+  }
 
   return (
     <>
@@ -50,4 +49,4 @@ export const CompanyForm = (props) => {
       </Modal>
     </>
   );
-};
+}

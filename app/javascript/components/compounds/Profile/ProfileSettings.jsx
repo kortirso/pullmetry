@@ -1,7 +1,6 @@
 import { createStore } from 'solid-js/store';
 
-import { Dropdown, Select } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { FormInputField, Dropdown, Select } from '../../molecules';
 
 import { updateProfileRequest } from './requests/updateProfileRequest';
 

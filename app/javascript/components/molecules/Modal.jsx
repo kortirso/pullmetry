@@ -35,6 +35,6 @@ export const createModal = () => {
           </Show>
         </Portal>
       );
-    },
-  };
+    }
+  }
 }

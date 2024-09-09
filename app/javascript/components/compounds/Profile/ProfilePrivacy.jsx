@@ -1,8 +1,7 @@
 import { createSignal, Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { Dropdown, createModal, Select } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { FormInputField, Dropdown, createModal, Select } from '../../molecules';
 
 import { createApiAccessTokenRequest } from './requests/createApiAccessTokenRequest';
 import { createInviteRequest } from './requests/createInviteRequest';

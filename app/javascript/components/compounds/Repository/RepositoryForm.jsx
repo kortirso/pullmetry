@@ -1,8 +1,7 @@
 import { createSignal, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { createModal, Select } from '../../atoms';
-import { FormInputField } from '../../molecules';
+import { FormInputField, createModal, Select } from '../../molecules';
 
 import { createRepositoryRequest } from './requests/createRepositoryRequest';
 
@@ -41,7 +40,7 @@ export const RepositoryForm = (props) => {
 
     if (result.errors) setFormErrors(result.errors);
     else window.location = result.redirect_path;
-  };
+  }
 
   return (
     <>
@@ -94,4 +93,4 @@ export const RepositoryForm = (props) => {
       </Modal>
     </>
   );
-};
+}

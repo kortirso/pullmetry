@@ -10,7 +10,7 @@ export const Select = (props) => {
   const onSelect = (value) => {
     props.onSelect(value);
     setIsOpen(false);
-  };
+  }
 
   return (
     <div class="form-field relative cursor-pointer" use:clickOutside={() => setIsOpen(false)}>
@@ -39,4 +39,4 @@ export const Select = (props) => {
       </div>
     </div>
   );
-};
+}
