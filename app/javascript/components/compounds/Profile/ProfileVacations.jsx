@@ -1,20 +1,18 @@
-import { createSignal, Show, For, batch } from 'solid-js';
+import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, createModal } from '../../molecules';
+import { FormInputField, Dropdown, createModal, createFlash } from '../../molecules';
 import { convertDate } from '../../../helpers';
 
 import { createVacationRequest } from './requests/createVacationRequest'
 import { removeVacationRequest } from './requests/removeVacationRequest'
 
 export const ProfileVacations = (props) => {
+  /* eslint-disable solid/reactivity */
   const [pageState, setPageState] = createStore({
-    // eslint-disable-next-line solid/reactivity
-    vacations: props.vacations,
-    errors: []
+    vacations: props.vacations
   });
-
-  const [formErrors, setFormErrors] = createSignal([]);
+  /* eslint-enable solid/reactivity */
 
   const [formStore, setFormStore] = createStore({
     startTime: '',
@@ -22,18 +20,15 @@ export const ProfileVacations = (props) => {
   });
 
   const { Modal, openModal, closeModal } = createModal();
+  const { Flash, renderErrors } = createFlash();
 
   const onVacationCreate = async () => {
     const result = await createVacationRequest(formStore);
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) renderErrors(result.errors);
     else {
       batch(() => {
-        setPageState({
-          ...pageState,
-          vacations: pageState.vacations.concat(result.result)
-        });
-        setFormErrors([]);
+        setPageState({ ...pageState, vacations: pageState.vacations.concat(result.result) });
         setFormStore({ startTime: '', endTime: '' });
         closeModal();
       });
@@ -43,12 +38,8 @@ export const ProfileVacations = (props) => {
   const onVacationRemove = async (id) => {
     const result = await removeVacationRequest(id);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      vacations: pageState.vacations.filter((item) => item.id !== id),
-      errors: []
-    })
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, vacations: pageState.vacations.filter((item) => item.id !== id) })
   };
 
   return (
@@ -102,12 +93,10 @@ export const ProfileVacations = (props) => {
             value={formStore.endTime}
             onChange={(value) => setFormStore('endTime', value)}
           />
-          {formErrors().length > 0 ? (
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          ) : null}
           <button class="btn-primary mt-4" onClick={onVacationCreate}>Save vacation</button>
         </section>
       </Modal>
+      <Flash />
     </>
   )
 };

@@ -1,14 +1,12 @@
-import { createSignal, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, createModal } from '../../molecules';
+import { FormInputField, createModal, createFlash } from '../../molecules';
 
 import { createCompanyRequest } from './requests/createCompanyRequest';
 
 export const CompanyForm = (props) => {
   const { Modal, openModal } = createModal();
-
-  const [formErrors, setFormErrors] = createSignal([]);
+  const { Flash, renderErrors } = createFlash();
 
   const [formStore, setFormStore] = createStore({
     title: ''
@@ -16,13 +14,13 @@ export const CompanyForm = (props) => {
 
   const onSubmit = async () => {
     if (formStore.title.length === 0) {
-      setFormErrors(['Title is required']);
+      renderErrors(['Title is required']);
       return;
     }
 
     const result = await createCompanyRequest({ ...formStore, userUuid: props.accountUuid });
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) renderErrors(result.errors);
     else window.location = result.redirect_path;
   }
 
@@ -41,12 +39,10 @@ export const CompanyForm = (props) => {
             value={formStore.title}
             onChange={(value) => setFormStore('title', value)}
           />
-          <Show when={formErrors().length > 0}>
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          </Show>
           <button class="btn-primary mt-4" onClick={onSubmit}>Save company</button>
         </section>
       </Modal>
+      <Flash />
     </>
   );
 }

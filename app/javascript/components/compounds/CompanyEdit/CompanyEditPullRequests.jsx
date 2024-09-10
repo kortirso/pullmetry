@@ -1,37 +1,27 @@
 import { createStore } from 'solid-js/store';
 
-import { Flash } from '../../atoms';
-import { FormInputField, Dropdown } from '../../molecules';
+import { FormInputField, Dropdown, createFlash } from '../../molecules';
 
 import { updateCompanyConfigurationRequest } from './requests/updateCompanyConfigurationRequest';
 
 export const CompanyEditPullRequests = (props) => {
+  /* eslint-disable solid/reactivity */
   const [pageState, setPageState] = createStore({
-    // eslint-disable-next-line solid/reactivity
     defaultFetchPeriod: props.fetchPeriod,
-    // eslint-disable-next-line solid/reactivity
-    fetchPeriod: props.fetchPeriod,
-    errors: []
+    fetchPeriod: props.fetchPeriod
   });
+  /* eslint-enable solid/reactivity */
 
-  const onCloseError = (errorIndex) => {
-    setPageState('errors', pageState.errors.slice().filter((item, index) => index !== errorIndex));
-  }
+  const { Flash, renderErrors } = createFlash();
 
   const updateFetchPeriod = async () => {
     const result = await updateCompanyConfigurationRequest(props.companyUuid, { fetchPeriod: pageState.fetchPeriod });
 
-    if (result.errors) setPageState({ ...pageState, errors: result.errors });
-    else {
-      setPageState({
-        ...pageState,
-        defaultFetchPeriod: pageState.fetchPeriod,
-        errors: []
-      });
-    }
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, defaultFetchPeriod: pageState.fetchPeriod });
   }
 
-  const resetFetchPeriod = () => setPageState({ ...pageState, fetchPeriod: pageState.defaultFetchPeriod, errors: [] });
+  const resetFetchPeriod = () => setPageState({ ...pageState, fetchPeriod: pageState.defaultFetchPeriod });
 
   return (
     <>
@@ -57,7 +47,7 @@ export const CompanyEditPullRequests = (props) => {
           </div>
         </div>
       </Dropdown>
-      <Flash errors={pageState.errors} onCloseError={onCloseError} />
+      <Flash />
     </>
   );
 }

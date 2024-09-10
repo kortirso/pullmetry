@@ -1,8 +1,8 @@
 import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { Checkbox, Flash } from '../../atoms';
-import { FormInputField, Dropdown, createModal, Select } from '../../molecules';
+import { Checkbox } from '../../atoms';
+import { FormInputField, Dropdown, createModal, Select, createFlash } from '../../molecules';
 
 import { createInviteRequest } from '../Profile/requests/createInviteRequest';
 import { removeInviteRequest } from '../Profile/requests/removeInviteRequest';
@@ -15,15 +15,13 @@ const INVITE_ACCESS_TARGETS = {
 };
 
 export const CompanyEditPrivacy = (props) => {
+  /* eslint-disable solid/reactivity */
   const [pageState, setPageState] = createStore({
-    // eslint-disable-next-line solid/reactivity
     acceptedInvites: props.acceptedInvites,
-    // eslint-disable-next-line solid/reactivity
     invites: props.invites,
-    // eslint-disable-next-line solid/reactivity
-    private: props.private,
-    errors: []
+    private: props.private
   });
+  /* eslint-enable solid/reactivity */
 
   const [formStore, setFormStore] = createStore({
     email: '',
@@ -31,35 +29,22 @@ export const CompanyEditPrivacy = (props) => {
   });
 
   const { Modal, openModal, closeModal } = createModal();
-
-  const onCloseError = (errorIndex) => {
-    setPageState('errors', pageState.errors.slice().filter((item, index) => index !== errorIndex));
-  }
+  const { Flash, renderErrors } = createFlash();
 
   const togglePrivate = async () => {
     const result = await updateCompanyConfigurationRequest(props.companyUuid, { private: !pageState.private });
 
-    if (result.errors) setPageState('errors', result.errors);
-    else {
-      setPageState({
-        ...pageState,
-        private: !pageState.private,
-        errors: []
-      });
-    }
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, private: !pageState.private });
   }
 
   const onInviteCreate = async () => {
     const result = await createInviteRequest({ invite: formStore, companyId: props.companyUuid });
 
-    if (result.errors) setPageState('errors', result.errors);
+    if (result.errors) renderErrors(result.errors);
     else {
       batch(() => {
-        setPageState({
-          ...pageState,
-          invites: pageState.invites.concat(result.result),
-          errors: []
-        });
+        setPageState({ ...pageState, invites: pageState.invites.concat(result.result) });
         setFormStore({ email: '', access: 'read' });
         closeModal();
       });
@@ -69,23 +54,15 @@ export const CompanyEditPrivacy = (props) => {
   const onInviteRemove = async (uuid) => {
     const result = await removeInviteRequest(uuid);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      invites: pageState.invites.filter((item) => item.uuid !== uuid),
-      errors: []
-    });
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.uuid !== uuid) });
   }
 
   const onAcceptedInviteRemove = async (uuid) => {
     const result = await removeAcceptedInviteRequest(uuid);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid),
-      errors: []
-    });
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid) });
   }
 
   return (
@@ -155,7 +132,6 @@ export const CompanyEditPrivacy = (props) => {
           </div>
         </div>
       </Dropdown>
-      <Flash errors={pageState.errors} onCloseError={onCloseError} />
       <Modal>
         <h1 class="mb-8">New invite</h1>
         <p class="mb-4">Invite will be send to email and after submitting such person will have access to company insights.</p>
@@ -176,6 +152,7 @@ export const CompanyEditPrivacy = (props) => {
           <button class="btn-primary mt-4" onClick={onInviteCreate}>Create invite</button>
         </section>
       </Modal>
+      <Flash />
     </>
   );
 }

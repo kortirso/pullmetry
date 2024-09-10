@@ -1,44 +1,43 @@
-import { createSignal, Show } from 'solid-js';
+import { Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, createModal, Select } from '../../molecules';
+import { FormInputField, createModal, Select, createFlash } from '../../molecules';
 
 import { createRepositoryRequest } from './requests/createRepositoryRequest';
 
 export const RepositoryForm = (props) => {
-  const { Modal, openModal } = createModal();
-
-  const [formErrors, setFormErrors] = createSignal([]);
-
+  /* eslint-disable solid/reactivity */
   const [formStore, setFormStore] = createStore({
-    // eslint-disable-next-line solid/reactivity
     companyUuid: props.companyUuid || Object.keys(props.companies)[0],
     title: '',
     link: '',
-    // eslint-disable-next-line solid/reactivity
     provider: Object.keys(props.providers)[0],
     externalId: ''
   });
+  /* eslint-enable solid/reactivity */
+
+  const { Modal, openModal } = createModal();
+  const { Flash, renderErrors } = createFlash();
 
   const onSubmit = async () => {
     if (formStore.title.length === 0) {
-      setFormErrors(['Title is required']);
+      renderErrors(['Title is required']);
       return;
     }
 
     if (formStore.link.length === 0) {
-      setFormErrors(['Link is required']);
+      renderErrors(['Link is required']);
       return;
     }
 
     if (formStore.provider === 'gitlab') {
-      setFormErrors(['External ID is required']);
+      renderErrors(['External ID is required']);
       return;
     }
 
     const result = await createRepositoryRequest(formStore);
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) renderErrors(result.errors);
     else window.location = result.redirect_path;
   }
 
@@ -85,12 +84,10 @@ export const RepositoryForm = (props) => {
             value={formStore.externalId}
             onChange={(value) => setFormStore('externalId', value)}
           />
-          <Show when={formErrors().length > 0}>
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          </Show>
           <button class="btn-primary mt-4" onClick={onSubmit}>Save repository</button>
         </section>
       </Modal>
+      <Flash />
     </>
   );
 }

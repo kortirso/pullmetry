@@ -1,7 +1,7 @@
-import { createSignal, Show, For, batch } from 'solid-js';
+import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, createModal, Select } from '../../molecules';
+import { FormInputField, Dropdown, createModal, Select, createFlash } from '../../molecules';
 
 import { createApiAccessTokenRequest } from './requests/createApiAccessTokenRequest';
 import { createInviteRequest } from './requests/createInviteRequest';
@@ -15,17 +15,13 @@ const INVITE_ACCESS_TARGETS = {
 };
 
 export const ProfilePrivacy = (props) => {
+  /* eslint-disable solid/reactivity */
   const [pageState, setPageState] = createStore({
-    // eslint-disable-next-line solid/reactivity
     acceptedInvites: props.acceptedInvites,
-    // eslint-disable-next-line solid/reactivity
     invites: props.invites,
-    // eslint-disable-next-line solid/reactivity
-    apiAccessTokens: props.apiAccessTokens,
-    errors: []
+    apiAccessTokens: props.apiAccessTokens
   });
-
-  const [formErrors, setFormErrors] = createSignal([]);
+  /* eslint-enable solid/reactivity */
 
   const [formStore, setFormStore] = createStore({
     email: '',
@@ -33,18 +29,15 @@ export const ProfilePrivacy = (props) => {
   });
 
   const { Modal, openModal, closeModal } = createModal();
+  const { Flash, renderErrors } = createFlash();
 
   const onInviteCreate = async () => {
     const result = await createInviteRequest({ invite: formStore });
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) renderErrors(result.errors);
     else {
       batch(() => {
-        setPageState({
-          ...pageState,
-          invites: pageState.invites.concat(result.result)
-        });
-        setFormErrors([]);
+        setPageState({ ...pageState, invites: pageState.invites.concat(result.result) });
         setFormStore({ email: '', access: 'read' });
         closeModal();
       });
@@ -54,45 +47,29 @@ export const ProfilePrivacy = (props) => {
   const onInviteRemove = async (uuid) => {
     const result = await removeInviteRequest(uuid);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      invites: pageState.invites.filter((item) => item.uuid !== uuid),
-      errors: []
-    })
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.uuid !== uuid) })
   };
 
   const onAcceptedInviteRemove = async (uuid) => {
     const result = await removeAcceptedInviteRequest(uuid);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid),
-      errors: []
-    })
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid) })
   };
 
   const onApiAccessTokenCreate = async () => {
     const result = await createApiAccessTokenRequest();
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      apiAccessTokens: pageState.apiAccessTokens.concat(result.result),
-      errors: []
-    })
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, apiAccessTokens: pageState.apiAccessTokens.concat(result.result) })
   };
 
   const onApiAccessTokenRemove = async (id) => {
     const result = await removeApiAccessTokenRequest(id);
 
-    if (result.errors) setPageState('errors', result.errors);
-    else setPageState({
-      ...pageState,
-      apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.uuid !== id),
-      errors: []
-    })
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.uuid !== id) })
   };
 
   return (
@@ -196,12 +173,10 @@ export const ProfilePrivacy = (props) => {
             selectedValue={formStore.access}
             onSelect={(value) => setFormStore('access', value)}
           />
-          <Show when={formErrors().length > 0}>
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          </Show>
           <button class="btn-primary mt-4" onClick={onInviteCreate}>Create invite</button>
         </section>
       </Modal>
+      <Flash />
     </>
   )
 };

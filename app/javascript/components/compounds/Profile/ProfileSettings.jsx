@@ -15,14 +15,13 @@ const TIME_ZONES = {
 }
 
 export const ProfileSettings = (props) => {
+  /* eslint-disable solid/reactivity */
   const [formStore, setFormStore] = createStore({
-    // eslint-disable-next-line solid/reactivity
     startTime: props.startTime,
-    // eslint-disable-next-line solid/reactivity
     endTime: props.endTime,
-    // eslint-disable-next-line solid/reactivity
     timeZone: props.timeZone
   });
+  /* eslint-enable solid/reactivity */
 
   const UpdateSettings = async () => {
     const result = await updateProfileRequest(formStore);
@@ -39,6 +38,7 @@ export const ProfileSettings = (props) => {
               <div class="flex-1">
                 <FormInputField
                   required
+                  classList="w-full"
                   labelText="Work start time"
                   placeholder="09:00"
                   value={formStore.startTime}
@@ -48,6 +48,7 @@ export const ProfileSettings = (props) => {
               <div class="flex-1">
                 <FormInputField
                   required
+                  classList="w-full"
                   labelText="Work end time"
                   placeholder="18:00"
                   value={formStore.endTime}

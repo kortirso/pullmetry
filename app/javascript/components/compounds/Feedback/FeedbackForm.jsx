@@ -1,15 +1,13 @@
-import { createSignal, Show, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { Checkbox } from '../../atoms';
-import { FormInputField, FormDescriptionField, createModal } from '../../molecules';
+import { FormInputField, FormDescriptionField, createModal, createFlash } from '../../molecules';
 
 import { createFeedbackRequest } from './requests/createFeedbackRequest';
 
 export const FeedbackForm = (props) => {
   const { Modal, openModal, closeModal } = createModal();
-
-  const [formErrors, setFormErrors] = createSignal([]);
+  const { Flash, renderErrors } = createFlash();
 
   const [formStore, setFormStore] = createStore({
     title: '',
@@ -20,19 +18,16 @@ export const FeedbackForm = (props) => {
 
   const onSubmit = async () => {
     if (formStore.description.length === 0) {
-      setFormErrors(['Description is required']);
+      renderErrors(['Description is required']);
       return;
     }
 
     const result = createFeedbackRequest(formStore);
 
-    if (result.errors) setFormErrors(result.errors);
+    if (result.errors) renderErrors(result.errors);
     else {
-      batch(() => {
-        setFormStore({ title: '', description: '', answerable: false, email: '' })
-        setFormErrors([]);
-        closeModal();
-      });
+      setFormStore({ title: '', description: '', answerable: false, email: '' })
+      closeModal();
     }
   }
 
@@ -72,12 +67,10 @@ export const FeedbackForm = (props) => {
             value={formStore.email}
             onChange={(value) => setFormStore('email', value)}
           />
-          <Show when={formErrors().length > 0}>
-            <p class="text-sm text-orange-600">{formErrors()[0]}</p>
-          </Show>
           <button class="btn-primary mt-4" onClick={onSubmit}>Send feedback</button>
         </section>
       </Modal>
+      <Flash />
     </>
   );
 }
