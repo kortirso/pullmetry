@@ -34,7 +34,7 @@ export const ProfileSettings = (props) => {
       <div class="py-6 px-8">
         <div class="grid lg:grid-cols-2 gap-8">
           <div>
-            <div class="grid grid-cols-3 gap-8 mt-4">
+            <div class="grid lg:grid-cols-3 lg:gap-8 lg:mt-4">
               <div class="flex-1">
                 <FormInputField
                   required
@@ -58,6 +58,7 @@ export const ProfileSettings = (props) => {
               <div class="flex-1">
                 <Select
                   required
+                  classList="w-full"
                   labelText="Work time zone"
                   items={TIME_ZONES}
                   selectedValue={formStore.timeZone}
@@ -70,7 +71,7 @@ export const ProfileSettings = (props) => {
             <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
           </div>
         </div>
-        <button class="btn-primary btn-small mt-4 mb-2" onClick={UpdateSettings}>Update user settings</button>
+        <button class="btn-primary btn-small mt-8 lg:mt-4 mb-2" onClick={UpdateSettings}>Update user settings</button>
       </div>
     </Dropdown>
   )

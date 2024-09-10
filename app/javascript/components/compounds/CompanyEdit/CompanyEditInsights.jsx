@@ -110,9 +110,10 @@ export const CompanyEditInsights = (props) => {
               <p>If this configuration is enabled then you can select specific insight attributes to calculate and render such information at insight tables.</p>
             </div>
           </div>
-          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-8 border-b border-gray-200">
+          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-6 border-b border-gray-200">
             <div>
               <Select
+                classList="w-full lg:w-1/2"
                 labelText="Main attribute for sorting insights"
                 items={ATTRIBUTE_NAMES}
                 selectedValue={pageState.mainAttribute}
@@ -123,9 +124,10 @@ export const CompanyEditInsights = (props) => {
               <p>By configuring main insight attribute you can set default sorting order for insights table.</p>
             </div>
           </div>
-          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-8 border-b border-gray-200">
+          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-6 border-b border-gray-200">
             <div>
               <Select
+                classList="w-full lg:w-1/2"
                 labelText="Average type"
                 items={AVERAGE_TYPES}
                 selectedValue={pageState.averageType}
@@ -136,7 +138,7 @@ export const CompanyEditInsights = (props) => {
               <p>You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
             </div>
           </div>
-          <div class="grid lg:grid-cols-2 gap-8 mb-2">
+          <div class="grid lg:grid-cols-2 gap-8">
             <div>
               <Show
                 when={props.isPremium}
@@ -156,6 +158,7 @@ export const CompanyEditInsights = (props) => {
                 <Show when={pageState.insightRatio}>
                   <div class="mt-8">
                     <Select
+                      classList="w-full lg:w-1/2"
                       labelText="Ratio type"
                       items={RATIO_TYPES}
                       selectedValue={pageState.insightRatioType}

@@ -69,7 +69,7 @@ export const CompanyEditPrivacy = (props) => {
     <>
       <Dropdown title="Privacy">
         <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8 mb-8">
+          <div class="grid lg:grid-cols-2 gap-8 mb-8 pb-8 border-b border-gray-200">
             <div>
               <Checkbox
                 left
@@ -85,44 +85,54 @@ export const CompanyEditPrivacy = (props) => {
           <div class="grid lg:grid-cols-2 gap-8 mb-2">
             <div>
               <Show when={pageState.acceptedInvites.length > 0}>
-                <div class="zebra-list pb-4 mb-4 border-b border-gray-200">
+                <div class="mb-8">
                   <p class="mb-2 font-medium">Accepted invites</p>
-                  <For each={pageState.acceptedInvites}>
-                    {(invite) =>
-                      <div class="zebra-list-element">
-                        <p class="flex-1">{invite.invitesEmail}</p>
-                        <p class="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
-                        <p
-                          class="btn-danger btn-xs ml-8"
-                          onClick={() => onAcceptedInviteRemove(invite.uuid)}
-                        >X</p>
-                      </div>
-                    }
-                  </For>
+                  <table class="table zebra w-full">
+                    <tbody>
+                      <For each={pageState.acceptedInvites}>
+                        {(invite) =>
+                          <tr>
+                            <td>{invite.invitesEmail}</td>
+                            <td class="w-28">{INVITE_ACCESS_TARGETS[invite.access]}</td>
+                            <td class="w-12">
+                              <p
+                                class="btn-danger btn-xs"
+                                onClick={() => onAcceptedInviteRemove(invite.uuid)}
+                              >X</p>
+                            </td>
+                          </tr>
+                        }
+                      </For>
+                    </tbody>
+                  </table>
                 </div>
               </Show>
               <Show
                 when={pageState.invites.length > 0}
                 fallback={<p>There are no not answered invites.</p>}
               >
-                <div class="zebra-list">
-                  <p class="mb-2 font-medium">Sent invites</p>
-                  <For each={pageState.invites}>
-                    {(invite) =>
-                      <div class="zebra-list-element">
-                        <p class="flex-1">{invite.email}</p>
-                        <p class="w-20">{INVITE_ACCESS_TARGETS[invite.access]}</p>
-                        <p
-                          class="btn-danger btn-xs ml-8"
-                          onClick={() => onInviteRemove(invite.uuid)}
-                        >X</p>
-                      </div>
-                    }
-                  </For>
-                </div>
+                <p class="mb-2 font-medium">Sent invites</p>
+                <table class="table zebra w-full">
+                  <tbody>
+                    <For each={pageState.invites}>
+                      {(invite) =>
+                        <tr>
+                          <td>{invite.email}</td>
+                          <td class="w-28">{INVITE_ACCESS_TARGETS[invite.access]}</td>
+                          <td class="w-12">
+                            <p
+                              class="btn-danger btn-xs"
+                              onClick={() => onInviteRemove(invite.uuid)}
+                            >X</p>
+                          </td>
+                        </tr>
+                      }
+                    </For>
+                  </tbody>
+                </table>
               </Show>
               <p
-                class="btn-primary btn-small mt-4"
+                class="btn-primary btn-small mt-8"
                 onClick={openModal}
               >Invite coworker</p>
             </div>
@@ -138,12 +148,14 @@ export const CompanyEditPrivacy = (props) => {
         <section class="inline-block w-full">
           <FormInputField
             required
+            classList="w-full lg:w-3/4"
             labelText="Invite email"
             value={formStore.email}
             onChange={(value) => setFormStore('email', value)}
           />
           <Select
             required
+            classList="w-full lg:w-1/2"
             labelText="Access level"
             items={INVITE_ACCESS_TARGETS}
             selectedValue={formStore.access}

@@ -17,8 +17,11 @@ export const Select = (props) => {
       <Show when={props.labelText}>
         <FormLabel required={props.required} value={props.labelText} />
       </Show>
-      <div class="form-field">
-        <div class="form-value flex justify-between items-center text-sm" onClick={() => setIsOpen(!isOpen())}>
+      <div class={[props.classList, 'relative'].join(' ')}>
+        <div
+          class="form-value flex justify-between items-center text-sm"
+          onClick={() => setIsOpen(!isOpen())}
+        >
           {props.selectedValue ? props.items[props.selectedValue] : ''}
           <Chevron rotated={isOpen()} />
         </div>

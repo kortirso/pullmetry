@@ -27,10 +27,11 @@ export const CompanyEditPullRequests = (props) => {
     <>
       <Dropdown title="Fetching pull requests">
         <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8 mb-8">
+          <div class="grid lg:grid-cols-2 gap-8 mb-2">
             <div>
               <FormInputField
                 confirmable
+                classList="w-1/2"
                 labelText="Fetch period (days)"
                 placeholder="30"
                 defaultValue={pageState.defaultFetchPeriod}
