@@ -8,22 +8,30 @@ class BaseCommand
   end
 
   def call(input={})
-    errors = do_validate(input)
+    errors = validate_contract(input).presence || [validate_content(input)].compact
     return { errors: errors } if errors.present?
 
     do_prepare(input)
-      .then { |input| do_persist(input) }
+    do_persist(input)
   end
 
   private
 
-  def do_validate(input)
+  def validate_contract(input)
     return if contract.nil?
 
     validate(input)
   end
 
-  def do_prepare(input) = input
+  # for additional validation outside contract
+  # should return nil or error string
+  def validate_content(input); end
+
+  # for transforming data in input
+  # should return input
+  def do_prepare(input); end
+
+  # persisting
   def do_persist(input) = raise NotImplementedError
 
   def validate(input)

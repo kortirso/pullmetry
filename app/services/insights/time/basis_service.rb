@@ -9,8 +9,9 @@ module Insights
       MINUTES_IN_DAY = 1_440
       MINUTES_IN_HOUR = 60
       SECONDS_IN_MINUTE = 60
+      SECONDS_IN_HOUR = 3_600
       WEEKEND_DAYS_INDEXES = [0, 6].freeze
-      DEFAULT_WORK_TIME_ZONE = 'UTC'
+      DEFAULT_WORK_TIME_ZONE = '0'
 
       def call(insightable:, with_vacations: true)
         @insightable = insightable
@@ -36,30 +37,21 @@ module Insights
         )
       end
 
-      # working time can be based on company working time
-      # or at user's
+      # working time can be based on company working time or at user's
       def find_using_work_time(user)
         @work_start_time, @work_end_time, @time_offset =
           if user&.with_work_time? && !@insightable.configuration.ignore_users_work_time
-            user_work_time_params(user)
+            work_time_params(user.work_time)
           else
-            insightable_work_time_params
+            work_time_params(@insightable.work_time)
           end
       end
 
-      def user_work_time_params(user)
+      def work_time_params(work_time)
         [
-          user.work_start_time,
-          user.work_end_time,
-          ActiveSupport::TimeZone[user.work_time_zone || DEFAULT_WORK_TIME_ZONE].utc_offset
-        ]
-      end
-
-      def insightable_work_time_params
-        [
-          @insightable.configuration.work_start_time,
-          @insightable.configuration.work_end_time,
-          ActiveSupport::TimeZone[@insightable.configuration.work_time_zone || DEFAULT_WORK_TIME_ZONE].utc_offset
+          work_time.starts_at.to_time(:utc),
+          work_time.ends_at.to_time(:utc),
+          (work_time.timezone || DEFAULT_WORK_TIME_ZONE).to_i * SECONDS_IN_HOUR
         ]
       end
 

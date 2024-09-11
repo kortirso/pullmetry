@@ -20,14 +20,7 @@ describe Import::SyncRepositoriesJob, type: :service do
   end
 
   context 'with working time' do
-    before do
-      company.configuration.assign_attributes(
-        work_start_time: DateTime.new(2023, 1, 1, 9, 0),
-        work_end_time: DateTime.new(2023, 1, 1, 18, 0),
-        work_time_zone: 'Moscow'
-      )
-      company.save!
-    end
+    before { create :work_time, starts_at: '09:00', ends_at: '18:00', timezone: '3', worktimeable: company }
 
     context 'with current time inside working time' do
       before do
@@ -50,19 +43,6 @@ describe Import::SyncRepositoriesJob, type: :service do
         job_call
 
         expect(import_object).to have_received(:call).with(company: company)
-      end
-
-      context 'when company has blank work_time_zone' do
-        before do
-          company.configuration.assign_attributes(work_time_zone: nil)
-          company.save!
-        end
-
-        it 'does not call service' do
-          job_call
-
-          expect(import_object).not_to have_received(:call)
-        end
       end
     end
 
@@ -92,14 +72,7 @@ describe Import::SyncRepositoriesJob, type: :service do
   end
 
   context 'with night working time' do
-    before do
-      company.configuration.assign_attributes(
-        work_start_time: DateTime.new(2023, 1, 1, 22, 0),
-        work_end_time: DateTime.new(2023, 1, 1, 8, 0),
-        work_time_zone: 'Moscow'
-      )
-      company.save!
-    end
+    before { create :work_time, starts_at: '22:00', ends_at: '08:00', timezone: '3', worktimeable: company }
 
     context 'with current time inside working time' do
       before do
@@ -122,19 +95,6 @@ describe Import::SyncRepositoriesJob, type: :service do
         job_call
 
         expect(import_object).to have_received(:call).with(company: company)
-      end
-
-      context 'when company has blank work_time_zone' do
-        before do
-          company.configuration.assign_attributes(work_time_zone: nil)
-          company.save!
-        end
-
-        it 'does not call service' do
-          job_call
-
-          expect(import_object).not_to have_received(:call)
-        end
       end
     end
 

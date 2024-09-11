@@ -9,31 +9,30 @@ module Worktimeable
     return true unless company.with_work_time?
     return false if current_time.wday.in?(Insights::Time::BasisService::WEEKEND_DAYS_INDEXES)
 
-    configuration = company.configuration
-    return day_work_condition(configuration) if configuration.work_start_time <= configuration.work_end_time
+    work_time = company.work_time
+    return day_work_condition(work_time) if work_time.starts_at.to_time <= work_time.ends_at.to_time
 
-    night_work_condition(configuration)
+    night_work_condition(work_time)
   end
 
   # 60 means - start 1 hour before start time
-  def day_work_condition(configuration)
-    return false if current_minutes < minutes_of_day(configuration.work_start_time) - offset_minutes(configuration) - 60
-    return false if current_minutes >= minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
+  def day_work_condition(work_time)
+    return false if current_minutes < minutes_of_day(work_time.starts_at.to_time) - offset_minutes(work_time) - 60
+    return false if current_minutes >= minutes_of_day(work_time.ends_at.to_time) - offset_minutes(work_time)
 
     true
   end
 
-  def night_work_condition(configuration)
-    return true if current_minutes >= minutes_of_day(configuration.work_start_time) - offset_minutes(configuration) - 60
-    return true if current_minutes < minutes_of_day(configuration.work_end_time) - offset_minutes(configuration)
+  def night_work_condition(work_time)
+    return true if current_minutes >= minutes_of_day(work_time.starts_at.to_time) - offset_minutes(work_time) - 60
+    return true if current_minutes < minutes_of_day(work_time.ends_at.to_time) - offset_minutes(work_time)
 
     false
   end
 
-  def offset_minutes(configuration)
-    ActiveSupport::TimeZone[
-      configuration.work_time_zone || Insights::Time::BasisService::DEFAULT_WORK_TIME_ZONE
-    ].utc_offset / Insights::Time::BasisService::MINUTES_IN_HOUR
+  def offset_minutes(work_time)
+    (work_time.timezone || Insights::Time::BasisService::DEFAULT_WORK_TIME_ZONE).to_i *
+      Insights::Time::BasisService::MINUTES_IN_HOUR
   end
 
   def current_minutes

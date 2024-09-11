@@ -11,7 +11,7 @@ class Subscription < ApplicationRecord
 
   scope :active, -> { where('end_time > :date', date: DateTime.now.new_offset(0)) }
 
-  enum plan: { REGULAR => 0, UNLIMITED => 1 }
+  enum :plan, { REGULAR => 0, UNLIMITED => 1 }
 
   def plan_settings
     case plan

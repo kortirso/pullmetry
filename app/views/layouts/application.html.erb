@@ -15,8 +15,7 @@
     <%= javascript_include_tag 'application' %>
   </head>
   <body class="relative flex flex-col m-0 p-0 min-h-screen">
-    <%= react_component 'Flash', values: flash.to_h %>
+    <%= js_component 'WebFlash', value: flash %>
     <%= yield %>
-    <div id="modal-root"></div>
   </body>
 </html>

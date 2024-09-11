@@ -15,12 +15,8 @@ class AddWebhookCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_url(input)
-    [error] if error
+  def validate_content(input)
+    validate_url(input)
   end
 
   def do_persist(input)

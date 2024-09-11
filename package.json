@@ -1,27 +1,28 @@
 {
   "name": "pullkeeper",
   "private": "false",
+  "type": "module",
+  "browser": true,
   "scripts": {
-    "build": "esbuild app/javascript/application.jsx --bundle --minify --sourcemap --outdir=app/assets/builds",
-    "format": "prettier --write 'app/javascript/**/*.{js,jsx,json}'",
-    "lint": "eslint -c .eslintrc.json app/javascript --ext .js,.jsx"
+    "watch": "node esbuild.watch.config.js",
+    "build": "node esbuild.config.js",
+    "lint": "eslint app/javascript"
   },
   "dependencies": {
-    "esbuild": "^0.20.0"
+    "solid-js": "^1.8.21"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.10",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.22.10",
-    "@babel/preset-react": "^7.22.5",
     "cypress": "^13.6.4",
     "cypress-on-rails": "^0.1.0",
-    "eslint": "^8.47.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-react-app": "^7.0.0",
-    "prettier": "^3.0.2",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-query": "^3.39.3"
+    "esbuild": "^0.23.0",
+    "esbuild-plugin-solid": "^0.6.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-solid": "^0.14.2"
+  },
+  "eslintConfig": {
+    "globals": {
+      "window": true,
+      "document": true
+    }
   }
 }

@@ -25,7 +25,7 @@ class Invite < ApplicationRecord
   scope :accepted, -> { where.not(receiver_id: nil) }
   scope :waiting, -> { where(receiver_id: nil) }
 
-  enum access: { READ => 0, WRITE => 1 }
+  enum :access, { READ => 0, WRITE => 1 }
 
   def coworker?
     inviteable_type == 'Company'

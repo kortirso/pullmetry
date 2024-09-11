@@ -56,6 +56,10 @@
     @apply btn bg-orange-300 hover:bg-orange-400 border border-orange-400;
   }
 
+  .btn-success {
+    @apply btn bg-green-300 hover:bg-green-400 border border-green-400;
+  }
+
   .btn-danger {
     @apply btn bg-orange-500 hover:bg-orange-600 border border-orange-600;
   }
@@ -125,7 +129,9 @@
   }
 
   .form-field .form-dropdown {
-    @apply absolute w-full border-r border-l border-gray-200 z-10;
+    @apply absolute w-full border-r border-l border-gray-200 z-10 overflow-y-scroll;
+
+    height: 10rem;
   }
 
   .form-field .form-dropdown li {
@@ -203,6 +209,10 @@
 
   .toggle:hover .toggle-checkbox:checked + .toggle-label {
     @apply border-orange-400;
+  }
+
+  .toggle .toggle-checkbox:checked:disabled + .toggle-label {
+    @apply bg-orange-100 border-orange-100;
   }
 
   .badge {

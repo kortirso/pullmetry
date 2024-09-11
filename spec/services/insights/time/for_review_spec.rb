@@ -62,14 +62,7 @@ describe Insights::Time::ForReview, type: :service do
   end
 
   context 'for company with working time' do
-    before do
-      repository.company.update!(
-        configuration: {
-          work_start_time: DateTime.new(2023, 1, 1, 9, 0, 0),
-          work_end_time: DateTime.new(2023, 1, 1, 17, 0, 0)
-        }
-      )
-    end
+    before { create :work_time, starts_at: '09:00', ends_at: '17:00', worktimeable: repository.company }
 
     context 'for repository insightable' do
       let(:insightable) { repository }

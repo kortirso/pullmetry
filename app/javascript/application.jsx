@@ -1,50 +1,61 @@
-import React from 'react';
-import * as ReactDOMClient from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { render } from 'solid-js/web';
 
 import {
   Company,
   CompanyForm,
-  CompanyConfiguration,
+  CompanyEditPrivacy,
+  CompanyEditPullRequests,
+  CompanyEditInsights,
+  CompanyEditNotifications,
+  CompanyEditTransfer,
+  CompanyEditSettings,
   FeedbackForm,
   Repository,
   RepositoryForm,
-  ProfileConfiguration,
+  ProfilePrivacy,
+  ProfilePremium,
+  ProfileDelete,
+  ProfileVacations,
+  ProfileSettings,
+  WebFlash
 } from './components';
-import {
-  Flash,
-} from './atoms';
 
 const components = {
   Company,
   CompanyForm,
-  CompanyConfiguration,
+  CompanyEditPrivacy,
+  CompanyEditPullRequests,
+  CompanyEditInsights,
+  CompanyEditNotifications,
+  CompanyEditTransfer,
+  CompanyEditSettings,
   FeedbackForm,
   Repository,
   RepositoryForm,
-  Flash,
-  ProfileConfiguration,
+  ProfilePrivacy,
+  ProfilePremium,
+  ProfileDelete,
+  ProfileVacations,
+  ProfileSettings,
+  WebFlash
 };
-const queryClient = new QueryClient();
 
 document.addEventListener('DOMContentLoaded', () => {
-  const mountPoints = document.querySelectorAll('[data-react-component]');
+  const mountPoints = document.querySelectorAll('[data-js-component]');
   mountPoints.forEach((mountPoint) => {
     const dataset = mountPoint.dataset;
-    const componentName = dataset['reactComponent'];
+    const componentName = dataset['jsComponent'];
     const Component = components[componentName];
 
     if (Component) {
       const props = dataset['props'] ? JSON.parse(dataset['props']) : {};
-      const childrenData = mountPoint.firstChild?.data
-        ? JSON.parse(mountPoint.firstChild?.data)
-        : null;
-      const root = ReactDOMClient.createRoot(mountPoint);
-      root.render(
-        <QueryClientProvider client={queryClient}>
-          <Component {...props}>{childrenData}</Component>
-        </QueryClientProvider>,
-      );
+      const childrenData = dataset['children'] ? JSON.parse(dataset['children']) : null;
+
+      render(() => (
+        <Component {...props}>
+          {childrenData}
+        </Component>
+      ), mountPoint);
     }
   });
 
@@ -56,3 +67,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 });
+

@@ -1,0 +1,235 @@
+<%= render PageWrappers::GuestComponent.new do %>
+  <% cache(['welcome_page_top_v1', current_user&.id], expires_in: 24.hours) do %>
+    <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
+      <div class="flex flex-col justify-center">
+        <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
+        <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
+        <% unless current_user %>
+          <div class="flex flex-col sm:flex-row justify-center xl:justify-start">
+            <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>
+            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>
+            <%= link_to 'Login with Google', omniauth_link(:google), class: 'btn-primary btn-small text-center ' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex justify-center">
+        <div class="welcome-image">
+          <%= image_tag 'screenshot.webp', width: 616, height: 355, alt: 'interface-example' %>
+        </div>
+      </div>
+    </section>
+    <section class="mx-auto my-8">
+      <h2 class="text-center text-4xl mb-12">PullKeeper features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="benefits-box">
+          <h3 class="benefits-title">Reviewer statistics</h3>
+          <p class="benefits-text">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Privacy</h3>
+          <p class="benefits-text">Application requires read-only access to pull requests in your repositories and does not use your code. Your developers can (or can't) have access to their statistics</p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Customizable calculations</h3>
+          <p class="benefits-text">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Exclude rules</h3>
+          <p class="benefits-text">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, use exclude rules for pull requests to avoid double code counting</p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Comparing data</h3>
+          <p class="benefits-text">Compareable data with previous periods for better understanding development improvements and progress/regress of coding</p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Slack/Discord/Telegram notifications</h3>
+          <p class="benefits-text">Receive notifications to Slack/Discord/Telegram with latest insights of your companies and repositories, or send data to custom url, or fetch data by <a href="https://pullkeeper.dev/api-docs" target="_blank" rel="noopener noreferrer" class="simple-link">API</a></p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Github and Gitlab API</h3>
+          <p class="benefits-text">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
+        </div>
+        <div class="benefits-box">
+          <h3 class="benefits-title">Achievements system</h3>
+          <p class="benefits-text">PullKeeper has achievements system for representing and comparing developer success</p>
+        </div>
+      </div>
+    </section>
+    <section class="mx-auto mb-24">
+      <h2 class="text-center text-4xl mb-12">Open Source</h2>
+      <p class="mb-4">
+        <iframe
+          src="https://ghbtns.com/github-btn.html?user=kortirso&repo=pullmetry&type=star&count=true&size=large"
+          frameborder="0"
+          scrolling="0"
+          width="170"
+          height="30"
+          title="GitHub"
+          class="mx-auto pl-10"
+        ></iframe>
+      </p>
+      <p class="text-center mb-4 text-lg">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
+      <p class="text-center mb-4 text-lg">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
+      <p class="text-center mb-4 text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
+      <p class="text-center text-lg">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
+    </section>
+  <% end %>
+  <% unless cookies[:pullmetry_subscriber_email] %>
+    <div class="flex justify-center items-center mb-24">
+      <div class="p-8 border border-stone-200 rounded flex flex-col items-center">
+        <h2>Join newslist</h2>
+        <p class="mb-4">Receive latest project news about releases and new features.</p>
+        <%= form_with model: Subscriber.new, url: subscribers_path, method: :post, class: 'form-block' do |form| %>
+          <div class="flex flex-row gap-4 mb-8">
+            <div class="form-field m-0">
+              <%= form.text_field :email, required: true, placeholder: 'Email', class: 'form-value', data: { 'test-id' => 'join-newslist-email-value' } %>
+            </div>
+            <%= form.submit 'Join', class: 'btn-primary btn-small', data: { 'test-id' => 'join-newslist-link' } %>
+          </div>
+          <div class="form-field m-0">
+            <%= recaptcha_tags %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% cache('welcome_page_bottom_v3', expires_in: 24.hours) do %>
+    <section class="mx-auto mb-8 xl:mb-24">
+      <h2 class="text-center text-4xl mb-12">How it works</h2>
+      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
+        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
+          <h3>1. Add company</h3>
+          <p>First of all you need to create Company, it is just abstraction for group of repositories with similar configuration.</p>
+        </div>
+        <div class="flex-1">
+          <div class="welcome-image">
+            <%= image_tag 'new_company.webp', width: 593, height: 266, alt: 'compant-form' %>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col-reverse md:flex-row md:gap-20 mb-16">
+        <div class="flex-1">
+          <div class="welcome-image">
+            <%= image_tag 'new_repository.webp', width: 593, height: 320, alt: 'repository-form' %>
+          </div>
+        </div>
+        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
+          <h3>2. Add repository</h3>
+          <p class="mb-4">For any company you need to create Repository, and here real link for your repository at Github or Gitlab is required (repository can be private).</p>
+          <p class="mb-4">Later this link will be used for fetching statistics.</p>
+          <p>Any user, that has insights at some company or repository, has read access for insights data in such companies and repositories, so it's required (and allowed) only for 1 user to create/enable fetching data for specific repository and other developers will have access to it.</p>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
+        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
+          <h3>3. Add access token</h3>
+          <p class="mb-4">You need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</p>
+          <p>PullKeeper fetches timestamps data from pull requests, commits, reviews and their authors.</p>
+        </div>
+        <div class="flex-1">
+          <div class="welcome-image">
+            <%= image_tag 'access_token.webp', width: 593, height: 240, alt: 'acces-token-form' %>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col-reverse md:flex-row md:gap-20 mb-16">
+        <div class="flex-1">
+          <div class="welcome-image">
+            <%= image_tag 'screenshot.webp', width: 593, height: 340, alt: 'interface-example' %>
+          </div>
+        </div>
+        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
+          <h3>4. Enjoy your insights</h3>
+          <p class="mb-4">With that completed, you're all set and geared up for having developers statistics.</p>
+          <p class="mb-4">Developers insights are collected on Repository level and for whole Company.</p>
+          <p class="mb-4">There are additional repository insights with specific statistics.</p>
+          <p>At this point all your developers will have access to insights, they will need just to login to PullKeeper.</p>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
+        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
+          <h3>5. Additional settings</h3>
+          <p class="mb-4">PullKeeper has many additional settings thanks to which you can increase the accuracy of statistics and expand functionality.</p>
+          <p class="mb-4">Such settings includes privacy settings, working time, excludes rules for pull requests, different insight calculation preferences, notifications.</p>
+        </div>
+        <div class="flex-1">
+          <div class="welcome-image">
+            <%= image_tag 'edit_configuration.webp', width: 593, height: 389, alt: 'configuration-form' %>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mx-auto mb-24">
+      <h2 class="text-center text-4xl mb-12">Pricing</h2>
+      <p class="text-center mb-4">While PullKeeper is growing features list can grow too for both regular and premium plans.</p>
+      <p class="text-center mb-12">Payment can be done from Profile page after login, but no rush, there is trial 100 days for checking application.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
+          <div class="mb-12">
+            <h3>Regular</h3>
+            <p>Free</p>
+          </div>
+          <ul>
+            <li><%= Insight::DEFAULT_ATTRIBUTES.size %> insight metrics</li>
+            <li>12 repository insight metrics</li>
+            <li><%= Subscription::FREE_REPOSITORIES_AMOUNT %> tracking repositories</li>
+            <li>company metrics based on repositories</li>
+            <li>easy access for developers</li>
+            <li>configuring working time, vacations</li>
+            <li>configuring exclude rules for PRs</li>
+            <li>sending insights to Slack/Discord/Telegram</li>
+            <li>achievements system</li>
+          </ul>
+        </div>
+        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
+          <div class="mb-12">
+            <h3>Premium</h3>
+            <p>&euro;25/month or &euro;250/year</p>
+          </div>
+          <p class="mb-4">Everything in regular, plus:</p>
+          <ul>
+            <li><%= Insight::SHORT_ATTRIBUTE_NAMES.size %> insight metrics instead of <%= Insight::DEFAULT_ATTRIBUTES.size %></li>
+            <li>15 tracking repositories</li>
+            <li>comparing data with previous periods</li>
+          </ul>
+        </div>
+        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
+          <div class="mb-12">
+            <h3>Unlimited Premium</h3>
+            <p>&euro;50/month or &euro;500/year</p>
+          </div>
+          <p class="mb-4">Everything in premium, plus:</p>
+          <ul>
+            <li>unlimited repositories</li>
+            <li>priority support and new feature integration</li>
+          </ul>
+        </div>
+        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
+          <div class="mb-12">
+            <h3>Enterprise</h3>
+            <p>Custom prices</p>
+          </div>
+          <p class="mb-4">Special opportunities:</p>
+          <ul>
+            <li>assistance in deploying your own server</li>
+            <li>desktop application (in progress) for fully secured insights and statistics</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="mx-auto mb-24 w-full max-w-4xl">
+      <h2 class="text-center text-4xl mb-12">Used by</h2>
+      <div class="flex flex-row items-center justify-between flex-wrap w-full">
+        <a href="https://sputnik8.com" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/sputnik.webp', width: 210, height: 70, alt: 'sputnik' %>
+        </a>
+        <a href="https://tech.upshift.work" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/upshift.webp', width: 210, height: 70, alt: 'upshift' %>
+        </a>
+        <a href="https://slicelife.com" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/slice.webp', width: 210, height: 70, alt: 'slice' %>
+        </a>
+      </div>
+    </section>
+  <% end %>
+<% end %>

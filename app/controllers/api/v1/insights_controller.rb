@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class InsightsController < Api::V1Controller
+    class InsightsController < Api::V1::BaseController
       before_action :find_insightable
 
       def index

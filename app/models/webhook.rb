@@ -10,5 +10,5 @@ class Webhook < ApplicationRecord
 
   belongs_to :company
 
-  enum source: { CUSTOM => 0, SLACK => 1, DISCORD => 2, TELEGRAM => 3 }
+  enum :source, { CUSTOM => 0, SLACK => 1, DISCORD => 2, TELEGRAM => 3 }
 end

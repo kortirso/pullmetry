@@ -49,10 +49,8 @@ module Pullmetry
     register('commands.change_repository') { ChangeRepositoryCommand.new }
     register('commands.remove_user') { RemoveUserCommand.new }
     register('commands.add_vacation') { AddVacationCommand.new }
-
-    # forms
-    register('forms.users.update') { Users::UpdateForm.new }
-    register('forms.companies.configurations.update') { Companies::Configurations::UpdateForm.new }
+    register('commands.change_work_time') { ChangeWorkTimeCommand.new }
+    register('commands.change_company_configuration') { ChangeCompanyConfigurationCommand.new }
 
     # notifiers reports
     register('notifiers.payloads.company') { Payloads::Company.new }

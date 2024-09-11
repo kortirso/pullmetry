@@ -14,7 +14,6 @@ class AddVacationCommand < BaseCommand
   def do_prepare(input)
     input[:start_time] = transform_date(input[:start_time])
     input[:end_time] = transform_date(input[:end_time])
-    input
   end
 
   def do_persist(input)

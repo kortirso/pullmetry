@@ -2,10 +2,12 @@
 
 class AddInviteCommand < BaseCommand
   use_contract do
+    config.messages.namespace = :invite
+
     Accesses = Dry::Types['strict.string'].enum(*Invite.accesses.keys)
 
     params do
-      required(:inviteable).filled(type?: ApplicationRecord)
+      required(:inviteable).filled(type_included_in?: [Company, User])
       required(:email).filled(:string)
       optional(:access).maybe(Accesses)
     end
@@ -17,12 +19,8 @@ class AddInviteCommand < BaseCommand
 
   private
 
-  def do_validate(input)
-    errors = super
-    return errors if errors.present?
-
-    error = validate_inviteable_type(input) || validate_existing_invite(input)
-    [error] if error
+  def validate_content(input)
+    validate_existing_invite(input)
   end
 
   def do_persist(input)
@@ -31,12 +29,6 @@ class AddInviteCommand < BaseCommand
     InvitesMailer.create_email(id: invite.id).deliver_later
 
     { result: invite }
-  end
-
-  def validate_inviteable_type(input)
-    return if input[:inviteable].class.name.in?(Invite::INVITEABLE_TYPES)
-
-    'Inviteable is not supported'
   end
 
   def validate_existing_invite(input)

@@ -31,7 +31,9 @@ class User < ApplicationRecord
 
   has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
 
-  enum role: { REGULAR => 0, ADMIN => 1 }
+  has_one :work_time, as: :worktimeable, dependent: :destroy
+
+  enum :role, { REGULAR => 0, ADMIN => 1 }
 
   def plan_settings
     Rails.cache.fetch("user/#{id}/plan_limits", expires_in: 1.minute) do
@@ -44,7 +46,7 @@ class User < ApplicationRecord
   end
 
   def with_work_time?
-    work_start_time.present? && work_end_time.present?
+    work_time.present?
   end
 
   def available_companies

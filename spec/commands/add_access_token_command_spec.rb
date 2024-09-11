@@ -12,7 +12,7 @@ describe AddAccessTokenCommand do
 
     it 'does not create access token', :aggregate_failures do
       expect { command }.not_to change(AccessToken, :count)
-      expect(command[:errors]).to eq ['Tokenable is not supported']
+      expect(command[:errors]).to eq ['Tokenable has invalid type']
     end
   end
 

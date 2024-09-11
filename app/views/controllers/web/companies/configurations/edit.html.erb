@@ -1,0 +1,40 @@
+<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
+  <h1 class="mb-8">Edit configuration</h1>
+  <%=
+    js_component 'CompanyEditPrivacy',
+      company_uuid: @company.uuid,
+      private: @company.configuration.private,
+      accepted_invites: @accepted_invites,
+      invites: @invites
+  %>
+  <%=
+    js_component 'CompanyEditSettings',
+      company_uuid: @company.uuid,
+      starts_at: @company.work_time&.starts_at,
+      ends_at: @company.work_time&.ends_at,
+      timezone: @company.work_time&.timezone || '0'
+  %>
+  <%=
+    js_component 'CompanyEditPullRequests',
+      company_uuid: @company.uuid,
+      fetch_period: @company.configuration.fetch_period
+  %>
+  <%=
+    js_component 'CompanyEditInsights',
+      company_uuid: @company.uuid,
+      is_premium: @company.premium?,
+      insight_fields: (@company.premium? && @company.selected_insight_fields.presence) || Insight::DEFAULT_ATTRIBUTES.dup,
+      main_attribute: @company.configuration.main_attribute,
+      average_type: @company.configuration.average_type,
+      insight_ratio: @company.configuration.insight_ratio,
+      insight_ratio_type: @company.configuration.insight_ratio_type
+  %>
+  <%=
+    js_component 'CompanyEditNotifications',
+      company_uuid: @company.uuid
+  %>
+  <%=
+    js_component 'CompanyEditTransfer',
+      company_uuid: @company.uuid
+  %>
+<% end %>
