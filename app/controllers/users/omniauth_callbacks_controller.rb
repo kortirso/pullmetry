@@ -9,7 +9,7 @@ module Users
 
     def create
       user = auth_login(auth, current_user)
-      if !user
+      if user
         sign_in(user) if current_user.nil?
         accept_invite(user)
         redirect_to(current_user.nil? ? companies_path : profile_path)
@@ -39,7 +39,7 @@ module Users
     end
     # rubocop: enable Metrics/AbcSize
 
-    def monitor_unknown_state(auth)
+    def monitoring_failed_auth(auth)
       monitoring.notify(
         exception: 'Failed authentication',
         metadata: { provider: params[:provider], payload: auth },
