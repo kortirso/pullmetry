@@ -13,7 +13,7 @@ module Web
         if user
           sign_in(user) if current_user.nil?
           accept_invite(user)
-          redirect_to((current_user.nil? ? companies_path : profile_path), notice: 'Authentication succeed')
+          redirect_to after_sign_in_path, notice: 'Authentication succeeds'
         else
           monitoring_failed_auth(auth)
           redirect_to root_path, alert: 'Authentication failed'
@@ -39,6 +39,16 @@ module Web
         user
       end
       # rubocop: enable Metrics/AbcSize
+
+      def after_sign_in_path
+        fall_back_url = session[:pullkeeper_fall_back_url]
+        session[:pullkeeper_fall_back_url] = nil
+
+        return fall_back_url if fall_back_url
+        return companies_path if current_user.nil?
+
+        profile_path
+      end
 
       def monitoring_failed_auth(auth)
         monitoring.notify(
