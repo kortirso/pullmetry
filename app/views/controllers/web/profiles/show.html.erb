@@ -46,7 +46,6 @@
       </div>
     </div>
   </div>
-
   <%=
     js_component 'ProfilePrivacy',
       accepted_invites: @accepted_invites,
@@ -64,9 +63,9 @@
   <%= js_component 'ProfileVacations', vacations: @vacations %>
   <%=
     js_component 'ProfileSettings',
-      start_time: current_user.start_time,
-      end_time: current_user.end_time,
-      time_zone: current_user.time_zone
+      starts_at: current_user.work_time&.starts_at,
+      ends_at: current_user.work_time&.ends_at,
+      timezone: current_user.work_time&.timezone || '0'
   %>
   <%= js_component 'ProfileDelete', destroy_link: profile_path %>
   <script src="https://api.cryptocloud.plus/static/pay_btn/js/app.js"></script>

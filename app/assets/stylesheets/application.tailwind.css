@@ -129,7 +129,9 @@
   }
 
   .form-field .form-dropdown {
-    @apply absolute w-full border-r border-l border-gray-200 z-10;
+    @apply absolute w-full border-r border-l border-gray-200 z-10 overflow-y-scroll;
+
+    height: 10rem;
   }
 
   .form-field .form-dropdown li {

@@ -1474,6 +1474,41 @@ ALTER SEQUENCE public.webhooks_id_seq OWNED BY public.webhooks.id;
 
 
 --
+-- Name: work_times; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.work_times (
+    id bigint NOT NULL,
+    worktimeable_id bigint NOT NULL,
+    worktimeable_type character varying NOT NULL,
+    starts_at character varying NOT NULL,
+    ends_at character varying NOT NULL,
+    timezone character varying DEFAULT '0'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: work_times_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.work_times_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: work_times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.work_times_id_seq OWNED BY public.work_times.id;
+
+
+--
 -- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1688,6 +1723,13 @@ ALTER TABLE ONLY public.vacations ALTER COLUMN id SET DEFAULT nextval('public.va
 --
 
 ALTER TABLE ONLY public.webhooks ALTER COLUMN id SET DEFAULT nextval('public.webhooks_id_seq'::regclass);
+
+
+--
+-- Name: work_times id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.work_times ALTER COLUMN id SET DEFAULT nextval('public.work_times_id_seq'::regclass);
 
 
 --
@@ -1968,6 +2010,14 @@ ALTER TABLE ONLY public.vacations
 
 ALTER TABLE ONLY public.webhooks
     ADD CONSTRAINT webhooks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: work_times work_times_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.work_times
+    ADD CONSTRAINT work_times_pkey PRIMARY KEY (id);
 
 
 --
@@ -2391,6 +2441,13 @@ CREATE UNIQUE INDEX index_webhooks_on_uuid ON public.webhooks USING btree (uuid)
 
 
 --
+-- Name: index_work_times_on_worktimeable_id_and_worktimeable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_work_times_on_worktimeable_id_and_worktimeable_type ON public.work_times USING btree (worktimeable_id, worktimeable_type);
+
+
+--
 -- Name: kudos_users_achievements_unique_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2470,6 +2527,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240910132339'),
 ('20240903124912'),
 ('20240718070046'),
 ('20240705181734'),

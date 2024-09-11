@@ -20,9 +20,9 @@
       <tr>
         <td><%= company.id %></td>
         <td><%= company.configuration.private %></td>
-        <td><%= company.configuration.work_start_time&.strftime('%H:%M') %></td>
-        <td><%= company.configuration.work_end_time&.strftime('%H:%M') %></td>
-        <td><%= company.configuration.work_time_zone %></td>
+        <td><%= company.work_time&.starts_at %></td>
+        <td><%= company.work_time&.ends_at %></td>
+        <td><%= company.work_time&.timezone %></td>
         <td><%= company.configuration.ignore_users_work_time %></td>
         <td><%= company.configuration.fetch_period %></td>
         <td><%= company.configuration.main_attribute %></td>

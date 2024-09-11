@@ -69,14 +69,7 @@ describe Insights::Time::ForMerge, type: :service do
   end
 
   context 'for company with working time' do
-    before do
-      repository.company.update!(
-        configuration: {
-          work_start_time: DateTime.new(2023, 1, 1, 9, 0, 0),
-          work_end_time: DateTime.new(2023, 1, 1, 17, 0, 0)
-        }
-      )
-    end
+    before { create :work_time, starts_at: '09:00', ends_at: '17:00', worktimeable: repository.company }
 
     context 'for repository insightable' do
       let(:insightable) { repository }
@@ -87,12 +80,7 @@ describe Insights::Time::ForMerge, type: :service do
       end
 
       context 'when company work time zone is not UTC' do
-        before do
-          repository.company.configuration.assign_attributes(
-            work_time_zone: 'Amsterdam'
-          )
-          repository.company.save!
-        end
+        before { repository.company.work_time.update(timezone: '1') }
 
         it 'generates average time and succeeds', :aggregate_failures do
           expect(service_call[:result]).to eq({ entity2.id => [32_400] }) # 9 work hours
@@ -101,12 +89,7 @@ describe Insights::Time::ForMerge, type: :service do
       end
 
       context 'for user with work time' do
-        before do
-          identity.user.update!(
-            work_start_time: DateTime.new(2023, 1, 1, 9, 0, 0),
-            work_end_time: DateTime.new(2023, 1, 1, 16, 0, 0)
-          )
-        end
+        before { create :work_time, starts_at: '09:00', ends_at: '16:00', worktimeable: identity.user }
 
         it 'generates average time and succeeds', :aggregate_failures do
           expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
@@ -114,9 +97,7 @@ describe Insights::Time::ForMerge, type: :service do
         end
 
         context 'when user work time zone is not UTC' do
-          before do
-            identity.user.update!(work_time_zone: 'Tokyo')
-          end
+          before { identity.user.work_time.update!(timezone: '9') }
 
           it 'generates average time and succeeds', :aggregate_failures do
             expect(service_call[:result]).to eq({ entity2.id => [25_200] }) # 7 work hours
@@ -254,14 +235,7 @@ describe Insights::Time::ForMerge, type: :service do
 
   # PR created at 12 and merged at 13
   context 'for company with night working time' do
-    before do
-      repository.company.update!(
-        configuration: {
-          work_start_time: DateTime.new(2023, 1, 1, 20, 0, 0),
-          work_end_time: DateTime.new(2023, 1, 1, 4, 0, 0)
-        }
-      )
-    end
+    before { create :work_time, starts_at: '20:00', ends_at: '04:00', worktimeable: repository.company }
 
     context 'for repository insightable' do
       let(:insightable) { repository }
@@ -272,12 +246,7 @@ describe Insights::Time::ForMerge, type: :service do
       end
 
       context 'when company work time zone is not UTC' do
-        before do
-          repository.company.configuration.assign_attributes(
-            work_time_zone: 'Amsterdam'
-          )
-          repository.company.save!
-        end
+        before { repository.company.work_time.update(timezone: '1') }
 
         it 'generates average time and succeeds', :aggregate_failures do
           expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours
@@ -286,12 +255,7 @@ describe Insights::Time::ForMerge, type: :service do
       end
 
       context 'for user with work time' do
-        before do
-          identity.user.update!(
-            work_start_time: DateTime.new(2023, 1, 1, 21, 0, 0),
-            work_end_time: DateTime.new(2023, 1, 1, 4, 0, 0)
-          )
-        end
+        before { create :work_time, starts_at: '21:00', ends_at: '04:00', worktimeable: identity.user }
 
         it 'generates average time and succeeds', :aggregate_failures do
           expect(service_call[:result]).to eq({ entity2.id => [25_200] }) # 7 work hours
@@ -299,9 +263,7 @@ describe Insights::Time::ForMerge, type: :service do
         end
 
         context 'when user work time zone is not UTC' do
-          before do
-            identity.user.update!(work_time_zone: 'Tokyo')
-          end
+          before { identity.user.work_time.update(timezone: '9') }
 
           it 'generates average time and succeeds', :aggregate_failures do
             expect(service_call[:result]).to eq({ entity2.id => [28_800] }) # 8 work hours

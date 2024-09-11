@@ -2,7 +2,7 @@ import { createStore } from 'solid-js/store';
 
 import { FormInputField, Dropdown, Select, createFlash } from '../../molecules';
 
-import { updateWorkTimeRequest } from './requests/updateWorkTimeRequest';
+import { updateWorkTimeRequest } from '../Profile/requests/updateWorkTimeRequest';
 
 const TIME_ZONES = {
   '-12': 'GMT-12', '-11': 'GMT-11', '-10': 'GMT-10', '-9': 'GMT-9',
@@ -14,7 +14,7 @@ const TIME_ZONES = {
   '12': 'GMT+12'
 }
 
-export const ProfileSettings = (props) => {
+export const CompanyEditSettings = (props) => {
   /* eslint-disable solid/reactivity */
   const [formStore, setFormStore] = createStore({
     startsAt: props.startsAt,
@@ -26,7 +26,7 @@ export const ProfileSettings = (props) => {
   const { Flash, renderErrors, renderNotices } = createFlash();
 
   const UpdateSettings = async () => {
-    const result = await updateWorkTimeRequest(formStore);
+    const result = await updateWorkTimeRequest({ ...formStore, companyId: props.companyUuid });
 
     if (result.errors) renderErrors(result.errors);
     else renderNotices(['Work time is saved']);
@@ -34,10 +34,10 @@ export const ProfileSettings = (props) => {
 
   return (
     <>
-      <Dropdown title="User settings">
+      <Dropdown title="Company settings">
         <div class="py-6 px-8">
           <div class="grid lg:grid-cols-2 gap-8">
-            <div class="grid lg:grid-cols-3 lg:gap-8 lg:mt-4">
+            <div class="grid lg:grid-cols-3 lg:gap-8">
               <div class="flex-1">
                 <FormInputField
                   required
@@ -70,10 +70,10 @@ export const ProfileSettings = (props) => {
               </div>
             </div>
             <div>
-              <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
+              <p>You can select working time of your company. This allows better calculations of average review time, because it will not count not-working time and weekends.</p>
             </div>
           </div>
-          <button class="btn-primary btn-small mt-8 lg:mt-4 mb-2" onClick={UpdateSettings}>Update user settings</button>
+          <button class="btn-primary btn-small mt-8 lg:mt-4 mb-2" onClick={UpdateSettings}>Update company settings</button>
         </div>
       </Dropdown>
       <Flash />

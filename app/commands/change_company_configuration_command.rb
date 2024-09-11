@@ -41,7 +41,7 @@ class ChangeCompanyConfigurationCommand < BaseCommand
 
   def sliced_params(input)
     params_list = %i[
-      ignore_users_work_time work_time_zone work_start_time work_end_time private average_type fetch_period
+      ignore_users_work_time private average_type fetch_period
       long_time_review_hours main_attribute
     ]
     # premium account has more available attributes for update

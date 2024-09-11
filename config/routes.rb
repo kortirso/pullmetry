@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   end
 
   namespace :frontend do
-    resource :profile, only: %i[update]
+    resources :work_times, only: %i[create]
     resources :companies, only: %i[create] do
       resource :configuration, only: %i[update], module: 'companies'
       resource :transfer, only: %i[create], module: 'companies'

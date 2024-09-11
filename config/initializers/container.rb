@@ -49,7 +49,7 @@ module Pullmetry
     register('commands.change_repository') { ChangeRepositoryCommand.new }
     register('commands.remove_user') { RemoveUserCommand.new }
     register('commands.add_vacation') { AddVacationCommand.new }
-    register('commands.change_user') { ChangeUserCommand.new }
+    register('commands.change_work_time') { ChangeWorkTimeCommand.new }
     register('commands.change_company_configuration') { ChangeCompanyConfigurationCommand.new }
 
     # notifiers reports

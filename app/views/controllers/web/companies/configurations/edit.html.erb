@@ -8,6 +8,13 @@
       invites: @invites
   %>
   <%=
+    js_component 'CompanyEditSettings',
+      company_uuid: @company.uuid,
+      starts_at: @company.work_time&.starts_at,
+      ends_at: @company.work_time&.ends_at,
+      timezone: @company.work_time&.timezone || '0'
+  %>
+  <%=
     js_component 'CompanyEditPullRequests',
       company_uuid: @company.uuid,
       fetch_period: @company.configuration.fetch_period

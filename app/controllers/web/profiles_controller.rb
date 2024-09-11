@@ -80,13 +80,5 @@ module Web
         end
     end
     # rubocop: enable Metrics/AbcSize
-
-    def user_params
-      params.require(:user).permit(:work_time_zone, :work_start_time, :work_end_time)
-    end
-
-    def use_work_time
-      to_bool.call(params[:user][:use_work_time])
-    end
   end
 end

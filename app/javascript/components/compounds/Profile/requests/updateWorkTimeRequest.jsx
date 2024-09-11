@@ -1,15 +1,15 @@
 import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helpers';
 
-export const updateProfileRequest = async (payload) => {
+export const updateWorkTimeRequest = async (payload) => {
   return await apiRequest({
-    url: '/frontend/profile.json',
+    url: '/frontend/work_times.json',
     options: {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ user: objectKeysToSnakeCase(payload) })
+      body: JSON.stringify(objectKeysToSnakeCase(payload))
     }
   });
 }

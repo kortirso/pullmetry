@@ -5,6 +5,7 @@ export * from './compounds/CompanyEdit/CompanyEditPullRequests';
 export * from './compounds/CompanyEdit/CompanyEditInsights';
 export * from './compounds/CompanyEdit/CompanyEditNotifications';
 export * from './compounds/CompanyEdit/CompanyEditTransfer';
+export * from './compounds/CompanyEdit/CompanyEditSettings';
 export * from './compounds/Feedback/FeedbackForm';
 export * from './compounds/Insights/DeveloperInsights';
 export * from './compounds/Insights/RepositoryInsights';

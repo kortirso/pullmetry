@@ -53,14 +53,7 @@ describe Deliveries::Companies::InsightsReportJob, type: :service do
     end
 
     context 'with working time' do
-      before do
-        company.configuration.assign_attributes(
-          work_start_time: DateTime.new(date.year, date.month, date.day, 9, 0),
-          work_end_time: DateTime.new(date.year, date.month, date.day, 18, 0),
-          work_time_zone: 'UTC'
-        )
-        company.save!
-      end
+      before { create :work_time, starts_at: '09:00', ends_at: '18:00', worktimeable: company }
 
       context 'with current time inside working time' do
         before do

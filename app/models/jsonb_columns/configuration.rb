@@ -7,9 +7,12 @@ module JsonbColumns
     attribute :private, :boolean, default: false
     # insights calculation attributes
     attribute :ignore_users_work_time, :boolean
+
+    # TODO: remove 3 times
     attribute :work_time_zone, :string
     attribute :work_start_time, :datetime
     attribute :work_end_time, :datetime
+
     # insights table view attributes
     attribute :insight_fields, JsonbColumns::Insight.to_type
     attribute :insight_ratio, :boolean

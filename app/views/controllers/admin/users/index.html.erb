@@ -16,9 +16,9 @@
         <td><%= user.id %></td>
         <td><%= user.uuid %></td>
         <td><%= user.email %></td>
-        <td><%= user.work_start_time %></td>
-        <td><%= user.work_end_time %></td>
-        <td><%= user.work_time_zone %></td>
+        <td><%= user.work_time&.starts_at %></td>
+        <td><%= user.work_time&.ends_at %></td>
+        <td><%= user.work_time&.timezone %></td>
         <td><%= user.premium? %></td>
       </tr>
     <% end %>

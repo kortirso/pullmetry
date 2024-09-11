@@ -15,6 +15,11 @@ export const createFlash = () => {
         values.map((item) => { return { type: 'error', value: item } })
       );
     },
+    renderNotices(values) {
+      setMessages(
+        values.map((item) => { return { type: 'notice', value: item } })
+      );
+    },
     Flash() {
       return (
         <Show when={messages().length > 0}>
