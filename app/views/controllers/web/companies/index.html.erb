@@ -31,8 +31,6 @@
     <div class="mt-6 flex justify-between items-center">
       <% if @pagy.pages > 1 %>
         <div><%== pagy_nav(@pagy) %></div>
-      <% else %>
-        <div></div>
       <% end %>
       <%=
         js_component 'CompanyForm',

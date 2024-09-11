@@ -89,12 +89,7 @@ export const Repository = (props) => {
               </Show>
               {props.title}
             </div>
-            <Show when={props.accessTokenStatus === 'valid' && !props.accessable}>
-              <span class="badge mt-4 sm:mt-0 sm:ml-4">
-                Access token's update is required
-              </span>
-            </Show>
-            <Show when={props.accessTokenStatus === 'invalid'}>
+            <Show when={props.accessTokenStatus === 'valid' && !props.accessable || props.accessTokenStatus === 'invalid'}>
               <span class="badge mt-4 sm:mt-0 sm:ml-4">
                 Access token's update is required
               </span>
@@ -107,7 +102,7 @@ export const Repository = (props) => {
               rel="noopener noreferrer"
               area-label="Visit repository page"
               onClick={(event) => event.stopPropagation()}
-              class="mr-2 flex items-center"
+              class="mr-4 flex items-center"
             >
               <Switch fallback={<Github />}>
                 <Match when={props.provider === 'gitlab'}>
@@ -121,6 +116,11 @@ export const Repository = (props) => {
             >
               <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
             </Show>
+            <Show when={props.accessTokenStatus === 'empty'}>
+              <span class="ml-4 badge">
+                Need to add access token
+              </span>
+            </Show>
           </p>
         </div>
         <Chevron rotated={pageState.isExpanded} />
@@ -130,7 +130,7 @@ export const Repository = (props) => {
               <a
                 href={props.editLinks.accessToken}
                 class="mr-2"
-                classList={{ ['p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white']: props.editLinks.needAccessToken }}
+                classList={{ ['p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white']: props.accessTokenStatus === 'empty' }}
                 onClick={(event) => event.stopPropagation()}
               >
                 <Key />

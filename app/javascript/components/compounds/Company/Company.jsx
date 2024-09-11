@@ -75,7 +75,7 @@ export const Company = (props) => {
               </span>
             </Show>
           </h2>
-          <span>
+          <p class="flex items-center">
             {props.repositoriesCount === 0 ? (
               <a
                 href={props.repositoriesUrl}
@@ -86,7 +86,7 @@ export const Company = (props) => {
               </a>
             ) : (
               <>
-                Repositories count -{' '}
+                Repositories count -&nbsp;
                 <a
                   href={props.repositoriesUrl}
                   class="underline text-orange-500"
@@ -94,9 +94,16 @@ export const Company = (props) => {
                 >
                   {props.repositoriesCount}
                 </a>
+                <Show when={props.editLinks?.needAccessToken}>
+                  <a
+                    href={props.editLinks.accessToken}
+                    class="ml-4 badge"
+                    onClick={(event) => event.stopPropagation()}
+                  >Need to add access token</a>
+                </Show>
               </>
             )}
-          </span>
+          </p>
         </div>
         <Chevron rotated={pageState.isExpanded} />
         <Show when={props.editLinks}>
