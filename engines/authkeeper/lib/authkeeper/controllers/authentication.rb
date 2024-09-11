@@ -28,6 +28,7 @@ module Authkeeper
       def authenticate
         return if current_user
 
+        session[:pullkeeper_fall_back_url] = request.fullpath
         authentication_error
       end
 
