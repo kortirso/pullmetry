@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :entities, through: :identities
   has_many :insights, through: :entities
 
-  has_many :subscriptions, dependent: :destroy
+  has_many :subscriptions, class_name: 'User::Subscription', foreign_key: :user_id, dependent: :destroy
   has_many :vacations, class_name: 'User::Vacation', foreign_key: :user_id, dependent: :destroy
 
   has_many :feedbacks, dependent: :destroy

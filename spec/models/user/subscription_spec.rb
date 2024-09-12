@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-describe Subscription do
+describe User::Subscription do
   it 'factory should be valid' do
-    subscription = build :subscription
+    user_subscription = build :user_subscription
 
-    expect(subscription).to be_valid
+    expect(user_subscription).to be_valid
   end
 
   describe 'associations' do

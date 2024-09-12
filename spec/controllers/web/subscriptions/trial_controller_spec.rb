@@ -9,16 +9,16 @@ describe Web::Subscriptions::TrialController do
 
       context 'for unexisting subscription' do
         it 'creates subscription and redirects', :aggregate_failures do
-          expect { do_request }.to change(Subscription, :count).by(1)
+          expect { do_request }.to change(User::Subscription, :count).by(1)
           expect(response).to redirect_to profile_path
         end
       end
 
       context 'for existing subscription' do
-        before { create :subscription, user: @current_user }
+        before { create :user_subscription, user: @current_user }
 
         it 'does not create subscription and redirects', :aggregate_failures do
-          expect { do_request }.not_to change(Subscription, :count)
+          expect { do_request }.not_to change(User::Subscription, :count)
           expect(response).to redirect_to profile_path
         end
       end

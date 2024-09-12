@@ -60,7 +60,7 @@ describe Company do
       end
 
       context 'for premium account' do
-        before { create :subscription, user: company.user }
+        before { create :user_subscription, user: company.user }
 
         it 'returns full period' do
           expect(company.find_fetch_period).to eq 61

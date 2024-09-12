@@ -28,7 +28,7 @@ describe Insights::Generate::CompanyService, type: :service do
            changed_loc: 2,
            open_pull_requests_count: 1
 
-    create :subscription, user: insightable.user
+    create :user_subscription, user: insightable.user
     insightable.configuration.insight_fields = {
       comments_count: true,
       changed_loc: true,

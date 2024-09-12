@@ -10,7 +10,7 @@ describe Api::V1::InsightsController do
       let!(:user) { create :user }
       let(:api_access_token) { create :api_access_token, user: user }
 
-      before { create :subscription, user: user }
+      before { create :user_subscription, user: user }
 
       context 'for companies' do
         before do

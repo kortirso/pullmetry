@@ -30,7 +30,7 @@ describe User do
     end
 
     context 'with subscription' do
-      before { create :subscription, user: user, start_time: DateTime.now + 1.minute }
+      before { create :user_subscription, user: user, start_time: DateTime.now + 1.minute }
 
       it 'returns true' do
         expect(user.premium?).to be_truthy

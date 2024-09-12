@@ -85,7 +85,7 @@ describe Insights::Generate::RepositoryService, type: :service do
 
     context 'for premium account with ratio settings' do
       before do
-        create :subscription, user: repository.company.user
+        create :user_subscription, user: repository.company.user
         repository.company.configuration.insight_ratio = true
         repository.company.save!
       end

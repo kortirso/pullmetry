@@ -3,7 +3,7 @@
 module Webhooks
   class CryptocloudsController < ApplicationController
     include Deps[
-      add_service: 'services.persisters.subscriptions.add',
+      add_user_subscription: 'commands.add_user_subscription',
       jwt_encoder: 'jwt_encoder',
       monitoring: 'monitoring.client'
     ]
@@ -17,7 +17,7 @@ module Webhooks
 
     def create
       if @invoice_payload['id'] == params[:invoice_id]
-        add_service.call(
+        add_user_subscription.call(
           user: @user,
           trial: false,
           days_period: days_period,
@@ -60,11 +60,11 @@ module Webhooks
     end
 
     def days_period
-      order_id_payload['days_period'] || Subscription::TRIAL_PERIOD_DAYS
+      order_id_payload['days_period'] || User::Subscription::TRIAL_PERIOD_DAYS
     end
 
     def plan
-      order_id_payload['plan'] || Subscription::REGULAR
+      order_id_payload['plan'] || User::Subscription::REGULAR
     end
 
     def order_id_payload

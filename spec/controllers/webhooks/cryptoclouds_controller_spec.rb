@@ -10,7 +10,7 @@ describe Webhooks::CryptocloudsController do
       let(:request) { post :create, params: { status: 'failed' } }
 
       it 'does not create subscription', :aggregate_failures do
-        expect { request }.not_to change(Subscription, :count)
+        expect { request }.not_to change(User::Subscription, :count)
         expect(monitoring).to have_received(:notify)
         expect(response).to have_http_status :ok
       end
@@ -21,7 +21,7 @@ describe Webhooks::CryptocloudsController do
         let(:request) { post :create, params: { status: 'success' } }
 
         it 'does not create subscription', :aggregate_failures do
-          expect { request }.not_to change(Subscription, :count)
+          expect { request }.not_to change(User::Subscription, :count)
           expect(monitoring).to have_received(:notify)
           expect(response).to have_http_status :not_found
         end
@@ -35,7 +35,7 @@ describe Webhooks::CryptocloudsController do
           let(:request) { post :create, params: { status: 'success', order_id: '123' } }
 
           it 'does not create subscription', :aggregate_failures do
-            expect { request }.not_to change(Subscription, :count)
+            expect { request }.not_to change(User::Subscription, :count)
             expect(monitoring).to have_received(:notify)
             expect(response).to have_http_status :not_found
           end
@@ -45,7 +45,7 @@ describe Webhooks::CryptocloudsController do
           let(:request) { post :create, params: { status: 'success', order_id: order_id } }
 
           it 'does not create subscription', :aggregate_failures do
-            expect { request }.not_to change(Subscription, :count)
+            expect { request }.not_to change(User::Subscription, :count)
             expect(monitoring).to have_received(:notify)
             expect(response).to have_http_status :ok
           end
@@ -62,7 +62,7 @@ describe Webhooks::CryptocloudsController do
             }
 
             it 'does not create subscription', :aggregate_failures do
-              expect { request }.not_to change(Subscription, :count)
+              expect { request }.not_to change(User::Subscription, :count)
               expect(monitoring).to have_received(:notify)
               expect(response).to have_http_status :ok
             end

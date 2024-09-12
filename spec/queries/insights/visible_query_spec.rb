@@ -18,7 +18,7 @@ describe Insights::VisibleQuery, type: :service do
 
   context 'for premium account' do
     before do
-      create :subscription, user: insightable.user
+      create :user_subscription, user: insightable.user
 
       insightable.configuration.assign_attributes(
         main_attribute: :reviews_count

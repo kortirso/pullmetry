@@ -49,7 +49,7 @@ describe Frontend::Companies::TransfersController do
           end
 
           context 'for unavailable user' do
-            before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT + 1, company: company }
+            before { create_list :repository, User::Subscription::FREE_REPOSITORIES_AMOUNT + 1, company: company }
 
             it 'does not update company', :aggregate_failures do
               post :create, params: {

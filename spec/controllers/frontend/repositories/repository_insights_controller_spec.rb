@@ -10,7 +10,7 @@ describe Frontend::Repositories::RepositoryInsightsController do
       let(:access_token) { Authkeeper::GenerateTokenService.new.call(user_session: user_session)[:result] }
 
       before do
-        create :subscription, user: user
+        create :user_subscription, user: user
         create :repositories_insight, repository: repository, comments_count: 2
         create :repositories_insight, repository: repository, comments_count: 3, previous_date: 1.week.ago
       end

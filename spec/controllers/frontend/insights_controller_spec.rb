@@ -8,7 +8,7 @@ describe Frontend::InsightsController do
       let!(:user_session) { create :user_session, user: user }
       let(:access_token) { Authkeeper::GenerateTokenService.new.call(user_session: user_session)[:result] }
 
-      before { create :subscription, user: user }
+      before { create :user_subscription, user: user }
 
       context 'for companies' do
         before do

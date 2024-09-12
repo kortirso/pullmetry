@@ -129,7 +129,7 @@ describe Frontend::RepositoriesController do
           end
 
           context 'if user uses repositories limit' do
-            before { create_list :repository, Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
+            before { create_list :repository, User::Subscription::FREE_REPOSITORIES_AMOUNT, company: company }
 
             it 'does not create repository and redirects', :aggregate_failures do
               expect { request }.not_to change(company.repositories, :count)

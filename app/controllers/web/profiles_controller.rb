@@ -65,16 +65,16 @@ module Web
         Rails.cache.fetch('profile_cryptocloud_order_ids_v1') do
           {
             regular30: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: Subscription::REGULAR, days_period: 30 }
+              payload: { uuid: current_user.uuid, plan: User::Subscription::REGULAR, days_period: 30 }
             ),
             regular365: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: Subscription::REGULAR, days_period: 365 }
+              payload: { uuid: current_user.uuid, plan: User::Subscription::REGULAR, days_period: 365 }
             ),
             unlimited30: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: Subscription::UNLIMITED, days_period: 30 }
+              payload: { uuid: current_user.uuid, plan: User::Subscription::UNLIMITED, days_period: 30 }
             ),
             unlimited365: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: Subscription::UNLIMITED, days_period: 365 }
+              payload: { uuid: current_user.uuid, plan: User::Subscription::UNLIMITED, days_period: 365 }
             )
           }
         end
