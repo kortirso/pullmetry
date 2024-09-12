@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-describe Vacation do
+describe User::Vacation do
   it 'factory should be valid' do
-    vacation = build :vacation
+    user_vacation = build :user_vacation
 
-    expect(vacation).to be_valid
+    expect(user_vacation).to be_valid
   end
 
   describe 'associations' do

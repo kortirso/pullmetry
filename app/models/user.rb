@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   encrypts :email, deterministic: true
 
-  # TODO: remember to modify Persisters::Users::DestroyService after adding new has_many
+  # TODO: remember to modify RemoveUserCommand after adding new has_many
   has_many :sessions, class_name: 'User::Session', dependent: :destroy
   has_many :receive_invites, class_name: 'Invite', foreign_key: :receiver_id, dependent: :nullify
 
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :insights, through: :entities
 
   has_many :subscriptions, dependent: :destroy
-  has_many :vacations, dependent: :destroy
+  has_many :vacations, class_name: 'User::Vacation', foreign_key: :user_id, dependent: :destroy
 
   has_many :feedbacks, dependent: :destroy
 

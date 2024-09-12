@@ -48,7 +48,7 @@ module Pullmetry
     register('commands.change_company') { ChangeCompanyCommand.new }
     register('commands.change_repository') { ChangeRepositoryCommand.new }
     register('commands.remove_user') { RemoveUserCommand.new }
-    register('commands.add_vacation') { AddVacationCommand.new }
+    register('commands.add_user_vacation') { AddUserVacationCommand.new }
     register('commands.change_work_time') { ChangeWorkTimeCommand.new }
     register('commands.change_company_configuration') { ChangeCompanyConfigurationCommand.new }
 

@@ -2,7 +2,7 @@ import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { FormInputField, Dropdown, createModal, createFlash } from '../../molecules';
-import { convertDate } from '../../../helpers';
+import { convertDate, objectKeysToCamelCase } from '../../../helpers';
 
 import { createVacationRequest } from './requests/createVacationRequest'
 import { removeVacationRequest } from './requests/removeVacationRequest'
@@ -28,7 +28,7 @@ export const ProfileVacations = (props) => {
     if (result.errors) renderErrors(result.errors);
     else {
       batch(() => {
-        setPageState({ ...pageState, vacations: pageState.vacations.concat(result.result) });
+        setPageState({ ...pageState, vacations: pageState.vacations.concat(objectKeysToCamelCase(result.result)) });
         setFormStore({ startTime: '', endTime: '' });
         closeModal();
       });

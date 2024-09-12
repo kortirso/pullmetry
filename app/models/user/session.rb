@@ -6,6 +6,6 @@ class User
 
     include Uuidable
 
-    belongs_to :user, class_name: '::User'
+    belongs_to :user
   end
 end

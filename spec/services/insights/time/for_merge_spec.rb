@@ -185,7 +185,7 @@ describe Insights::Time::ForMerge, type: :service do
           end
 
           context 'with vacation for author' do
-            before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
+            before { create :user_vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
 
             it 'generates average time and succeeds', :aggregate_failures do
               expect(service_call[:result]).to eq({ entity2.id => [18_000] })
@@ -352,7 +352,7 @@ describe Insights::Time::ForMerge, type: :service do
           end
 
           context 'with vacation for author' do
-            before { create :vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
+            before { create :user_vacation, user: identity.user, start_time: first_monday, end_time: first_monday + 2.days }
 
             it 'generates average time and succeeds', :aggregate_failures do
               expect(service_call[:result]).to eq({ entity2.id => [28_800] })

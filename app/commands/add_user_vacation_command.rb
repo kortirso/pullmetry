@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddVacationCommand < BaseCommand
+class AddUserVacationCommand < BaseCommand
   use_contract do
     params do
       required(:user).filled(type?: User)
@@ -20,7 +20,7 @@ class AddVacationCommand < BaseCommand
     error = validate_time(input)
     return { errors: [error] } if error.present?
 
-    vacation = Vacation.create!(input)
+    vacation = User::Vacation.create!(input)
 
     { result: vacation }
   end

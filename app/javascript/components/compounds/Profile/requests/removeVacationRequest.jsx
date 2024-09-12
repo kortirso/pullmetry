@@ -2,7 +2,7 @@ import { apiRequest, csrfToken } from '../../../../helpers';
 
 export const removeVacationRequest = async (id) => {
   return await apiRequest({
-    url: `/frontend/vacations/${id}.json`,
+    url: `/frontend/users/vacations/${id}.json`,
     options: {
       method: 'DELETE',
       headers: {
