@@ -2,8 +2,8 @@
 
 describe Frontend::NotificationsController do
   let!(:user) { create :user }
-  let!(:users_session) { create :users_session, user: user }
-  let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
+  let!(:user_session) { create :user_session, user: user }
+  let(:access_token) { Authkeeper::GenerateTokenService.new.call(user_session: user_session)[:result] }
   let!(:company) { create :company, user: user }
   let!(:webhook) { create :webhook, company: company }
   let!(:another_user) { create :user }

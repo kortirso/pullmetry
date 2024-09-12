@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-describe Users::Session do
+describe User::Session do
   it 'factory should be valid' do
-    users_session = build :users_session
+    user_session = build :user_session
 
-    expect(users_session).to be_valid
+    expect(user_session).to be_valid
   end
 
   describe 'associations' do

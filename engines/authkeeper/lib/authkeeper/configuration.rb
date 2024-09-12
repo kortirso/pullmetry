@@ -9,7 +9,7 @@ module Authkeeper
 
     def initialize
       @user_model = 'User'
-      @user_session_model = 'Users::Session'
+      @user_session_model = 'User::Session'
 
       @access_token_name = nil
 

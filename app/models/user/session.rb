@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Users
+class User
   class Session < ApplicationRecord
     self.table_name = :users_sessions
 

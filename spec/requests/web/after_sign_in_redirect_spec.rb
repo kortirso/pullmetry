@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe 'After sign in redirect' do
-  let!(:users_session) { create :users_session }
+  let!(:user_session) { create :user_session }
 
   before do
     allow(Authkeeper::Container.resolve('services.providers.github')).to(
@@ -43,7 +43,7 @@ describe 'After sign in redirect' do
           uid: '123',
           provider: 'gitlab',
           login: 'octocat',
-          email: users_session.user.email
+          email: user_session.user.email
         }
       }
     end

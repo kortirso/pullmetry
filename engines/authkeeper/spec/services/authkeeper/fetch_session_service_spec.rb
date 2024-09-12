@@ -18,11 +18,11 @@ describe Authkeeper::FetchSessionService do
     end
 
     context 'for existed session' do
-      let(:users_session) { create :users_session }
-      let(:session_uuid) { users_session.uuid }
+      let(:user_session) { create :user_session }
+      let(:session_uuid) { user_session.uuid }
 
       it 'assigns user and succeeds', :aggregate_failures do
-        expect(service_call[:result]).to eq users_session
+        expect(service_call[:result]).to eq user_session
         expect(service_call[:errors]).to be_blank
       end
     end

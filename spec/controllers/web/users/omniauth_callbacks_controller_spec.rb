@@ -416,10 +416,10 @@ describe Web::Users::OmniauthCallbacksController do
     context 'for logged users' do
       sign_in_user
 
-      before { create :users_session, user: @current_user }
+      before { create :user_session, user: @current_user }
 
       it 'destroys session and redirects', :aggregate_failures do
-        expect { do_request }.to change(Users::Session, :count).by(-1)
+        expect { do_request }.to change(User::Session, :count).by(-1)
         expect(response).to redirect_to root_path
       end
     end

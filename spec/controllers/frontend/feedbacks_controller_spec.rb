@@ -12,8 +12,8 @@ describe Frontend::FeedbacksController do
 
     context 'for logged users' do
       let!(:user) { create :user }
-      let!(:users_session) { create :users_session, user: user }
-      let(:access_token) { Authkeeper::GenerateTokenService.new.call(users_session: users_session)[:result] }
+      let!(:user_session) { create :user_session, user: user }
+      let(:access_token) { Authkeeper::GenerateTokenService.new.call(user_session: user_session)[:result] }
 
       context 'for invalid params' do
         let(:request) { post :create, params: { feedback: { title: '', description: '' }, pullmetry_access_token: access_token } }

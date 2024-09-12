@@ -66,9 +66,9 @@ module Authkeeper
     end
 
     def sign_in(user)
-      users_session = Authkeeper.configuration.user_session_model.constantize.create!(user: user)
+      user_session = Authkeeper.configuration.user_session_model.constantize.create!(user: user)
       cookies[Authkeeper.configuration.access_token_name] = {
-        value: generate_token.call(users_session: users_session)[:result],
+        value: generate_token.call(user_session: user_session)[:result],
         expires: 1.week.from_now
       }
     end

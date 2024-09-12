@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 describe Authkeeper::GenerateTokenService do
-  subject(:service_call) { instance.call(users_session: users_session) }
+  subject(:service_call) { instance.call(user_session: user_session) }
 
   let!(:instance) { described_class.new }
   let!(:user) { create :user }
-  let!(:users_session) { create :users_session, user: user }
+  let!(:user_session) { create :user_session, user: user }
 
   context 'without existing session' do
     it 'returns token and succeeds', :aggregate_failures do
@@ -17,7 +17,7 @@ describe Authkeeper::GenerateTokenService do
   end
 
   context 'with existing session' do
-    before { create :users_session, user: user }
+    before { create :user_session, user: user }
 
     it 'returns token and succeeds', :aggregate_failures do
       service_call

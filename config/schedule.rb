@@ -29,5 +29,5 @@ end
 
 # Clear expired users sessions
 every 1.day do
-  runner 'Users::Sessions::RemoveExpiredJob.perform_later'
+  runner 'AuthContext::RemoveExpiredUserSessionsJob.perform_later'
 end

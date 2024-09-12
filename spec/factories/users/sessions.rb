@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :users_session, class: 'Users::Session' do
+  factory :user_session, class: 'User::Session' do
     user
   end
 end

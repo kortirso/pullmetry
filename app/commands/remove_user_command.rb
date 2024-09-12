@@ -15,7 +15,7 @@ class RemoveUserCommand < BaseCommand
     ActiveRecord::Base.transaction do
       user.invites.destroy_all
       user.receive_invites.update_all(receiver_id: nil)
-      user.users_sessions.destroy_all
+      user.sessions.destroy_all
       user.companies.destroy_all
       user.identities.destroy_all
       user.vacations.destroy_all
