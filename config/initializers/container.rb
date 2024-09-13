@@ -52,6 +52,7 @@ module Pullmetry
     register('commands.change_work_time') { ChangeWorkTimeCommand.new }
     register('commands.change_company_configuration') { ChangeCompanyConfigurationCommand.new }
     register('commands.add_user_subscription') { AddUserSubscriptionCommand.new }
+    register('commands.accept_invite_by_user') { AcceptInviteByUserCommand.new }
 
     # notifiers reports
     register('notifiers.payloads.company') { Payloads::Company.new }
@@ -73,8 +74,6 @@ module Pullmetry
     register('reports.company.slack.no_new_pulls') { Reports::Company::Slack::NoNewPulls.new }
 
     # services
-    register('services.persisters.invites.accept') { Persisters::Invites::AcceptService.new }
-
     register('services.converters.seconds_to_text') { Converters::SecondsToTextService.new }
 
     register('services.import.fetchers.github.pull_requests') { Import::Fetchers::Github::PullRequests.new }

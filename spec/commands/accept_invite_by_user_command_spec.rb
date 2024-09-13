@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Persisters::Invites::AcceptService, type: :service do
-  subject(:service_call) { described_class.new.call(invite: invite, user: user) }
+describe AcceptInviteByUserCommand do
+  subject(:service_call) { described_class.new.call({ invite: invite, user: user }) }
 
   let!(:user) { create :user }
 
