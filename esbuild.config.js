@@ -9,5 +9,5 @@ build({
   sourcemap: true,
   outdir: path.join(process.cwd(), 'app/assets/builds'),
   absWorkingDir: path.join(process.cwd(), 'app/javascript'),
-  plugins: [solidPlugin()],
+  plugins: [solidPlugin({})],
 }).catch(() => process.exit(1))
