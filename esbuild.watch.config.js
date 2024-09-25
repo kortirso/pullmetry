@@ -1,6 +1,6 @@
 import path from 'path';
 import { context } from 'esbuild';
-import { solidPlugin } from 'esbuild-plugin-solid';
+import { solidPlugin } from 'esbuild-plugin-solid-light';
 
 async function build() {
   let ctx = await context({

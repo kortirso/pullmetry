@@ -1181,10 +1181,10 @@ es-errors@^1.3.0:
   resolved "https://registry.yarnpkg.com/es-errors/-/es-errors-1.3.0.tgz#05f75a25dab98e4fb1dcd5e1472c0546d5057c8f"
   integrity sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==
 
-esbuild-plugin-solid@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/esbuild-plugin-solid/-/esbuild-plugin-solid-0.6.0.tgz#14db6df48bf59ba7a25a9a1e395a1b5d1aedb89c"
-  integrity sha512-V1FvDALwLDX6K0XNYM9CMRAnMzA0+Ecu55qBUT9q/eAJh1KIDsTMFoOzMSgyHqbOfvrVfO3Mws3z7TW2GVnIZA==
+esbuild-plugin-solid-light@^0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/esbuild-plugin-solid-light/-/esbuild-plugin-solid-light-0.6.1.tgz#493f14bc6eed005ebb48f3dda4da536b73d3e943"
+  integrity sha512-1BLM727ITtTDd+lm+XCcyY+EI0MYIWFQ5n15fERm4dELi8HI2yl2DFpyqE4Eb92DC26H0bMRbGT50gKR0WyXQA==
   dependencies:
     "@babel/core" "^7.20.12"
     "@babel/preset-typescript" "^7.18.6"

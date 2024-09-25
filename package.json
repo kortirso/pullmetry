@@ -15,7 +15,7 @@
     "cypress": "^13.6.4",
     "cypress-on-rails": "^0.1.0",
     "esbuild": "^0.24.0",
-    "esbuild-plugin-solid": "^0.6.0",
+    "esbuild-plugin-solid-light": "^0.6.0",
     "eslint": "^9.9.0",
     "eslint-plugin-solid": "^0.14.2"
   },
