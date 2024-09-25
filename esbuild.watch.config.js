@@ -3,6 +3,7 @@ import fs from 'fs';
 import solid from 'babel-preset-solid';
 import { context } from 'esbuild';
 import { transformAsync } from '@babel/core';
+import babel from 'esbuild-plugin-babel';
 
 function solidPlugin(options) {
   return {
@@ -36,7 +37,7 @@ async function build() {
     sourcemap: true,
     outdir: path.join(process.cwd(), 'app/assets/builds'),
     absWorkingDir: path.join(process.cwd(), 'app/javascript'),
-    plugins: [solidPlugin()],
+    plugins: [solidPlugin(), babel()],
   }).catch(() => process.exit(1))
 
   await ctx.watch()
