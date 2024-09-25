@@ -36,5 +36,6 @@ build({
   sourcemap: true,
   outdir: path.join(process.cwd(), 'app/assets/builds'),
   absWorkingDir: path.join(process.cwd(), 'app/javascript'),
+  target: 'es2016',
   plugins: [solidPlugin({}), babel()],
 }).catch(() => process.exit(1))
