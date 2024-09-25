@@ -1,20 +1,16 @@
 import path from 'path';
-import { build } from 'esbuild';
-//import { solidPlugin } from 'esbuild-plugin-solid-light';
-
-import { parse } from 'node:path';
-import { readFile } from 'node:fs/promises';
-import { transformAsync } from '@babel/core';
+import fs from 'fs';
 import solid from 'babel-preset-solid';
+import { build } from 'esbuild';
+import { transformAsync } from '@babel/core';
 
 function solidPlugin(options) {
   return {
     name: "esbuild:solid",
     setup(build) {
       build.onLoad({ filter: /\.(t|j)sx$/ }, async (args) => {
-        const source = await readFile(args.path, { encoding: "utf-8" });
-        const { name, ext } = parse(args.path);
-        const filename = name + ext;
+        const source = await fs.readFileSync(args.path, { encoding: "utf-8" });
+        const filename = args.path.split('/').pop();
         const result = await transformAsync(source, {
           presets: [
             [solid, {}]
