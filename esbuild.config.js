@@ -2,6 +2,8 @@ import path from 'path';
 import { build } from 'esbuild';
 import { solidPlugin } from 'esbuild-plugin-solid';
 
+console.log(`Node version - ${process.version}`);
+
 build({
   entryPoints: [path.join(process.cwd(), 'app/javascript/application.jsx')],
   bundle: true,
