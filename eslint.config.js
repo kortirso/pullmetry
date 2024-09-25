@@ -2,8 +2,6 @@ import js from '@eslint/js';
 import solid from 'eslint-plugin-solid/configs/recommended';
 import globals from 'globals';
 
-console.log(solid)
-
 export default [
   {
     files: ['app/javascript/**/*.jsx', 'app/javascript/**/*.js'],

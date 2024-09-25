@@ -9,13 +9,14 @@
     "lint": "eslint app/javascript"
   },
   "dependencies": {
+    "@babel/core": "^7.20.12",
+    "babel-preset-solid": "^1.6.9",
     "solid-js": "^1.8.21"
   },
   "devDependencies": {
     "cypress": "^13.6.4",
     "cypress-on-rails": "^0.1.0",
     "esbuild": "^0.24.0",
-    "esbuild-plugin-solid-light": "^0.6.0",
     "eslint": "^9.9.0",
     "eslint-plugin-solid": "^0.14.2"
   },
