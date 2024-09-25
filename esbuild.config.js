@@ -1,6 +1,5 @@
 import path from 'path';
 import { build } from 'esbuild';
-import { solidPlugin } from 'esbuild-plugin-solid';
 
 build({
   entryPoints: [path.join(process.cwd(), 'app/javascript/application.jsx')],
