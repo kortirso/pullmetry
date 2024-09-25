@@ -12,7 +12,6 @@
     "solid-js": "^1.8.21"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.25.4",
     "cypress": "^13.6.4",
     "cypress-on-rails": "^0.1.0",
     "esbuild": "^0.24.0",
