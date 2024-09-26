@@ -100,36 +100,38 @@ namespace :deploy do
   after :publishing, :restart
 
   namespace :assets do
-    desc "Remove all local precompiled assets"
+    desc 'Remove all local precompiled assets'
     task :cleanup do
       run_locally do
-        execute "rm", "-rf", "public/assets"
-        execute "rm", "-rf", 'public/packs'
+        execute 'rm', '-rf', 'public/assets'
+        execute 'rm', '-rf', 'public/packs'
       end
     end
 
-    desc "Actually precompile the assets locally"
+    desc 'Actually precompile the assets locally'
     task :prepare do
       run_locally do
         precompile_env = fetch(:precompile_env) || fetch(:rails_env) || 'production'
         with rails_env: precompile_env do
-          execute "rake", "assets:clean"
-          execute "rake", "assets:precompile"
+          execute 'rake', 'assets:clean'
+          execute 'rake', 'assets:precompile'
         end
       end
     end
 
-    desc "Performs rsync to app servers"
+    desc 'Performs rsync to app servers'
     task :rsync do
       on roles('web'), in: :parallel do |server|
         run_locally do
           remote_shell = %(-e "ssh -p 2987")
 
+          # rubocop: disable Layout/LineLength
           commands = []
           commands << "rsync -av --delete #{remote_shell} ./public/assets/ #{server.user}@#{server.hostname}:#{release_path}/public/assets/" if Dir.exist?('public/assets')
           commands << "rsync -av --delete #{remote_shell} ./public/packs/ #{server.user}@#{server.hostname}:#{release_path}/public/packs/" if Dir.exist?('public/packs')
+          # rubocop: enable Layout/LineLength
 
-          commands.each do |command| 
+          commands.each do |command|
             if dry_run?
               SSHKit.config.output.info command
             else
@@ -142,9 +144,9 @@ namespace :deploy do
   end
 end
 
-after "bundler:install", "deploy:assets:prepare"
-after "deploy:assets:prepare", "deploy:assets:rsync"
-after "deploy:assets:rsync", "deploy:assets:cleanup"
+after 'bundler:install', 'deploy:assets:prepare'
+after 'deploy:assets:prepare', 'deploy:assets:rsync'
+after 'deploy:assets:rsync', 'deploy:assets:cleanup'
 after 'bundler:install', 'yarn:install'
 after 'deploy:published', 'bundler:clean'
 

@@ -3,27 +3,26 @@ import fs from 'fs';
 import solid from 'babel-preset-solid';
 import { context } from 'esbuild';
 import { transformAsync } from '@babel/core';
-// import babel from 'esbuild-plugin-babel';
 
-function solidPlugin(options) {
+function solidPlugin() {
   return {
-    name: "esbuild:solid",
+    name: 'esbuild:solid',
     setup(build) {
       build.onLoad({ filter: /\.(t|j)sx$/ }, async (args) => {
-        const source = await fs.readFileSync(args.path, { encoding: "utf-8" });
+        const source = await fs.readFileSync(args.path, { encoding: 'utf-8' });
         const filename = args.path.split('/').pop();
         const result = await transformAsync(source, {
           presets: [
             [solid, {}]
           ],
           filename,
-          sourceMaps: "inline",
+          sourceMaps: 'inline',
           ...{}
         });
         if (!result || result.code === void 0 || result.code === null) {
-          throw new Error("No result was provided from Babel");
+          throw new Error('No result was provided from Babel');
         }
-        return { contents: result.code, loader: "js" };
+        return { contents: result.code, loader: 'js' };
       });
     }
   }
