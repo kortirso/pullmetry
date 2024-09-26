@@ -3,7 +3,7 @@ import fs from 'fs';
 import solid from 'babel-preset-solid';
 import { build } from 'esbuild';
 import { transformAsync } from '@babel/core';
-import babel from 'esbuild-plugin-babel';
+// import babel from 'esbuild-plugin-babel';
 
 function solidPlugin(options) {
   return {
@@ -37,5 +37,5 @@ build({
   outdir: path.join(process.cwd(), 'app/assets/builds'),
   absWorkingDir: path.join(process.cwd(), 'app/javascript'),
   target: 'es2016',
-  plugins: [solidPlugin({}), babel()],
+  plugins: [solidPlugin({})],
 }).catch(() => process.exit(1))
