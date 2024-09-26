@@ -131,7 +131,6 @@ group :development do
 
   gem 'capistrano', '~> 3.17', require: false
   gem 'capistrano-bundler', require: false
-  gem 'capistrano-local-precompile', '~> 1.2.0', require: false, git: 'https://github.com/harshalbhakta/capistrano-local-precompile', branch: 'harshalbhakta-patch-1'
   gem 'capistrano-rails', '~> 1.6', require: false
   gem 'capistrano-rvm', require: false
 
