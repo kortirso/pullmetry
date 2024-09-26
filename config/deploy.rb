@@ -90,19 +90,6 @@ namespace :que do
   end
 end
 
-namespace :load do
-  task :defaults do
-    set :assets_dir, "public/assets"
-    set :packs_dir, "public/packs"
-    set :rsync_cmd, "rsync -av --delete"
-    set :assets_role, "web"
-
-    after "bundler:install", "deploy:assets:prepare"
-    after "deploy:assets:prepare", "deploy:assets:rsync"
-    after "deploy:assets:rsync", "deploy:assets:cleanup"
-  end
-end
-
 namespace :deploy do
   desc 'Restart application'
   task :restart do
@@ -116,8 +103,8 @@ namespace :deploy do
     desc "Remove all local precompiled assets"
     task :cleanup do
       run_locally do
-        execute "rm", "-rf", fetch(:assets_dir)
-        execute "rm", "-rf", fetch(:packs_dir)
+        execute "rm", "-rf", "public/assets"
+        execute "rm", "-rf", 'public/packs'
       end
     end
 
@@ -134,13 +121,13 @@ namespace :deploy do
 
     desc "Performs rsync to app servers"
     task :rsync do
-      on roles(fetch(:assets_role)), in: :parallel do |server|
+      on roles('web'), in: :parallel do |server|
         run_locally do
           remote_shell = %(-e "ssh -p 2987")
 
           commands = []
-          commands << "#{fetch(:rsync_cmd)} #{remote_shell} ./#{fetch(:assets_dir)}/ #{server.user}@#{server.hostname}:#{release_path}/#{fetch(:assets_dir)}/" if Dir.exist?(fetch(:assets_dir))
-          commands << "#{fetch(:rsync_cmd)} #{remote_shell} ./#{fetch(:packs_dir)}/ #{server.user}@#{server.hostname}:#{release_path}/#{fetch(:packs_dir)}/" if Dir.exist?(fetch(:packs_dir))
+          commands << "rsync -av --delete #{remote_shell} ./public/assets/ #{server.user}@#{server.hostname}:#{release_path}/public/assets/" if Dir.exist?('public/assets')
+          commands << "rsync -av --delete #{remote_shell} ./public/packs/ #{server.user}@#{server.hostname}:#{release_path}/public/packs/" if Dir.exist?('public/packs')
 
           commands.each do |command| 
             if dry_run?
@@ -155,6 +142,9 @@ namespace :deploy do
   end
 end
 
+after "bundler:install", "deploy:assets:prepare"
+after "deploy:assets:prepare", "deploy:assets:rsync"
+after "deploy:assets:rsync", "deploy:assets:cleanup"
 after 'bundler:install', 'yarn:install'
 after 'deploy:published', 'bundler:clean'
 
