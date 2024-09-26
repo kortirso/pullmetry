@@ -8,6 +8,14 @@ GIT
       uniform_notifier (~> 1.11)
 
 GIT
+  remote: https://github.com/harshalbhakta/capistrano-local-precompile
+  revision: 269a53456569ed539a6fd31bf2b24ffc7d208418
+  branch: harshalbhakta-patch-1
+  specs:
+    capistrano-local-precompile (1.2.0)
+      capistrano (>= 3.8)
+
+GIT
   remote: https://github.com/redis-store/redis-rack
   revision: d2cb7cb512687d81e817a44f8498b1e39f727261
   branch: master
@@ -132,8 +140,6 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (2.1.1)
       capistrano (~> 3.1)
-    capistrano-local-precompile (1.2.0)
-      capistrano (>= 3.8)
     capistrano-rails (1.6.3)
       capistrano (~> 3.1)
       capistrano-bundler (>= 1.1, < 3)
@@ -528,7 +534,7 @@ DEPENDENCIES
   bullet!
   capistrano (~> 3.17)
   capistrano-bundler
-  capistrano-local-precompile (~> 1.2.0)
+  capistrano-local-precompile (~> 1.2.0)!
   capistrano-rails (~> 1.6)
   capistrano-rvm
   commento
