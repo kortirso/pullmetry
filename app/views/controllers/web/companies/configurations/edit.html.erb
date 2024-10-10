@@ -32,7 +32,9 @@
   %>
   <%=
     js_component 'CompanyEditNotifications',
-      company_uuid: @company.uuid
+      company_uuid: @company.uuid,
+      webhooks: @webhooks,
+      notifications: @notifications
   %>
   <%=
     js_component 'CompanyEditTransfer',

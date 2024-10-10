@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Unreleased
 ### Added
 - ignoring entities for pull requests at frontend
+- creating webhooks for notifications at frontend
 
 ## [1.8.4] - 2024-09-11
 ### Added

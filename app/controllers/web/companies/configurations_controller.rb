@@ -10,8 +10,8 @@ module Web
 
         find_ignores
         find_invites
-        # find_notifications
-        # find_webhooks
+        find_notifications
+        find_webhooks
         # find_excludes_groups
       end
 
@@ -30,14 +30,14 @@ module Web
         @invites = @company.invites.waiting.hashable_pluck(:uuid, :email, :access)
       end
 
-      # def find_notifications
-      #   @notifications =
-      #     @company.notifications.joins(:webhook).hashable_pluck(:uuid, :notification_type, 'webhooks.uuid')
-      # end
+      def find_notifications
+        @notifications =
+          @company.notifications.joins(:webhook).hashable_pluck(:uuid, :notification_type, 'webhooks.uuid')
+      end
 
-      # def find_webhooks
-      #   @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
-      # end
+      def find_webhooks
+        @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
+      end
 
       # def find_excludes_groups
       #   @excludes_groups =
