@@ -10,5 +10,7 @@ class Webhook < ApplicationRecord
 
   belongs_to :company
 
+  has_many :notifications, dependent: :destroy
+
   enum :source, { CUSTOM => 0, SLACK => 1, DISCORD => 2, TELEGRAM => 3 }
 end
