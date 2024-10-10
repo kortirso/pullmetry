@@ -17,7 +17,8 @@
   <%=
     js_component 'CompanyEditPullRequests',
       company_uuid: @company.uuid,
-      fetch_period: @company.configuration.fetch_period
+      fetch_period: @company.configuration.fetch_period,
+      ignores: @ignores
   %>
   <%=
     js_component 'CompanyEditInsights',

@@ -7,11 +7,12 @@ module Web
 
       def edit
         authorize! @company
-        # find_ignores
+
+        find_ignores
         find_invites
         # find_notifications
         # find_webhooks
-        find_excludes_groups
+        # find_excludes_groups
       end
 
       private
@@ -20,9 +21,9 @@ module Web
         @company = Company.find_by!(uuid: params[:company_id])
       end
 
-      # def find_ignores
-      #   @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
-      # end
+      def find_ignores
+        @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
+      end
 
       def find_invites
         @accepted_invites = @company.companies_users.joins(:invite).hashable_pluck(:uuid, :access, 'invites.email')
@@ -38,26 +39,26 @@ module Web
       #   @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
       # end
 
-      def find_excludes_groups
-        @excludes_groups =
-          JSON.parse(
-            Panko::ArraySerializer.new(
-              @company.excludes_groups.order(id: :desc),
-              each_serializer: Excludes::GroupSerializer,
-              context: {
-                rules: excludes_rules
-              }
-            ).to_json
-          )
-      end
+      # def find_excludes_groups
+      #   @excludes_groups =
+      #     JSON.parse(
+      #       Panko::ArraySerializer.new(
+      #         @company.excludes_groups.order(id: :desc),
+      #         each_serializer: Excludes::GroupSerializer,
+      #         context: {
+      #           rules: excludes_rules
+      #         }
+      #       ).to_json
+      #     )
+      # end
 
-      def excludes_rules
-        Excludes::Rule
-          .joins(:excludes_group)
-          .where(excludes_groups: { insightable: @company })
-          .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
-          .group_by { |rule| rule[:excludes_groups_uuid] }
-      end
+      # def excludes_rules
+      #   Excludes::Rule
+      #     .joins(:excludes_group)
+      #     .where(excludes_groups: { insightable: @company })
+      #     .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
+      #     .group_by { |rule| rule[:excludes_groups_uuid] }
+      # end
     end
   end
 end
