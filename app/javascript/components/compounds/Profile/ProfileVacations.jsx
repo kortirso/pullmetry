@@ -99,8 +99,8 @@ export const ProfileVacations = (props) => {
             value={formStore.endTime}
             onChange={(value) => setFormStore('endTime', value)}
           />
-          <button class="btn-primary mt-4" onClick={onVacationCreate}>Save vacation</button>
         </section>
+        <button class="btn-primary mt-4" onClick={onVacationCreate}>Save vacation</button>
       </Modal>
       <Flash />
     </>

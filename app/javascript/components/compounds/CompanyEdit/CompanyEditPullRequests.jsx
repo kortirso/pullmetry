@@ -123,7 +123,7 @@ export const CompanyEditPullRequests = (props) => {
             value={ignoreFormStore.entityValue}
             onChange={(value) => setIgnoreFormStore('entityValue', value)}
           />
-          <button class="btn-primary mt-4" onClick={onIgnoreCreate}>Create ignore</button>
+          <button class="btn-primary mt-4" onClick={onIgnoreCreate}>Save ignore</button>
         </section>
       </Modal>
       <Flash />

@@ -61,7 +61,7 @@ export const CompanyEditNotifications = (props) => {
 
   const openWebhookModal = () => {
     batch(() => {
-      setPageState({ ...pageState, webhookModalIsOpen: true });
+      setPageState({ ...pageState, webhookModalIsOpen: true, notificationModalIsOpen: false });
       openModal();
     });
   }
@@ -96,7 +96,7 @@ export const CompanyEditNotifications = (props) => {
 
   const openNotificationModal = () => {
     batch(() => {
-      setPageState({ ...pageState, notificationModalIsOpen: true });
+      setPageState({ ...pageState, notificationModalIsOpen: true, webhookModalIsOpen: false });
       openModal();
     });
   }

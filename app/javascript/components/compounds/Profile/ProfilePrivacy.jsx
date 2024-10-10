@@ -189,7 +189,7 @@ export const ProfilePrivacy = (props) => {
             selectedValue={formStore.access}
             onSelect={(value) => setFormStore('access', value)}
           />
-          <button class="btn-primary mt-4" onClick={onInviteCreate}>Create invite</button>
+          <button class="btn-primary mt-4" onClick={onInviteCreate}>Save invite</button>
         </section>
       </Modal>
       <Flash />
