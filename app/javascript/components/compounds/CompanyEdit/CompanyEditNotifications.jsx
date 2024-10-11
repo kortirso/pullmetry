@@ -31,7 +31,6 @@ export const CompanyEditNotifications = (props) => {
     webhookModalIsOpen: false,
     notificationModalIsOpen: false
   });
-  /* eslint-enable solid/reactivity */
 
   const [webhookFormStore, setWebhookFormStore] = createStore({
     source: 'slack',
@@ -42,6 +41,7 @@ export const CompanyEditNotifications = (props) => {
     notificationType: 'insights_data',
     notificationWebhookUuid: props.webhooks.length > 0 ? props.webhooks[0].uuid : null,
   });
+  /* eslint-enable solid/reactivity */
 
   const { Modal, openModal, closeModal } = createModal();
   const { Flash, renderErrors } = createFlash();
@@ -170,7 +170,7 @@ export const CompanyEditNotifications = (props) => {
                       <th>Type</th>
                       <th>Source</th>
                       <th>Url</th>
-                      <th class="w-12"></th>
+                      <th class="w-12" />
                     </tr>
                   </thead>
                   <tbody>
