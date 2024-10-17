@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Parameterable
+module Schemable
   extend ActiveSupport::Concern
 
   InvalidInputParamsError = Class.new(StandardError)
@@ -11,10 +11,10 @@ module Parameterable
 
   private
 
-  def schema_params(params:, schema:, required: nil)
+  def validate_params_with_schema(params:, schema:, required: nil)
     params = params.require(required) if required
     result = schema.call(params.to_unsafe_h)
-    raise Parameterable::InvalidInputParamsError.new if result.errors.any?
+    raise Schemable::InvalidInputParamsError.new if result.errors.any?
 
     result.output
   end
