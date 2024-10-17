@@ -9,17 +9,7 @@ describe PullRequest do
 
   describe 'associations' do
     it { is_expected.to belong_to(:repository) }
-
-    it {
-      is_expected.to(
-        have_many(:pull_requests_comments).class_name('::PullRequests::Comment').dependent(:destroy)
-      )
-    }
-
-    it {
-      is_expected.to(
-        have_many(:pull_requests_reviews).class_name('::PullRequests::Review').dependent(:destroy)
-      )
-    }
+    it { is_expected.to have_many(:comments).class_name('::PullRequest::Comment').dependent(:destroy) }
+    it { is_expected.to have_many(:reviews).class_name('::PullRequest::Review').dependent(:destroy) }
   end
 end

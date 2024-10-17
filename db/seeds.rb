@@ -169,7 +169,7 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # approves
         if [true, false].sample
           approve_entity = Entity.where.not(id: entity.id).sample
-          PullRequests::Review.create!(
+          PullRequest::Review.create!(
             pull_request: pull_request,
             entity: approve_entity,
             external_id: SecureRandom.uuid,
@@ -179,7 +179,7 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # comments
         rand(5).times do
           comment_entity = Entity.where.not(id: entity.id).sample
-          PullRequests::Comment.create!(
+          PullRequest::Comment.create!(
             pull_request: pull_request,
             entity: comment_entity,
             external_id: SecureRandom.uuid,
@@ -198,7 +198,7 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # approves
         if [true, false].sample
           approve_entity = Entity.where.not(id: entity.id).sample
-          PullRequests::Review.create!(
+          PullRequest::Review.create!(
             pull_request: pull_request,
             entity: approve_entity,
             external_id: SecureRandom.uuid,
@@ -208,7 +208,7 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         # comments
         rand(5).times do
           comment_entity = Entity.where.not(id: entity.id).sample
-          PullRequests::Comment.create!(
+          PullRequest::Comment.create!(
             pull_request: pull_request,
             entity: comment_entity,
             external_id: SecureRandom.uuid,

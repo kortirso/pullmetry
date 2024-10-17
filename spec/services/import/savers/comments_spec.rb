@@ -55,7 +55,7 @@ describe Import::Savers::Comments, type: :service do
     it 'creates 2 new entities' do
       expect { service_call }.to(
         change(Entity, :count).by(2)
-          .and(change(pull_request.pull_requests_comments, :count).by(2))
+          .and(change(pull_request.comments, :count).by(2))
       )
     end
 
@@ -76,20 +76,20 @@ describe Import::Savers::Comments, type: :service do
       end
 
       it 'creates 2 comments' do
-        expect { service_call }.to change(pull_request.pull_requests_comments, :count).by(2)
+        expect { service_call }.to change(pull_request.comments, :count).by(2)
       end
 
       context 'when there are old comments' do
         before do
-          create :pull_requests_comment, entity: entity1, external_id: '1'
-          create :pull_requests_comment, entity: entity2, external_id: '4'
+          create :pull_request_comment, entity: entity1, external_id: '1'
+          create :pull_request_comment, entity: entity2, external_id: '4'
         end
 
         it 'creates 2 new comments and destroys old comments', :aggregate_failures do
           service_call
 
-          expect(pull_request.pull_requests_comments.pluck(:external_id)).to match_array(%w[2 3])
-          expect(pull_request.pull_requests_comments.where(external_id: %w[1 4])).to be_empty
+          expect(pull_request.comments.pluck(:external_id)).to match_array(%w[2 3])
+          expect(pull_request.comments.where(external_id: %w[1 4])).to be_empty
         end
       end
     end
@@ -127,7 +127,7 @@ describe Import::Savers::Comments, type: :service do
 
       expect(Entity.count).to eq 100
       expect(identity.entities.size).to eq 1
-      expect(pull_request.pull_requests_comments.count).to eq 990
+      expect(pull_request.comments.count).to eq 990
     end
   end
 end

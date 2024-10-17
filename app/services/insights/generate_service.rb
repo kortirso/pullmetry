@@ -133,7 +133,7 @@ module Insights
 
       @pulls_with_user_comments.fetch("#{date_from},#{date_to}") do |key|
         @pulls_with_user_comments[key] =
-          PullRequests::Comment
+          PullRequest::Comment
             .where(pull_request_id: pull_requests_ids(date_from, date_to))
             .hashable_pluck(:pull_request_id, :entity_id)
             .group_by { |item| item[:entity_id] }
@@ -147,7 +147,7 @@ module Insights
 
       @pulls_with_user_reviews.fetch("#{date_from},#{date_to}") do |key|
         @pulls_with_user_reviews[key] =
-          PullRequests::Review
+          PullRequest::Review
             .approved
             .accepted
             .where(pull_request_id: pull_requests_ids(date_from, date_to))
@@ -225,7 +225,7 @@ module Insights
 
       @reviewed_loc_in_open_prs.fetch("#{date_from},#{date_to}") do |key|
         @reviewed_loc_in_open_prs[key] =
-          PullRequests::Review
+          PullRequest::Review
             .approved
             .where(pull_request_id: pull_requests_ids(date_from, date_to))
             .group_by(&:entity_id)
@@ -293,7 +293,7 @@ module Insights
       @pull_requests_stats.fetch("#{date_from},#{date_to}") do |key|
         @pull_requests_stats[key] = begin
           commented_reviews =
-            PullRequests::Review
+            PullRequest::Review
               .commented
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:pull_request_id).count

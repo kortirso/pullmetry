@@ -39,7 +39,7 @@ module Import
 
       def destroy_old_comments(data)
         @pull_request
-          .pull_requests_comments
+          .comments
           .where.not(external_id: data.pluck(:external_id))
           .destroy_all
       end
@@ -47,14 +47,14 @@ module Import
       def existing_comments
         @existing_comments ||=
           @pull_request
-            .pull_requests_comments
+            .comments
             .pluck(:external_id)
       end
 
       def create_comment(entity_id, payload)
         # commento: pull_requests_comments.external_id, pull_requests_comments.comment_created_at
         # commento: pull_requests_comments.parsed_body
-        @pull_request.pull_requests_comments.create!(
+        @pull_request.comments.create!(
           payload.slice(:external_id, :comment_created_at, :parsed_body).merge(entity_id: entity_id)
         )
       end

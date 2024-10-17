@@ -12,8 +12,8 @@ class Company < ApplicationRecord
 
   has_many :repositories, dependent: :destroy
   has_many :pull_requests, through: :repositories
-  has_many :pull_requests_comments, class_name: '::PullRequests::Comment', through: :repositories
-  has_many :pull_requests_reviews, class_name: '::PullRequests::Review', through: :repositories
+  has_many :comments, class_name: '::PullRequest::Comment', through: :repositories
+  has_many :reviews, class_name: '::PullRequest::Review', through: :repositories
   has_many :ignores, as: :insightable, dependent: :destroy
   has_many :webhooks, dependent: :destroy
   has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy

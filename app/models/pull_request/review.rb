@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PullRequests
+class PullRequest
   class Review < ApplicationRecord
     self.table_name = :pull_requests_reviews
 

@@ -11,8 +11,8 @@ describe Insights::Generate::CompanyService, type: :service do
   let(:insightable) { repository.company }
 
   before do
-    create :pull_requests_comment, pull_request: pr1, entity: entity2
-    create :pull_requests_comment, pull_request: pr2, entity: entity1
+    create :pull_request_comment, pull_request: pr1, entity: entity2
+    create :pull_request_comment, pull_request: pr2, entity: entity1
 
     create :insight,
            insightable: repository,

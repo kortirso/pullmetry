@@ -13,7 +13,7 @@ module Import
               external_id: payload.dig('user', 'id'),
               review_created_at: data[:updated_at],
               author: entity_representer.call(data: payload[:user]),
-              state: PullRequests::Review::ACCEPTED,
+              state: PullRequest::Review::ACCEPTED,
               commit_external_id: nil
             }
           end

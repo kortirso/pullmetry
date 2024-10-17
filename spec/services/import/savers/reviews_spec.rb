@@ -11,7 +11,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '3',
         review_created_at: '2011-04-11T20:09:31Z',
-        state: PullRequests::Review::ACCEPTED,
+        state: PullRequest::Review::ACCEPTED,
         author: {
           external_id: '1',
           provider: Providerable::GITHUB,
@@ -23,7 +23,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '2',
         review_created_at: '2011-04-10T20:09:31Z',
-        state: PullRequests::Review::ACCEPTED,
+        state: PullRequest::Review::ACCEPTED,
         author: {
           external_id: '2',
           provider: Providerable::GITHUB,
@@ -35,7 +35,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '9',
         review_created_at: '2011-04-10T20:09:31Z',
-        state: PullRequests::Review::ACCEPTED,
+        state: PullRequest::Review::ACCEPTED,
         author: {
           external_id: '10',
           provider: Providerable::GITHUB,
@@ -47,7 +47,7 @@ describe Import::Savers::Reviews, type: :service do
       {
         external_id: '10',
         review_created_at: '2011-04-10T20:09:31Z',
-        state: PullRequests::Review::ACCEPTED,
+        state: PullRequest::Review::ACCEPTED,
         author: {
           external_id: '10',
           provider: Providerable::GITHUB,
@@ -63,7 +63,7 @@ describe Import::Savers::Reviews, type: :service do
     it 'creates 2 new entities' do
       expect { service_call }.to(
         change(Entity, :count).by(2)
-        .and(change(pull_request.pull_requests_reviews, :count).by(2))
+        .and(change(pull_request.reviews, :count).by(2))
       )
     end
 
@@ -76,37 +76,37 @@ describe Import::Savers::Reviews, type: :service do
       end
 
       it 'creates 2 reviews' do
-        expect { service_call }.to change(pull_request.pull_requests_reviews, :count).by(2)
+        expect { service_call }.to change(pull_request.reviews, :count).by(2)
       end
 
       context 'when there are existing reviews without external_id' do
         before do
-          create :pull_requests_review, entity: entity1, pull_request: pull_request, external_id: nil
-          create :pull_requests_review, entity: entity2, pull_request: pull_request, external_id: nil
+          create :pull_request_review, entity: entity1, pull_request: pull_request, external_id: nil
+          create :pull_request_review, entity: entity2, pull_request: pull_request, external_id: nil
         end
 
         it 'does not create new reviews and updates existing', :aggregate_failures do
-          expect { service_call }.not_to change(pull_request.pull_requests_reviews, :count)
-          expect(pull_request.pull_requests_reviews.pluck(:external_id)).to match_array(%w[2 3])
+          expect { service_call }.not_to change(pull_request.reviews, :count)
+          expect(pull_request.reviews.pluck(:external_id)).to match_array(%w[2 3])
         end
       end
 
       context 'when there are old reviews' do
         before do
-          create :pull_requests_review, entity: entity1, pull_request: pull_request, external_id: '1'
-          create :pull_requests_review, entity: entity2, pull_request: pull_request, external_id: '4'
+          create :pull_request_review, entity: entity1, pull_request: pull_request, external_id: '1'
+          create :pull_request_review, entity: entity2, pull_request: pull_request, external_id: '4'
         end
 
         it 'creates 2 new reviews' do
           service_call
 
-          expect(pull_request.pull_requests_reviews.pluck(:external_id)).to match_array(%w[2 3])
+          expect(pull_request.reviews.pluck(:external_id)).to match_array(%w[2 3])
         end
 
         it 'destroys old reviews' do
           service_call
 
-          expect(pull_request.pull_requests_reviews.where(external_id: %w[1 4])).to be_empty
+          expect(pull_request.reviews.where(external_id: %w[1 4])).to be_empty
         end
       end
     end

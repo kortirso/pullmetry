@@ -14,15 +14,15 @@ describe Insights::Time::ForReview, type: :service do
   let!(:entity1) { create :entity, external_id: '1' }
   let!(:entity2) { create :entity, external_id: '2' }
   let!(:prr1) {
-    create :pull_requests_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 2.days
+    create :pull_request_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 2.days
   }
   let!(:prr3) {
-    create :pull_requests_review, pull_request: pr2, entity: entity2, review_created_at: first_monday + 13.hours
+    create :pull_request_review, pull_request: pr2, entity: entity2, review_created_at: first_monday + 13.hours
   }
   let(:pull_requests_ids) { [pr1.id, pr2.id] }
 
   before do
-    create :pull_requests_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 1.day + 14.hours
+    create :pull_request_review, pull_request: pr1, entity: entity1, review_created_at: first_monday + 1.day + 14.hours
   end
 
   context 'for repository insightable' do

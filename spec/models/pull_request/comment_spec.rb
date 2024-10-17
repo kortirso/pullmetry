@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-describe PullRequests::Review do
+describe PullRequest::Comment do
   it 'factory should be valid' do
-    pull_requests_review = build :pull_requests_review
+    pull_request_comment = build :pull_request_comment
 
-    expect(pull_requests_review).to be_valid
+    expect(pull_request_comment).to be_valid
   end
 
   describe 'associations' do

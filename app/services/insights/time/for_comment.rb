@@ -10,8 +10,8 @@ module Insights
           .created
           .where(id: pull_requests_ids)
           .find_each do |pull_request|
-            comment = pull_request.pull_requests_comments.order(comment_created_at: :asc).first
-            review = pull_request.pull_requests_reviews.approved.order(review_created_at: :asc).first
+            comment = pull_request.comments.order(comment_created_at: :asc).first
+            review = pull_request.reviews.approved.order(review_created_at: :asc).first
 
             handle_comment_or_review(comment, review)
           end

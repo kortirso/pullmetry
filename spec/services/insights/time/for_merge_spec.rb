@@ -29,7 +29,7 @@ describe Insights::Time::ForMerge, type: :service do
   let(:pull_requests_ids) { [pr1.id, pr2.id] }
 
   before do
-    create :pull_requests_review, pull_request: pr2, entity: entity3
+    create :pull_request_review, pull_request: pr2, entity: entity3
   end
 
   context 'for repository insightable' do

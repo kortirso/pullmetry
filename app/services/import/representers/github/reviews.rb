@@ -10,10 +10,10 @@ module Import
         ]
 
         STATE_MAPPER = {
-          'APPROVED' => ::PullRequests::Review::ACCEPTED,
-          'DISMISSED' => ::PullRequests::Review::REJECTED,
-          'CHANGES_REQUESTED' => ::PullRequests::Review::ACCEPTED,
-          'COMMENTED' => ::PullRequests::Review::COMMENTED
+          'APPROVED' => ::PullRequest::Review::ACCEPTED,
+          'DISMISSED' => ::PullRequest::Review::REJECTED,
+          'CHANGES_REQUESTED' => ::PullRequest::Review::ACCEPTED,
+          'COMMENTED' => ::PullRequest::Review::COMMENTED
         }.freeze
 
         def call(data:)

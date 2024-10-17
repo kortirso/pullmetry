@@ -101,7 +101,7 @@ module Import
       end
 
       def save_requested_reviewers(reviewer_entities)
-        existing_reviewer_entities = @pull_request.pull_requests_reviews.pluck(:entity_id)
+        existing_reviewer_entities = @pull_request.reviews.pluck(:entity_id)
         result = (reviewer_entities - existing_reviewer_entities).map do |entity|
           {
             entity_id: entity,
@@ -110,7 +110,7 @@ module Import
           }
         end
         # commento: pull_requests_reviews.required
-        ::PullRequests::Review.upsert_all(result) if result.any?
+        ::PullRequest::Review.upsert_all(result) if result.any?
       end
 
       def update_repository(data)

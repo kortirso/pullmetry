@@ -85,7 +85,7 @@ describe Import::Savers::PullRequests, type: :service do
         expect { service_call }.to(
           change(repository.pull_requests, :count).by(2)
             .and(change(Entity, :count).by(2))
-            .and(change(PullRequests::Review, :count).by(2))
+            .and(change(PullRequest::Review, :count).by(2))
         )
 
         expect(repository.pull_requests.find_by(pull_number: 3).pull_created_at).to be_nil
@@ -99,7 +99,7 @@ describe Import::Savers::PullRequests, type: :service do
         expect { service_call }.to(
           change(repository.pull_requests, :count).by(3)
             .and(change(Entity, :count).by(2))
-            .and(change(PullRequests::Review, :count).by(2))
+            .and(change(PullRequest::Review, :count).by(2))
         )
       end
     end
@@ -158,7 +158,7 @@ describe Import::Savers::PullRequests, type: :service do
       it 'creates just 1 new entity', :aggregate_failures do
         expect { service_call }.to(
           change(Entity, :count).by(1)
-          .and(change(PullRequests::Review, :count).by(2))
+          .and(change(PullRequest::Review, :count).by(2))
         )
 
         expect(entity.reload.login).to eq 'octocat'
@@ -193,7 +193,7 @@ describe Import::Savers::PullRequests, type: :service do
       expect { service_call }.to(
         change(repository.pull_requests, :count).by(1)
           .and(change(Entity, :count).by(2))
-          .and(change(PullRequests::Review, :count).by(2))
+          .and(change(PullRequest::Review, :count).by(2))
       )
 
       expect(pull_request.reload.open?).to be_falsy
@@ -205,7 +205,7 @@ describe Import::Savers::PullRequests, type: :service do
       it 'creates 1 new entity', :aggregate_failures do
         expect { service_call }.to(
           change(Entity, :count).by(1)
-          .and(change(PullRequests::Review, :count).by(2))
+          .and(change(PullRequest::Review, :count).by(2))
         )
       end
     end

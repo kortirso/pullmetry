@@ -17,15 +17,8 @@ describe Company do
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_many(:excludes_groups).class_name('Excludes::Group').dependent(:destroy) }
     it { is_expected.to have_many(:invites).dependent(:destroy) }
-
-    it {
-      is_expected.to have_many(:pull_requests_comments).class_name('::PullRequests::Comment').through(:repositories)
-    }
-
-    it {
-      is_expected.to have_many(:pull_requests_reviews).class_name('::PullRequests::Review').through(:repositories)
-    }
-
+    it { is_expected.to have_many(:comments).class_name('::PullRequest::Comment').through(:repositories) }
+    it { is_expected.to have_many(:reviews).class_name('::PullRequest::Review').through(:repositories) }
     it { is_expected.to have_many(:companies_users).class_name('Companies::User').dependent(:destroy) }
   end
 

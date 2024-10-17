@@ -6,8 +6,8 @@ class PullRequest < ApplicationRecord
   belongs_to :repository
   belongs_to :entity
 
-  has_many :pull_requests_comments, class_name: 'PullRequests::Comment', dependent: :destroy
-  has_many :pull_requests_reviews, class_name: 'PullRequests::Review', dependent: :destroy
+  has_many :comments, class_name: 'PullRequest::Comment', dependent: :destroy
+  has_many :reviews, class_name: 'PullRequest::Review', dependent: :destroy
 
   scope :merged, -> { where.not(pull_merged_at: nil) }
   scope :opened, -> { where(pull_closed_at: nil) }

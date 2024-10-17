@@ -6,7 +6,7 @@ module Insights
       def call(insightable:, pull_requests_ids: [], with_vacations: true)
         super(insightable: insightable, with_vacations: with_vacations)
 
-        PullRequests::Review
+        PullRequest::Review
           .approved
           .accepted
           .joins(:pull_request)

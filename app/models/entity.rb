@@ -13,7 +13,7 @@ class Entity < ApplicationRecord
   belongs_to :identity, optional: true
 
   has_many :pull_requests, dependent: :destroy
-  has_many :pull_requests_comments, class_name: 'PullRequests::Comment', dependent: :destroy
-  has_many :pull_requests_reviews, class_name: 'PullRequests::Review', dependent: :destroy
+  has_many :comments, class_name: 'PullRequest::Comment', dependent: :destroy
+  has_many :reviews, class_name: 'PullRequest::Review', dependent: :destroy
   has_many :insights, dependent: :destroy
 end

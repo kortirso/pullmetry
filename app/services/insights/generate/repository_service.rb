@@ -74,12 +74,12 @@ module Insights
         @repository_commented_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
           @repository_commented_pull_requests_count[key] = begin
             commented_pulls =
-              PullRequests::Comment
+              PullRequest::Comment
                 .where(pull_request_id: pull_requests_ids(date_from, date_to))
                 .pluck(:pull_request_id)
 
             reviewed_pulls =
-              PullRequests::Review
+              PullRequest::Review
                 .where(pull_request_id: pull_requests_ids(date_from, date_to))
                 .pluck(:pull_request_id)
 
@@ -93,7 +93,7 @@ module Insights
 
         @repository_reviewed_pull_requests_count.fetch("#{date_from},#{date_to}") do |key|
           @repository_reviewed_pull_requests_count[key] =
-            PullRequests::Review
+            PullRequest::Review
               .approved
               .accepted
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
@@ -234,12 +234,12 @@ module Insights
         @comments_count.fetch("#{date_from},#{date_to}") do |key|
           @comments_count[key] = begin
             comments_by_entity =
-              PullRequests::Comment
+              PullRequest::Comment
                 .where(pull_request_id: pull_requests_ids(date_from, date_to))
                 .group(:entity_id).count
 
             commented_reviews_by_entity =
-              PullRequests::Review
+              PullRequest::Review
                 .approved
                 .commented
                 .where(pull_request_id: pull_requests_ids(date_from, date_to))
@@ -255,7 +255,7 @@ module Insights
 
         @conventional_comments_count.fetch("#{date_from},#{date_to}") do |key|
           @conventional_comments_count[key] =
-            PullRequests::Comment
+            PullRequest::Comment
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .where.not(parsed_body: nil)
               .group(:entity_id).count
@@ -267,7 +267,7 @@ module Insights
 
         @reviews_count.fetch("#{date_from},#{date_to}") do |key|
           @reviews_count[key] =
-            PullRequests::Review
+            PullRequest::Review
               .approved
               .accepted
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
@@ -280,7 +280,7 @@ module Insights
 
         @bad_reviews_count.fetch("#{date_from},#{date_to}") do |key|
           @bad_reviews_count[key] =
-            PullRequests::Review
+            PullRequest::Review
               .approved
               .rejected
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
@@ -293,7 +293,7 @@ module Insights
 
         @required_reviews_count.fetch("#{date_from},#{date_to}") do |key|
           @required_reviews_count[key] =
-            PullRequests::Review
+            PullRequest::Review
               .required
               .where(pull_request_id: pull_requests_ids(date_from, date_to))
               .group(:entity_id).count
@@ -331,7 +331,7 @@ module Insights
 
         @reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
           @reviewed_loc[key] =
-            PullRequests::Review
+            PullRequest::Review
               .approved
               .accepted
               .where(pull_request_id: pull_requests_ids(date_from, date_to))

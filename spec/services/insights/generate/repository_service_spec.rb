@@ -14,16 +14,16 @@ describe Insights::Generate::RepositoryService, type: :service do
 
   before do
     create :pull_request, repository: repository, entity: entity1, changed_loc: 12
-    create :pull_requests_comment, entity: entity1, pull_request: pr3, comment_created_at: 1.minute.after
-    create :pull_requests_comment, entity: entity2, pull_request: pr2, comment_created_at: 2.minutes.after
+    create :pull_request_comment, entity: entity1, pull_request: pr3, comment_created_at: 1.minute.after
+    create :pull_request_comment, entity: entity2, pull_request: pr2, comment_created_at: 2.minutes.after
 
-    create :pull_requests_review,
-           state: PullRequests::Review::COMMENTED,
+    create :pull_request_review,
+           state: PullRequest::Review::COMMENTED,
            entity: entity1,
            pull_request: pr3,
            review_created_at: 1.minute.after
 
-    create :pull_requests_review,
+    create :pull_request_review,
            entity: entity2,
            pull_request: pr2,
            review_created_at: 10.seconds.after,
@@ -140,7 +140,7 @@ describe Insights::Generate::RepositoryService, type: :service do
                    pull_merged_at: 35.days.ago,
                    entity: entity1
 
-          create_list :pull_requests_comment, 2, entity: entity2, pull_request: old_pr1
+          create_list :pull_request_comment, 2, entity: entity2, pull_request: old_pr1
 
           old_pr3 =
             create :pull_request,
@@ -149,7 +149,7 @@ describe Insights::Generate::RepositoryService, type: :service do
                    pull_merged_at: 35.days.ago,
                    entity: entity1
 
-          create :pull_requests_review, entity: entity2, pull_request: old_pr3, review_created_at: 39.days.ago
+          create :pull_request_review, entity: entity2, pull_request: old_pr3, review_created_at: 39.days.ago
         end
 
         context 'with default insight attributes' do
@@ -169,9 +169,9 @@ describe Insights::Generate::RepositoryService, type: :service do
 
         context 'with custom insight attributes' do
           before do
-            create :pull_requests_comment, entity: entity1, pull_request: pr3
-            create :pull_requests_comment, entity: entity1, pull_request: pr3
-            create :pull_requests_comment, entity: entity1, pull_request: old_pr2
+            create :pull_request_comment, entity: entity1, pull_request: pr3
+            create :pull_request_comment, entity: entity1, pull_request: pr3
+            create :pull_request_comment, entity: entity1, pull_request: old_pr2
 
             repository.company.configuration.insight_fields = {
               comments_count: true,
