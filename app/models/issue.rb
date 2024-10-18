@@ -7,7 +7,6 @@ class Issue < ApplicationRecord
 
   has_many :comments, class_name: 'Issue::Comment', dependent: :destroy
 
-  scope :opened, -> { where(closed_at: nil) }
   scope :opened_before, lambda { |time|
     where('closed_at is NULL OR closed_at > :time OR opened_at > :time', { time: time })
   }
