@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - creating webhooks for notifications at frontend
 - creating notifications for notifications at frontend
 
+### Modified
+- comparing time insights with 0 values
+
 ## [1.8.4] - 2024-09-11
 ### Added
 - redirect to last visited page after login
