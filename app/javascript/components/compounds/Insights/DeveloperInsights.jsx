@@ -7,6 +7,7 @@ import { toFormattedTime } from '../../../helpers';
 import { valueSign, ratioClass } from './helpers/ratio';
 
 const SHORT_INSIGHT_NAMES = {
+  open_pull_requests_count: 'Open pulls',
   required_reviews_count: 'Req reviews',
   comments_count: 'Comments',
   conventional_comments_count: 'Good comments',
@@ -16,7 +17,6 @@ const SHORT_INSIGHT_NAMES = {
   average_review_seconds: 'Avg RT',
   reviewed_loc: 'RLOC',
   average_reviewed_loc: 'Avg RLOC',
-  open_pull_requests_count: 'Open pulls',
   average_merge_seconds: 'Avg MT',
   average_open_pr_comments: 'Avg commenting',
   changed_loc: 'CLOC',
@@ -25,6 +25,7 @@ const SHORT_INSIGHT_NAMES = {
 };
 
 const INSIGHT_TOOLTIPS = {
+  open_pull_requests_count: 'Open pulls',
   required_reviews_count: 'Required reviews',
   comments_count: 'Total comments',
   conventional_comments_count: 'Good comments',
@@ -34,7 +35,6 @@ const INSIGHT_TOOLTIPS = {
   average_review_seconds: 'Avg review time',
   reviewed_loc: 'Reviewed LOC',
   average_reviewed_loc: 'Avg reviewed LOC',
-  open_pull_requests_count: 'Open pulls',
   average_merge_seconds: 'Avg merge time',
   average_open_pr_comments: 'Avg received comments',
   changed_loc: 'Changed LOC',
@@ -55,15 +55,19 @@ const PERCENTILE_ATTRIBUTES = ['review_involving'];
 export const DeveloperInsights = (props) => {
   // eslint-disable-next-line solid/reactivity
   const entities = props.entities;
+  console.log(entities)
   // eslint-disable-next-line solid/reactivity
   const defaultSortBy = props.insightTypes.includes(props.mainAttribute) ? props.mainAttribute : props.insightTypes[0];
 
   const sortEntities = (sortBy, sortDirection) => {
-    const sorting = sortDirection === 'asc' && !REVERSE_ORDER_ATTRIBUTES.includes(sortBy) || sortDirection === 'desc' && REVERSE_ORDER_ATTRIBUTES.includes(sortBy)
+    const isAscendantSorting = sortDirection === 'asc' && !REVERSE_ORDER_ATTRIBUTES.includes(sortBy) || sortDirection === 'desc' && REVERSE_ORDER_ATTRIBUTES.includes(sortBy);
     return entities.slice().sort((a, b) => {
-      let compare = a.values[sortBy].value < b.values[sortBy].value;
+      let aValueIsZero = TIME_ATTRIBUTES.includes(sortBy) && a.values[sortBy].value === 0;
+      let bValueIsZero = TIME_ATTRIBUTES.includes(sortBy) && b.values[sortBy].value === 0;
 
-      if (sorting && compare || !sorting && !compare) return -1;
+      let compareResult = aValueIsZero || bValueIsZero ? (a.values[sortBy].value > b.values[sortBy].value) : (a.values[sortBy].value < b.values[sortBy].value);
+
+      if (isAscendantSorting && compareResult || !isAscendantSorting && !compareResult) return -1;
       return 1;
     });
   }
@@ -150,7 +154,6 @@ export const DeveloperInsights = (props) => {
                             <>{`${insight.value}%`}</>
                           </Match>
                         </Switch>
-
                         <Show when={props.ratioType !== null && insight.ratio_value !== null}>
                           <sup class={`${ratioClass(insight.ratio_value, insightType)} ml-1 text-xs`}>
                             {valueSign(insight.ratio_value)}

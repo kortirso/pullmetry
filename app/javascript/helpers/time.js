@@ -23,6 +23,7 @@ export const convertTime = (value) => (
 );
 
 export const toFormattedTime = (value) => {
+  if (value === 0) return '-';
   if (value < 60) return '1m';
 
   const minutes = Math.floor((value / SECONDS_IN_MINUTE) % MINUTES_IN_HOUR);
