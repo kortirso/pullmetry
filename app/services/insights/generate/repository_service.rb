@@ -356,6 +356,79 @@ module Insights
               )[:result]
         end
       end
+
+      def repository_open_issues_count(date_from=@fetch_period, date_to=0)
+        @repository_open_issues_count ||= {}
+
+        @repository_open_issues_count.fetch("#{date_from},#{date_to}") do |key|
+          @repository_open_issues_count[key] = issues_ids(date_from, date_to).count
+        end
+      end
+
+      def repository_closed_issues_count(date_from=@fetch_period, date_to=0)
+        @repository_closed_issues_count ||= {}
+
+        @repository_closed_issues_count.fetch("#{date_from},#{date_to}") do |key|
+          @repository_closed_issues_count[key] =
+            Issue
+              .closed
+              .where(id: issues_ids(date_from, date_to))
+              .count
+        end
+      end
+
+      def repository_average_issue_comment_time(date_from=@fetch_period, date_to=0)
+        @repository_average_issue_comment_time ||= {}
+
+        @repository_average_issue_comment_time.fetch("#{date_from},#{date_to}") do |key|
+          @repository_average_issue_comment_time[key] = begin
+            values =
+              @issue_comment_time_service
+                .call(
+                  insightable: @insightable,
+                  issues_ids: issues_ids(date_from, date_to)
+                )[:result]
+            @find_average_service.call(
+              values: values,
+              type: @insightable.configuration.average_type,
+              round_digits: 2
+            )
+          end
+        end
+      end
+
+      def repository_average_issue_close_time(date_from=@fetch_period, date_to=0)
+        @repository_average_issue_close_time ||= {}
+
+        @repository_average_issue_close_time.fetch("#{date_from},#{date_to}") do |key|
+          @repository_average_issue_close_time[key] = begin
+            values =
+              @issue_close_time_service
+                .call(insightable: @insightable, issues_ids: issues_ids(date_from, date_to))[:result]
+            @find_average_service.call(
+              values: values,
+              type: @insightable.configuration.average_type,
+              round_digits: 2
+            )
+          end
+        end
+      end
+
+      def issues_ids(date_from, date_to)
+        @issues_ids ||= {}
+
+        @issues_ids.fetch("#{date_from},#{date_to}") do |key|
+          @issues_ids[key] =
+            @insightable
+              .issues
+              .where(
+                'opened_at > ? AND opened_at < ?',
+                beginning_of_date('from', date_from),
+                date_to.zero? ? DateTime.now : beginning_of_date('to', date_to)
+              )
+              .ids
+        end
+      end
     end
   end
 end

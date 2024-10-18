@@ -3,6 +3,7 @@
 module Import
   module Synchronizers
     class RepositoriesService
+      # rubocop: disable Metrics/AbcSize
       def call(repository:)
         import_time = DateTime.now
 
@@ -12,9 +13,14 @@ module Import
           sync_reviews_service.call(pull_request: pull_request)
           sync_files_service.call(pull_request: pull_request)
         end
+        sync_issues_service.call(repository: repository)
+        repository.issues.opened_before(import_time).each do |issue|
+          sync_issue_comments_service.call(issue: issue)
+        end
         update_repository(repository)
         generate_insights_service.call(insightable: repository) if repository.accessable
       end
+      # rubocop: enable Metrics/AbcSize
 
       private
 
@@ -31,6 +37,8 @@ module Import
       def sync_comments_service = raise NotImplementedError
       def sync_reviews_service = raise NotImplementedError
       def sync_files_service = raise NotImplementedError
+      def sync_issues_service = raise NotImplementedError
+      def sync_issue_comments_service = raise NotImplementedError
       def update_service = raise NotImplementedError
       def generate_insights_service = Insights::Generate::RepositoryService.new
     end

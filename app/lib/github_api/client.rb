@@ -6,6 +6,8 @@ module GithubApi
     include Requests::PullRequestComments
     include Requests::PullRequestReviews
     include Requests::PullRequestFiles
+    include Requests::Issues
+    include Requests::IssueComments
 
     BASE_URL = 'https://api.github.com'
 

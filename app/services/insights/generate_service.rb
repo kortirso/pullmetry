@@ -6,12 +6,16 @@ module Insights
       comment_time_service: Time::ForComment.new,
       review_time_service: Time::ForReview.new,
       merge_time_service: Time::ForMerge.new,
+      issue_comment_time_service: Time::ForIssueComment.new,
+      issue_close_time_service: Time::ForIssueClose.new,
       since_last_pull_service: Time::SinceLastPull.new,
       find_average_service: Pullmetry::Container['math.find_average']
     )
       @comment_time_service = comment_time_service
       @review_time_service = review_time_service
       @merge_time_service = merge_time_service
+      @issue_comment_time_service = issue_comment_time_service
+      @issue_close_time_service = issue_close_time_service
       @since_last_pull_service = since_last_pull_service
       @find_average_service = find_average_service
     end

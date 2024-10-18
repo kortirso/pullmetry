@@ -80,6 +80,8 @@ module Pullmetry
     register('services.import.fetchers.github.comments') { Import::Fetchers::Github::Comments.new }
     register('services.import.fetchers.github.reviews') { Import::Fetchers::Github::Reviews.new }
     register('services.import.fetchers.github.files') { Import::Fetchers::Github::Files.new }
+    register('services.import.fetchers.github.issues') { Import::Fetchers::Github::Issues.new }
+    register('services.import.fetchers.github.issue_comments') { Import::Fetchers::Github::IssueComments.new }
     register('services.import.fetchers.gitlab.pull_requests') { Import::Fetchers::Gitlab::PullRequests.new }
     register('services.import.fetchers.gitlab.comments') { Import::Fetchers::Gitlab::Comments.new }
     register('services.import.fetchers.gitlab.reviews') { Import::Fetchers::Gitlab::Reviews.new }
@@ -89,6 +91,8 @@ module Pullmetry
     register('services.import.representers.github.reviews') { Import::Representers::Github::Reviews.new }
     register('services.import.representers.github.files') { Import::Representers::Github::Files.new }
     register('services.import.representers.github.entity') { Import::Representers::Github::Entity.new }
+    register('services.import.representers.github.issues') { Import::Representers::Github::Issues.new }
+    register('services.import.representers.github.issue_comments') { Import::Representers::Github::IssueComments.new }
     register('services.import.representers.gitlab.pull_requests') { Import::Representers::Gitlab::PullRequests.new }
     register('services.import.representers.gitlab.comments') { Import::Representers::Gitlab::Comments.new }
     register('services.import.representers.gitlab.reviews') { Import::Representers::Gitlab::Reviews.new }
@@ -99,6 +103,8 @@ module Pullmetry
     register('services.import.synchronizers.comments.github') { Import::Synchronizers::Comments::Github.new }
     register('services.import.synchronizers.reviews.github') { Import::Synchronizers::Reviews::Github.new }
     register('services.import.synchronizers.files.github') { Import::Synchronizers::Files::Github.new }
+    register('services.import.synchronizers.issues.github') { Import::Synchronizers::Issues::Github.new }
+    register('services.import.synchronizers.issue_comments.github') { Import::Synchronizers::IssueComments::Github.new }
     register('services.import.synchronizers.repositories.gitlab') { Import::Synchronizers::Repositories::Gitlab.new }
     register('services.import.synchronizers.pull_requests.gitlab') { Import::Synchronizers::PullRequests::Gitlab.new }
     register('services.import.synchronizers.comments.gitlab') { Import::Synchronizers::Comments::Gitlab.new }

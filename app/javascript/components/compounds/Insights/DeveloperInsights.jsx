@@ -55,7 +55,6 @@ const PERCENTILE_ATTRIBUTES = ['review_involving'];
 export const DeveloperInsights = (props) => {
   // eslint-disable-next-line solid/reactivity
   const entities = props.entities;
-  console.log(entities)
   // eslint-disable-next-line solid/reactivity
   const defaultSortBy = props.insightTypes.includes(props.mainAttribute) ? props.mainAttribute : props.insightTypes[0];
 

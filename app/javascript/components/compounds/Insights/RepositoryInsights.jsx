@@ -4,13 +4,18 @@ import { toFormattedTime } from '../../../helpers';
 
 import { valueSign, ratioClass } from './helpers/ratio';
 
-const TIME_ATTRIBUTES = ['average_comment_time', 'average_review_time', 'average_merge_time'];
+const TIME_ATTRIBUTES = [
+  'average_comment_time',
+  'average_review_time',
+  'average_merge_time',
+  'average_issue_comment_time',
+  'average_issue_close_time'
+];
 
 export const RepositoryInsights = (props) => {
   const renderRepositoryInsight = (insightType) => {
     const insight = props.insights[insightType];
-
-    if (insight.value === null) return <></>;
+    if (insight.value === null || insight.value === undefined) return <>-</>;
     return (
       <>
         <Switch fallback={
@@ -36,7 +41,7 @@ export const RepositoryInsights = (props) => {
   return (
     <div class="text-sm md:text-base grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
       <div>
-        <h3 class="mb-8">Repository pull requests insights</h3>
+        <h3 class="mb-8">Repository insights</h3>
         <table class="table" cellSpacing="0">
           <thead>
             <tr>
@@ -46,7 +51,7 @@ export const RepositoryInsights = (props) => {
           </thead>
           <tbody>
             <tr>
-              <td>Open pull requests amount</td>
+              <td>Pull requests amount</td>
               <td class="text-right">{renderRepositoryInsight('open_pull_requests_count')}</td>
             </tr>
             <tr>
@@ -62,7 +67,15 @@ export const RepositoryInsights = (props) => {
               <td class="text-right">{renderRepositoryInsight('merged_pull_requests_count')}</td>
             </tr>
             <tr>
-              <td>Total comment amount</td>
+              <td>Open issues amount</td>
+              <td class="text-right">{renderRepositoryInsight('open_issues_count')}</td>
+            </tr>
+            <tr>
+              <td>Closed issues amount</td>
+              <td class="text-right">{renderRepositoryInsight('closed_issues_count')}</td>
+            </tr>
+            <tr>
+              <td>Total comments amount</td>
               <td class="text-right">{renderRepositoryInsight('comments_count')}</td>
             </tr>
             <tr>
@@ -85,7 +98,7 @@ export const RepositoryInsights = (props) => {
         </table>
       </div>
       <div>
-        <h3 class="mb-8">Repository cycles time</h3>
+        <h3 class="mb-8">Pull requests cycle time</h3>
         <table class="table" cellSpacing="0">
           <thead>
             <tr>
@@ -105,6 +118,25 @@ export const RepositoryInsights = (props) => {
             <tr>
               <td>Average time until merging pull requests</td>
               <td class="text-right">{renderRepositoryInsight('average_merge_time')}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3 class="my-8">Issues cycle time</h3>
+        <table class="table" cellSpacing="0">
+          <thead>
+            <tr>
+              <th class="text-left">Metric</th>
+              <th class="text-right">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Average time for receiving first comment</td>
+              <td class="text-right">{renderRepositoryInsight('average_issue_comment_time')}</td>
+            </tr>
+            <tr>
+              <td>Average time until closing</td>
+              <td class="text-right">{renderRepositoryInsight('average_issue_close_time')}</td>
             </tr>
           </tbody>
         </table>

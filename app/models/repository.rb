@@ -17,6 +17,7 @@ class Repository < ApplicationRecord
   has_many :comments, -> { distinct }, class_name: '::PullRequest::Comment', through: :pull_requests
   has_many :reviews, -> { distinct }, class_name: '::PullRequest::Review', through: :pull_requests
   has_many :repository_insights, class_name: '::Repositories::Insight', dependent: :destroy
+  has_many :issues, dependent: :destroy
 
   scope :of_user, ->(user_id) { joins(:company).where(companies: { user_id: user_id }) }
   scope :not_of_user, ->(user_id) { joins(:company).where.not(companies: { user_id: user_id }) }
