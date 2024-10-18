@@ -35,12 +35,6 @@ class User < ApplicationRecord
 
   enum :role, { REGULAR => 0, ADMIN => 1 }
 
-  def plan_settings
-    Rails.cache.fetch("user/#{id}/plan_limits", expires_in: 1.minute) do
-      subscriptions.active.order(id: :asc).first&.plan_settings
-    end
-  end
-
   def premium?
     Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) { subscriptions.active.exists? }
   end

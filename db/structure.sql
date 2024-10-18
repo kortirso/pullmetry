@@ -1413,8 +1413,7 @@ CREATE TABLE public.subscriptions (
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    external_invoice_id character varying,
-    plan integer DEFAULT 0 NOT NULL
+    external_invoice_id character varying
 );
 
 
@@ -2694,6 +2693,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241018121510'),
 ('20241018094904'),
 ('20241018090402'),
 ('20241018085327'),

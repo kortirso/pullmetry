@@ -93,7 +93,7 @@
       </div>
     </div>
   <% end %>
-  <% cache('welcome_page_bottom_v3', expires_in: 24.hours) do %>
+  <% cache('welcome_page_bottom_v4', expires_in: 24.hours) do %>
     <section class="mx-auto mb-8 xl:mb-24">
       <h2 class="text-center text-4xl mb-12">How it works</h2>
       <div class="flex flex-col md:flex-row md:gap-20 mb-16">
@@ -163,7 +163,7 @@
       <h2 class="text-center text-4xl mb-12">Pricing</h2>
       <p class="text-center mb-4">While PullKeeper is growing features list can grow too for both regular and premium plans.</p>
       <p class="text-center mb-12">Payment can be done from Profile page after login, but no rush, there is trial 100 days for checking application.</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="p-8 pb-2 border border-stone-200 rounded-xl">
           <div class="mb-12">
             <h3>Regular</h3>
@@ -171,13 +171,14 @@
           </div>
           <ul>
             <li><%= Insight::DEFAULT_ATTRIBUTES.size %> insight metrics</li>
-            <li>12 repository insight metrics</li>
+            <li>16 repository insight metrics</li>
             <li><%= User::Subscription::FREE_REPOSITORIES_AMOUNT %> tracking repositories</li>
             <li>company metrics based on repositories</li>
             <li>easy access for developers</li>
             <li>configuring working time, vacations</li>
             <li>configuring exclude rules for PRs</li>
             <li>sending insights to Slack/Discord/Telegram</li>
+            <li>API access</li>
             <li>achievements system</li>
           </ul>
         </div>
@@ -189,19 +190,10 @@
           <p class="mb-4">Everything in regular, plus:</p>
           <ul>
             <li><%= Insight::SHORT_ATTRIBUTE_NAMES.size %> insight metrics instead of <%= Insight::DEFAULT_ATTRIBUTES.size %></li>
-            <li>15 tracking repositories</li>
-            <li>comparing data with previous periods</li>
-          </ul>
-        </div>
-        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
-          <div class="mb-12">
-            <h3>Unlimited Premium</h3>
-            <p>&euro;50/month or &euro;500/year</p>
-          </div>
-          <p class="mb-4">Everything in premium, plus:</p>
-          <ul>
             <li>unlimited repositories</li>
+            <li>comparing data with previous periods</li>
             <li>priority support and new feature integration</li>
+            <li>onboarding support</li>
           </ul>
         </div>
         <div class="p-8 pb-2 border border-stone-200 rounded-xl">
@@ -211,7 +203,7 @@
           </div>
           <p class="mb-4">Special opportunities:</p>
           <ul>
-            <li>assistance in deploying your own server</li>
+            <li>self-hosting option</li>
             <li>desktop application (in progress) for fully secured insights and statistics</li>
           </ul>
         </div>

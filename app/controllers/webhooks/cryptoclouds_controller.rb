@@ -21,7 +21,6 @@ module Webhooks
           user: @user,
           trial: false,
           days_period: days_period,
-          plan: plan,
           invoice_id: params[:invoice_id]
         )
       end
@@ -61,10 +60,6 @@ module Webhooks
 
     def days_period
       order_id_payload['days_period'] || User::Subscription::TRIAL_PERIOD_DAYS
-    end
-
-    def plan
-      order_id_payload['plan'] || User::Subscription::REGULAR
     end
 
     def order_id_payload

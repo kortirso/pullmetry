@@ -59,26 +59,18 @@ module Web
       @need_identities = Identity.providers.keys - @identities.pluck(:provider)
     end
 
-    # rubocop: disable Metrics/AbcSize
     def generate_order_ids
       @cryptocloud_order_ids =
-        Rails.cache.fetch('profile_cryptocloud_order_ids_v1') do
+        Rails.cache.fetch('profile_cryptocloud_order_ids_v2') do
           {
             regular30: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: User::Subscription::REGULAR, days_period: 30 }
+              payload: { uuid: current_user.uuid, days_period: 30 }
             ),
             regular365: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: User::Subscription::REGULAR, days_period: 365 }
-            ),
-            unlimited30: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: User::Subscription::UNLIMITED, days_period: 30 }
-            ),
-            unlimited365: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, plan: User::Subscription::UNLIMITED, days_period: 365 }
+              payload: { uuid: current_user.uuid, days_period: 365 }
             )
           }
         end
     end
-    # rubocop: enable Metrics/AbcSize
   end
 end
