@@ -13,15 +13,15 @@ const SHORT_INSIGHT_NAMES = {
   reviews_count: 'Reviews',
   bad_reviews_count: 'Bad reviews',
   review_involving: 'Involving',
-  average_review_seconds: 'Review time',
-  reviewed_loc: 'Rev LOC',
-  average_reviewed_loc: 'Avg rev LOC',
+  average_review_seconds: 'Avg RT',
+  reviewed_loc: 'RLOC',
+  average_reviewed_loc: 'Avg RLOC',
   open_pull_requests_count: 'Open pulls',
-  average_merge_seconds: 'Merge time',
+  average_merge_seconds: 'Avg MT',
   average_open_pr_comments: 'Avg commenting',
-  changed_loc: 'Changed LOC',
-  average_changed_loc: 'Avg changed LOC',
-  time_since_last_open_pull_seconds: 'Time since last pull',
+  changed_loc: 'CLOC',
+  average_changed_loc: 'Avg CLOC',
+  time_since_last_open_pull_seconds: 'TSLP',
 };
 
 const INSIGHT_TOOLTIPS = {

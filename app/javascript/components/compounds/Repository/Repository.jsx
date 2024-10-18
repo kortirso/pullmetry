@@ -161,7 +161,6 @@ export const Repository = (props) => {
       </div>
       <Show when={pageState.isExpanded}>
         <div class="pt-4 px-8 pb-8">
-          <h3 class="mb-8">Repository insights</h3>
           {repositoryInsights()}
           <div class="relative">
             <h3 class="absolute top-0">Developer insights</h3>

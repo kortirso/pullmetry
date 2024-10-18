@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;500&display=swap');
 
 @layer components {
   h1 {
@@ -41,7 +41,7 @@
   }
 
   .benefits-title {
-    @apply text-center font-semibold mb-8 text-2xl;
+    @apply text-center font-medium mb-8 text-2xl;
   }
 
   .benefits-text {
@@ -87,11 +87,20 @@
   }
 
   .table th, .table td {
-    @apply border border-gray-200 py-2 px-3 text-sm;
+    @apply border border-gray-200 py-2 px-3;
+  }
+
+  .table th {
+    @apply font-medium;
+
+    font-size: .9rem;
+  }
+
+  .table td {
+    @apply text-sm;
   }
 
   .table tr th {
-    @apply font-normal text-xs;
   }
 
   .table tbody tr:nth-of-type(2n) {
