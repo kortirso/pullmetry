@@ -9,6 +9,8 @@ module Import
           sync_comments_service: 'services.import.synchronizers.comments.gitlab',
           sync_reviews_service: 'services.import.synchronizers.reviews.gitlab',
           sync_files_service: 'dummy',
+          sync_issues_service: 'dummy',
+          sync_issue_comments_service: 'dummy',
           change_repository: 'commands.change_repository'
         ]
       end

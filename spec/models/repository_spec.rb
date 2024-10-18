@@ -15,6 +15,7 @@ describe Repository do
     it { is_expected.to have_many(:repository_insights).class_name('::Repositories::Insight').dependent(:destroy) }
     it { is_expected.to have_many(:comments).class_name('::PullRequest::Comment').through(:pull_requests) }
     it { is_expected.to have_many(:reviews).class_name('::PullRequest::Review').through(:pull_requests) }
+    it { is_expected.to have_many(:issues).dependent(:destroy) }
   end
 
   describe '.access_token_status' do

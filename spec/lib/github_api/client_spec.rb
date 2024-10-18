@@ -130,4 +130,66 @@ describe GithubApi::Client, type: :client do
       end
     end
   end
+
+  describe '.issues' do
+    subject(:client_request) do
+      client.issues(repository_link: repository.link, access_token: access_token.value)
+    end
+
+    before do
+      stubs.get('/repos/company_name/repo_name/issues') { [status, headers, body.to_json] }
+    end
+
+    context 'for invalid response' do
+      let(:status) { 403 }
+      let(:errors) { [{ 'detail' => 'Forbidden' }] }
+      let(:body) { { 'errors' => errors } }
+
+      it 'returns nil', :aggregate_failures do
+        expect(client_request[:success]).to be_falsy
+        expect(client_request[:body]).to eq body
+      end
+    end
+
+    context 'for valid response' do
+      let(:status) { 200 }
+      let(:body) { [{ 'number' => 1 }] }
+
+      it 'returns issues data', :aggregate_failures do
+        expect(client_request[:success]).to be_truthy
+        expect(client_request[:body]).to eq body
+      end
+    end
+  end
+
+  describe '.issue_comments' do
+    subject(:client_request) do
+      client.issue_comments(repository_link: repository.link, access_token: access_token.value, issue_number: 1)
+    end
+
+    before do
+      stubs.get('/repos/company_name/repo_name/issues/1/comments') { [status, headers, body.to_json] }
+    end
+
+    context 'for invalid response' do
+      let(:status) { 403 }
+      let(:errors) { [{ 'detail' => 'Forbidden' }] }
+      let(:body) { { 'errors' => errors } }
+
+      it 'returns nil', :aggregate_failures do
+        expect(client_request[:success]).to be_falsy
+        expect(client_request[:body]).to eq body
+      end
+    end
+
+    context 'for valid response' do
+      let(:status) { 200 }
+      let(:body) { [{ 'id' => 1, 'created_at' => DateTime.now.to_s, 'user' => {} }] }
+
+      it 'returns comment data', :aggregate_failures do
+        expect(client_request[:success]).to be_truthy
+        expect(client_request[:body]).to eq body
+      end
+    end
+  end
 end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: add tests for parallel request with creating similar entities
 describe Import::Savers::Comments, type: :service do
   subject(:service_call) { described_class.new.call(pull_request: pull_request, data: data) }
 

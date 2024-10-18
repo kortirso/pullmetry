@@ -1,6 +1,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -8,13 +9,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
 
 --
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
@@ -857,6 +851,89 @@ ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
 
 
 --
+-- Name: issue_comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.issue_comments (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    issue_id bigint NOT NULL,
+    external_id character varying NOT NULL,
+    comment_created_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: TABLE issue_comments; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.issue_comments IS 'Comments of issue';
+
+
+--
+-- Name: COLUMN issue_comments.comment_created_at; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.issue_comments.comment_created_at IS 'Time of creating comment in issue';
+
+
+--
+-- Name: issue_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.issue_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: issue_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.issue_comments_id_seq OWNED BY public.issue_comments.id;
+
+
+--
+-- Name: issues; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.issues (
+    id bigint NOT NULL,
+    uuid uuid NOT NULL,
+    repository_id bigint NOT NULL,
+    opened_at timestamp(6) without time zone,
+    closed_at timestamp(6) without time zone,
+    issue_number integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.issues_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.issues_id_seq OWNED BY public.issues.id;
+
+
+--
 -- Name: kudos_achievement_groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1228,8 +1305,40 @@ CREATE TABLE public.repositories_insights (
     average_changed_loc numeric(8,2) DEFAULT 0.0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    conventional_comments_count integer DEFAULT 0
+    conventional_comments_count integer DEFAULT 0,
+    open_issues_count integer DEFAULT 0 NOT NULL,
+    closed_issues_count integer DEFAULT 0 NOT NULL,
+    average_issue_comment_time integer DEFAULT 0 NOT NULL,
+    average_issue_close_time integer DEFAULT 0 NOT NULL
 );
+
+
+--
+-- Name: COLUMN repositories_insights.open_issues_count; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.repositories_insights.open_issues_count IS 'Open issues';
+
+
+--
+-- Name: COLUMN repositories_insights.closed_issues_count; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.repositories_insights.closed_issues_count IS 'Closed issues';
+
+
+--
+-- Name: COLUMN repositories_insights.average_issue_comment_time; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.repositories_insights.average_issue_comment_time IS 'Average time until first comment in issue';
+
+
+--
+-- Name: COLUMN repositories_insights.average_issue_close_time; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.repositories_insights.average_issue_close_time IS 'Average time until closing issue';
 
 
 --
@@ -1614,6 +1723,20 @@ ALTER TABLE ONLY public.invites ALTER COLUMN id SET DEFAULT nextval('public.invi
 
 
 --
+-- Name: issue_comments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.issue_comments ALTER COLUMN id SET DEFAULT nextval('public.issue_comments_id_seq'::regclass);
+
+
+--
+-- Name: issues id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.issues ALTER COLUMN id SET DEFAULT nextval('public.issues_id_seq'::regclass);
+
+
+--
 -- Name: kudos_achievement_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1858,6 +1981,22 @@ ALTER TABLE ONLY public.insights
 
 ALTER TABLE ONLY public.invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: issue_comments issue_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.issue_comments
+    ADD CONSTRAINT issue_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: issues issues_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.issues
+    ADD CONSTRAINT issues_pkey PRIMARY KEY (id);
 
 
 --
@@ -2259,6 +2398,34 @@ CREATE UNIQUE INDEX index_invites_on_uuid ON public.invites USING btree (uuid);
 
 
 --
+-- Name: index_issue_comments_on_issue_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_issue_comments_on_issue_id ON public.issue_comments USING btree (issue_id);
+
+
+--
+-- Name: index_issue_comments_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_issue_comments_on_uuid ON public.issue_comments USING btree (uuid);
+
+
+--
+-- Name: index_issues_on_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_issues_on_repository_id ON public.issues USING btree (repository_id);
+
+
+--
+-- Name: index_issues_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_issues_on_uuid ON public.issues USING btree (uuid);
+
+
+--
 -- Name: index_kudos_achievement_groups_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2527,6 +2694,9 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241018094904'),
+('20241018090402'),
+('20241018085327'),
 ('20240910132339'),
 ('20240903124912'),
 ('20240718070046'),

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - ignoring entities for pull requests at frontend
 - creating webhooks for notifications at frontend
 - creating notifications for notifications at frontend
+- repository metrics for issues
 
 ### Modified
 - comparing time insights with 0 values
