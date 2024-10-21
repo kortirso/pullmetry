@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Feedback do
+describe User::Feedback do
   it 'factory should be valid' do
     feedback = build :feedback
 

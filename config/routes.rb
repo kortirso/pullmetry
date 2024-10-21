@@ -52,7 +52,6 @@ Rails.application.routes.draw do
     resources :notifications, only: %i[create destroy]
     resources :ignores, only: %i[create]
     resources :invites, only: %i[create]
-    resource :feedback, only: %i[create]
     resources :ignores, only: %i[destroy]
     resources :webhooks, only: %i[create destroy]
     namespace :excludes do
@@ -65,6 +64,7 @@ Rails.application.routes.draw do
     resources :api_access_tokens, only: %i[create destroy]
     namespace :users do
       resources :vacations, only: %i[create destroy]
+      resource :feedback, only: %i[create]
     end
   end
 

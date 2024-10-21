@@ -26,7 +26,7 @@ class User < ApplicationRecord
   has_many :subscriptions, class_name: 'User::Subscription', foreign_key: :user_id, dependent: :destroy
   has_many :vacations, class_name: 'User::Vacation', foreign_key: :user_id, dependent: :destroy
 
-  has_many :feedbacks, dependent: :destroy
+  has_many :feedbacks, class_name: 'User::Feedback', dependent: :destroy
 
   has_many :api_access_tokens, dependent: :destroy
 

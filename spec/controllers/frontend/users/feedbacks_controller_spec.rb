@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Frontend::FeedbacksController do
+describe Frontend::Users::FeedbacksController do
   describe 'POST#create' do
     let(:delivery_service) { double }
 
@@ -19,7 +19,7 @@ describe Frontend::FeedbacksController do
         let(:request) { post :create, params: { feedback: { title: '', description: '' }, pullmetry_access_token: access_token } }
 
         it 'does not create feedback', :aggregate_failures do
-          expect { request }.not_to change(Feedback, :count)
+          expect { request }.not_to change(User::Feedback, :count)
           expect(response).to have_http_status :ok
           expect(response.parsed_body.dig('errors', 0)).to eq 'Description must be filled'
         end
@@ -32,7 +32,7 @@ describe Frontend::FeedbacksController do
 
         it 'creates feedback', :aggregate_failures do
           expect { request }.to change(user.feedbacks, :count).by(1)
-          expect(response).to have_http_status :ok
+          expect(response).to have_http_status :created
           expect(response.parsed_body['errors']).to be_nil
         end
       end

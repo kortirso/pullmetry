@@ -8,7 +8,6 @@ module Frontend
       before_action :find_user_vacation, only: %i[destroy]
 
       def create
-        # commento: vacations.start_time, vacations.end_time
         case add_user_vacation.call(user_vacation_params.merge(user: current_user))
         in { errors: errors } then render json: { errors: errors }, status: :ok
         in { result: result }

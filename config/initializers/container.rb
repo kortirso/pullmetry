@@ -39,7 +39,7 @@ module Pullmetry
     register('commands.associate_entities_with_identity') { AssociateEntitiesWithIdentityCommand.new }
     register('commands.add_repository') { AddRepositoryCommand.new }
     register('commands.add_webhook') { AddWebhookCommand.new }
-    register('commands.add_feedback') { AddFeedbackCommand.new }
+    register('commands.add_user_feedback') { AddUserFeedbackCommand.new }
     register('commands.add_notification') { AddNotificationCommand.new }
     register('commands.add_invite') { AddInviteCommand.new }
     register('commands.add_subscriber') { AddSubscriberCommand.new }

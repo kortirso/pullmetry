@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe AddFeedbackCommand do
+describe AddUserFeedbackCommand do
   subject(:command) { instance.call(params.merge(user: user)) }
 
   let!(:instance) { described_class.new }
@@ -10,7 +10,7 @@ describe AddFeedbackCommand do
     let(:params) { { description: '', email: 'email@gmail.com' } }
 
     it 'does not create feedback', :aggregate_failures do
-      expect { command }.not_to change(Feedback, :count)
+      expect { command }.not_to change(User::Feedback, :count)
       expect(command[:errors]).not_to be_blank
     end
   end
@@ -20,7 +20,7 @@ describe AddFeedbackCommand do
 
     it 'creates feedback', :aggregate_failures do
       expect { command }.to change(user.feedbacks, :count).by(1)
-      expect(Feedback.last.email).to be_nil
+      expect(User::Feedback.last.email).to be_nil
       expect(command[:errors]).to be_nil
     end
 
@@ -29,7 +29,7 @@ describe AddFeedbackCommand do
 
       it 'creates feedback', :aggregate_failures do
         expect { command }.to change(user.feedbacks, :count).by(1)
-        expect(Feedback.last.email).to eq 'email@gmail.com'
+        expect(User::Feedback.last.email).to eq 'email@gmail.com'
         expect(command[:errors]).to be_nil
       end
     end

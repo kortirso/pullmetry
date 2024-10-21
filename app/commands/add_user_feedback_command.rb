@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddFeedbackCommand < BaseCommand
+class AddUserFeedbackCommand < BaseCommand
   use_contract do
     params do
       required(:user).filled(type?: User)
@@ -17,7 +17,7 @@ class AddFeedbackCommand < BaseCommand
   end
 
   def do_persist(input)
-    feedback = Feedback.create!(input)
+    feedback = User::Feedback.create!(input)
 
     AdminDelivery.with(id: feedback.id).feedback_created.deliver_later
 

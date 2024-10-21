@@ -26,7 +26,7 @@ class AdminTelegramNotifier < CompanyNotifier
   private
 
   def feedback_created_payload(id)
-    feedback = Feedback.find_by(id: id)
+    feedback = User::Feedback.find_by(id: id)
     return '' unless feedback
 
     "User - #{feedback.user_id}\nFeedback created - #{feedback.title}\n#{feedback.description}"
