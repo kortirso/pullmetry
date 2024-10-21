@@ -72,7 +72,7 @@ export const CompanyEditPullRequests = (props) => {
               />
             </div>
             <div>
-              <p>You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 60 days.</p>
+              <p>You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 90 days.</p>
               <p class="mt-2">By default fetch period is 30 days. So if 30 is enough for you - you can skip this attribute.</p>
             </div>
           </div>

@@ -24,7 +24,7 @@
     js_component 'CompanyEditInsights',
       company_uuid: @company.uuid,
       is_premium: @company.premium?,
-      insight_fields: @current_config.selected_insight_fields.presence,
+      insight_fields: @current_config.selected_insight_fields,
       main_attribute: @current_config.main_attribute,
       average_type: @current_config.average_type,
       insight_ratio: @current_config.insight_ratio,
