@@ -3,7 +3,7 @@
 describe Frontend::Repositories::RepositoryInsightsController do
   describe 'GET#index' do
     context 'for logged users' do
-      let!(:company) { create :company, configuration: { insight_ratio: true } }
+      let!(:company) { create :company, config: { insight_ratio: true } }
       let!(:repository) { create :repository, company: company }
       let!(:user) { create :user }
       let!(:user_session) { create :user_session, user: user }

@@ -29,7 +29,7 @@ describe Insights::Generate::CompanyService, type: :service do
            open_pull_requests_count: 1
 
     create :user_subscription, user: insightable.user
-    insightable.configuration.insight_fields = {
+    insightable.config.insight_fields = {
       comments_count: true,
       changed_loc: true,
       reviewed_loc: true,
@@ -48,7 +48,7 @@ describe Insights::Generate::CompanyService, type: :service do
 
     context 'for private company' do
       before do
-        insightable.configuration.private = true
+        insightable.config.private = true
         insightable.save!
       end
 
@@ -78,7 +78,7 @@ describe Insights::Generate::CompanyService, type: :service do
 
     context 'for private company' do
       before do
-        insightable.configuration.private = true
+        insightable.config.private = true
         insightable.save!
       end
 

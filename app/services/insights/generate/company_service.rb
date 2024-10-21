@@ -5,8 +5,8 @@ module Insights
     class CompanyService < Insights::GenerateService
       def call(insightable:)
         @insightable = insightable
-        @insight_visibility = insightable.configuration.private
-        @fetch_period = @insightable.find_fetch_period
+        @insight_visibility = insightable.current_config.private
+        @fetch_period = insightable.current_config.fetch_period
 
         super()
       end

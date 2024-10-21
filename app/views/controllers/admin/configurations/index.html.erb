@@ -19,16 +19,16 @@
     <% @companies.each do |company| %>
       <tr>
         <td><%= company.id %></td>
-        <td><%= company.configuration.private %></td>
+        <td><%= company.config.private %></td>
         <td><%= company.work_time&.starts_at %></td>
         <td><%= company.work_time&.ends_at %></td>
         <td><%= company.work_time&.timezone %></td>
-        <td><%= company.configuration.ignore_users_work_time %></td>
-        <td><%= company.configuration.fetch_period %></td>
-        <td><%= company.configuration.main_attribute %></td>
-        <td><%= company.configuration.average_type %></td>
-        <td><%= company.configuration.insight_ratio %></td>
-        <td><%= company.configuration.insight_ratio_type %></td>
+        <td><%= company.config.ignore_users_work_time %></td>
+        <td><%= company.config.fetch_period %></td>
+        <td><%= company.config.main_attribute %></td>
+        <td><%= company.config.average_type %></td>
+        <td><%= company.config.insight_ratio %></td>
+        <td><%= company.config.insight_ratio_type %></td>
         <td><%= company.user.premium? %></td>
       </tr>
     <% end %>

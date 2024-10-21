@@ -4,17 +4,16 @@ module Configurable
   extend ActiveSupport::Concern
 
   included do
-    attribute :configuration, JsonbColumns::Configuration.to_type
+    attribute :config, Company::Config.to_type
   end
 
-  def selected_insight_fields
-    configuration.insight_fields.attributes.filter_map { |key, value| value ? key : nil }
-  end
+  # current_config returns actual config for premium account
+  # for regular account - actual config with only specific regular attributes (restricted values replaced with default values)
+  def current_config
+    return config if premium?
 
-  def find_fetch_period
-    return Insight::FETCH_DAYS_PERIOD if configuration.fetch_period.blank?
-    return configuration.fetch_period if premium?
-
-    [configuration.fetch_period, Insight::FETCH_DAYS_PERIOD].min
+    params_list = %w[ignore_users_work_time private average_type long_time_review_hours main_attribute]
+    fetch_period = config.fetch_period ? [config.fetch_period, Insight::FETCH_DAYS_PERIOD].min : Insight::FETCH_DAYS_PERIOD
+    Company::Config.new(config.as_json.slice(*params_list).merge('fetch_period' => fetch_period))
   end
 end

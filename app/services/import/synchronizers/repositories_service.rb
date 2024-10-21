@@ -29,7 +29,7 @@ module Import
         change_repository.call(
           repository: repository,
           synced_at: DateTime.now,
-          pull_requests_count: repository.pull_requests.actual(repository.find_fetch_period).count
+          pull_requests_count: repository.pull_requests.actual(repository.current_config.fetch_period).count
         )
       end
 

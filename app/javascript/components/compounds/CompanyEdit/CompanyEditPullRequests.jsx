@@ -25,7 +25,7 @@ export const CompanyEditPullRequests = (props) => {
   const { Flash, renderErrors } = createFlash();
 
   const updateFetchPeriod = async () => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { fetchPeriod: pageState.fetchPeriod });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { fetch_period: parseInt(pageState.fetchPeriod) });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, defaultFetchPeriod: pageState.fetchPeriod });

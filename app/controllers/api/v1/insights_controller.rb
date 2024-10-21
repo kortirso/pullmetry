@@ -19,7 +19,7 @@ module Api
             only: %i[id values entity],
             context: {
               previous_insights: previous_insights,
-              insight_fields: insight_fields,
+              insight_fields: current_config.selected_insight_fields,
               ratio_enabled: ratio_enabled?,
               ratio_type: ratio_type
             }
@@ -59,20 +59,16 @@ module Api
         visible_insights.reject(&:actual?)
       end
 
-      def insight_fields
-        if @insightable.premium? && @insightable.configuration.insight_fields.present?
-          @insightable.selected_insight_fields
-        else
-          Insight::DEFAULT_ATTRIBUTES
-        end
-      end
-
       def ratio_enabled?
-        @insightable.premium? && @insightable.configuration.insight_ratio
+        current_config.insight_ratio
       end
 
       def ratio_type
-        @insightable.configuration.insight_ratio_type
+        current_config.insight_ratio_type
+      end
+
+      def current_config
+        @current_config ||= @insightable.current_config
       end
     end
   end

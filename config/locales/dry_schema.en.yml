@@ -6,6 +6,7 @@ en:
       entity_value: Entity value
       external_id: External ID
       inviteable: Inviteable
+      fetch_period: Fetch period
     errors:
       type?: has invalid type
       type_included_in?: has invalid type
@@ -16,6 +17,10 @@ en:
         rules:
           access_token:
             type?: has invalid type
+      company_configuration:
+        rules:
+          fetch_period:
+            too_long_period: too long
       repository:
         rules:
           external_id:

@@ -26,8 +26,7 @@ class AddUserVacationCommand < BaseCommand
   end
 
   def transform_date(value)
-    DateTime.parse(value)
-  rescue Date::Error => _e
+    suppress(Date::Error) { DateTime.parse(value) }
   end
 
   def validate_time(input)

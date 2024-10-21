@@ -6,7 +6,7 @@ describe Api::V1::InsightsController do
     it_behaves_like 'required valid api auth'
 
     context 'for logged users' do
-      let!(:company) { create :company, configuration: { insight_ratio: true } }
+      let!(:company) { create :company, config: { insight_ratio: true } }
       let!(:user) { create :user }
       let(:api_access_token) { create :api_access_token, user: user }
 
@@ -18,6 +18,14 @@ describe Api::V1::InsightsController do
           create :insight, insightable: company, comments_count: 2, previous_date: 1.week.ago, entity: insight.entity
         end
 
+        context 'for unexisting company' do
+          it 'returns 404 error' do
+            get :index, params: { company_id: 'unexisting', api_access_token: api_access_token.value }
+
+            expect(response).to have_http_status :not_found
+          end
+        end
+
         context 'for user company' do
           before { company.update!(user: user) }
 
@@ -27,13 +35,22 @@ describe Api::V1::InsightsController do
             response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
-            expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
+            expect(response_values.keys).to match_array Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
             expect(response_values.dig('comments_count', 'value')).to eq 1
           end
 
           context 'for selected insight fields' do
             before do
-              company.configuration.insight_fields = { comments_count: true, reviews_count: true }
+              company.config.insight_fields = {
+                comments_count: true,
+                reviews_count: true,
+                bad_reviews_count: false,
+                open_pull_requests_count: false,
+                time_since_last_open_pull_seconds: false,
+                average_review_seconds: false,
+                average_reviewed_loc: false,
+                average_changed_loc: false
+              }
               company.save!
             end
 
@@ -50,7 +67,7 @@ describe Api::V1::InsightsController do
 
           context 'for change ratio' do
             before do
-              company.configuration.insight_ratio_type = 'change'
+              company.config.insight_ratio_type = 'change'
               company.save!
             end
 
@@ -60,7 +77,7 @@ describe Api::V1::InsightsController do
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
               expect(response).to have_http_status :ok
-              expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
+              expect(response_values.keys).to match_array Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
               expect(response_values.dig('comments_count', 'value')).to eq 1
             end
           end
@@ -81,7 +98,7 @@ describe Api::V1::InsightsController do
             response_values = response.parsed_body.dig('insights', 0, 'values')
 
             expect(response).to have_http_status :ok
-            expect(response_values.keys).to eq Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
+            expect(response_values.keys).to match_array Insight::DEFAULT_ATTRIBUTES.map(&:to_s)
             expect(response_values.dig('comments_count', 'value')).to eq 2
           end
         end

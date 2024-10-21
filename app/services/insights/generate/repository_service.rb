@@ -5,8 +5,8 @@ module Insights
     class RepositoryService < Insights::GenerateService
       def call(insightable:)
         @insightable = insightable
-        @insight_visibility = insightable.configuration.private
-        @fetch_period = @insightable.find_fetch_period
+        @insight_visibility = insightable.current_config.private
+        @fetch_period = insightable.current_config.fetch_period
 
         generate_specific_repository_insights
         super()
@@ -31,7 +31,7 @@ module Insights
 
       def generate_previous_repository_insight
         # update insight information for previous period
-        return @previous_insight = nil if !premium || !configuration.insight_ratio
+        return @previous_insight = nil if !premium || !config.insight_ratio
 
         # create previous insight for date only once
         @previous_insight = @insightable.repository_insights.find_by(previous_date: previous_insight_date)
@@ -131,7 +131,7 @@ module Insights
 
             @find_average_service.call(
               values: values.flatten,
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
           end
@@ -153,7 +153,7 @@ module Insights
                 .values.flatten
             @find_average_service.call(
               values: values,
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
           end
@@ -171,7 +171,7 @@ module Insights
                 .values.flatten
             @find_average_service.call(
               values: values,
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
           end
@@ -201,7 +201,7 @@ module Insights
           @repository_average_comments_count[key] =
             @find_average_service.call(
               values: pull_requests_stats(date_from, date_to).pluck(:pull_requests_comments_count),
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
         end
@@ -222,7 +222,7 @@ module Insights
           @repository_average_changed_loc[key] =
             @find_average_service.call(
               values: pull_requests_stats(date_from, date_to).pluck(:changed_loc),
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
         end
@@ -390,7 +390,7 @@ module Insights
                 )[:result]
             @find_average_service.call(
               values: values,
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
           end
@@ -407,7 +407,7 @@ module Insights
                 .call(insightable: @insightable, issues_ids: issues_ids(date_from, date_to))[:result]
             @find_average_service.call(
               values: values,
-              type: @insightable.configuration.average_type,
+              type: config.average_type,
               round_digits: 2
             )
           end

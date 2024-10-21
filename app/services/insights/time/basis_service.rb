@@ -40,7 +40,7 @@ module Insights
       # working time can be based on company working time or at user's
       def find_using_work_time(user)
         @work_start_time, @work_end_time, @time_offset =
-          if user&.with_work_time? && !@insightable.configuration.ignore_users_work_time
+          if user&.with_work_time? && !@insightable.current_config.ignore_users_work_time
             work_time_params(user.work_time)
           else
             work_time_params(@insightable.work_time)

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   include Kudos::Achievementable
   include Notifyable
   include Inviteable
+  include Workable
 
   REGULAR = 'regular'
   ADMIN = 'admin'
@@ -31,16 +32,10 @@ class User < ApplicationRecord
 
   has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
 
-  has_one :work_time, as: :worktimeable, dependent: :destroy
-
   enum :role, { REGULAR => 0, ADMIN => 1 }
 
   def premium?
     Rails.cache.fetch("user/#{id}/premium", expires_in: 1.minute) { subscriptions.active.exists? }
-  end
-
-  def with_work_time?
-    work_time.present?
   end
 
   def available_companies

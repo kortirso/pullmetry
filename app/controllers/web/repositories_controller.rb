@@ -25,7 +25,7 @@ module Web
         pagy(
           authorized_scope(
             Repository.order(id: :desc)
-          ).includes(:access_token, company: %i[access_token]),
+          ).includes(:access_token, company: %i[access_token user]),
           limit: PER_PAGE
         )
     end

@@ -22,7 +22,7 @@ class Repository < ApplicationRecord
   scope :of_user, ->(user_id) { joins(:company).where(companies: { user_id: user_id }) }
   scope :not_of_user, ->(user_id) { joins(:company).where.not(companies: { user_id: user_id }) }
 
-  delegate :configuration, :with_work_time?, :work_time, :selected_insight_fields, :premium?, :find_fetch_period,
+  delegate :config, :current_config, :with_work_time?, :work_time, :selected_insight_fields, :premium?,
            to: :company
 
   def access_token_status

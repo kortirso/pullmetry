@@ -357,7 +357,8 @@ CREATE TABLE public.companies (
     repositories_count integer,
     configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
     accessable boolean DEFAULT true NOT NULL,
-    not_accessable_ticks integer DEFAULT 0 NOT NULL
+    not_accessable_ticks integer DEFAULT 0 NOT NULL,
+    config jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -2693,6 +2694,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241021055406'),
 ('20241018121510'),
 ('20241018094904'),
 ('20241018090402'),

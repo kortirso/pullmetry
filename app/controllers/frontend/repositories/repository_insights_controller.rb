@@ -49,11 +49,15 @@ module Frontend
       end
 
       def ratio_enabled?
-        @repository.premium? && @repository.configuration.insight_ratio
+        current_config.insight_ratio
       end
 
       def ratio_type
-        @repository.configuration.insight_ratio_type
+        current_config.insight_ratio_type
+      end
+
+      def current_config
+        @current_config ||= @repository.current_config
       end
     end
   end
