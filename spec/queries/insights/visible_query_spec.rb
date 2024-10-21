@@ -20,7 +20,7 @@ describe Insights::VisibleQuery, type: :service do
     before do
       create :user_subscription, user: insightable.user
 
-      insightable.configuration.assign_attributes(
+      insightable.config.assign_attributes(
         main_attribute: :reviews_count
       )
       insightable.save!

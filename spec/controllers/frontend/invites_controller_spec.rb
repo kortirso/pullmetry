@@ -10,6 +10,34 @@ describe Frontend::InvitesController do
       let!(:another_user) { create :user }
       let!(:company) { create :company, user: user }
 
+      context 'for current user' do
+        context 'for invalid params' do
+          let(:request) {
+            post :create, params: { invite: { email: '' }, pullmetry_access_token: access_token }
+          }
+
+          it 'does not create invite', :aggregate_failures do
+            expect { request }.not_to change(Invite, :count)
+            expect(response).to have_http_status :ok
+            expect(response.parsed_body.dig('errors', 0)).to eq 'Email must be filled'
+          end
+        end
+
+        context 'for valid params' do
+          let(:request) {
+            post :create, params: {
+              invite: { email: 'email@gmail.com' }, pullmetry_access_token: access_token
+            }
+          }
+
+          it 'creates invite', :aggregate_failures do
+            expect { request }.to change(user.invites, :count).by(1)
+            expect(response).to have_http_status :ok
+            expect(response.parsed_body['errors']).to be_nil
+          end
+        end
+      end
+
       context 'for invalid company' do
         let(:request) {
           post :create, params: { company_id: company.uuid, invite: { email: '' }, pullmetry_access_token: access_token }

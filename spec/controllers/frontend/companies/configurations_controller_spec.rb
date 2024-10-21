@@ -3,7 +3,7 @@
 describe Frontend::Companies::ConfigurationsController do
   let!(:user) { create :user }
   let!(:user_session) { create :user_session, user: user }
-  let!(:company) { create :company, configuration: { average_type: 'arithmetic_mean' } }
+  let!(:company) { create :company, config: { average_type: 'arithmetic_mean' } }
   let(:access_token) { Authkeeper::GenerateTokenService.new.call(user_session: user_session)[:result] }
 
   describe 'PATCH#update' do
@@ -37,9 +37,9 @@ describe Frontend::Companies::ConfigurationsController do
               company_id: company.uuid, configuration: { average_type: '123' }, pullmetry_access_token: access_token
             }
 
-            configuration = company.reload.configuration
+            config = company.reload.config
 
-            expect(configuration.average_type).to eq 'arithmetic_mean'
+            expect(config.average_type).to eq 'arithmetic_mean'
             expect(response).to have_http_status :ok
           end
         end
@@ -50,9 +50,9 @@ describe Frontend::Companies::ConfigurationsController do
               company_id: company.uuid, configuration: { average_type: 'median' }, pullmetry_access_token: access_token
             }
 
-            configuration = company.reload.configuration
+            config = company.reload.config
 
-            expect(configuration.average_type).to eq 'median'
+            expect(config.average_type).to eq 'median'
             expect(response).to have_http_status :ok
           end
         end

@@ -50,35 +50,35 @@ export const CompanyEditInsights = (props) => {
 
   const toggleInsightField = async (insightName) => {
     const insightFields = pageState.insightFields.includes(insightName) ? pageState.insightFields.slice().filter((item) => item !== insightName) : [].concat(insightName, pageState.insightFields);
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insightFields: insightFields });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insight_fields: insightFields });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, insightFields: insightFields });
   }
 
   const updateMainAttribute = async (value) => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { mainAttribute: value });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { main_attribute: value });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, mainAttribute: value });
   }
 
   const updateAverageType = async (value) => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { averageType: value });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { average_type: value });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, averageType: value });
   }
 
   const toggleInsightRatio = async () => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insightRatio: !pageState.insightRatio });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insight_ratio: !pageState.insightRatio });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, insightRatio: !pageState.insightRatio });
   }
 
   const updateInsightRatioType = async (value) => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insightRatioType: value });
+    const result = await updateCompanyConfigurationRequest(props.companyUuid, { insight_ratio_type: value });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, insightRatioType: value });

@@ -47,8 +47,8 @@ module Import
         end
 
         def find_started_at(repository)
-          fetch_period = repository.find_fetch_period
-          fetch_period *= 2 if repository.configuration.insight_ratio
+          config = repository.current_config
+          fetch_period = config.insight_ratio ? (config.fetch_period * 2) : config.fetch_period
           (DateTime.now - fetch_period.days).beginning_of_day
         end
 

@@ -107,7 +107,7 @@ describe Insights::Time::ForMerge, type: :service do
 
         context 'when company ignores user work time' do
           before do
-            repository.company.configuration.assign_attributes(
+            repository.company.config.assign_attributes(
               ignore_users_work_time: true
             )
             repository.company.save!
@@ -273,7 +273,7 @@ describe Insights::Time::ForMerge, type: :service do
 
         context 'when company ignores user work time' do
           before do
-            repository.company.configuration.assign_attributes(
+            repository.company.config.assign_attributes(
               ignore_users_work_time: true
             )
             repository.company.save!

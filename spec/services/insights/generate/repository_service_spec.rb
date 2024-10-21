@@ -41,7 +41,7 @@ describe Insights::Generate::RepositoryService, type: :service do
 
     context 'for private company' do
       before do
-        insightable.company.configuration.private = true
+        insightable.company.config.private = true
         insightable.company.save!
       end
 
@@ -86,7 +86,7 @@ describe Insights::Generate::RepositoryService, type: :service do
     context 'for premium account with ratio settings' do
       before do
         create :user_subscription, user: repository.company.user
-        repository.company.configuration.insight_ratio = true
+        repository.company.config.insight_ratio = true
         repository.company.save!
       end
 
@@ -173,7 +173,7 @@ describe Insights::Generate::RepositoryService, type: :service do
             create :pull_request_comment, entity: entity1, pull_request: pr3
             create :pull_request_comment, entity: entity1, pull_request: old_pr2
 
-            repository.company.configuration.insight_fields = {
+            repository.company.config.insight_fields = {
               comments_count: true,
               reviews_count: true,
               required_reviews_count: true,

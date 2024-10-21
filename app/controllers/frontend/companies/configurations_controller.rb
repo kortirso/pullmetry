@@ -27,10 +27,12 @@ module Frontend
           .require(:configuration)
           .permit(
             :private,
+            :ignore_users_work_time,
             :main_attribute,
             :average_type,
             :insight_ratio,
             :insight_ratio_type,
+            :fetch_period,
             insight_fields: []
           ).to_h
       end

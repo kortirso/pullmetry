@@ -24,12 +24,10 @@ class AddIgnoreCommand < BaseCommand
   def remove_entities(input)
     Insight
       .joins(:entity)
-      .where(insightable: input[:insightable], entities: { login: input[:entity_value] })
-      .destroy_all
+      .destroy_by(insightable: input[:insightable], entities: { login: input[:entity_value] })
 
     Insight
       .joins(:entity)
-      .where(insightable: input[:insightable].repositories, entities: { login: input[:entity_value] })
-      .destroy_all
+      .destroy_by(insightable: input[:insightable].repositories, entities: { login: input[:entity_value] })
   end
 end

@@ -78,19 +78,19 @@ module Frontend
     end
 
     def insight_fields
-      if @insightable.premium? && @insightable.configuration.insight_fields.present?
-        @insightable.selected_insight_fields.map(&:to_sym)
-      else
-        Insight::DEFAULT_ATTRIBUTES
-      end
+      current_config.selected_insight_fields
     end
 
     def ratio_enabled?
-      @insightable.premium? && @insightable.configuration.insight_ratio
+      current_config.insight_ratio
     end
 
     def ratio_type
-      @insightable.configuration.insight_ratio_type
+      current_config.insight_ratio_type
+    end
+
+    def current_config
+      @current_config ||= @insightable.current_config
     end
   end
 end

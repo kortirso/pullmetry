@@ -147,10 +147,6 @@
     @apply bg-none border-b border-gray-200 m-0;
   }
 
-  #jsonb_columns_configuration_work_time_zone {
-    @apply w-full;
-  }
-
   #user_work_time_zone {
     @apply w-full;
   }

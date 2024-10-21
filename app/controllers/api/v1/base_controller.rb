@@ -41,10 +41,6 @@ module Api
         render json: { errors: ['Unauthorized'] }, status: :unauthorized
       end
 
-      def access_denied
-        render json: { errors: ['Forbidden'] }, status: :forbidden
-      end
-
       def page_not_found
         render json: { errors: ['Not found'] }, status: :not_found
       end

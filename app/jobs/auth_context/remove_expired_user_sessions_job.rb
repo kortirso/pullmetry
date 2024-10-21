@@ -6,8 +6,7 @@ module AuthContext
 
     def perform
       User::Session
-        .where(created_at: ...DateTime.now - JwtEncoder::EXPIRATION_SECONDS.seconds)
-        .destroy_all
+        .destroy_by(created_at: ...DateTime.now - JwtEncoder::EXPIRATION_SECONDS.seconds)
     end
   end
 end

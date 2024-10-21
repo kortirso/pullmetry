@@ -3,7 +3,7 @@
   <%=
     js_component 'CompanyEditPrivacy',
       company_uuid: @company.uuid,
-      private: @company.configuration.private,
+      private: @current_config.private,
       accepted_invites: @accepted_invites,
       invites: @invites
   %>
@@ -17,18 +17,18 @@
   <%=
     js_component 'CompanyEditPullRequests',
       company_uuid: @company.uuid,
-      fetch_period: @company.configuration.fetch_period,
+      fetch_period: @current_config.fetch_period,
       ignores: @ignores
   %>
   <%=
     js_component 'CompanyEditInsights',
       company_uuid: @company.uuid,
       is_premium: @company.premium?,
-      insight_fields: (@company.premium? && @company.selected_insight_fields.presence) || Insight::DEFAULT_ATTRIBUTES.dup,
-      main_attribute: @company.configuration.main_attribute,
-      average_type: @company.configuration.average_type,
-      insight_ratio: @company.configuration.insight_ratio,
-      insight_ratio_type: @company.configuration.insight_ratio_type
+      insight_fields: @current_config.selected_insight_fields,
+      main_attribute: @current_config.main_attribute,
+      average_type: @current_config.average_type,
+      insight_ratio: @current_config.insight_ratio,
+      insight_ratio_type: @current_config.insight_ratio_type
   %>
   <%=
     js_component 'CompanyEditNotifications',

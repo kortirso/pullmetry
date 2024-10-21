@@ -7,6 +7,7 @@ class Company < ApplicationRecord
   include Configurable
   include Notifyable
   include Inviteable
+  include Workable
 
   belongs_to :user
 
@@ -18,8 +19,6 @@ class Company < ApplicationRecord
   has_many :webhooks, dependent: :destroy
   has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
   has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
-
-  has_one :work_time, as: :worktimeable, dependent: :destroy
 
   delegate :premium?, to: :user
 
@@ -37,9 +36,5 @@ class Company < ApplicationRecord
       .or(
         AccessToken.where(tokenable_id: repositories.select(:id), tokenable_type: 'Repository')
       )
-  end
-
-  def with_work_time?
-    work_time.present?
   end
 end

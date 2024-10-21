@@ -63,7 +63,6 @@ class AddAccessTokenCommand < BaseCommand
   end
 
   def transform_expired_at(value)
-    DateTime.parse(value)
-  rescue Date::Error => _e
+    suppress(Date::Error) { DateTime.parse(value) }
   end
 end

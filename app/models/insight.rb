@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Insight < ApplicationRecord
-  DEFAULT_ORDER_ATTRIBUTE = :comments_count
   DEFAULT_ATTRIBUTES = %i[
     comments_count reviews_count bad_reviews_count open_pull_requests_count
     time_since_last_open_pull_seconds average_review_seconds average_reviewed_loc average_changed_loc
@@ -35,7 +34,7 @@ class Insight < ApplicationRecord
   }.freeze
 
   FETCH_DAYS_PERIOD = 30
-  MAXIMUM_FETCH_DAYS_PERIOD = 60
+  MAXIMUM_FETCH_DAYS_PERIOD = 90
 
   belongs_to :insightable, polymorphic: true
   belongs_to :entity

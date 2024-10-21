@@ -26,28 +26,28 @@ describe Company do
     let!(:company) { create :company }
 
     it 'returns default fetch period' do
-      expect(company.find_fetch_period).to eq Insight::FETCH_DAYS_PERIOD
+      expect(company.current_config.fetch_period).to eq Insight::FETCH_DAYS_PERIOD
     end
 
     context 'for existing fetch_period in configuration' do
       before do
-        company.configuration.fetch_period = 61
+        company.config.fetch_period = 61
         company.save!
       end
 
       context 'for regular account' do
         it 'returns minimum period' do
-          expect(company.find_fetch_period).to eq Insight::FETCH_DAYS_PERIOD
+          expect(company.current_config.fetch_period).to eq Insight::FETCH_DAYS_PERIOD
         end
 
         context 'when fetch_period is less than default' do
           before do
-            company.configuration.fetch_period = 29
+            company.config.fetch_period = 29
             company.save!
           end
 
           it 'returns full period' do
-            expect(company.find_fetch_period).to eq 29
+            expect(company.current_config.fetch_period).to eq 29
           end
         end
       end
@@ -56,7 +56,7 @@ describe Company do
         before { create :user_subscription, user: company.user }
 
         it 'returns full period' do
-          expect(company.find_fetch_period).to eq 61
+          expect(company.current_config.fetch_period).to eq 61
         end
       end
     end

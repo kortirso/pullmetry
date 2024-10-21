@@ -1,4 +1,4 @@
-import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helpers';
+import { apiRequest, csrfToken } from '../../../../helpers';
 
 export const updateCompanyConfigurationRequest = async (companyUuid, payload) => {
   return await apiRequest({
@@ -9,7 +9,7 @@ export const updateCompanyConfigurationRequest = async (companyUuid, payload) =>
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken()
       },
-      body: JSON.stringify({ configuration: objectKeysToSnakeCase(payload) })
+      body: JSON.stringify({ configuration: payload })
     }
   });
 }

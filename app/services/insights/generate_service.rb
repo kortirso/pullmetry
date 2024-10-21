@@ -46,7 +46,7 @@ module Insights
 
     def generate_previous_insight(entity_id)
       # update insight information for previous period
-      return @previous_insight = nil if !premium || !configuration.insight_ratio
+      return @previous_insight = nil if !premium || !config.insight_ratio
 
       # create previous insight for date only once per entity
       @previous_insight = @insightable.insights.find_by(entity_id: entity_id, previous_date: previous_insight_date)
@@ -60,7 +60,7 @@ module Insights
     # this method generates insight attributes based on available insight_fields
     # rubocop: disable Style/OptionalBooleanParameter
     def insight_attributes(entity_id, previous=false)
-      insight_fields.inject({}) do |acc, insight_field|
+      config.selected_insight_fields.inject({}) do |acc, insight_field|
         value = find_insight_field_value(insight_field, entity_id, previous)
         field_value = Insight::DECIMAL_ATTRIBUTES.include?(insight_field.to_sym) ? value.to_f : value.to_i
 
@@ -73,16 +73,6 @@ module Insights
       return send(insight_field, @fetch_period * 2, @fetch_period)[entity_id] if previous
 
       send(insight_field)[entity_id]
-    end
-
-    # selecting insight attributes based on company configuration
-    def insight_fields
-      @insight_fields ||=
-        if premium && configuration.insight_fields.present?
-          @insightable.selected_insight_fields
-        else
-          Insight::DEFAULT_ATTRIBUTES
-        end
     end
 
     # this method returns { entity_id => comments_count_by_entity }
@@ -170,7 +160,7 @@ module Insights
           @review_time_service
             .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
             .transform_values! do |value|
-              @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+              @find_average_service.call(values: value, type: config.average_type)
             end
       end
     end
@@ -184,7 +174,7 @@ module Insights
           @merge_time_service
             .call(insightable: @insightable, pull_requests_ids: pull_requests_ids(date_from, date_to))[:result]
             .transform_values! do |value|
-              @find_average_service.call(values: value, type: @insightable.configuration.average_type)
+              @find_average_service.call(values: value, type: config.average_type)
             end
       end
     end
@@ -195,7 +185,7 @@ module Insights
       @average_open_pr_comments.fetch("#{date_from},#{date_to}") do |key|
         @average_open_pr_comments[key] =
           comments_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
+            @find_average_service.call(values: value, type: config.average_type, round_digits: 2)
           }
       end
     end
@@ -207,7 +197,7 @@ module Insights
       @average_changed_loc.fetch("#{date_from},#{date_to}") do |key|
         @average_changed_loc[key] =
           changed_loc_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
+            @find_average_service.call(values: value, type: config.average_type, round_digits: 2)
           }
       end
     end
@@ -219,7 +209,7 @@ module Insights
       @average_reviewed_loc.fetch("#{date_from},#{date_to}") do |key|
         @average_reviewed_loc[key] =
           reviewed_loc_in_open_prs(date_from, date_to).transform_values { |value|
-            @find_average_service.call(values: value, type: @insightable.configuration.average_type, round_digits: 2)
+            @find_average_service.call(values: value, type: config.average_type, round_digits: 2)
           }
       end
     end
@@ -259,8 +249,8 @@ module Insights
       @insightable.premium?
     end
 
-    def configuration
-      @configuration ||= @insightable.configuration
+    def config
+      @config ||= @insightable.current_config
     end
 
     def previous_insight_date

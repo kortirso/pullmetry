@@ -19,6 +19,7 @@ module Web
 
       def find_company
         @company = Company.find_by!(uuid: params[:company_id])
+        @current_config = @company.current_config
       end
 
       def find_ignores
