@@ -43,7 +43,7 @@ module Pullmetry
     register('commands.add_notification') { AddNotificationCommand.new }
     register('commands.add_invite') { AddInviteCommand.new }
     register('commands.add_subscriber') { AddSubscriberCommand.new }
-    register('commands.add_ignore') { AddIgnoreCommand.new }
+    register('commands.add_entity_ignore') { AddEntityIgnoreCommand.new }
     register('commands.add_excludes_group') { AddExcludesGroupCommand.new }
     register('commands.change_company') { ChangeCompanyCommand.new }
     register('commands.change_repository') { ChangeRepositoryCommand.new }

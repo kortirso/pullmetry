@@ -23,7 +23,7 @@ module Web
       end
 
       def find_ignores
-        @ignores = @company.ignores.hashable_pluck(:uuid, :entity_value)
+        @ignores = @company.entity_ignores.hashable_pluck(:uuid, :entity_value)
       end
 
       def find_invites

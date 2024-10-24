@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddIgnoreCommand < BaseCommand
+class AddEntityIgnoreCommand < BaseCommand
   use_contract do
     params do
       required(:insightable).filled(type?: Company)
@@ -12,8 +12,8 @@ class AddIgnoreCommand < BaseCommand
 
   def do_persist(input)
     ignore = ActiveRecord::Base.transaction do
-      remove_entities(input)
-      Ignore.create!(input)
+      remove_insights_of_entity(input)
+      Entity::Ignore.create!(input)
     end
 
     { result: ignore }
@@ -21,7 +21,7 @@ class AddIgnoreCommand < BaseCommand
     { errors: ['Ignore already exists'] }
   end
 
-  def remove_entities(input)
+  def remove_insights_of_entity(input)
     Insight
       .joins(:entity)
       .destroy_by(insightable: input[:insightable], entities: { login: input[:entity_value] })

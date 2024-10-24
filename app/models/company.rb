@@ -15,10 +15,13 @@ class Company < ApplicationRecord
   has_many :pull_requests, through: :repositories
   has_many :comments, class_name: '::PullRequest::Comment', through: :repositories
   has_many :reviews, class_name: '::PullRequest::Review', through: :repositories
-  has_many :ignores, as: :insightable, dependent: :destroy
+
   has_many :webhooks, dependent: :destroy
-  has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
   has_many :companies_users, class_name: 'Companies::User', dependent: :destroy
+
+  # ignoring developers and pull requests
+  has_many :entity_ignores, as: :insightable, class_name: 'Entity::Ignore', dependent: :destroy
+  has_many :excludes_groups, as: :insightable, class_name: '::Excludes::Group', dependent: :destroy
 
   delegate :premium?, to: :user
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Ignore do
+describe Entity::Ignore do
   it 'factory should be valid' do
     ignore = build :ignore
 

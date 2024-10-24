@@ -50,9 +50,7 @@ Rails.application.routes.draw do
       resources :repository_insights, only: %i[index], module: 'repositories'
     end
     resources :notifications, only: %i[create destroy]
-    resources :ignores, only: %i[create]
     resources :invites, only: %i[create]
-    resources :ignores, only: %i[destroy]
     resources :webhooks, only: %i[create destroy]
     namespace :excludes do
       resources :groups, only: %i[create destroy]
@@ -65,6 +63,9 @@ Rails.application.routes.draw do
     namespace :users do
       resources :vacations, only: %i[create destroy]
       resource :feedback, only: %i[create]
+    end
+    namespace :entities do
+      resources :ignores, only: %i[create destroy]
     end
   end
 

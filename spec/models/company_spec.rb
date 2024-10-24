@@ -12,7 +12,7 @@ describe Company do
     it { is_expected.to have_many(:repositories).dependent(:destroy) }
     it { is_expected.to have_one(:access_token).dependent(:destroy) }
     it { is_expected.to have_many(:insights).dependent(:destroy) }
-    it { is_expected.to have_many(:ignores).dependent(:destroy) }
+    it { is_expected.to have_many(:entity_ignores).dependent(:destroy) }
     it { is_expected.to have_many(:webhooks).dependent(:destroy) }
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_many(:excludes_groups).class_name('Excludes::Group').dependent(:destroy) }

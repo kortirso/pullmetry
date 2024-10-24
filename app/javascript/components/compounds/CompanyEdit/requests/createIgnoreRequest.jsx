@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const createIgnoreRequest = async (payload) => {
   return await apiRequest({
-    url: '/frontend/ignores.json',
+    url: '/frontend/entities/ignores.json',
     options: {
       method: 'POST',
       headers: {

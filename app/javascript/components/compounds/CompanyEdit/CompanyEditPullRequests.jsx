@@ -34,7 +34,7 @@ export const CompanyEditPullRequests = (props) => {
   const resetFetchPeriod = () => setPageState({ ...pageState, fetchPeriod: pageState.defaultFetchPeriod });
 
   const onIgnoreCreate = async () => {
-    const result = await createIgnoreRequest({ ignore: ignoreFormStore, companyId: props.companyUuid });
+    const result = await createIgnoreRequest({ entityIgnore: ignoreFormStore, companyId: props.companyUuid });
 
     if (result.errors) renderErrors(result.errors);
     else {

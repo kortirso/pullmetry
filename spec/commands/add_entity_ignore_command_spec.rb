@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe AddIgnoreCommand, type: :service do
+describe AddEntityIgnoreCommand, type: :service do
   subject(:command) { instance.call(params.merge(insightable: company)) }
 
   let!(:instance) { described_class.new }
@@ -20,7 +20,7 @@ describe AddIgnoreCommand, type: :service do
     let(:params) { { entity_value: '' } }
 
     it 'does not create ignore', :aggregate_failures do
-      expect { command }.not_to change(Ignore, :count)
+      expect { command }.not_to change(Entity::Ignore, :count)
       expect(command[:errors]).not_to be_blank
     end
   end
@@ -30,11 +30,20 @@ describe AddIgnoreCommand, type: :service do
 
     it 'creates ignore', :aggregate_failures do
       expect { command }.to(
-        change(company.ignores, :count).by(1)
+        change(company.entity_ignores, :count).by(1)
           .and(change(company.insights, :count).by(-1))
           .and(change(repository.insights, :count).by(-1))
       )
-      expect(command[:result].is_a?(Ignore)).to be_truthy
+      expect(command[:result].is_a?(Entity::Ignore)).to be_truthy
+    end
+
+    context 'with existing ignore' do
+      before { create :ignore, insightable: company, entity_value: 'octocat[bot]' }
+
+      it 'does not create ignore', :aggregate_failures do
+        expect { command }.not_to change(Entity::Ignore, :count)
+        expect(command[:errors]).not_to be_blank
+      end
     end
   end
 end
