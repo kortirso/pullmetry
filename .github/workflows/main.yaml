@@ -58,8 +58,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: runner
-          POSTGRES_PASSWORD: runner
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: runner
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
