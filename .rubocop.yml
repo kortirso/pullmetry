@@ -256,3 +256,6 @@ RSpec/IndexedLet:
 
 Gemspec/RequireMFA:
   Enabled: false
+
+Style/SafeNavigationChainLength:
+  Enabled: false
