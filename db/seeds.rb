@@ -137,25 +137,26 @@ Kudos::Achievement.create(
     html_url: "https://github.com/octocat_#{index}"
   )
 
-  Pullmetry::Container.resolve('forms.identities.create').call(
+  Pullmetry::Container.resolve('commands.add_identity').call({
     user: user,
-    params: { uid: index.to_s, provider: 'github', email: "user#{index}@gmail.com", login: "octocat_#{index}" }
-  )
+    uid: index.to_s,
+    provider: 'github',
+    email: "user#{index}@gmail.com",
+    login: "octocat_#{index}"
+  })
 end
 user = User.first
 user.update(role: User::ADMIN)
-Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
+User::Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
 7.times do |company_index|
   company = Company.create(title: "Test company #{company_index + 1}", user: User.all.sample)
   3.times do |repository_index|
-    repository = Pullmetry::Container.resolve('forms.repositories.create').call(
+    repository = Pullmetry::Container.resolve('commands.add_repository').call({
       company: company,
-      params: {
-        title: "Test #{company_index + 1} #{repository_index + 1}",
-        link: "https://github.com/octocat_#{company_index + 1}_#{repository_index + 1}/first",
-        provider: 'github'
-      }
-    )[:result]
+      title: "Test #{company_index + 1} #{repository_index + 1}",
+      link: "https://github.com/octocat_#{company_index + 1}_#{repository_index + 1}/first",
+      provider: 'github'
+    })[:result]
 
     Entity.all.each_with_index do |entity, entity_index|
       # old pull requests
@@ -217,7 +218,7 @@ Subscription.create(user: user, start_time: 1.day.ago, end_time: 1.year.after)
         end
       end
     end
-    Insights::Generate::RepositoryService.call(insightable: repository)
+    Insights::Generate::RepositoryService.new.call(insightable: repository)
   end
-  Insights::Generate::CompanyService.call(insightable: company)
+  Insights::Generate::CompanyService.new.call(insightable: company)
 end
