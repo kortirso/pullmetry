@@ -36,7 +36,10 @@ export const FeedbackForm = (props) => {
       <button
         class={[props.classList, 'cursor-pointer'].join(' ')}
         onClick={openModal}
-      >Feedback</button>
+      >
+        <span innerHTML={props.svg} />
+        <span>Feedback</span>
+      </button>
       <Modal>
         <h1 class="mb-8">New feedback</h1>
         <p class="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" class="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" class="simple-link">Telegram</a> or just leave here.</p>

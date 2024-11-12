@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Martian Mono', ...defaultTheme.fontFamily.sans],
+        sans: ['Manrope', ...defaultTheme.fontFamily.sans],
+        martian: ['Martian Mono', ...defaultTheme.fontFamily.sans],
       },
       maxWidth: {
         '8xl': '90rem',

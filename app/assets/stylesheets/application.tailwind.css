@@ -1,283 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&display=swap');
 
-@layer components {
-  h1 {
-    @apply text-4xl leading-12 mb-4;
-  }
+nav {
+  background: #18191F;
+}
 
-  h2 {
-    @apply text-3xl leading-10 mb-4;
-  }
+.navigation-menu:not(.hidden) {
+  @apply absolute w-full z-10 top-14 left-0 px-4 py-2;
 
-  h3 {
-    @apply text-2xl leading-8 mb-4;
-  }
+  background: #18191F;
+}
 
-  h4 {
-    @apply text-xl leading-6 mb-4;
-  }
+.header-logo {
+  @apply text-lg font-medium lg:mb-10 py-4 lg:py-0 font-martian;
+}
 
-  p {
-    @apply leading-6;
-  }
+.user-navigation-link {
+  @apply relative inline-block text-white leading-6 whitespace-nowrap flex flex-row items-center mb-4 p-2.5 pl-3;
+}
 
-  ul {
-    @apply list-none mb-6;
-  }
+.user-navigation-link span:nth-of-type(1) {
+  @apply w-6 flex justify-center;
+}
 
-  li {
-    @apply relative mb-2 leading-6 pl-8 bg-no-repeat;
+.user-navigation-link span:nth-of-type(2) {
+  @apply ml-2;
+}
 
-    background-image: url('icons/chevron.svg');
-    background-size: 1.25rem 1.25rem;
-    background-position: left top;
-  }
+.user-navigation-link svg {
+  color: #A2D8EB;
+}
 
-  .benefits-box {
-    @apply flex flex-col px-4 mb-16;
-  }
+.user-navigation-link.active {
+  @apply rounded-lg;
 
-  .benefits-title {
-    @apply text-center font-medium mb-8 text-2xl;
-  }
+  background: #FBA346;
+}
 
-  .benefits-text {
-    @apply text-lg leading-8;
-  }
-
-  .btn {
-    @apply inline-block py-2 px-4 rounded leading-8 cursor-pointer text-black;
-  }
-
-  .btn-primary {
-    @apply btn bg-orange-300 hover:bg-orange-400 border border-orange-400;
-  }
-
-  .btn-success {
-    @apply btn bg-green-300 hover:bg-green-400 border border-green-400;
-  }
-
-  .btn-danger {
-    @apply btn bg-orange-500 hover:bg-orange-600 border border-orange-600;
-  }
-
-  .btn-small {
-    @apply btn py-1 px-3 text-sm leading-8;
-  }
-
-  .btn-xs {
-    @apply btn py-1 px-2 text-sm leading-6;
-  }
-
-  .user-navigation-link {
-    @apply inline-block p-4 pl-0 lg:pl-12 text-white whitespace-nowrap;
-  }
-
-  .navigation-menu:not(.hidden) {
-    @apply absolute w-full z-10 bg-zinc-800 top-14;
-  }
-
-  .simple-link {
-    @apply font-medium underline;
-
-    color: #FF6600;
-  }
-
-  .table th, .table td {
-    @apply border border-gray-200 py-2 px-3;
-  }
-
-  .table th {
-    @apply font-medium;
-
-    font-size: .9rem;
-  }
-
-  .table td {
-    @apply text-sm;
-  }
-
-  .table tr th {
-  }
-
-  .table tbody tr:nth-of-type(2n) {
-    @apply bg-gray-100;
-  }
-
-  .table.zebra {
-    @apply bg-white;
-  }
-
-  .form-field {
-    @apply mb-4;
-  }
-
-  .form-field .form-label {
-    @apply block mb-1 leading-6;
-  }
-
-  .form-field .form-value {
-    @apply bg-gray-200 border border-gray-300 rounded py-1 px-4 leading-8;
-  }
-
-  .form-field .form-value:focus {
-    @apply border-gray-200;
-  }
-
-  .form-field .form-value.full {
-    @apply w-full;
-  }
-
-  .form-field select {
-    @apply bg-gray-200 border border-gray-300 rounded py-1 pl-2 sm:pl-4 pr-8 text-sm leading-8;
-
-    min-width: 60px;
-  }
-
-  .form-field .form-dropdown {
-    @apply absolute w-full border-r border-l border-gray-200 z-10 overflow-y-scroll;
-
-    max-height: 10rem;
-  }
-
-  .form-field .form-dropdown li {
-    @apply bg-none border-b border-gray-200 m-0;
-  }
-
-  #user_work_time_zone {
-    @apply w-full;
-  }
-
-  nav.pagy.nav a {
-    @apply inline-block text-black py-2 px-3 mr-2;
-    @apply bg-orange-200 border border-orange-300 rounded;
-  }
-
-  nav.pagy.nav a[aria-disabled="true"], nav.pagy.nav a.current {
-    @apply py-2 px-3;
-  }
-
-  nav.pagy.nav a[aria-disabled="true"],
-  nav.pagy.nav a[aria-disabled="true"]:hover,
-  nav.pagy.nav a.gap:hover {
-    @apply bg-orange-200;
-  }
-
-  nav.pagy.nav a.current,
-  nav.pagy.nav a.current:hover,
-  nav.pagy.nav a:hover {
-    @apply bg-orange-300;
-  }
-
-  nav.pagy.nav a.gap {
-    @apply py-2 px-3;
-  }
-
-  .toggle {
-    @apply relative inline-block select-none;
-
-    width: 40px;
-  }
-
-  .toggle .toggle-checkbox {
-    @apply transition-all absolute block cursor-pointer appearance-none rounded-full bg-white border-none;
-
-    width: 20px;
-    height: 20px;
-    top: 2px;
-    left: 2px;
-  }
-
-  .toggle .toggle-checkbox:checked {
-    @apply bg-white;
-
-    left: calc(100% - 22px);
-  }
-
-  .toggle .toggle-checkbox + .toggle-label {
-    @apply block cursor-pointer overflow-hidden rounded-full bg-gray-300 border-2 border-gray-300 transition-colors;
-
-    width: 40px;
-    height: 24px;
-  }
-
-  .toggle:hover .toggle-checkbox:enabled + .toggle-label {
-    @apply border-gray-500;
-  }
-
-  .toggle .toggle-checkbox:checked + .toggle-label {
-    @apply bg-orange-300 border-orange-300;
-  }
-
-  .toggle:hover .toggle-checkbox:checked + .toggle-label {
-    @apply border-orange-400;
-  }
-
-  .toggle .toggle-checkbox:checked:disabled + .toggle-label {
-    @apply bg-orange-100 border-orange-100;
-  }
-
-  .badge {
-    @apply inline-block text-xs px-2 py-1 bg-orange-200 border border-orange-300 text-black rounded;
-  }
-
-  .zebra-list .zebra-list-element {
-    @apply flex justify-between items-center py-1 px-2;
-  }
-
-  .zebra-list .zebra-list-element:nth-of-type(2n) {
-    @apply bg-stone-100;
-  }
-
-  .tooltip {
-    @apply relative;
-  }
-
-  .tooltip .tooltiptext {
-    @apply w-32 invisible bg-stone-700 text-white text-xs text-center py-1 px-2 rounded;
-    @apply absolute z-10 opacity-0 transition-opacity delay-300;
-
-    bottom: 125%;
-    left: 50%;
-    margin-left: -3rem;
-  }
-
-  .tooltip .tooltiptext:after {
-    @apply absolute z-10;
-
-    content: "";
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #44403c transparent transparent transparent;
-  }
-
-  .tooltip:hover .tooltiptext {
-    @apply opacity-100 visible;
-  }
-
-  .modal {
-    @apply relative p-4 sm:p-8 bg-white rounded overflow-y-scroll;
-    @apply w-full md:w-3/5 lg:w-2/5;
-
-    max-width: 95%;
-    max-height: 90%;
-  }
-
-  .welcome-image {
-    @apply overflow-hidden;
-  }
-
-  .welcome-image img {
-    @apply rounded-xl border border-stone-200;
-  }
-
-  .client-image img {
-    @apply h-20 mb-4;
-  }
+.user-navigation-link.active svg {
+  @apply text-white;
 }
