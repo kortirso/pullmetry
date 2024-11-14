@@ -29,18 +29,23 @@ export const CompanyForm = (props) => {
       <button class="btn-primary hidden sm:block" onClick={openModal}>Create company</button>
       <button class="btn-primary sm:hidden" onClick={openModal}>+</button>
       <Modal>
-        <h1 class="mb-8">New Company</h1>
-        <p class="mb-4">Company is just abstraction for collection of repositories belongs to one group with similar settings</p>
-        <section class="inline-block w-full">
-          <FormInputField
-            required
-            placeholder="Company's title"
-            labelText="Title"
-            value={formStore.title}
-            onChange={(value) => setFormStore('title', value)}
-          />
-          <button class="btn-primary mt-4" onClick={onSubmit}>Save company</button>
-        </section>
+        <div class="flex flex-col items-center">
+          <h1 class="mb-2">New Company</h1>
+          <p class="mb-8 text-center">Company is just abstraction for collection of repositories belongs to one group with similar settings</p>
+          <section class="inline-block w-4/5">
+            <FormInputField
+              required
+              placeholder="Company's title"
+              labelText="Title"
+              classList="w-full"
+              value={formStore.title}
+              onChange={(value) => setFormStore('title', value)}
+            />
+            <div class="flex">
+              <button class="btn-primary mt-8 mx-auto" onClick={onSubmit}>Save</button>
+            </div>
+          </section>
+        </div>
       </Modal>
       <Flash />
     </>

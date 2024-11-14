@@ -1,42 +1,42 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="m-0">Companies</h1>
-  </div>
-  <% if @companies.any? { |company| company.user_id == current_user.id && !company.accessable } %>
-    <div class="badge mb-4 p-4">
-      <p>One of your company has access error because of invalid access token permissions.</p>
-      <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
-      <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
-    </div>
-  <% end %>
-  <section>
-    <% @companies.each do |company| %>
-      <%=
-        js_component 'Company',
-          uuid: company.uuid,
-          title: company.title,
-          repositories_count: company.repositories.size,
-          repositories_url: company_repositories_path(company_id: company.uuid),
-          unaccessable: !company.accessable,
-          is_private: !!company.current_config.private,
-          main_attribute: company.current_config.main_attribute,
-          edit_links: allowed_to?(:update?, company) ? {
-            need_access_token: !company.all_access_tokens.exists?,
-            access_token: new_company_access_token_path(company.uuid),
-            configuration: edit_company_configuration_path(company.uuid),
-            destroy: company_path(company.uuid)
-          } : nil
-      %>
-    <% end %>
-    <div class="mt-6 flex justify-between items-center">
-      <% if @pagy.pages > 1 %>
-        <div><%== pagy_nav(@pagy) %></div>
-      <% end %>
+  <section class="h-full p-8 lg:p-12 bg-stone-100">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="m-0">Companies</h1>
       <%=
         js_component 'CompanyForm',
           accounts_for_companies: @accounts_for_companies,
           account_uuid: current_user.uuid
       %>
     </div>
+    <% if @companies.any? { |company| company.user_id == current_user.id && !company.accessable } %>
+      <div class="badge mb-4 p-4">
+        <p>One of your company has access error because of invalid access token permissions.</p>
+        <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
+        <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
+      </div>
+    <% end %>
+    <section>
+      <% @companies.each do |company| %>
+        <%=
+          js_component 'Company',
+            uuid: company.uuid,
+            title: company.title,
+            repositories_count: company.repositories.size,
+            repositories_url: company_repositories_path(company_id: company.uuid),
+            unaccessable: !company.accessable,
+            is_private: !!company.current_config.private,
+            main_attribute: company.current_config.main_attribute,
+            edit_links: allowed_to?(:update?, company) ? {
+              need_access_token: !company.all_access_tokens.exists?,
+              access_token: new_company_access_token_path(company.uuid),
+              configuration: edit_company_configuration_path(company.uuid),
+              destroy: company_path(company.uuid)
+            } : nil
+        %>
+      <% end %>
+      <% if @pagy.pages > 1 %>
+        <div><%== pagy_nav(@pagy) %></div>
+      <% end %>
+    </section>
   </section>
 <% end %>

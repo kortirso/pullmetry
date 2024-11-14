@@ -18,8 +18,21 @@ module.exports = {
       },
       lineHeight: {
         '12': '3rem',
+        '16': '4rem',
       }
     },
+    colors: {
+      'black': '#000',
+      'eerie-black': '#18191F',
+      'granite-gray': '#666',
+      'middle-gray': '#948D83',
+      'chinese-silver': '#CCCCCC',
+      'yellow-orange': '#FBA346',
+      'iceberg': '#63B3CE',
+      'blue': '#A2D8EB',
+      'cultured': '#F4F5F7',
+      'white': '#FFF',
+    }
   },
   plugins: [
     require('@tailwindcss/forms'),

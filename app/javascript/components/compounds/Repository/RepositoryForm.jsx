@@ -46,46 +46,58 @@ export const RepositoryForm = (props) => {
       <button class="btn-primary hidden sm:block" onClick={openModal}>Create repository</button>
       <button class="btn-primary sm:hidden" onClick={openModal}>+</button>
       <Modal>
-        <h1 class="mb-8">New Repository</h1>
-        <p class="mb-4">Repository is just abstraction of your real repository. Link must be real, title - anything you want.</p>
-        <section class="inline-block w-full">
-          <Show when={Object.keys(props.companies).length > 1}>
+        <div class="flex flex-col items-center">
+          <h1 class="mb-2">New Repository</h1>
+          <p class="mb-8 text-center">Repository is just abstraction of your real repository. Link must be real, title - anything you want.</p>
+          <section class="inline-block w-4/5">
+            <Show when={Object.keys(props.companies).length > 1}>
+              <Select
+                required
+                labelText="Company"
+                classList="w-full mb-8"
+                items={props.companies}
+                selectedValue={formStore.companyUuid}
+                onSelect={(value) => setFormStore('companyUuid', value)}
+              />
+            </Show>
+            <FormInputField
+              required
+              placeholder="Repository's title"
+              labelText="Title"
+              classList="w-full mb-8"
+              value={formStore.title}
+              onChange={(value) => setFormStore('title', value)}
+            />
             <Select
               required
-              labelText="Company"
-              items={props.companies}
-              selectedValue={formStore.companyUuid}
-              onSelect={(value) => setFormStore('companyUuid', value)}
+              labelText="Provider"
+              classList="w-full mb-8"
+              items={props.providers}
+              selectedValue={formStore.provider}
+              onSelect={(value) => setFormStore('provider', value)}
             />
-          </Show>
-          <FormInputField
-            required
-            placeholder="Repository's title"
-            labelText="Title"
-            value={formStore.title}
-            onChange={(value) => setFormStore('title', value)}
-          />
-          <FormInputField
-            required
-            placeholder="https://github.com/company_name/repo_name"
-            labelText="Link"
-            value={formStore.link}
-            onChange={(value) => setFormStore('link', value)}
-          />
-          <Select
-            required
-            labelText="Provider"
-            items={props.providers}
-            selectedValue={formStore.provider}
-            onSelect={(value) => setFormStore('provider', value)}
-          />
-          <FormInputField
-            labelText="External id"
-            value={formStore.externalId}
-            onChange={(value) => setFormStore('externalId', value)}
-          />
-          <button class="btn-primary mt-4" onClick={onSubmit}>Save repository</button>
-        </section>
+            <FormInputField
+              required
+              placeholder="https://github.com/company_name/repo_name"
+              labelText="Link"
+              classList={`w-full ${formStore.provider === 'gitlab' ? 'mb-8' : ''}`}
+              value={formStore.link}
+              onChange={(value) => setFormStore('link', value)}
+            />
+            <Show when={formStore.provider === 'gitlab'}>
+              <FormInputField
+                labelText="External ID"
+                placeholder="External ID"
+                classList="w-full"
+                value={formStore.externalId}
+                onChange={(value) => setFormStore('externalId', value)}
+              />
+            </Show>
+            <div class="flex">
+              <button class="btn-primary mt-8 mx-auto" onClick={onSubmit}>Save</button>
+            </div>
+          </section>
+        </div>
       </Modal>
       <Flash />
     </>
