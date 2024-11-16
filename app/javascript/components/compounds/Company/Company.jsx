@@ -56,6 +56,7 @@ export const Company = (props) => {
             href={props.editLinks.accessToken}
             class="mr-2"
             classList={{ ['p-0.5 bg-yellow-orange rounded-lg text-white']: props.editLinks.needAccessToken }}
+            title="Click to visit page for adding access token"
             onClick={(event) => event.stopPropagation()}
           >
             <Key />
@@ -65,6 +66,7 @@ export const Company = (props) => {
           <a
             href={props.editLinks.configuration}
             class="mr-2"
+            title="Edit company settings"
             onClick={(event) => event.stopPropagation()}
           >
             <Edit />
@@ -85,7 +87,7 @@ export const Company = (props) => {
               value={csrfToken()}
               autoComplete="off"
             />
-            <button type="submit" onClick={(event) => event.stopPropagation()}>
+            <button type="submit" title="Delete company" onClick={(event) => event.stopPropagation()}>
               <Delete />
             </button>
           </form>
@@ -110,54 +112,65 @@ export const Company = (props) => {
         onClick={toggle}
       >
         <div class="pr-4">
-          <h2 class="sm:flex sm:flex-row sm:items-center">
-            <div>{props.title}</div>
+          <div class="flex">
+            <h2>{props.title}</h2>
+            <Show when={props.repositoriesCount > 0}>
+              <a
+                href={props.repositoriesUrl}
+                class="underline text-yellow-orange font-medium ml-1"
+                title="Amount of repositories in company, click to explore"
+                onClick={(event) => event.stopPropagation()}
+              >
+                {props.repositoriesCount}
+              </a>
+            </Show>
+          </div>
+          <div class="sm:flex sm:flex-row sm:items-center">
             <Show when={props.isPrivate}>
-              <span class="badge ml-4">
+              <span class="badge mr-2" title="Repository is private">
                 Private
               </span>
             </Show>
             <Show when={props.unaccessable}>
-              <span class="badge mt-4 sm:mt-0 sm:ml-4">
+              <span class="badge mr-2">
                 Company has repositories with access error
               </span>
             </Show>
-          </h2>
-          <p class="flex items-center">
-            {props.repositoriesCount > 0 ? (
-              <>
-                Repositories count -&nbsp;
-                <a
-                  href={props.repositoriesUrl}
-                  class="underline text-orange-500"
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  {props.repositoriesCount}
-                </a>
-                <Show when={props.editLinks?.needAccessToken}>
-                  <a
-                    href={props.editLinks.accessToken}
-                    class="ml-4 badge"
-                    onClick={(event) => event.stopPropagation()}
-                  >Need to add access token</a>
-                </Show>
-              </>
-            ) : null}
-          </p>
+            <Show when={props.repositoriesCount === 0}>
+              <a
+                href={props.repositoriesUrl}
+                class="badge mr-2"
+                title="Click to visit page for creating repository"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Need to create repository
+              </a>
+            </Show>
+            <Show when={props.repositoriesCount > 0 && props.editLinks?.needAccessToken}>
+              <a
+                href={props.editLinks.accessToken}
+                class="badge mr-2"
+                title="Click to visit page for adding access token"
+                onClick={(event) => event.stopPropagation()}
+              >Need to add access token</a>
+            </Show>
+          </div>
         </div>
         <InsightsChevron rotated={pageState.isExpanded} />
       </div>
       <Show when={pageState.isExpanded}>
         <div class="p-10 pt-0">
           <Switch fallback={
-            <div class="relative">
-              <h3 class="absolute top-0">Developer insights</h3>
-              <div class="overflow-x-scroll pt-10">
-                {developerInsights()}
-                  <a
-                    class="btn-primary btn-small mt-8"
-                    href={`/api/frontend/companies/${props.uuid}/insights.pdf`}
-                  >Download insights PDF</a>
+            <div>
+              <h3>Developer insights</h3>
+              {developerInsights()}
+              <div class="mt-8 flex justify-between items-center">  
+                <a
+                  class="btn-primary btn-small"
+                  href={`/api/frontend/companies/${props.uuid}/insights.pdf`}
+                  title="Click to download PDF file with insights report"
+                >Download insights PDF</a>
+                {editLinks()}
               </div>
             </div>
           }>
@@ -171,20 +184,17 @@ export const Company = (props) => {
                   {editLinks()}
                 </div>
                 <p class="light-color mt-3">There are no insights yet</p>
-                {props.repositoriesCount === 0 ? (
-                  <a
-                    href={props.repositoriesUrl}
-                    class="badge"
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    Need to create repository
-                  </a>
-                ) : null}
               </div>
             </Match>
-            {/*<Match when={pageState.insightTypes.length === 0}>
-              <p class="light-color">There are no selected insight attributes yet</p>
-            </Match>*/}
+            <Match when={pageState.insightTypes.length === 0}>
+              <div>
+                <div class="flex justify-between items-center">
+                  <h3>Developer insights</h3>
+                  {editLinks()}
+                </div>
+                <p class="light-color mt-3">There are no selected insight attributes yet</p>
+              </div>
+            </Match>
           </Switch>
         </div>
       </Show>

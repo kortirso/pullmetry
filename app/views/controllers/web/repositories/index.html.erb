@@ -1,5 +1,5 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
-  <section class="h-full p-8 lg:p-12 bg-stone-100">
+  <section class="min-h-full p-8 lg:p-12">
     <div class="flex justify-between items-center mb-8">
       <h1 class="m-0">Repositories</h1>
       <% if allowed_to?(:create_repository?, current_user) %>

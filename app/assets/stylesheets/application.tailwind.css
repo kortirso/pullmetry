@@ -94,24 +94,52 @@ p.light-color {
   @apply inline-block px-1 py-0 bg-blue text-white rounded;
 }
 
-/*.btn-success {
-  @apply btn bg-green-300 hover:bg-green-400 border border-green-400;
+.table-wrapper {
+  @apply border border-middle-gray rounded-lg overflow-x-scroll bg-lotion;
 }
 
-.btn-danger {
-  @apply btn bg-orange-500 hover:bg-orange-600 border border-orange-600;
+.table {
+  @apply table-fixed;
 }
 
-.btn-small {
-  @apply btn py-1 px-3 text-sm leading-8;
+.table thead tr th:not(:last-child), .table tbody tr td:not(:last-child) {
+  @apply border-r border-gainsboro;
 }
 
-.btn-xs {
-  @apply btn py-1 px-2 text-sm leading-6;
-}*/
+.table thead tr th, .table tbody tr td {
+  @apply p-3 text-xs font-medium;
+}
 
-nav {
-  @apply bg-eerie-black;
+.table thead tr th:first-child, .table tbody tr td:first-child {
+  @apply px-2;
+
+  width: 41px;
+}
+
+nav.sidebar {
+  @apply bg-eerie-black relative lg:w-64 flex flex-col lg:py-8 px-6;
+}
+
+nav.pagy.nav a {
+  @apply inline-block text-white py-2 px-3 mr-2;
+  @apply bg-yellow-orange rounded-lg;
+}
+
+nav.pagy.nav a[aria-disabled="true"], nav.pagy.nav a.current {
+  @apply py-2 px-3;
+}
+
+nav.pagy.nav a[aria-disabled="true"],
+nav.pagy.nav a[aria-disabled="true"]:hover,
+nav.pagy.nav a.gap:hover,
+nav.pagy.nav a.current,
+nav.pagy.nav a.current:hover,
+nav.pagy.nav a:hover {
+  @apply text-black;
+}
+
+nav.pagy.nav a.gap {
+  @apply py-2 px-3;
 }
 
 .navigation-menu:not(.hidden) {
@@ -146,7 +174,7 @@ nav {
   @apply text-white;
 }
 
-.company {
+.company, .repository {
   @apply bg-white rounded-lg;
 
   box-shadow: 0 5px 16px 0 #080F340F;

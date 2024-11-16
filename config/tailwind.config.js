@@ -30,7 +30,9 @@ module.exports = {
       'yellow-orange': '#FBA346',
       'iceberg': '#63B3CE',
       'blue': '#A2D8EB',
+      'gainsboro': '#DBDBDB',
       'cultured': '#F4F5F7',
+      'lotion': '#FCFCFC',
       'white': '#FFF',
     }
   },

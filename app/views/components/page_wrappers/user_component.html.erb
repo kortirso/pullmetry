@@ -1,5 +1,5 @@
 <div class="flex flex-col lg:flex-row flex-1 max-h-screen">
-  <nav class="relative lg:w-64 flex flex-col lg:py-8 px-6">
+  <nav class="sidebar">
     <section class="flex flex-row justify-between">
       <%= link_to root_path, class: 'header-logo' do %>
         <span class="text-white">pull<span class="text-yellow-orange">keeper</span></span>
@@ -52,7 +52,7 @@
       <% end %>
     </section>
   </nav>
-  <div class="flex-1 w-full overflow-y-scroll bg-cultured">
+  <div class="flex-1 overflow-y-scroll bg-cultured">
     <%= content %>
   </div>
 </div>
