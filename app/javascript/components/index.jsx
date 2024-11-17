@@ -1,3 +1,4 @@
+export * from './compounds/AccessToken/AccessTokenForm';
 export * from './compounds/Company/Company';
 export * from './compounds/Company/CompanyForm';
 export * from './compounds/CompanyEdit/CompanyEditPrivacy';

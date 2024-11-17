@@ -90,6 +90,10 @@ p.light-color {
   @apply bg-iceberg text-white;
 }
 
+.simple-link {
+  @apply text-yellow-orange font-medium underline;
+}
+
 .badge {
   @apply inline-block px-1 py-0 bg-blue text-white rounded;
 }
@@ -98,8 +102,10 @@ p.light-color {
   @apply border border-middle-gray rounded-lg overflow-x-scroll bg-lotion;
 }
 
-.table {
-  @apply table-fixed;
+.table {}
+
+.table thead tr th, .table tbody tr td {
+  min-width: 120px;
 }
 
 .table thead tr th:not(:last-child), .table tbody tr td:not(:last-child) {
@@ -110,10 +116,15 @@ p.light-color {
   @apply p-3 text-xs font-medium;
 }
 
-.table thead tr th:first-child, .table tbody tr td:first-child {
+.table.first-column-small thead tr th:first-child, .table.first-column-small tbody tr td:first-child {
   @apply px-2;
 
+  min-width: 41px;
   width: 41px;
+}
+
+.table.repository-insights thead tr th:first-child {
+  @apply w-3/4;
 }
 
 nav.sidebar {
@@ -174,7 +185,7 @@ nav.pagy.nav a.gap {
   @apply text-white;
 }
 
-.company, .repository {
+.box {
   @apply bg-white rounded-lg;
 
   box-shadow: 0 5px 16px 0 #080F340F;

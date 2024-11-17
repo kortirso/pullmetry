@@ -17,7 +17,8 @@ module ApplicationHelper
     ) { '' }
   end
 
-  def embedded_svg(filename, options = {})
+  # rubocop: disable Rails/OutputSafety
+  def embedded_svg(filename, options={})
     asset = Rails.application.assets.find_asset(filename)
 
     if asset
@@ -31,6 +32,7 @@ module ApplicationHelper
 
     raw doc
   end
+  # rubocop: enable Rails/OutputSafety
 
   private
 

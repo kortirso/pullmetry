@@ -27,7 +27,8 @@ module.exports = {
       'granite-gray': '#666',
       'middle-gray': '#948D83',
       'chinese-silver': '#CCCCCC',
-      'yellow-orange': '#FBA346',
+      'yellow-orange': '#FBA346', // yellow
+      'tart-orange': '#FB4646', // red
       'iceberg': '#63B3CE',
       'blue': '#A2D8EB',
       'gainsboro': '#DBDBDB',

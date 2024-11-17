@@ -1,7 +1,7 @@
 import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { DeveloperInsights } from '../../../components';
+import { DeveloperInsights, AccessTokenForm } from '../../../components';
 import { InsightsChevron, Chevron, Delete, Edit, Key } from '../../../assets';
 import { csrfToken } from '../../../helpers';
 
@@ -51,17 +51,7 @@ export const Company = (props) => {
 
     return (
       <div class="flex items-center">
-        <Show when={props.editLinks.accessToken}>
-          <a
-            href={props.editLinks.accessToken}
-            class="mr-2"
-            classList={{ ['p-0.5 bg-yellow-orange rounded-lg text-white']: props.editLinks.needAccessToken }}
-            title="Click to visit page for adding access token"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Key />
-          </a>
-        </Show>
+        <AccessTokenForm tokenable="companies" uuid={props.uuid} required={props.editLinks.needAccessToken} />
         <Show when={props.editLinks.configuration}>
           <a
             href={props.editLinks.configuration}
@@ -106,7 +96,7 @@ export const Company = (props) => {
   }
 
   return (
-    <div class="company mb-4">
+    <div class="box mb-4">
       <div
         class="relative cursor-pointer p-10 flex justify-between items-center"
         onClick={toggle}

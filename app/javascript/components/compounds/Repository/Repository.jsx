@@ -1,7 +1,7 @@
 import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { DeveloperInsights, RepositoryInsights } from '../../../components';
+import { DeveloperInsights, RepositoryInsights, AccessTokenForm } from '../../../components';
 import { InsightsChevron, Chevron, Delete, Github, Gitlab, Key } from '../../../assets';
 import { convertDate, convertTime, csrfToken } from '../../../helpers';
 
@@ -67,17 +67,7 @@ export const Repository = (props) => {
 
     return (
       <div class="flex items-center">
-        <Show when={props.editLinks.accessToken}>
-          <a
-            href={props.editLinks.accessToken}
-            class="mr-2"
-            classList={{ ['p-0.5 bg-yellow-orange rounded-lg text-white']: props.accessTokenStatus === 'empty' }}
-            title="Click to visit page for adding access token"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Key />
-          </a>
-        </Show>
+        <AccessTokenForm tokenable="repositories" uuid={props.uuid} required={props.accessTokenStatus === 'empty'} />
         <Show when={props.editLinks.destroy}>
           <form
             ref={deleteForm}
@@ -112,7 +102,7 @@ export const Repository = (props) => {
   }
 
   return (
-    <div class="repository mb-4">
+    <div class="box mb-4">
       <div
         class="relative cursor-pointer p-10 flex justify-between items-center"
         onClick={toggle}
@@ -146,6 +136,12 @@ export const Repository = (props) => {
             </a>
             <h2>{props.title}</h2>
           </div>
+          <Show
+            when={props.syncedAt}
+            fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
+          >
+            <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
+          </Show>
           <div class="sm:flex sm:flex-row sm:items-center">
             <Show when={props.accessTokenStatus === 'valid' && !props.accessable || props.accessTokenStatus === 'invalid'}>
               <span class="badge mr-2">
@@ -156,12 +152,6 @@ export const Repository = (props) => {
               <span class="badge mr-2">
                 Need to add access token
               </span>
-            </Show>
-            <Show
-              when={props.syncedAt}
-              fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
-            >
-              <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
             </Show>
           </div>
         </div>

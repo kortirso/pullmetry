@@ -96,11 +96,11 @@ export const DeveloperInsights = (props) => {
 
   return (
     <div class="table-wrapper mt-4">
-      <table class="table w-full" cellSpacing="0">
+      <table class="table w-full first-column-small" cellSpacing="0">
         <thead>
           <tr>
             <th />
-            <th>Developer</th>
+            <th class="text-left">Developer</th>
             <For each={props.insightTypes}>
               {(insightType) =>
                 <th
