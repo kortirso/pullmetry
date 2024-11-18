@@ -48,6 +48,18 @@ p.light-color {
   @apply btn bg-yellow-orange;
 }
 
+.btn-danger {
+  @apply btn bg-tart-orange;
+}
+
+.btn-small {
+  @apply px-2 text-sm rounded;
+}
+
+.btn-xs {
+  @apply py-0 px-1 text-xs rounded-sm;
+}
+
 .modal {
   @apply relative p-10 sm:p-8 bg-white rounded-lg overflow-y-scroll;
   @apply w-full md:w-3/5 lg:w-2/5;

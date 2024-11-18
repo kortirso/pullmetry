@@ -1,72 +1,104 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
-  <h1 class="mb-8">Profile <%= current_user.uuid %></h1>
-  <div class="bg-white border-b border-gray-200">
-    <div class="py-6 px-8 flex justify-between items-center">
-      <h2 class="m-0 text-xl">Identities</h2>
-    </div>
-    <div class="py-6 px-8">
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div>
-          <% @identities.each do |identity| %>
-            <div class="flex justify-between items-center py-1">
-              <p>
-                <%= identity[:provider].capitalize %> identity is created <%= identity[:created_at].strftime('%Y.%m.%d') %> at <%= identity[:created_at].strftime('%H:%M') %> UTC
-              </p>
-              <% if @must_be_identities.size > 1 || Providerable::CAN_BE_ALWAYS_DELETED.include?(identity[:provider]) %>
-                <%= button_to 'X', identity_path(identity[:id]), class: 'btn-danger btn-xs', method: :delete %>
-              <% end %>
-            </div>
-          <% end %>
-          <% if @need_identities.present? %>
-            <p class="mt-4 flex items-center">
-              <span class="mr-4">Add more identities</span>
-              <% @need_identities.each do |provider| %>
-                <% if provider == 'telegram' %>
-                  <script
-                    async
-                    src="https://telegram.org/js/telegram-widget.js?22"
-                    data-telegram-login="<%= Rails.application.credentials.dig(Rails.env.to_sym, :oauth, :telegram, :bot_name) %>"
-                    data-size="medium"
-                    data-userpic="false"
-                    data-radius="0"
-                    data-auth-url="<%= Rails.application.credentials.dig(Rails.env.to_sym, :oauth, :telegram, :redirect_url) %>"
-                    data-request-access="write">
-                  </script>
-                <% else %>
-                  <%= link_to image_tag("#{provider}.svg", width: 20, height: 20, alt: provider), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
-                <% end %>
-              <% end %>
-            </p>
+  <section class="p-8 lg:p-12 bg-white">
+    <h1 class="mb-2">Profile</h1>
+    <p class="mb-7 light-color text-lg"><%= current_user.uuid %></p>
+    <div class="box mb-4 p-8">
+      <h2 class="mb-2">Identities</h2>
+      <p class="mb-6 light-color">Here you can see your connected identities. You can add more or delete existing. Telegram identity is required to receive personal notifications from PullKeeper</p>
+      <% @identities.each do |identity| %>
+        <div class="flex justify-between items-center py-1">
+          <p>
+            <strong><%= identity[:provider].capitalize %> identity</strong> is created <%= identity[:created_at].strftime('%Y.%m.%d') %> at <%= identity[:created_at].strftime('%H:%M') %> UTC
+          </p>
+          <% if @must_be_identities.size > 1 || Providerable::CAN_BE_ALWAYS_DELETED.include?(identity[:provider]) %>
+            <%= button_to 'X', identity_path(identity[:id]), class: 'btn-danger btn-xs', method: :delete %>
           <% end %>
         </div>
+      <% end %>
+      <% if @need_identities.present? %>
+        <p class="mt-4 flex items-center">
+          <span class="mr-4">Add more identities</span>
+          <% @need_identities.each do |provider| %>
+            <% if provider == 'telegram' %>
+              <script
+                async
+                src="https://telegram.org/js/telegram-widget.js?22"
+                data-telegram-login="<%= Rails.application.credentials.dig(Rails.env.to_sym, :oauth, :telegram, :bot_name) %>"
+                data-size="medium"
+                data-userpic="false"
+                data-radius="0"
+                data-auth-url="<%= Rails.application.credentials.dig(Rails.env.to_sym, :oauth, :telegram, :redirect_url) %>"
+                data-request-access="write">
+              </script>
+            <% else %>
+              <%= link_to image_tag("#{provider}.svg", width: 20, height: 20, alt: provider), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
+            <% end %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+    <%=
+      js_component 'ProfilePrivacy',
+        accepted_invites: @accepted_invites,
+        invites: @invites,
+        api_access_tokens: @api_access_tokens
+    %>
+
+    <div class="box mb-4 p-8">
+      <h2 class="mb-2">Premium</h2>
+      <p class="mb-6 light-color">Here you can pay for premium subscription with CryptoCloud service for 30 days (25 EURO) or 365 days (250 EURO) in crypto currency. Payment is non-refundable. If you have any questions about payment - please use feedback form.</p>
+      <div class="flex justify-between items-end">
         <div>
-          <p class="mb-4">Here you can see your connected identities. You can add more or delete existing.</p>
-          <p>Telegram identity is required to receive personal notifications from PullKeeper</p>
+          <% if @end_time %>
+            <p>Your premium subscription ends <%= @end_time&.strftime('%Y.%m.%d') %> at <%= @end_time&.strftime('%H:%M') %> UTC</p>
+          <% else %>
+            <p>You don't have active subscription.</p>
+          <% end %>
+        </div>
+        <div id="crypto" class="flex gap-4">
+          <% if !@trial_subscription_is_used %>
+            <%= link_to 'Activate trial', subscriptions_trial_path, class: 'btn-primary btn-small' %>
+          <% end %>
+          <vue-widget
+            shop_id="eRba0IjxBVaqvZUG"
+            api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+            background="#fff"
+            color="#000"
+            border_color="#000"
+            logo="color"
+            width="300px"
+            currency="EUR"
+            amount="25"
+            text_btn="Pay for 30 days"
+            order_id=<%= @cryptocloud_order_ids[:regular30] %>
+          />
+          <vue-widget
+            shop_id="eRba0IjxBVaqvZUG"
+            api_key="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRnME5qTT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiIyOGEzYjIwNDc3MWY5MTA1YmJiYjZjMjI1NzVjYThiYTM3ZDM1NjJmYjAzNzdlYTAxNGE5NDdlZmFjM2U0Yzc2IiwiZXhwIjo4ODEwNTgzMDA2MH0.Z9ZOPkzYYJ7heK078a7CzXanyZy77CqXWr_j7uUBdig"
+            background="#fff"
+            color="#000"
+            border_color="#000"
+            logo="color"
+            width="300px"
+            currency="EUR"
+            amount="250"
+            text_btn="Pay for 365 days"
+            order_id=<%= @cryptocloud_order_ids[:regular365] %>
+          />
         </div>
       </div>
     </div>
-  </div>
-  <%=
-    js_component 'ProfilePrivacy',
-      accepted_invites: @accepted_invites,
-      invites: @invites,
-      api_access_tokens: @api_access_tokens
-  %>
-  <%=
-    js_component 'ProfilePremium',
-      end_date: @end_time&.strftime('%Y.%m.%d'),
-      end_time: @end_time&.strftime('%H:%M'),
-      trial_subscription_is_used: @trial_subscription_is_used,
-      subscriptions_trial_path: subscriptions_trial_path,
-      cryptocloud_order_ids: @cryptocloud_order_ids
-  %>
-  <%= js_component 'ProfileVacations', vacations: @vacations %>
-  <%=
-    js_component 'ProfileSettings',
-      starts_at: current_user.work_time&.starts_at,
-      ends_at: current_user.work_time&.ends_at,
-      timezone: current_user.work_time&.timezone || '0'
-  %>
-  <%= js_component 'ProfileDelete', destroy_link: profile_path %>
-  <script src="https://api.cryptocloud.plus/static/pay_btn/js/app.js"></script>
+
+    <%= js_component 'ProfileVacations', vacations: @vacations %>
+    <%=
+      js_component 'ProfileSettings',
+        starts_at: current_user.work_time&.starts_at,
+        ends_at: current_user.work_time&.ends_at,
+        timezone: current_user.work_time&.timezone || '0'
+    %>
+    <%= js_component 'ProfileDelete', destroy_link: profile_path %>
+
+
+    <script src="https://api.cryptocloud.plus/static/pay_btn/js/app.js"></script>
+  </section>
 <% end %>

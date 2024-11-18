@@ -13,7 +13,6 @@ export * from './compounds/Insights/RepositoryInsights';
 export * from './compounds/Repository/Repository';
 export * from './compounds/Repository/RepositoryForm';
 export * from './compounds/Profile/ProfilePrivacy';
-export * from './compounds/Profile/ProfilePremium';
 export * from './compounds/Profile/ProfileDelete';
 export * from './compounds/Profile/ProfileVacations';
 export * from './compounds/Profile/ProfileSettings';
