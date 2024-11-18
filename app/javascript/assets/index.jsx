@@ -7,3 +7,4 @@ export * from './Github';
 export * from './Gitlab';
 export * from './Key';
 export * from './Close';
+export * from './Feedback';

@@ -1,7 +1,7 @@
 import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, createModal, createFlash } from '../../molecules';
+import { FormInputField, createModal, createFlash } from '../../molecules';
 import { convertDate, objectKeysToCamelCase } from '../../../helpers';
 
 import { createVacationRequest } from './requests/createVacationRequest'

@@ -2,7 +2,7 @@ import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { DeveloperInsights, AccessTokenForm } from '../../../components';
-import { InsightsChevron, Chevron, Delete, Edit, Key } from '../../../assets';
+import { InsightsChevron, Delete, Edit } from '../../../assets';
 import { csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';

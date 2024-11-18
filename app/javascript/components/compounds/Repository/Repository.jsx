@@ -2,7 +2,7 @@ import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { DeveloperInsights, RepositoryInsights, AccessTokenForm } from '../../../components';
-import { InsightsChevron, Chevron, Delete, Github, Gitlab, Key } from '../../../assets';
+import { InsightsChevron, Delete, Github, Gitlab } from '../../../assets';
 import { convertDate, convertTime, csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';

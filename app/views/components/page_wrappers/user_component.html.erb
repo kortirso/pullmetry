@@ -30,7 +30,7 @@
           <span><%= embedded_svg('icons/sidebar/account_circle.svg') %></span>
           <span><%= t('components.page_wrappers.page_component.profile') %></span>
         <% end %>
-        <%= js_component 'FeedbackForm', email: current_user.email, svg: embedded_svg('icons/sidebar/forum.svg'), class_list: 'user-navigation-link' %>
+        <%= js_component 'FeedbackForm', email: current_user.email, class_list: 'user-navigation-link' %>
       <% end %>
       <%= link_to metrics_path, class: "user-navigation-link #{'active' if current_page?(metrics_path)}" do %>
         <span><%= embedded_svg('icons/sidebar/bar_chart.svg') %></span>

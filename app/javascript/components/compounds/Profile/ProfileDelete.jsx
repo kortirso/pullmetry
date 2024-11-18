@@ -1,4 +1,3 @@
-import { Dropdown } from '../../molecules';
 import { csrfToken } from '../../../helpers';
 
 export const ProfileDelete = (props) => {

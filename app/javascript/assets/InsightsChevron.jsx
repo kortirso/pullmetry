@@ -1,7 +1,7 @@
 export const InsightsChevron = (props) => (
   <div
     class={[props.rotated ? 'bg-yellow-orange' : '', 'w-12 h-12 rounded-full flex justify-center items-center'].join(' ')}
-    style="box-shadow: 0 5px 16px 0 #080F340F"
+    style={{'box-shadow': '0 5px 16px 0 #080F340F'}}
   >
     <svg
       width="11"

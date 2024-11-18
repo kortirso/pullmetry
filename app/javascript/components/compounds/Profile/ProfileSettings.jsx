@@ -1,6 +1,6 @@
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, Select, createFlash } from '../../molecules';
+import { FormInputField, Select, createFlash } from '../../molecules';
 
 import { updateWorkTimeRequest } from './requests/updateWorkTimeRequest';
 
