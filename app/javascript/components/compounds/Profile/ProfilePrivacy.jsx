@@ -76,13 +76,13 @@ export const ProfilePrivacy = (props) => {
     <>
       <div class="box mb-4 p-8">
         <h2 class="mb-2">Privacy</h2>
-        <p class="mb-6 light-color">In this block you can create access tokens for PullKeeper's API. For getting list of available enpoints you can check <a href="https://pullkeeper.dev/api-docs/index.html" class="simple-link">API documentation</a>.</p>
-        <div class="flex justify-between items-end">
+        <p class="mb-6 light-color">In this block you can create access tokens for PullKeeper's API. For getting list of available enpoints you can check <a href="/api-docs/index.html" class="simple-link">API documentation</a>.</p>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <Show
             when={pageState.apiAccessTokens.length > 0}
             fallback={<p>You didn't specify any API access tokens yet.</p>}
           >
-            <div class="table-wrapper">
+            <div class="table-wrapper w-fit">
               <table class="table">
                 <tbody>
                   <For each={pageState.apiAccessTokens}>
@@ -102,17 +102,19 @@ export const ProfilePrivacy = (props) => {
               </table>
             </div>
           </Show>
-          <p
-            class="btn-primary btn-small"
-            onClick={onApiAccessTokenCreate}
-          >Create API access token</p>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+              onClick={onApiAccessTokenCreate}
+            >Create API access token</button>
+          </p>
         </div>
         <p class="mt-8 mb-6 light-color">In this block you can specify coowners of your account.</p>
-        <div class="flex justify-between items-end">
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <div>
             <Show when={pageState.acceptedInvites.length > 0}>
               <h3 class="mb-2 font-medium">Accepted invites</h3>
-              <div class="table-wrapper">
+              <div class="table-wrapper w-fit">
                 <table class="table">
                   <tbody>
                     <For each={pageState.acceptedInvites}>
@@ -138,7 +140,7 @@ export const ProfilePrivacy = (props) => {
               fallback={<p>There are no not answered invites.</p>}
             >
               <h3 class="mb-2 font-medium">Sent invites</h3>
-              <div class="table-wrapper">
+              <div class="table-wrapper w-fit">
                 <table class="table">
                   <tbody>
                     <For each={pageState.invites}>
@@ -160,10 +162,12 @@ export const ProfilePrivacy = (props) => {
               </div>
             </Show>
           </div>
-          <p
-            class="btn-primary btn-small"
-            onClick={openModal}
-          >Invite coowner</p>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+              onClick={openModal}
+            >Invite coowner</button>
+          </p>
         </div>
       </div>
       <Modal>

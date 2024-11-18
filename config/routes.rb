@@ -99,7 +99,7 @@ Rails.application.routes.draw do
       resource :unsubscribe, only: %i[show]
     end
 
-    post 'subscriptions/trial', to: 'subscriptions/trial#create'
+    get 'subscriptions/trial', to: 'subscriptions/trial#create'
 
     get 'privacy', to: 'welcome#privacy'
     get 'metrics', to: 'welcome#metrics'
