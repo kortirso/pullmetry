@@ -60,6 +60,40 @@ p.light-color {
   @apply py-0 px-1 text-xs rounded-sm;
 }
 
+.toggle {
+  @apply relative inline-block select-none w-10;
+}
+
+.toggle .toggle-checkbox {
+  @apply transition-all absolute block cursor-pointer appearance-none rounded-full bg-white border-none w-5 h-5;
+
+  top: 2px;
+  left: 2px;
+}
+
+.toggle .toggle-checkbox:checked {
+  @apply bg-white;
+
+  left: calc(100% - 22px);
+}
+
+.toggle .toggle-checkbox + .toggle-label {
+  @apply block cursor-pointer overflow-hidden rounded-full bg-chinese-silver border-2 border-chinese-silver transition-colors w-10 h-6;
+}
+
+.toggle:hover .toggle-checkbox:enabled + .toggle-label {
+  @apply border-middle-gray;
+}
+
+.toggle .toggle-checkbox:checked + .toggle-label,
+.toggle:hover .toggle-checkbox:checked + .toggle-label {
+  @apply bg-yellow-orange border-yellow-orange;
+}
+
+.toggle .toggle-checkbox:checked:disabled + .toggle-label {
+  @apply bg-yellow-orange;
+}
+
 .modal {
   @apply relative p-10 sm:p-8 bg-white rounded-lg overflow-y-scroll;
   @apply w-full md:w-3/5 lg:w-2/5;

@@ -2,7 +2,7 @@ import { Show, For } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { Checkbox } from '../../atoms';
-import { Dropdown, Select, createFlash } from '../../molecules';
+import { Select, createFlash } from '../../molecules';
 
 import { updateCompanyConfigurationRequest } from './requests/updateCompanyConfigurationRequest';
 
@@ -86,94 +86,69 @@ export const CompanyEditInsights = (props) => {
 
   return (
     <>
-      <Dropdown title="Insights">
-        <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-8 border-b border-gray-200">
-            <div>
-              <div class="flex flex-wrap">
-                <For each={Object.entries(ATTRIBUTE_NAMES)}>
-                  {([insightName, label]) =>
-                    <div class="w-full sm:w-1/2 mb-2">
-                      <Checkbox
-                        right
-                        disabled={!props.isPremium}
-                        labelText={label}
-                        value={pageState.insightFields.includes(insightName)}
-                        onToggle={() => toggleInsightField(insightName)}
-                      />
-                    </div>
-                  }
-                </For>
-              </div>
-            </div>
-            <div>
-              <p>If this configuration is enabled then you can select specific insight attributes to calculate and render such information at insight tables.</p>
-            </div>
-          </div>
-          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-6 border-b border-gray-200">
-            <div>
-              <Select
-                classList="w-full lg:w-1/2"
-                labelText="Main attribute for sorting insights"
-                items={ATTRIBUTE_NAMES}
-                selectedValue={pageState.mainAttribute}
-                onSelect={(value) => updateMainAttribute(value)}
-              />
-            </div>
-            <div>
-              <p>By configuring main insight attribute you can set default sorting order for insights table.</p>
-            </div>
-          </div>
-          <div class="grid lg:grid-cols-2 gap-8 pb-8 mb-6 border-b border-gray-200">
-            <div>
-              <Select
-                classList="w-full lg:w-1/2"
-                labelText="Average type"
-                items={AVERAGE_TYPES}
-                selectedValue={pageState.averageType}
-                onSelect={(value) => updateAverageType(value)}
-              />
-            </div>
-            <div>
-              <p>You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
-            </div>
-          </div>
-          <div class="grid lg:grid-cols-2 gap-8">
-            <div>
-              <Show
-                when={props.isPremium}
-                fallback={
-                  <>
-                    <h3 class="text-xl">Insight ratios</h3>
-                    <p>This configuration is available for premium accounts.</p>
-                  </>
-                }
-              >
+      <div class="box mb-4 p-8">
+        <h2 class="mb-2">Insights</h2>
+        <p class="mb-6 light-color">If this configuration is enabled then you can select specific insight attributes to calculate and render such information at insight tables.</p>
+        <div class="flex flex-wrap">
+          <For each={Object.entries(ATTRIBUTE_NAMES)}>
+            {([insightName, label]) =>
+              <div class="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 mb-2">
                 <Checkbox
                   right
-                  labelText="Calculate insight ratios"
-                  value={pageState.insightRatio}
-                  onToggle={() => toggleInsightRatio()}
+                  disabled={!props.isPremium}
+                  labelText={label}
+                  value={pageState.insightFields.includes(insightName)}
+                  onToggle={() => toggleInsightField(insightName)}
                 />
-                <Show when={pageState.insightRatio}>
-                  <div class="mt-8">
-                    <Select
-                      classList="w-full lg:w-1/2"
-                      labelText="Ratio type"
-                      items={RATIO_TYPES}
-                      selectedValue={pageState.insightRatioType}
-                      onSelect={(value) => updateInsightRatioType(value)}
-                    />
-                  </div>
-                </Show>
-              </Show>
-            </div>
-            <div>
-              <p>If this configuration is enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
-            </div>
-          </div>
+              </div>
+            }
+          </For>
         </div>
-      </Dropdown>
+        <p class="my-6 light-color">By configuring main insight attribute you can set default sorting order for insights table.</p>
+        <Select
+          classList="w-full sm:w-1/2 lg:w-1/4"
+          labelText="Main attribute for sorting insights"
+          items={ATTRIBUTE_NAMES}
+          selectedValue={pageState.mainAttribute}
+          onSelect={(value) => updateMainAttribute(value)}
+        />
+        <p class="my-6 light-color">You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
+        <Select
+          classList="w-full sm:w-1/2 lg:w-1/4"
+          labelText="Average type"
+          items={AVERAGE_TYPES}
+          selectedValue={pageState.averageType}
+          onSelect={(value) => updateAverageType(value)}
+        />
+        <p class="my-6 light-color">If this configuration is enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
+        <Show
+          when={props.isPremium}
+          fallback={
+            <>
+              <h3 class="text-xl">Insight ratios</h3>
+              <p>This configuration is available for premium accounts.</p>
+            </>
+          }
+        >
+          <Checkbox
+            right
+            labelText="Calculate insight ratios"
+            value={pageState.insightRatio}
+            onToggle={() => toggleInsightRatio()}
+          />
+          <Show when={pageState.insightRatio}>
+            <div class="mt-8">
+              <Select
+                classList="w-full lg:w-1/2"
+                labelText="Ratio type"
+                items={RATIO_TYPES}
+                selectedValue={pageState.insightRatioType}
+                onSelect={(value) => updateInsightRatioType(value)}
+              />
+            </div>
+          </Show>
+        </Show>
+      </div>
       <Flash />
     </>
   );
