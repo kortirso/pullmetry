@@ -60,7 +60,7 @@ export const CompanyEditPullRequests = (props) => {
         <p class="mb-6 light-color">You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 90 days. By default fetch period is 30 days. So if 30 is enough for you - you can skip this attribute.</p>
         <FormInputField
           confirmable
-          classList="w-1/5"
+          classList="w-1/3 lg:w-1/5"
           labelText="Fetch period (days)"
           placeholder="30"
           defaultValue={pageState.defaultFetchPeriod}

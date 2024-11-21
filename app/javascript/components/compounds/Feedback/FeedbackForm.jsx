@@ -48,18 +48,18 @@ export const FeedbackForm = (props) => {
           <section class="inline-block w-4/5">
             <FormInputField
               labelText="Title"
-              classList="w-full mb-8"
+              classList="w-full mb-6"
               value={formStore.title}
               onChange={(value) => setFormStore('title', value)}
             />
             <FormDescriptionField
               required
               labelText="Description"
-              classList="w-full mb-8"
+              classList="w-full mb-6"
               value={formStore.description}
               onChange={(value) => setFormStore('description', value)}
             />
-            <div class="form-field mb-8">
+            <div class="form-field mb-6">
               <Checkbox
                 left
                 labelText="Can answer by email?"
@@ -76,7 +76,7 @@ export const FeedbackForm = (props) => {
               onChange={(value) => setFormStore('email', value)}
             />
             <div class="flex">
-              <button class="btn-primary mt-8 mx-auto" onClick={onSubmit}>Send feedback</button>
+              <button class="btn-primary mt-6 mx-auto" onClick={onSubmit}>Send feedback</button>
             </div>
           </section>
         </div>

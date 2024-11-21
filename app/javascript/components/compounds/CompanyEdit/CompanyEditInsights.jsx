@@ -106,7 +106,7 @@ export const CompanyEditInsights = (props) => {
         </div>
         <p class="my-6 light-color">By configuring main insight attribute you can set default sorting order for insights table.</p>
         <Select
-          classList="w-full sm:w-1/2 lg:w-1/4"
+          classList="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           labelText="Main attribute for sorting insights"
           items={ATTRIBUTE_NAMES}
           selectedValue={pageState.mainAttribute}
@@ -114,7 +114,7 @@ export const CompanyEditInsights = (props) => {
         />
         <p class="my-6 light-color">You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
         <Select
-          classList="w-full sm:w-1/2 lg:w-1/4"
+          classList="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           labelText="Average type"
           items={AVERAGE_TYPES}
           selectedValue={pageState.averageType}
@@ -139,7 +139,7 @@ export const CompanyEditInsights = (props) => {
           <Show when={pageState.insightRatio}>
             <div class="mt-8">
               <Select
-                classList="w-full lg:w-1/2"
+                classList="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
                 labelText="Ratio type"
                 items={RATIO_TYPES}
                 selectedValue={pageState.insightRatioType}

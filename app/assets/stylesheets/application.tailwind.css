@@ -177,6 +177,10 @@ nav.sidebar {
   @apply bg-eerie-black relative lg:w-64 flex flex-col lg:py-8 px-6;
 }
 
+nav.pagy.nav {
+  @apply mt-8;
+}
+
 nav.pagy.nav a {
   @apply inline-block text-white py-2 px-3 mr-2;
   @apply bg-yellow-orange rounded-lg;
@@ -235,4 +239,33 @@ nav.pagy.nav a.gap {
   @apply bg-white rounded-lg;
 
   box-shadow: 0 5px 16px 0 #080F340F;
+}
+
+.achievement-link {
+  @apply mr-8 font-semibold text-middle-gray;
+}
+
+.achievement-link.active {
+  @apply text-eerie-black;
+}
+
+.achievement {
+  @apply p-4 pb-8;
+}
+
+.achievement-points {
+  @apply leading-10 text-center text-xs text-white font-semibold pt-0.5 mb-3;
+
+  background-image: url('icons/medallion.svg');
+  background-size: 60px 60px;
+  background-repeat: no-repeat;
+  background-position: center 0;
+}
+
+.achievement-title {
+  @apply text-center leading-8 mb-2;
+}
+
+.achievement-description {
+  @apply text-center; 
 }

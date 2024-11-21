@@ -1,7 +1,7 @@
 import { Show } from 'solid-js';
 
 export const FormInput = (props) => (
-  <div class="flex items-center">
+  <div class="flex">
     <input
       class={[props.classList, 'form-value'].join(' ')}
       required={props.required}
@@ -11,14 +11,16 @@ export const FormInput = (props) => (
       onInput={(e) => props.onChange ? props.onChange(e.target.value) : null}
     />
     <Show when={props.confirmable && props.defaultValue !== props.value}>
-      <button
-        class="btn-primary btn-small btn-success ml-0.5"
-        onClick={() => props.onConfirm()}
-      >+</button>
-      <button
-        class="btn-primary btn-small"
-        onClick={() => props.onCancel()}
-      >-</button>
+      <div class="flex items-end">
+        <button
+          class="btn-primary btn-small mx-0.5"
+          onClick={() => props.onConfirm()}
+        >Save</button>
+        <button
+          class="btn-primary btn-small"
+          onClick={() => props.onCancel()}
+        >Cancel</button>
+      </div>
     </Show>
   </div>
 )
