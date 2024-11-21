@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap');
 
 body {
   @apply text-eerie-black;
@@ -268,4 +268,12 @@ nav.pagy.nav a.gap {
 
 .achievement-description {
   @apply text-center; 
+}
+
+.line-indicator {
+  @apply absolute bottom-2 right-0 w-32 hidden lg:inline-block;
+}
+
+.line-indicator.reverse {
+  @apply rotate-180 bottom-5;
 }
