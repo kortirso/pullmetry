@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&display=swap');
 
 body {
@@ -208,7 +208,7 @@ nav.pagy.nav a.gap {
 }
 
 .header-logo {
-  @apply text-lg lg:mb-10 py-4 lg:py-0 font-martian;
+  @apply text-lg lg:mb-10 py-4 lg:py-0 font-martian font-medium;
 }
 
 .user-navigation-link {
