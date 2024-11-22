@@ -1,5 +1,5 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
-  <section class="min-h-full p-8 lg:p-12">
+  <section class="min-h-full p-8 lg:p-12 relative">
     <div class="flex justify-between items-center mb-8">
       <h1 class="m-0">Companies</h1>
       <%=
@@ -13,6 +13,12 @@
         <p>One of your company has access error because of invalid access token permissions.</p>
         <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
         <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
+      </div>
+    <% end %>
+    <% if @companies.empty? %>
+      <div class="absolute top-40 right-20 hidden sm:flex items-end">
+        <p class="mr-12 text-lg">Create company</p>
+        <%= image_tag 'icons/create_sign.svg', class: 'pb-4' %>
       </div>
     <% end %>
     <section>

@@ -13,11 +13,11 @@ export const WebFlash = (props) => {
   const closeMessage = () => setMessage([]);
 
   return (
-    <div class="fixed top-8 right-8">
+    <div class="fixed top-8 right-8 z-50">
       <Show when={message().length > 0}>
         <div
-          class="relative mb-2 py-4 pl-8 pr-12 rounded border"
-          classList={{ 'bg-orange-300 border-orange-400': messageType() === 'alert', 'bg-green-300 border-green-400': messageType() === 'notice' }}
+          class="relative mb-2 py-4 pl-8 pr-12 rounded-lg"
+          classList={{ 'bg-yellow-orange text-white': messageType() === 'alert', 'bg-iceberg text-white': messageType() === 'notice' }}
         >
           <p>{messageValue()}</p>
           <span

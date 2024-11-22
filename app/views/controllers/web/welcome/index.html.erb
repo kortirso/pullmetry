@@ -19,12 +19,12 @@
         <h1 class="mb-4 font-semibold text-6xl text-center lg:text-left">Get the PR statistics you always needed</h1>
         <p class="lg:pr-24 leading-8 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
         <% if current_user %>
-          <%= link_to 'Get started', companies_path, class: 'btn-primary btn-big text-center mt-8' %>
+          <%= link_to 'Get started', companies_path, class: 'inline-block btn-primary btn-big text-center mt-8' %>
         <% else %>
-          <div class="flex flex-row justify-center xl:justify-start items-end mt-8">
-            <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small text-center mr-4' %>
-            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small text-center mr-4' %>
-            <%= link_to 'Login with Google', omniauth_link(:google), class: 'btn-primary btn-small text-center ' %>
+          <div class="flex flex-row justify-center lg:justify-start items-end mt-8">
+            <%= link_to 'Login with Github', omniauth_link(:github), class: 'inline-block btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'inline-block btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Google', omniauth_link(:google), class: 'inline-block btn-primary btn-small text-center ' %>
           </div>
         <% end %>
       </div>

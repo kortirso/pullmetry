@@ -27,7 +27,7 @@ export const createFlash = () => {
             <For each={messages()}>
               {(message, index) =>
                 <div
-                  class="relative mb-2 py-4 pl-8 pr-12 rounded"
+                  class="relative mb-2 py-4 pl-8 pr-12 rounded-lg"
                   classList={{ 'bg-yellow-orange text-white': message.type === 'error', 'bg-iceberg text-white': message.type === 'notice' }}
                 >
                   <p>{message.value}</p>

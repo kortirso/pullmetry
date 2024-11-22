@@ -18,6 +18,12 @@
         <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
       </div>
     <% end %>
+    <% if allowed_to?(:create_repository?, current_user) && @repositories.empty? %>
+      <div class="absolute top-40 right-20 hidden sm:flex items-end">
+        <p class="mr-12 text-lg">Create repository</p>
+        <%= image_tag 'icons/create_sign.svg', class: 'pb-4' %>
+      </div>
+    <% end %>
     <section>
       <% @repositories.each do |repository| %>
         <%=

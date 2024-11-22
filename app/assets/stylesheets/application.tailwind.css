@@ -41,7 +41,7 @@ p.light-color {
 }
 
 .btn {
-  @apply inline-block py-2 px-4 rounded-lg leading-6 cursor-pointer text-white;
+  @apply py-2 px-4 rounded-lg leading-6 cursor-pointer text-white;
 }
 
 .btn-primary {
