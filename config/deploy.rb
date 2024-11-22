@@ -30,7 +30,7 @@ append :linked_files, 'config/master.key'
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/log', 'public/system', 'vendor'
 
 # Default value for default_env is {}
-# set :default_env, { path: '/opt/ruby/bin:$PATH' }
+set :default_env, { path: '/home/deploy/.rvm/bin:$PATH' }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
