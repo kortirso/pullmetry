@@ -52,6 +52,10 @@ p.light-color {
   @apply btn bg-tart-orange;
 }
 
+.btn-big {
+  @apply px-8 py-4;
+}
+
 .btn-small {
   @apply px-2 text-sm rounded;
 }
@@ -103,11 +107,15 @@ p.light-color {
 }
 
 .form-field .form-label {
-  @apply block mb-2 text-xs leading-4 font-medium text-granite-gray;
+  @apply block mb-2 text-xs leading-4 font-medium;
+
+  color: '#666';
 }
 
 .form-field .form-value {
-  @apply px-4 leading-8 rounded-lg text-granite-gray border border-chinese-silver;
+  @apply px-4 leading-8 rounded-lg border border-chinese-silver;
+
+  color: '#666';
 }
 
 .form-field .form-value::placeholder {
@@ -145,7 +153,9 @@ p.light-color {
 }
 
 .table-wrapper {
-  @apply border border-middle-gray rounded-lg overflow-x-scroll bg-lotion;
+  @apply border border-middle-gray rounded-lg overflow-x-scroll;
+
+  background: '#FCFCFC';
 }
 
 .table {}
@@ -208,7 +218,7 @@ nav.pagy.nav a.gap {
 }
 
 .header-logo {
-  @apply text-lg lg:mb-10 py-4 lg:py-0 font-martian font-medium;
+  @apply text-lg py-4 lg:py-0 font-martian font-medium;
 }
 
 .user-navigation-link {
@@ -276,4 +286,29 @@ nav.pagy.nav a.gap {
 
 .line-indicator.reverse {
   @apply rotate-180 bottom-5;
+}
+
+#welcome-block {
+  @apply py-20 lg:py-0 px-8 md:px-20 lg:px-0;
+}
+
+#welcome-image-background {
+  @apply rounded-full;
+
+  width: 640px;
+  height: 640px;
+  background: #FDCC98;
+}
+
+#welcome-image-box {
+  @apply absolute left-32 top-20 flex flex-col justify-center;
+
+  width: 920px;
+  height: 640px;
+}
+
+@media screen and (min-width: 1024px) {
+  #welcome-block {
+    max-width: 560px;
+  }
 }

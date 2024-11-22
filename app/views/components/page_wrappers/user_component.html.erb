@@ -12,7 +12,7 @@
         </button>
       </div>
     </section>
-    <section class="navigation-menu hidden lg:flex flex-col">
+    <section class="navigation-menu hidden lg:flex flex-col lg:mt-10">
       <% if current_user %>
         <%= link_to companies_path, class: "user-navigation-link #{'active' if current_page?(companies_path)}" do %>
           <span><%= embedded_svg('icons/sidebar/apartment.svg') %></span>

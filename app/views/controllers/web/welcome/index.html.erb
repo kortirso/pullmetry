@@ -1,5 +1,42 @@
 <div class="flex flex-col flex-1 h-screen overflow-x-hidden bg-white">
-  <section class="py-16 px-8 xl:px-0">
+  <nav class="py-4 border-b border-gainsboro">
+    <div class="mx-auto w-full max-w-6xl flex flex-col md:flex-row justify-between items-center px-4 lg:px-0">
+      <div class="w-72">
+        <a href="#about" class="font-medium mr-8">About</a>
+        <a href="#how-it-works" class="font-medium mr-8">How it works</a>
+        <a href="#pricing" class="font-medium">Pricing</a>
+      </div>
+      <p class="header-logo">
+        <span class="text-black">pull<span class="text-yellow-orange">keeper</span></span>
+      </p>
+      <div class="w-72 hidden md:flex justify-end">
+      </div>
+    </div>
+  </nav>
+  <section class="flex flex-col lg:flex-row gap-8">
+    <div class="flex-1 flex lg:justify-end lg:items-center">
+      <div id="welcome-block">
+        <h1 class="mb-4 font-semibold text-6xl text-center lg:text-left">Get the PR statistics you always needed</h1>
+        <p class="lg:pr-24 leading-8 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
+        <% if current_user %>
+          <%= link_to 'Get started', companies_path, class: 'btn-primary btn-big text-center mt-8' %>
+        <% else %>
+          <div class="flex flex-row justify-center xl:justify-start items-end mt-8">
+            <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Google', omniauth_link(:google), class: 'btn-primary btn-small text-center ' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex-1 hidden lg:flex items-center relative py-20">
+      <div id="welcome-image-background" />
+      <div id="welcome-image-box">
+        <%= image_tag 'screenshot.webp', class: 'rounded-lg', width: 920, height: 480, alt: 'interface-example' %>
+      </div>
+    </div>
+  </section>
+  <section id="about" class="py-16 px-8 xl:px-0">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-center text-5xl leading-snug mb-12 font-semibold">Pull<span class="text-yellow-orange">Keeper</span> features</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-x-7 gap-y-16">
@@ -70,7 +107,7 @@
       </div>
     </div>
   </section>
-  <section class="py-16 px-8 xl:px-0">
+  <section id="how-it-works" class="py-16 px-8 xl:px-0">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-5xl leading-snug mb-10">How it works</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-7">
@@ -125,7 +162,7 @@
       </div>
     </div>
   </section>
-  <section class="py-16 px-8 xl:px-0 bg-cultured">
+  <section id="pricing" class="py-16 px-8 xl:px-0 bg-cultured">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-center text-5xl leading-snug mb-2">Pricing</h2>
       <p class="text-center">While PullKeeper is growing - features list can grow too for both regular and premium plans.</p>
@@ -171,11 +208,30 @@
       </div>
     </div>
   </section>
+  <section id="pricing" class="py-16 px-8 xl:px-0">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-5xl leading-snug mb-10">Used by</h2>
+      <div class="flex flex-row items-center justify-center flex-wrap w-full gap-16">
+        <a href="https://sputnik8.com" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/sputnik.webp', width: 210, height: 70, alt: 'sputnik' %>
+        </a>
+        <a href="https://tech.upshift.work" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/upshift.webp', width: 210, height: 70, alt: 'upshift' %>
+        </a>
+        <a href="https://slicelife.com" class="client-image" target="_blank" rel="noopener noreferrer">
+          <%= image_tag 'clients/slice.webp', width: 210, height: 70, alt: 'slice' %>
+        </a>
+      </div>
+    </div>
+  </section>
   <footer class="bg-eerie-black text-white flex flex-col items-center p-12">
-    <p class="header-logo">
+    <p class="header-logo mb-10">
       <span class="text-white">pull<span class="text-yellow-orange">keeper</span></span>
     </p>
     <div class="flex flex-wrap grid-x gap-6 mb-10">
+      <a href="#about">About</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
       <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer">Help</a>
       <%= link_to 'Metrics', metrics_path, data: { 'test-id' => 'footer-metrics-link' } %>
       <%= link_to 'Privacy policy', privacy_path, data: { 'test-id' => 'footer-privacy-link' } %>
