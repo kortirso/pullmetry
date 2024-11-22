@@ -12,6 +12,8 @@ module Web
 
     def metrics; end
 
+    def access_tokens; end
+
     private
 
     def find_active_counters

@@ -155,7 +155,7 @@ describe Web::Users::OmniauthCallbacksController do
 
               it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to profile_path
+                expect(response).to redirect_to companies_path
               end
             end
 
@@ -171,7 +171,7 @@ describe Web::Users::OmniauthCallbacksController do
 
               it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to profile_path
+                expect(response).to redirect_to companies_path
               end
             end
           end
@@ -259,7 +259,7 @@ describe Web::Users::OmniauthCallbacksController do
 
               it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to profile_path
+                expect(response).to redirect_to companies_path
               end
             end
 
@@ -275,7 +275,7 @@ describe Web::Users::OmniauthCallbacksController do
 
               it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to profile_path
+                expect(response).to redirect_to companies_path
               end
             end
           end
@@ -347,7 +347,7 @@ describe Web::Users::OmniauthCallbacksController do
 
               it 'redirects to profile path', :aggregate_failures do
                 expect { request }.to change(Identity, :count).by(1)
-                expect(response).to redirect_to profile_path
+                expect(response).to redirect_to companies_path
               end
             end
           end

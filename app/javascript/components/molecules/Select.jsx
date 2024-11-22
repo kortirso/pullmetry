@@ -19,7 +19,7 @@ export const Select = (props) => {
       </Show>
       <div class={[props.classList, 'relative'].join(' ')}>
         <div
-          class="form-value flex justify-between items-center text-sm"
+          class={[isOpen() ? 'is-open' : '', 'form-value flex justify-between items-center py-2'].join(' ')}
           onClick={() => setIsOpen(!isOpen())}
         >
           {props.selectedValue ? props.items[props.selectedValue] : ''}
@@ -29,10 +29,7 @@ export const Select = (props) => {
           <ul class="form-dropdown">
             <For each={Object.entries(props.items)}>
               {([key, value]) =>
-                <li
-                  class="bg-white hover:bg-gray-200 py-2 px-3 text-sm"
-                  onClick={() => onSelect(key)}
-                >
+                <li onClick={() => onSelect(key)}>
                   {value}
                 </li>
               }

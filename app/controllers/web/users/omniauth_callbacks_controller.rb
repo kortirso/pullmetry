@@ -45,9 +45,8 @@ module Web
         session[:pullkeeper_fall_back_url] = nil
 
         return fall_back_url if fall_back_url
-        return companies_path if current_user.nil?
 
-        profile_path
+        companies_path
       end
 
       def monitoring_failed_auth(auth)

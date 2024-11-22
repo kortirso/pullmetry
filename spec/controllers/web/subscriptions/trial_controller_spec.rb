@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Web::Subscriptions::TrialController do
-  describe 'POST#create' do
+  describe 'GET#create' do
     it_behaves_like 'required auth'
 
     context 'for logged users' do
@@ -25,7 +25,7 @@ describe Web::Subscriptions::TrialController do
     end
 
     def do_request
-      post :create, params: { locale: 'en' }
+      get :create, params: { locale: 'en' }
     end
   end
 end

@@ -23,12 +23,12 @@ export const createFlash = () => {
     Flash() {
       return (
         <Show when={messages().length > 0}>
-          <div class="fixed top-8 right-8">
+          <div class="fixed top-8 right-8 z-50">
             <For each={messages()}>
               {(message, index) =>
                 <div
-                  class="relative mb-2 py-4 pl-8 pr-12 rounded border"
-                  classList={{ 'bg-orange-300 border-orange-400': message.type === 'error', 'bg-green-300 border-green-400': message.type === 'notice' }}
+                  class="relative mb-2 py-4 pl-8 pr-12 rounded-lg"
+                  classList={{ 'bg-yellow-orange text-white': message.type === 'error', 'bg-iceberg text-white': message.type === 'notice' }}
                 >
                   <p>{message.value}</p>
                   <span

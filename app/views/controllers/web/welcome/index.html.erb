@@ -1,175 +1,177 @@
-<%= render PageWrappers::GuestComponent.new do %>
-  <% cache(['welcome_page_top_v1', current_user&.id], expires_in: 24.hours) do %>
-    <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mx-auto mt-16 mb-8 xl:mt-24 xl:mb-20">
-      <div class="flex flex-col justify-center">
-        <h1 class="text-center lg:text-left">Get the PR statistics you always needed</h1>
-        <p class="text-lg leading-8 mb-4 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
-        <% unless current_user %>
-          <div class="flex flex-col sm:flex-row justify-center xl:justify-start">
-            <%= link_to 'Login with Github', omniauth_link(:github), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>
-            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'btn-primary btn-small text-center sm:mr-4 mb-4 sm:mb-0' %>
-            <%= link_to 'Login with Google', omniauth_link(:google), class: 'btn-primary btn-small text-center ' %>
-          </div>
-        <% end %>
+<div class="flex flex-col flex-1 h-screen overflow-x-hidden bg-white">
+  <nav class="py-4 border-b border-gainsboro">
+    <div class="mx-auto w-full max-w-6xl flex flex-col md:flex-row justify-between items-center px-4 lg:px-0">
+      <div class="w-72">
+        <a href="#about" class="font-medium mr-8">About</a>
+        <a href="#how-it-works" class="font-medium mr-8">How it works</a>
+        <a href="#pricing" class="font-medium">Pricing</a>
       </div>
-      <div class="flex justify-center">
-        <div class="welcome-image">
-          <%= image_tag 'screenshot.webp', width: 616, height: 355, alt: 'interface-example' %>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto my-8">
-      <h2 class="text-center text-4xl mb-12">PullKeeper features</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2">
-        <div class="benefits-box">
-          <h3 class="benefits-title">Reviewer statistics</h3>
-          <p class="benefits-text">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Privacy</h3>
-          <p class="benefits-text">Application requires read-only access to pull requests in your repositories and does not use your code. Your developers can (or can't) have access to their statistics</p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Customizable calculations</h3>
-          <p class="benefits-text">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Exclude rules</h3>
-          <p class="benefits-text">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, use exclude rules for pull requests to avoid double code counting</p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Comparing data</h3>
-          <p class="benefits-text">Compareable data with previous periods for better understanding development improvements and progress/regress of coding</p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Slack/Discord/Telegram notifications</h3>
-          <p class="benefits-text">Receive notifications to Slack/Discord/Telegram with latest insights of your companies and repositories, or send data to custom url, or fetch data by <a href="https://pullkeeper.dev/api-docs" target="_blank" rel="noopener noreferrer" class="simple-link">API</a></p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Github and Gitlab API</h3>
-          <p class="benefits-text">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
-        </div>
-        <div class="benefits-box">
-          <h3 class="benefits-title">Achievements system</h3>
-          <p class="benefits-text">PullKeeper has achievements system for representing and comparing developer success</p>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto mb-24">
-      <h2 class="text-center text-4xl mb-12">Open Source</h2>
-      <p class="mb-4">
-        <iframe
-          src="https://ghbtns.com/github-btn.html?user=kortirso&repo=pullmetry&type=star&count=true&size=large"
-          frameborder="0"
-          scrolling="0"
-          width="170"
-          height="30"
-          title="GitHub"
-          class="mx-auto pl-10"
-        ></iframe>
+      <p class="header-logo">
+        <span class="text-black">pull<span class="text-yellow-orange">keeper</span></span>
       </p>
-      <p class="text-center mb-4 text-lg">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
-      <p class="text-center mb-4 text-lg">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
-      <p class="text-center mb-4 text-lg">You can fork repository, run it locally or even run it on your own production server.</p>
-      <p class="text-center text-lg">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
-    </section>
-  <% end %>
-  <% unless cookies[:pullmetry_subscriber_email] %>
-    <div class="flex justify-center items-center mb-24">
-      <div class="p-8 border border-stone-200 rounded flex flex-col items-center">
-        <h2>Join newslist</h2>
-        <p class="mb-4">Receive latest project news about releases and new features.</p>
-        <%= form_with model: Subscriber.new, url: subscribers_path, method: :post, class: 'form-block' do |form| %>
-          <div class="flex flex-row gap-4 mb-8">
-            <div class="form-field m-0">
-              <%= form.text_field :email, required: true, placeholder: 'Email', class: 'form-value', data: { 'test-id' => 'join-newslist-email-value' } %>
-            </div>
-            <%= form.submit 'Join', class: 'btn-primary btn-small', data: { 'test-id' => 'join-newslist-link' } %>
-          </div>
-          <div class="form-field m-0">
-            <%= recaptcha_tags %>
+      <div class="w-72 hidden md:flex justify-end">
+      </div>
+    </div>
+  </nav>
+  <section class="flex flex-col lg:flex-row gap-8">
+    <div class="flex-1 flex lg:justify-end lg:items-center">
+      <div id="welcome-block">
+        <h1 class="mb-4 font-semibold text-6xl text-center lg:text-left">Get the PR statistics you always needed</h1>
+        <p class="lg:pr-24 leading-8 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
+        <% if current_user %>
+          <%= link_to 'Get started', companies_path, class: 'inline-block btn-primary btn-big text-center mt-8' %>
+        <% else %>
+          <div class="flex flex-row justify-center lg:justify-start items-end mt-8">
+            <%= link_to 'Login with Github', omniauth_link(:github), class: 'inline-block btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'inline-block btn-primary btn-small text-center mr-4' %>
+            <%= link_to 'Login with Google', omniauth_link(:google), class: 'inline-block btn-primary btn-small text-center ' %>
           </div>
         <% end %>
       </div>
     </div>
-  <% end %>
-  <% cache('welcome_page_bottom_v4', expires_in: 24.hours) do %>
-    <section class="mx-auto mb-8 xl:mb-24">
-      <h2 class="text-center text-4xl mb-12">How it works</h2>
-      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
-        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
-          <h3>1. Add company</h3>
-          <p>First of all you need to create Company, it is just abstraction for group of repositories with similar configuration.</p>
+    <div class="flex-1 hidden lg:flex items-center relative py-20">
+      <div id="welcome-image-background" />
+      <div id="welcome-image-box">
+        <%= image_tag 'screenshot.webp', class: 'rounded-lg', width: 920, height: 480, alt: 'interface-example' %>
+      </div>
+    </div>
+  </section>
+  <section id="about" class="py-16 px-8 xl:px-0">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-5xl leading-snug mb-12 font-semibold">Pull<span class="text-yellow-orange">Keeper</span> features</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-x-7 gap-y-16">
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/statistic.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Statistic</h3>
+          <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
         </div>
-        <div class="flex-1">
-          <div class="welcome-image">
-            <%= image_tag 'new_company.webp', width: 593, height: 266, alt: 'compant-form' %>
-          </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/security.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Privacy</h3>
+          <p class="text-center">Application requires read-only access to pull requests in your repositories and does not use your code. Your developers can (or can't) have access to their statistics</p>
+        </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/calculate.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Customizable calculations</h3>
+          <p class="text-center">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
+        </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/rule.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Exclude rules</h3>
+          <p class="text-center">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, use exclude rules for pull requests to avoid double code counting</p>
+        </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/database.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Comparing data</h3>
+          <p class="text-center">Compareable data with previous periods for better understanding development improvements and progress/regress of coding</p>
+        </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/notifications.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Messenger notifications</h3>
+          <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
+        </div>
+        <div class="flex flex-col items-center md:col-start-2 col-span-2">
+          <%= image_tag 'icons/welcome/git.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Github/Gitlab API</h3>
+          <p class="text-center">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
+        </div>
+        <div class="flex flex-col items-center col-span-2">
+          <%= image_tag 'icons/welcome/trophy.svg', class: 'mb-6 w-10 h-10' %>
+          <h3 class="text-center text-2xl mb-2">Achievements system</h3>
+          <p class="text-center">PullKeeper has achievements system for representing and comparing developer success</p>
         </div>
       </div>
-      <div class="flex flex-col-reverse md:flex-row md:gap-20 mb-16">
-        <div class="flex-1">
-          <div class="welcome-image">
-            <%= image_tag 'new_repository.webp', width: 593, height: 320, alt: 'repository-form' %>
+    </div>
+  </section>
+  <section class="flex flex-col sm:flex-row">
+    <div class="flex-1 bg-iceberg flex justify-center items-center py-20 sm:py-0">
+      <p class="text-5xl text-white font-semibold">Open Source</p>
+    </div>
+    <div class="flex-1 bg-blue py-8">
+      <div class="bg-white px-10 py-12 sm:py-32 max-w-xl">
+        <p>
+          <!-- <iframe
+            src="https://ghbtns.com/github-btn.html?user=kortirso&repo=pullmetry&type=star&count=true&size=large"
+            frameborder="0"
+            scrolling="0"
+            width="170"
+            height="30"
+            title="GitHub"
+            class="mx-auto pl-10"
+          ></iframe> -->
+        </p>
+        <p class="text-lg leading-8">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
+        <p class="text-lg leading-8">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
+        <p class="text-lg leading-8">You can fork repository, run it locally or even run it on your own production server.</p>
+        <p class="text-lg leading-8">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
+      </div>
+    </div>
+  </section>
+  <section id="how-it-works" class="py-16 px-8 xl:px-0">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-5xl leading-snug mb-10">How it works</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-7">
+        <div class="py-4">
+          <div class="mb-4 overflow-hidden relative">
+            <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
+              <p class="text-4xl text-yellow-orange font-semibold">1</p>
+            </div>
+            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator' %>
           </div>
+          <h3 class="mb-1 font-semibold">Add company</h3>
+          <p>First of all you need to create Company, it is just abstraction for group of repositories with similar configuration and the same access token.</p>
         </div>
-        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
-          <h3>2. Add repository</h3>
-          <p class="mb-4">For any company you need to create Repository, and here real link for your repository at Github or Gitlab is required (repository can be private).</p>
-          <p class="mb-4">Later this link will be used for fetching statistics.</p>
-          <p>Any user, that has insights at some company or repository, has read access for insights data in such companies and repositories, so it's required (and allowed) only for 1 user to create/enable fetching data for specific repository and other developers will have access to it.</p>
+        <div class="py-4">
+          <div class="mb-4 overflow-hidden relative">
+            <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
+              <p class="text-4xl text-yellow-orange font-semibold">2</p>
+            </div>
+            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator reverse' %>
+          </div>
+          <h3 class="mb-1 font-semibold">Add repository</h3>
+          <p>For any company you need to create Repository, and here real link for your repository at Github or Gitlab is required (repository can be private).</p>
+        </div>
+        <div class="py-4">
+          <div class="mb-4 overflow-hidden relative">
+            <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
+              <p class="text-4xl text-yellow-orange font-semibold">3</p>
+            </div>
+            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator' %>
+          </div>
+          <h3 class="mb-1 font-semibold">Add access token</h3>
+          <p>You need to add access token for Company or Repository with read-only permissions for fetching pull requests and/or issues data from Github or Gitlab.</p>
+        </div>
+        <div class="py-4">
+          <div class="mb-4 overflow-hidden relative">
+            <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
+              <p class="text-4xl text-yellow-orange font-semibold">4</p>
+            </div>
+            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator reverse' %>
+          </div>
+          <h3 class="mb-1 font-semibold">Enjoy your insights</h3>
+          <p>With that completed, you're all set and geared up for having developers statistics.</p>
+          <p>Developers insights are collected on Repository level and for whole Company.</p>
+        </div>
+        <div class="py-4">
+          <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4 mb-4">
+            <p class="text-4xl text-yellow-orange font-semibold">5</p>
+          </div>
+          <h3 class="mb-1 font-semibold">Additional settings</h3>
+          <p>PullKeeper has many additional settings thanks to which you can increase the accuracy of statistics and expand functionality.</p>
         </div>
       </div>
-      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
-        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
-          <h3>3. Add access token</h3>
-          <p class="mb-4">You need to add access token for Company or Repository with read-only permissions for fetching pull requests data from Github or Gitlab.</p>
-          <p>PullKeeper fetches timestamps data from pull requests, commits, reviews and their authors.</p>
-        </div>
-        <div class="flex-1">
-          <div class="welcome-image">
-            <%= image_tag 'access_token.webp', width: 593, height: 240, alt: 'acces-token-form' %>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col-reverse md:flex-row md:gap-20 mb-16">
-        <div class="flex-1">
-          <div class="welcome-image">
-            <%= image_tag 'screenshot.webp', width: 593, height: 340, alt: 'interface-example' %>
-          </div>
-        </div>
-        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
-          <h3>4. Enjoy your insights</h3>
-          <p class="mb-4">With that completed, you're all set and geared up for having developers statistics.</p>
-          <p class="mb-4">Developers insights are collected on Repository level and for whole Company.</p>
-          <p class="mb-4">There are additional repository insights with specific statistics.</p>
-          <p>At this point all your developers will have access to insights, they will need just to login to PullKeeper.</p>
-        </div>
-      </div>
-      <div class="flex flex-col md:flex-row md:gap-20 mb-16">
-        <div class="flex-1 mb-8 md:mb-0 pt-0 md:pt-12">
-          <h3>5. Additional settings</h3>
-          <p class="mb-4">PullKeeper has many additional settings thanks to which you can increase the accuracy of statistics and expand functionality.</p>
-          <p class="mb-4">Such settings includes privacy settings, working time, excludes rules for pull requests, different insight calculation preferences, notifications.</p>
-        </div>
-        <div class="flex-1">
-          <div class="welcome-image">
-            <%= image_tag 'edit_configuration.webp', width: 593, height: 389, alt: 'configuration-form' %>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="mx-auto mb-24">
-      <h2 class="text-center text-4xl mb-12">Pricing</h2>
-      <p class="text-center mb-4">While PullKeeper is growing features list can grow too for both regular and premium plans.</p>
-      <p class="text-center mb-12">Payment can be done from Profile page after login, but no rush, there is trial 100 days for checking application.</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
-          <div class="mb-12">
-            <h3>Regular</h3>
-            <p>Free</p>
-          </div>
-          <ul>
+    </div>
+  </section>
+  <section id="pricing" class="py-16 px-8 xl:px-0 bg-cultured">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-5xl leading-snug mb-2">Pricing</h2>
+      <p class="text-center">While PullKeeper is growing - features list can grow too for both regular and premium plans.</p>
+      <p class="text-center mb-10">Payment can be done from Profile page after login, but no rush, there is trial 100 days for checking application.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+        <div class="bg-white p-10 rounded-lg">
+          <h3 class="mb-2 text-2xl font-semibold">Regular</h3>
+          <p class="text-iceberg mb-2 font-semibold">Free</p>
+          <ul class="list-disc list-inside">
             <li><%= Insight::DEFAULT_ATTRIBUTES.size %> insight metrics</li>
             <li>16 repository insight metrics</li>
             <li><%= User::Subscription::FREE_REPOSITORIES_AMOUNT %> tracking repositories</li>
@@ -182,13 +184,11 @@
             <li>achievements system</li>
           </ul>
         </div>
-        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
-          <div class="mb-12">
-            <h3>Premium</h3>
-            <p>&euro;25/month or &euro;250/year</p>
-          </div>
-          <p class="mb-4">Everything in regular, plus:</p>
-          <ul>
+        <div class="bg-white p-10 rounded-lg">
+          <h3 class="mb-2 text-2xl font-semibold">Premium</h3>
+          <p class="text-iceberg mb-2 font-semibold">&euro;25/month or &euro;250/year</p>
+          <p class="mb-2">Everything in regular, plus:</p>
+          <ul class="list-disc list-inside">
             <li><%= Insight::SHORT_ATTRIBUTE_NAMES.size %> insight metrics instead of <%= Insight::DEFAULT_ATTRIBUTES.size %></li>
             <li>unlimited repositories</li>
             <li>comparing data with previous periods</li>
@@ -196,22 +196,22 @@
             <li>onboarding support</li>
           </ul>
         </div>
-        <div class="p-8 pb-2 border border-stone-200 rounded-xl">
-          <div class="mb-12">
-            <h3>Enterprise</h3>
-            <p>Custom prices</p>
-          </div>
-          <p class="mb-4">Special opportunities:</p>
-          <ul>
+        <div class="bg-white p-10 rounded-lg">
+          <h3 class="mb-2 text-2xl font-semibold">Enterprise</h3>
+          <p class="text-iceberg mb-2 font-semibold">Custom prices</p>
+          <p class="mb-2">Special opportunities:</p>
+          <ul class="list-disc list-inside">
             <li>self-hosting option</li>
             <li>desktop application (in progress) for fully secured insights and statistics</li>
           </ul>
         </div>
       </div>
-    </section>
-    <section class="mx-auto mb-24 w-full max-w-4xl">
-      <h2 class="text-center text-4xl mb-12">Used by</h2>
-      <div class="flex flex-row items-center justify-between flex-wrap w-full">
+    </div>
+  </section>
+  <section id="pricing" class="py-16 px-8 xl:px-0">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-5xl leading-snug mb-10">Used by</h2>
+      <div class="flex flex-row items-center justify-center flex-wrap w-full gap-16">
         <a href="https://sputnik8.com" class="client-image" target="_blank" rel="noopener noreferrer">
           <%= image_tag 'clients/sputnik.webp', width: 210, height: 70, alt: 'sputnik' %>
         </a>
@@ -222,6 +222,28 @@
           <%= image_tag 'clients/slice.webp', width: 210, height: 70, alt: 'slice' %>
         </a>
       </div>
-    </section>
-  <% end %>
-<% end %>
+    </div>
+  </section>
+  <footer class="bg-eerie-black text-white flex flex-col items-center p-12">
+    <p class="header-logo mb-10">
+      <span class="text-white">pull<span class="text-yellow-orange">keeper</span></span>
+    </p>
+    <div class="flex flex-wrap grid-x gap-6 mb-10">
+      <a href="#about">About</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer">Help</a>
+      <%= link_to 'Metrics', metrics_path, data: { 'test-id' => 'footer-metrics-link' } %>
+      <%= link_to 'Privacy policy', privacy_path, data: { 'test-id' => 'footer-privacy-link' } %>
+    </div>
+    <div class="w-full max-w-6xl flex justify-between items-center">
+      <div>
+        <span class="copyright">&copy;</span> 2024 PullKeeper, v1.8.5
+      </div>
+      <div class="flex">
+        <span class="mr-2 text-sm">Sponsored by</span>
+        <%= link_to image_tag('icons/evrone.svg', alt: 'evrone'), 'https://evrone.com/' %>
+      </div>
+    </div>
+  </footer>
+</div>

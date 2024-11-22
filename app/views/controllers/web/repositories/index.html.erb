@@ -1,38 +1,7 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="m-0">Repositories</h1>
-  </div>
-  <% if @repositories.any? { |repository| repository.company.user_id == current_user.id && !repository.accessable } %>
-    <div class="badge mb-4 p-4">
-      <p>One of your repository has access error because of invalid access token permissions.</p>
-      <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
-      <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
-    </div>
-  <% end %>
-  <section>
-    <% @repositories.each do |repository| %>
-      <%=
-        js_component 'Repository',
-          uuid: repository.uuid,
-          avatar_url: repository.owner_avatar_url,
-          title: repository.title,
-          synced_at: repository.synced_at,
-          next_synced_at: (DateTime.now + 1.hour).beginning_of_hour,
-          provider: repository.provider,
-          repository_url: repository.link,
-          access_token_status: repository.access_token_status,
-          accessable: repository.accessable,
-          main_attribute: repository.current_config.main_attribute,
-          edit_links: allowed_to?(:update?, repository) ? {
-            access_token: new_repository_access_token_path(repository.uuid),
-            destroy: repository_path(repository.uuid)
-          } : nil
-      %>
-    <% end %>
-    <div class="mt-6 flex justify-between items-center">
-      <% if @pagy.pages > 1 %>
-        <div><%== pagy_nav(@pagy) %></div>
-      <% end %>
+  <section class="min-h-full p-8 lg:p-12">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="m-0">Repositories</h1>
       <% if allowed_to?(:create_repository?, current_user) %>
         <%=
           js_component 'RepositoryForm',
@@ -42,5 +11,41 @@
         %>
       <% end %>
     </div>
+    <% if @repositories.any? { |repository| repository.company.user_id == current_user.id && !repository.accessable } %>
+      <div class="badge mb-4 p-4">
+        <p>One of your repository has access error because of invalid access token permissions.</p>
+        <p>To fix it you need to create new access token at Github/Gitlab and then refresh it here.</p>
+        <p>But remember that you need to include required repositories to access token settings and approve token by repository owner.</p>
+      </div>
+    <% end %>
+    <% if allowed_to?(:create_repository?, current_user) && @repositories.empty? %>
+      <div class="absolute top-40 right-36 hidden sm:flex items-end">
+        <p class="mr-12 text-lg text-middle-gray font-medium">Create new repository</p>
+        <%= image_tag 'icons/create_sign.svg', class: 'pb-4' %>
+      </div>
+    <% end %>
+    <section>
+      <% @repositories.each do |repository| %>
+        <%=
+          js_component 'Repository',
+            uuid: repository.uuid,
+            avatar_url: repository.owner_avatar_url,
+            title: repository.title,
+            synced_at: repository.synced_at,
+            next_synced_at: (DateTime.now + 1.hour).beginning_of_hour,
+            provider: repository.provider,
+            repository_url: repository.link,
+            access_token_status: repository.access_token_status,
+            accessable: repository.accessable,
+            main_attribute: repository.current_config.main_attribute,
+            edit_links: allowed_to?(:update?, repository) ? {
+              destroy: repository_path(repository.uuid)
+            } : nil
+        %>
+      <% end %>
+      <% if @pagy.pages > 1 %>
+        <div><%== pagy_nav(@pagy) %></div>
+      <% end %>
+    </section>
   </section>
 <% end %>

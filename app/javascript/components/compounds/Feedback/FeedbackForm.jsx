@@ -1,5 +1,6 @@
 import { createStore } from 'solid-js/store';
 
+import { Feedback } from '../../../assets';
 import { Checkbox } from '../../atoms';
 import { FormInputField, FormDescriptionField, createModal, createFlash } from '../../molecules';
 
@@ -36,39 +37,49 @@ export const FeedbackForm = (props) => {
       <button
         class={[props.classList, 'cursor-pointer'].join(' ')}
         onClick={openModal}
-      >Feedback</button>
+      >
+        <span><Feedback /></span>
+        <span>Feedback</span>
+      </button>
       <Modal>
-        <h1 class="mb-8">New feedback</h1>
-        <p class="mb-4">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" class="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" class="simple-link">Telegram</a> or just leave here.</p>
-        <section class="inline-block w-full">
-          <FormInputField
-            labelText="Title"
-            value={formStore.title}
-            onChange={(value) => setFormStore('title', value)}
-          />
-          <FormDescriptionField
-            required
-            labelText="Description"
-            value={formStore.description}
-            onChange={(value) => setFormStore('description', value)}
-          />
-          <div class="form-field">
-            <Checkbox
-              left
-              labelText="Can answer by email?"
-              value={formStore.answerable}
-              onToggle={() => setFormStore('answerable', !formStore.answerable)}
+        <div class="flex flex-col items-center">
+          <h1 class="mb-2">New feedback</h1>
+          <p class="mb-8 text-center">You can directly send your question/feedback/bug report to <a href="mailto:kortirso@gmail.com" class="simple-link">email</a>, to <a href="https://t.me/kortirso" target="_blank" rel="noopener noreferrer" class="simple-link">Telegram</a> or just leave here.</p>
+          <section class="inline-block w-4/5">
+            <FormInputField
+              labelText="Title"
+              classList="w-full mb-6"
+              value={formStore.title}
+              onChange={(value) => setFormStore('title', value)}
             />
-          </div>
-          <FormInputField
-            disabled={!formStore.answerable}
-            labelText="Email for answer"
-            placeholder={props.email}
-            value={formStore.email}
-            onChange={(value) => setFormStore('email', value)}
-          />
-          <button class="btn-primary mt-4" onClick={onSubmit}>Send feedback</button>
-        </section>
+            <FormDescriptionField
+              required
+              labelText="Description"
+              classList="w-full mb-6"
+              value={formStore.description}
+              onChange={(value) => setFormStore('description', value)}
+            />
+            <div class="form-field mb-6">
+              <Checkbox
+                left
+                labelText="Can answer by email?"
+                value={formStore.answerable}
+                onToggle={() => setFormStore('answerable', !formStore.answerable)}
+              />
+            </div>
+            <FormInputField
+              disabled={!formStore.answerable}
+              labelText="Email for answer"
+              classList="w-full"
+              placeholder={props.email}
+              value={formStore.email}
+              onChange={(value) => setFormStore('email', value)}
+            />
+            <div class="flex">
+              <button class="btn-primary mt-6 mx-auto" onClick={onSubmit}>Send feedback</button>
+            </div>
+          </section>
+        </div>
       </Modal>
       <Flash />
     </>

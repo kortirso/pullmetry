@@ -10,6 +10,7 @@ export const FormDescriptionField = (props) => (
     <FormTextArea
       required={props.required}
       value={props.value}
+      classList={props.classList}
       onChange={(value) => props.onChange ? props.onChange(value) : null}
     />
   </div>

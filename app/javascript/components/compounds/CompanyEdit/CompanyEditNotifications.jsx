@@ -1,7 +1,7 @@
 import { Show, For, batch, createMemo, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, Select, createModal, createFlash } from '../../molecules';
+import { FormInputField, Select, createModal, createFlash } from '../../molecules';
 import { objectKeysToCamelCase } from '../../../helpers';
 
 import { createWebhookRequest } from './requests/createWebhookRequest';
@@ -18,7 +18,7 @@ const WEBHOOK_SOURCES = {
 
 const NOTIFICATION_TYPES = {
   insights_data: 'Insights',
-  repository_insights_data: 'Repo insights',
+  repository_insights_data: 'Repository insights',
   long_time_review_data: 'Long time review',
   no_new_pulls_data: 'No new pull requests'
 }
@@ -127,136 +127,148 @@ export const CompanyEditNotifications = (props) => {
 
   return (
     <>
-      <Dropdown title="Notifications">
-        <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8 mb-2">
-            <div>
-              <Show
-                when={pageState.webhooks.length > 0}
-                fallback={<p>There are no webhooks yet.</p>}
-              >
-                <p class="mb-2 font-medium">Webhooks list</p>
-                <table class="table zebra w-full">
-                  <tbody>
-                    <For each={pageState.webhooks}>
-                      {(webhook) =>
+      <div class="box mb-4 p-8">
+        <h2 class="mb-2">Notifications</h2>
+        <p class="mb-4 light-color">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" class="simple-link">Slack incoming webhooks</a>.</p>
+        <p class="mb-4 light-color">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
+        <p class="mb-4 light-color">For getting Telegram chat id you need to find <span class="font-medium">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span class="font-medium">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
+        <p class="mb-6 light-color">If notification is enabled for at least one source then it will be send to url of notification's webhook or if not present to company's webhook. So you can send different notifications to one channel or to different channels.</p>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
+          <Show
+            when={pageState.webhooks.length > 0}
+            fallback={<p>There are no webhooks yet.</p>}
+          >
+            <div class="table-wrapper w-fit">
+              <table class="table">
+                <tbody>
+                  <For each={pageState.webhooks}>
+                    {(webhook) =>
+                      <tr>
+                        <td>{webhook.source}</td>
+                        <td>{webhook.url}</td>
+                        <td class="!min-w-0">
+                          <p
+                            class="btn-danger btn-xs"
+                            onClick={() => removeWebhook(webhook.uuid)}
+                          >X</p>
+                        </td>
+                      </tr>
+                    }
+                  </For>
+                </tbody>
+              </table>
+            </div>
+          </Show>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+              onClick={openWebhookModal}
+            >Add webhook</button>
+          </p>
+        </div>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end mt-6">
+          <Show
+            when={pageState.notifications.length > 0}
+            fallback={<p>There are no notifications yet.</p>}
+          >
+            <div class="table-wrapper w-fit">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-left">Type</th>
+                    <th class="text-left">Source</th>
+                    <th class="text-left">Url</th>
+                    <th class="!min-w-0" />
+                  </tr>
+                </thead>
+                <tbody>
+                  <For each={pageState.notifications}>
+                    {(notification) => {
+                      const webhook = pageState.webhooks.find((item) => item.uuid === notification.webhooksUuid);
+
+                      return (
                         <tr>
+                          <td>{NOTIFICATION_TYPES[notification.notificationType]}</td>
                           <td>{webhook.source}</td>
                           <td>{webhook.url}</td>
-                          <td class="w-12">
+                          <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => removeWebhook(webhook.uuid)}
+                              onClick={() => removeNotification(notification.uuid)}
                             >X</p>
                           </td>
                         </tr>
-                      }
-                    </For>
-                  </tbody>
-                </table>
-              </Show>
-              <p
-                class="btn-primary btn-small my-8"
-                onClick={openWebhookModal}
-              >Add webhook</p>
-              <Show
-                when={pageState.notifications.length > 0}
-                fallback={<p>There are no notifications yet.</p>}
-              >
-                <p class="mb-2 font-medium">Notifications list</p>
-                <table class="table zebra w-full">
-                  <thead>
-                    <tr>
-                      <th>Type</th>
-                      <th>Source</th>
-                      <th>Url</th>
-                      <th class="w-12" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <For each={pageState.notifications}>
-                      {(notification) => {
-                        const webhook = pageState.webhooks.find((item) => item.uuid === notification.webhooksUuid);
-
-                        return (
-                          <tr>
-                            <td>{NOTIFICATION_TYPES[notification.notificationType]}</td>
-                            <td>{webhook.source}</td>
-                            <td>{webhook.url}</td>
-                            <td class="w-12">
-                              <p
-                                class="btn-danger btn-xs"
-                                onClick={() => removeNotification(notification.uuid)}
-                              >X</p>
-                            </td>
-                          </tr>
-                        )
-                      }}
-                    </For>
-                  </tbody>
-                </table>
-              </Show>
-              <p
-                class="btn-primary btn-small mt-8"
-                onClick={openNotificationModal}
-              >Add notification</p>
+                      )
+                    }}
+                  </For>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <p class="mb-4">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" class="simple-link">Slack incoming webhooks</a>.</p>
-              <p class="mb-4">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
-              <p class="mb-4">For getting Telegram chat id you need to find <span class="font-medium">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span class="font-medium">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
-              <p>If notification is enabled for at least one source then it will be send to url of notification's webhook or if not present to company's webhook. So you can send different notifications to one channel or to different channels.</p>
-            </div>
-          </div>
+          </Show>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+              onClick={openNotificationModal}
+            >Add notification</button>
+          </p>
         </div>
-      </Dropdown>
+      </div>
       <Modal>
         <Switch>
           <Match when={pageState.webhookModalIsOpen}>
-            <h1 class="mb-8">New webhook</h1>
-            <section class="inline-block w-full">
-              <Select
-                classList="w-full"
-                labelText="Source"
-                items={WEBHOOK_SOURCES}
-                selectedValue={webhookFormStore.source}
-                onSelect={(value) => setWebhookFormStore('source', value)}
-              />
-              <FormInputField
-                required
-                classList="w-full"
-                labelText="Url"
-                placeholder={webhookUrlPlaceholder()}
-                value={webhookFormStore.url}
-                onChange={(value) => setWebhookFormStore('url', value)}
-              />
-              <button class="btn-primary mt-4" onClick={saveWebhook}>Save webhook</button>
-            </section>
+            <div class="flex flex-col items-center">
+              <h1 class="mb-2">New webhook</h1>
+              <p class="mb-8 text-center">You can specity url and type of webhooks where messages with insights will be send.</p>
+              <section class="inline-block w-4/5">
+                <Select
+                  classList="w-full mb-8"
+                  labelText="Source"
+                  items={WEBHOOK_SOURCES}
+                  selectedValue={webhookFormStore.source}
+                  onSelect={(value) => setWebhookFormStore('source', value)}
+                />
+                <FormInputField
+                  required
+                  classList="w-full"
+                  labelText="Url"
+                  placeholder={webhookUrlPlaceholder()}
+                  value={webhookFormStore.url}
+                  onChange={(value) => setWebhookFormStore('url', value)}
+                />
+                <div class="flex">
+                  <button class="btn-primary mt-8 mx-auto" onClick={saveWebhook}>Save</button>
+                </div>
+              </section>
+            </div>
           </Match>
           <Match when={pageState.notificationModalIsOpen}>
-            <h1 class="mb-8">New notification</h1>
-            <section class="inline-block w-full">
-              <Show
-                when={pageState.webhooks.length > 0}
-                fallback={<p>First you need to create at least 1 webhook.</p>}
-              >
-                <Select
-                  classList="w-full"
-                  labelText="Type"
-                  items={NOTIFICATION_TYPES}
-                  selectedValue={notificationFormStore.notificationType}
-                  onSelect={(value) => setNotificationFormStore('notificationType', value)}
-                />
-                <Select
-                  classList="w-full"
-                  labelText="Webhook"
-                  items={webhooksForSelect()}
-                  selectedValue={notificationFormStore.notificationWebhookUuid}
-                  onSelect={(value) => setNotificationFormStore('notificationWebhookUuid', value)}
-                />
-                <button class="btn-primary mt-4" onClick={saveNotification}>Save notification</button>
-              </Show>
-            </section>
+            <div class="flex flex-col items-center">
+              <h1 class="mb-8">New notification</h1>
+              <section class="inline-block w-4/5">
+                <Show
+                  when={pageState.webhooks.length > 0}
+                  fallback={<p class="text-center">First you need to create at least 1 webhook.</p>}
+                >
+                  <Select
+                    classList="w-full mb-8"
+                    labelText="Type"
+                    items={NOTIFICATION_TYPES}
+                    selectedValue={notificationFormStore.notificationType}
+                    onSelect={(value) => setNotificationFormStore('notificationType', value)}
+                  />
+                  <Select
+                    classList="w-full"
+                    labelText="Webhook"
+                    items={webhooksForSelect()}
+                    selectedValue={notificationFormStore.notificationWebhookUuid}
+                    onSelect={(value) => setNotificationFormStore('notificationWebhookUuid', value)}
+                  />
+                  <div class="flex">
+                    <button class="btn-primary mt-8 mx-auto" onClick={saveNotification}>Save</button>
+                  </div>
+                </Show>
+              </section>
+            </div>
           </Match>
         </Switch>
       </Modal>

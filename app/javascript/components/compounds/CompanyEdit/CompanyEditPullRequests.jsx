@@ -1,7 +1,7 @@
 import { Show, For, batch } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, createFlash, createModal } from '../../molecules';
+import { FormInputField, createFlash, createModal } from '../../molecules';
 import { objectKeysToCamelCase } from '../../../helpers';
 
 import { updateCompanyConfigurationRequest } from './requests/updateCompanyConfigurationRequest';
@@ -44,7 +44,7 @@ export const CompanyEditPullRequests = (props) => {
         closeModal();
       });
     }
-  };
+  }
 
   const onIgnoreRemove = async (uuid) => {
     const result = await removeIgnoreRequest(uuid);
@@ -55,76 +55,71 @@ export const CompanyEditPullRequests = (props) => {
 
   return (
     <>
-      <Dropdown title="Fetching pull requests">
-        <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8 mb-8 pb-8 border-b border-gray-200">
-            <div>
-              <FormInputField
-                confirmable
-                classList="w-1/2"
-                labelText="Fetch period (days)"
-                placeholder="30"
-                defaultValue={pageState.defaultFetchPeriod}
-                value={pageState.fetchPeriod}
-                onChange={(value) => setPageState('fetchPeriod', value)}
-                onConfirm={updateFetchPeriod}
-                onCancel={resetFetchPeriod}
-              />
+      <div class="box mb-4 p-8">
+        <h2 class="mb-2">Fetching pull requests</h2>
+        <p class="mb-6 light-color">You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 90 days. By default fetch period is 30 days. So if 30 is enough for you - you can skip this attribute.</p>
+        <FormInputField
+          confirmable
+          classList="w-1/3 lg:w-1/5"
+          labelText="Fetch period (days)"
+          placeholder="30"
+          defaultValue={pageState.defaultFetchPeriod}
+          value={pageState.fetchPeriod}
+          onChange={(value) => setPageState('fetchPeriod', value)}
+          onConfirm={updateFetchPeriod}
+          onCancel={resetFetchPeriod}
+        />
+        <p class="my-6 light-color">In this block you can specify ignoring developers/bots while fetching pull requests data.</p>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
+          <Show
+            when={pageState.ignores.length > 0}
+            fallback={<p>There are no ignores yet.</p>}
+          >
+            <div class="table-wrapper w-fit">
+              <table class="table">
+                <tbody>
+                  <For each={pageState.ignores}>
+                    {(ignore) =>
+                      <tr>
+                        <td>{ignore.entityValue}</td>
+                        <td class="!min-w-0">
+                          <p
+                            class="btn-danger btn-xs"
+                            onClick={() => onIgnoreRemove(ignore.uuid)}
+                          >X</p>
+                        </td>
+                      </tr>
+                    }
+                  </For>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <p>You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 90 days.</p>
-              <p class="mt-2">By default fetch period is 30 days. So if 30 is enough for you - you can skip this attribute.</p>
-            </div>
-          </div>
-          <div class="grid lg:grid-cols-2 gap-8 mb-2">
-            <div>
-              <Show
-                when={pageState.ignores.length > 0}
-                fallback={<p>There are no ignores yet.</p>}
-              >
-                <p class="mb-2 font-medium">Ignores</p>
-                <table class="table zebra w-full">
-                  <tbody>
-                    <For each={pageState.ignores}>
-                      {(ignore) =>
-                        <tr>
-                          <td>{ignore.entityValue}</td>
-                          <td class="w-12">
-                            <p
-                              class="btn-danger btn-xs"
-                              onClick={() => onIgnoreRemove(ignore.uuid)}
-                            >X</p>
-                          </td>
-                        </tr>
-                      }
-                    </For>
-                  </tbody>
-                </table>
-              </Show>
-              <p
-                class="btn-primary btn-small mt-8"
-                onClick={openModal}
-              >Add ignore</p>
-            </div>
-            <div>
-              <p>In this block you can specify ignoring developers/bots while fetching pull requests data.</p>
-            </div>
+          </Show>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+              onClick={openModal}
+            >Add ignore</button>
+          </p>
+        </div>
+      </div>
+      <Modal>
+        <div class="flex flex-col items-center">
+          <h1 class="mb-2">New ignore</h1>
+          <p class="mb-8 text-center">Pull requests, comments, reviews of specified developer or bot will be ignored.</p>
+          <section class="inline-block w-4/5">
+            <FormInputField
+              required
+              classList="w-full"
+              labelText="Ignore entity"
+              value={ignoreFormStore.entityValue}
+              onChange={(value) => setIgnoreFormStore('entityValue', value)}
+            />
+          </section>
+          <div class="flex">
+            <button class="btn-primary mt-8 mx-auto" onClick={onIgnoreCreate}>Save</button>
           </div>
         </div>
-      </Dropdown>
-      <Modal>
-        <h1 class="mb-8">New ignore</h1>
-        <p class="mb-4">Pull requests, comments, reviews of specified entity will be ignored.</p>
-        <section class="inline-block w-full">
-          <FormInputField
-            required
-            classList="w-full lg:w-3/4"
-            labelText="Ignore entity"
-            value={ignoreFormStore.entityValue}
-            onChange={(value) => setIgnoreFormStore('entityValue', value)}
-          />
-          <button class="btn-primary mt-4" onClick={onIgnoreCreate}>Save ignore</button>
-        </section>
       </Modal>
       <Flash />
     </>

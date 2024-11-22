@@ -95,82 +95,78 @@ export const DeveloperInsights = (props) => {
   }
 
   return (
-    <table class="table" cellSpacing="0">
-      <thead>
-        <tr>
-          <th />
-          <th>Developer</th>
-          <For each={props.insightTypes}>
-            {(insightType) =>
-              <th
-                class="cursor-pointer tooltip"
-                onClick={() => changeSorting(insightType)}
-              >
-                <div class="flex flex-row items-center">
-                  <span class="whitespace-nowrap">{SHORT_INSIGHT_NAMES[insightType]}</span>
-                  {pageState.sortBy === insightType ? (
-                    <span class="ml-2">
+    <div class="table-wrapper mt-4">
+      <table class="table w-full first-column-small" cellSpacing="0">
+        <thead>
+          <tr>
+            <th />
+            <th class="text-left">Developer</th>
+            <For each={props.insightTypes}>
+              {(insightType) =>
+                <th
+                  class="cursor-pointer"
+                  title={INSIGHT_TOOLTIPS[insightType]}
+                  onClick={() => changeSorting(insightType)}
+                >
+                  <div class="flex flex-row items-center">
+                    <span class="whitespace-nowrap mr-2">{SHORT_INSIGHT_NAMES[insightType]}</span>
+                    <Show when={pageState.sortBy === insightType} fallback={<Arrow rotated={false} />}>
                       <Arrow active rotated={pageState.sortDirection === 'asc'} />
-                    </span>
-                  ) : (
-                    <span class="ml-2">
-                      <Arrow rotated={false} />
-                    </span>
-                  )}
-                </div>
-                <span class="tooltiptext">{INSIGHT_TOOLTIPS[insightType]}</span>
-              </th>
+                    </Show>
+                  </div>
+                </th>
+              }
+            </For>
+          </tr>
+        </thead>
+        <tbody>
+          <For each={pageState.sortedEntities}>
+            {(data) =>
+              <tr>
+                <td>
+                  <a href={data.entity.html_url} target="_blank" rel="noopener noreferrer" class="inline-block w-6 h-6">
+                    <img src={data.entity.avatar_url} alt="entity" class="w-6 h-6" />
+                  </a>
+                </td>
+                <td>{data.entity.login}</td>
+                <For each={props.insightTypes}>
+                  {(insightType) => {
+                    const insight = data.values[insightType];
+
+                    if (insight.value === null) return <td>-</td>;
+
+                    return (
+                      <td>
+                        <span class="whitespace-nowrap">
+                          <Switch fallback={
+                            <>{insight.value}</>
+                          }>
+                            <Match when={TIME_ATTRIBUTES.includes(insightType)}>
+                              <>{toFormattedTime(insight.value)}</>
+                            </Match>
+                            <Match when={PERCENTILE_ATTRIBUTES.includes(insightType)}>
+                              <>{`${insight.value}%`}</>
+                            </Match>
+                          </Switch>
+                          <Show when={props.ratioType !== null && insight.ratio_value !== null}>
+                            <sup class={`${ratioClass(insight.ratio_value, insightType)} ml-1 text-xs`}>
+                              {valueSign(insight.ratio_value)}
+                              {props.ratioType === 'change' && TIME_ATTRIBUTES.includes(insightType)
+                                ? toFormattedTime(Math.abs(insight.ratio_value))
+                                : Math.abs(insight.ratio_value)}
+                              {props.ratioType === 'change' ? '' : '%'}
+                            </sup>
+                          </Show>
+                        </span>
+                      </td>
+                    );
+                  }}
+                </For>
+              </tr>
             }
           </For>
-        </tr>
-      </thead>
-      <tbody>
-        <For each={pageState.sortedEntities}>
-          {(data) =>
-            <tr>
-              <td>
-                <a href={data.entity.html_url} target="_blank" rel="noopener noreferrer" class="inline-block w-6 h-6">
-                  <img src={data.entity.avatar_url} alt="entity" class="w-6 h-6" />
-                </a>
-              </td>
-              <td>{data.entity.login}</td>
-              <For each={props.insightTypes}>
-                {(insightType) => {
-                  const insight = data.values[insightType];
-
-                  if (insight.value === null) return <td>-</td>;
-
-                  return (
-                    <td>
-                      <span class="whitespace-nowrap">
-                        <Switch fallback={
-                          <>{insight.value}</>
-                        }>
-                          <Match when={TIME_ATTRIBUTES.includes(insightType)}>
-                            <>{toFormattedTime(insight.value)}</>
-                          </Match>
-                          <Match when={PERCENTILE_ATTRIBUTES.includes(insightType)}>
-                            <>{`${insight.value}%`}</>
-                          </Match>
-                        </Switch>
-                        <Show when={props.ratioType !== null && insight.ratio_value !== null}>
-                          <sup class={`${ratioClass(insight.ratio_value, insightType)} ml-1 text-xs`}>
-                            {valueSign(insight.ratio_value)}
-                            {props.ratioType === 'change' && TIME_ATTRIBUTES.includes(insightType)
-                              ? toFormattedTime(Math.abs(insight.ratio_value))
-                              : Math.abs(insight.ratio_value)}
-                            {props.ratioType === 'change' ? '' : '%'}
-                          </sup>
-                        </Show>
-                      </span>
-                    </td>
-                  );
-                }}
-              </For>
-            </tr>
-          }
-        </For>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   );
 }

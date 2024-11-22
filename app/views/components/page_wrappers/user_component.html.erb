@@ -1,42 +1,58 @@
 <div class="flex flex-col lg:flex-row flex-1 max-h-screen">
-  <nav>
-    <div class="relative h-full lg:w-64 bg-zinc-800 flex flex-col">
-      <% cache('user_navigation_header_v1', expires_in: 24.hours) do %>
-        <section class="flex flex-row justify-between px-8 lg:px-0">
-          <%= link_to root_path, class: 'user-navigation-link lg:my-4 text-xl' do %>
-            <span>Pull<span class="text-orange-400">Keeper</span></span>
-          <% end %>
-          <div class="lg:hidden flex items-center">
-            <button type="button" class="mobile-menu-button">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-              </svg>
-            </button>
-          </div>
-        </section>
+  <nav class="sidebar">
+    <section class="flex flex-row justify-between">
+      <%= link_to root_path, class: 'header-logo' do %>
+        <span class="text-white">pull<span class="text-yellow-orange">keeper</span></span>
       <% end %>
-      <div class="navigation-menu flex-1 hidden lg:flex flex-col px-8 lg:px-0 py-4 lg:py-0">
-        <% cache('user_navigation_links_v1', expires_in: 24.hours) do %>
-          <section class="flex-1 flex flex-wrap flex-col mb-4 lg:mb-0">
-            <%= link_to t('components.page_wrappers.page_component.companies'), companies_path, class: 'user-navigation-link' %>
-            <%= link_to t('components.page_wrappers.page_component.repositories'), repositories_path, class: 'user-navigation-link' %>
-            <%= link_to t('components.page_wrappers.page_component.achievements'), achievements_path, class: 'user-navigation-link' %>
-            <%= link_to t('components.page_wrappers.page_component.profile'), profile_path, class: 'user-navigation-link' %>
-          </section>
-        <% end %>
-        <section class="flex flex-col lg:pb-8">
-          <%= js_component 'FeedbackForm', email: current_user.email, class_list: 'user-navigation-link' %>
-          <% cache('user_navigation_bottom_v3', expires_in: 24.hours) do %>
-            <%= link_to 'Metrics', metrics_path, class: 'user-navigation-link' %>
-            <a href="/api-docs" rel="noopener noreferrer" class="user-navigation-link">API docs</a>
-            <%= link_to 'Privacy policy', privacy_path, class: 'user-navigation-link' %>
-            <%= link_to t('components.page_wrappers.page_component.logout'), logout_path, class: 'user-navigation-link' %>
-          <% end %>
-        </section>
+      <div class="lg:hidden flex items-center">
+        <button type="button" class="mobile-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+          </svg>
+        </button>
       </div>
-    </div>
+    </section>
+    <section class="navigation-menu hidden lg:flex flex-col lg:mt-10">
+      <% if current_user %>
+        <%= link_to companies_path, class: "user-navigation-link #{'active' if current_page?(companies_path)}" do %>
+          <span><%= embedded_svg('icons/sidebar/apartment.svg') %></span>
+          <span><%= t('components.page_wrappers.page_component.companies') %></span>
+        <% end %>
+        <%= link_to repositories_path, class: "user-navigation-link #{'active' if current_page?(repositories_path)}" do %>
+          <span><%= embedded_svg('icons/sidebar/lab_profile.svg') %></span>
+          <span><%= t('components.page_wrappers.page_component.repositories') %></span>
+        <% end %>
+        <%= link_to achievements_path, class: "user-navigation-link #{'active' if current_page?(achievements_path)}" do %>
+          <span><%= embedded_svg('icons/sidebar/trophy.svg') %></span>
+          <span><%= t('components.page_wrappers.page_component.achievements') %></span>
+        <% end %>
+        <%= link_to profile_path, class: "user-navigation-link #{'active' if current_page?(profile_path)}" do %>
+          <span><%= embedded_svg('icons/sidebar/account_circle.svg') %></span>
+          <span><%= t('components.page_wrappers.page_component.profile') %></span>
+        <% end %>
+        <%= js_component 'FeedbackForm', email: current_user.email, class_list: 'user-navigation-link' %>
+      <% end %>
+      <%= link_to metrics_path, class: "user-navigation-link #{'active' if current_page?(metrics_path)}" do %>
+        <span><%= embedded_svg('icons/sidebar/bar_chart.svg') %></span>
+        <span>Metrics</span>
+      <% end %>
+      <%= link_to privacy_path, class: "user-navigation-link #{'active' if current_page?(privacy_path)}" do %>
+        <span><%= embedded_svg('icons/sidebar/security.svg') %></span>
+        <span>Privacy policy</span>
+      <% end %>
+      <a href="/api-docs" rel="noopener noreferrer" class="user-navigation-link">
+        <span><%= embedded_svg('icons/sidebar/folder.svg') %></span>
+        <span>API docs</span>
+      </a>
+      <% if current_user %>
+        <%= link_to logout_path, class: 'user-navigation-link' do %>
+          <span><%= embedded_svg('icons/sidebar/move_item.svg') %></span>
+          <span><%= t('components.page_wrappers.page_component.logout') %></span>
+        <% end %>
+      <% end %>
+    </section>
   </nav>
-  <div class="flex-1 w-full p-8 lg:p-12 overflow-y-scroll bg-stone-100">
+  <div class="flex-1 overflow-y-scroll bg-cultured">
     <%= content %>
   </div>
 </div>

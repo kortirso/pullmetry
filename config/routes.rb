@@ -44,10 +44,12 @@ Rails.application.routes.draw do
       resource :configuration, only: %i[update], module: 'companies'
       resource :transfer, only: %i[create], module: 'companies'
       resources :insights, only: %i[index]
+      resources :access_tokens, only: %i[create]
     end
     resources :repositories, only: %i[create] do
       resources :insights, only: %i[index]
       resources :repository_insights, only: %i[index], module: 'repositories'
+      resources :access_tokens, only: %i[create]
     end
     resources :notifications, only: %i[create destroy]
     resources :invites, only: %i[create]
@@ -86,11 +88,8 @@ Rails.application.routes.draw do
     resources :companies, only: %i[index destroy] do
       resource :configuration, only: %i[edit], module: 'companies'
       resources :repositories, only: %i[index], module: 'companies'
-      resources :access_tokens, only: %i[new create]
     end
-    resources :repositories, only: %i[index destroy] do
-      resources :access_tokens, only: %i[new create]
-    end
+    resources :repositories, only: %i[index destroy]
 
     resource :profile, only: %i[show destroy]
     resource :achievements, only: %i[show]
@@ -100,10 +99,11 @@ Rails.application.routes.draw do
       resource :unsubscribe, only: %i[show]
     end
 
-    post 'subscriptions/trial', to: 'subscriptions/trial#create'
+    get 'subscriptions/trial', to: 'subscriptions/trial#create'
 
     get 'privacy', to: 'welcome#privacy'
     get 'metrics', to: 'welcome#metrics'
+    get 'access_tokens', to: 'welcome#access_tokens'
   end
 
   root 'web/welcome#index'

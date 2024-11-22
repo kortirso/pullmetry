@@ -10,15 +10,26 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Martian Mono', ...defaultTheme.fontFamily.sans],
-      },
-      maxWidth: {
-        '8xl': '90rem',
+        sans: ['Manrope', ...defaultTheme.fontFamily.sans],
+        martian: ['Martian Mono', ...defaultTheme.fontFamily.sans],
       },
       lineHeight: {
-        '12': '3rem',
+        '16': '4rem',
       }
     },
+    colors: {
+      'black': '#000',
+      'eerie-black': '#18191F',
+      'middle-gray': '#948D83',
+      'chinese-silver': '#CCCCCC',
+      'yellow-orange': '#FBA346', // yellow
+      'tart-orange': '#FB4646', // red
+      'iceberg': '#63B3CE',
+      'blue': '#A2D8EB',
+      'gainsboro': '#DBDBDB',
+      'cultured': '#F4F5F7',
+      'white': '#FFF',
+    }
   },
   plugins: [
     require('@tailwindcss/forms'),

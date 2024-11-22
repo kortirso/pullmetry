@@ -1,8 +1,8 @@
 import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { DeveloperInsights, RepositoryInsights } from '../../../components';
-import { Chevron, Delete, Github, Gitlab, Key } from '../../../assets';
+import { DeveloperInsights, RepositoryInsights, AccessTokenForm } from '../../../components';
+import { InsightsChevron, Delete, Github, Gitlab } from '../../../assets';
 import { convertDate, convertTime, csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
@@ -62,6 +62,36 @@ export const Repository = (props) => {
     );
   });
 
+  const editLinks = createMemo(() => {
+    if (!props.editLinks) return <></>;
+
+    return (
+      <div class="flex items-center">
+        <AccessTokenForm tokenable="repositories" uuid={props.uuid} required={props.accessTokenStatus === 'empty'} />
+        <Show when={props.editLinks.destroy}>
+          <form
+            ref={deleteForm}
+            method="post"
+            action={props.editLinks.destroy}
+            class="w-6 h-6"
+            onSubmit={(event) => handleConfirm(event)}
+          >
+            <input type="hidden" name="_method" value="delete" autoComplete="off" />
+            <input
+              type="hidden"
+              name="authenticity_token"
+              value={csrfToken()}
+              autoComplete="off"
+            />
+            <button type="submit" title="Delete repository" onClick={(event) => event.stopPropagation()}>
+              <Delete />
+            </button>
+          </form>
+        </Show>
+      </div>
+    );
+  });
+
   const toggle = () => setPageState('isExpanded', !pageState.isExpanded);
 
   const handleConfirm = (event) => {
@@ -72,30 +102,13 @@ export const Repository = (props) => {
   }
 
   return (
-    <div class="mb-4 bg-white rounded border border-stone-200">
+    <div class="box mb-4">
       <div
-        class="relative cursor-pointer p-8 flex justify-between items-center"
-        onClick={() => toggle()}
+        class="relative cursor-pointer p-10 flex justify-between items-center"
+        onClick={toggle}
       >
-        <div>
-          <h2 class="sm:flex sm:flex-row sm:items-center">
-            <div class="flex flex-row items-center">
-              <Show when={props.avatarUrl !== null}>
-                <img
-                  src={props.avatarUrl}
-                  alt="repository owner avatar"
-                  class="w-8 h-8 rounded-sm mr-2"
-                />
-              </Show>
-              {props.title}
-            </div>
-            <Show when={props.accessTokenStatus === 'valid' && !props.accessable || props.accessTokenStatus === 'invalid'}>
-              <span class="badge mt-4 sm:mt-0 sm:ml-4">
-                Access token's update is required
-              </span>
-            </Show>
-          </h2>
-          <p class="flex items center">
+        <div class="pr-4">
+          <div class="flex flex-row items-center">
             <a
               href={props.repositoryUrl}
               target="_blank"
@@ -104,88 +117,86 @@ export const Repository = (props) => {
               onClick={(event) => event.stopPropagation()}
               class="mr-4 flex items-center"
             >
-              <Switch fallback={<Github />}>
-                <Match when={props.provider === 'gitlab'}>
-                  <Gitlab />
-                </Match>
-              </Switch>
+              <Show
+                when={props.avatarUrl !== null}
+                fallback={
+                  <Switch fallback={<Github />}>
+                    <Match when={props.provider === 'gitlab'}>
+                      <Gitlab />
+                    </Match>
+                  </Switch>
+                }
+              >
+                <img
+                  src={props.avatarUrl}
+                  alt="repository owner avatar"
+                  class="w-8 h-8 rounded-sm mr-2"
+                />
+              </Show>
             </a>
-            <Show
-              when={props.syncedAt}
-              fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
-            >
-              <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
+            <h2>{props.title}</h2>
+          </div>
+          <Show
+            when={props.syncedAt}
+            fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
+          >
+            <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
+          </Show>
+          <div class="sm:flex sm:flex-row sm:items-center">
+            <Show when={props.accessTokenStatus === 'valid' && !props.accessable || props.accessTokenStatus === 'invalid'}>
+              <span class="badge mr-2">
+                Access token's update is required
+              </span>
             </Show>
             <Show when={props.accessTokenStatus === 'empty'}>
-              <span class="ml-4 badge">
+              <span class="badge mr-2">
                 Need to add access token
               </span>
             </Show>
-          </p>
-        </div>
-        <Chevron rotated={pageState.isExpanded} />
-        <Show when={props.editLinks}>
-          <div class="absolute top-4 right-4 sm:top-8 sm:right-20 flex items-center">
-            <Show when={props.editLinks.accessToken}>
-              <a
-                href={props.editLinks.accessToken}
-                class="mr-2"
-                classList={{ ['p-0.5 bg-orange-300 border border-orange-400 rounded-lg text-white']: props.accessTokenStatus === 'empty' }}
-                onClick={(event) => event.stopPropagation()}
-              >
-                <Key />
-              </a>
-            </Show>
-            <Show when={props.editLinks.destroy}>
-              <form
-                ref={deleteForm}
-                method="post"
-                action={props.editLinks.destroy}
-                class="w-6 h-6"
-                onSubmit={(event) => handleConfirm(event)}
-              >
-                <input type="hidden" name="_method" value="delete" autoComplete="off" />
-                <input
-                  type="hidden"
-                  name="authenticity_token"
-                  value={csrfToken()}
-                  autoComplete="off"
-                />
-                <button type="submit" onClick={(event) => event.stopPropagation()}>
-                  <Delete />
-                </button>
-              </form>
-            </Show>
           </div>
-        </Show>
+        </div>
+        <InsightsChevron rotated={pageState.isExpanded} />
       </div>
       <Show when={pageState.isExpanded}>
-        <div class="pt-4 px-8 pb-8">
-          {repositoryInsights()}
-          <div class="relative">
-            <h3 class="absolute top-0">Developer insights</h3>
-            <div class="overflow-x-scroll pt-16">
-              <Switch fallback={
-                <>
-                  {developerInsights()}
-                  <a
-                    class="btn-primary btn-small mt-8"
-                    href={`/api/frontend/repositories/${props.uuid}/insights.pdf`}
-                  >Download insights PDF</a>
-                </>
-              }>
-                <Match when={pageState.entities === undefined}>
-                  <></>
-                </Match>
-                <Match when={pageState.entities.length === 0}>
-                  <p>There are no insights yet</p>
-                </Match>
-                <Match when={pageState.insightTypes.length === 0}>
-                  <p>There are no selected insight attributes yet</p>
-                </Match>
-              </Switch>
+        <div class="p-10 pt-0">
+          <Switch fallback={
+            <div>
+              {repositoryInsights()}
+              <h3>Developer insights</h3>
+              {developerInsights()}
+              <div class="mt-8 flex justify-between items-center">  
+                <a
+                  class="btn-primary btn-small"
+                  href={`/api/frontend/repositories/${props.uuid}/insights.pdf`}
+                  title="Click to download PDF file with insights report"
+                >Download insights PDF</a>
+                {editLinks()}
+              </div>
             </div>
-          </div>
+          }>
+            <Match when={pageState.entities === undefined}>
+              <></>
+            </Match>
+            <Match when={pageState.entities.length === 0}>
+              <div>
+                {repositoryInsights()}
+                <div class="flex justify-between items-center">
+                  <h3>Developer insights</h3>
+                  {editLinks()}
+                </div>
+                <p class="light-color mt-3">There are no insights yet</p>
+              </div>
+            </Match>
+            <Match when={pageState.insightTypes.length === 0}>
+              <div>
+                <div class="flex justify-between items-center">
+                  <h3>Developer insights</h3>
+                  {editLinks()}
+                </div>
+                <p class="light-color mt-3">There are no selected insight attributes yet</p>
+              </div>
+            </Match>
+          </Switch>
         </div>
       </Show>
     </div>

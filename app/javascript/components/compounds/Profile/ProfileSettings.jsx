@@ -1,6 +1,6 @@
 import { createStore } from 'solid-js/store';
 
-import { FormInputField, Dropdown, Select, createFlash } from '../../molecules';
+import { FormInputField, Select, createFlash } from '../../molecules';
 
 import { updateWorkTimeRequest } from './requests/updateWorkTimeRequest';
 
@@ -34,50 +34,43 @@ export const ProfileSettings = (props) => {
 
   return (
     <>
-      <Dropdown title="User settings">
-        <div class="py-6 px-8">
-          <div class="grid lg:grid-cols-2 gap-8">
-            <div class="grid lg:grid-cols-3 lg:gap-8 lg:mt-4">
-              <div class="flex-1">
-                <FormInputField
-                  required
-                  classList="w-full"
-                  labelText="Work start time"
-                  placeholder="09:00"
-                  value={formStore.startsAt}
-                  onChange={(value) => setFormStore('startsAt', value)}
-                />
-              </div>
-              <div class="flex-1">
-                <FormInputField
-                  required
-                  classList="w-full"
-                  labelText="Work end time"
-                  placeholder="18:00"
-                  value={formStore.endsAt}
-                  onChange={(value) => setFormStore('endsAt', value)}
-                />
-              </div>
-              <div class="flex-1">
-                <Select
-                  required
-                  classList="w-full"
-                  labelText="Work time zone"
-                  items={TIME_ZONES}
-                  selectedValue={formStore.timezone}
-                  onSelect={(value) => setFormStore('timezone', value)}
-                />
-              </div>
-            </div>
-            <div>
-              <p>You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
-            </div>
+      <div class="box mb-4 p-8">
+        <h2 class="mb-2">User settings</h2>
+        <p class="mb-6 light-color">You can select your working time. This allows better calculations of average review time, because it will not count not-working time and weekends. Company can use it's own worktime configuration.</p>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
+          <div class="lg:w-3/4 grid md:grid-cols-3 md:gap-4 lg:gap-8 mb-6 lg:mb-0">
+            <Select
+              required
+              classList="w-full mb-6 md:mb-0"
+              labelText="Work time zone"
+              items={TIME_ZONES}
+              selectedValue={formStore.timezone}
+              onSelect={(value) => setFormStore('timezone', value)}
+            />
+            <FormInputField
+              required
+              classList="w-full mb-6 md:mb-0"
+              labelText="Work start time"
+              placeholder="09:00"
+              value={formStore.startsAt}
+              onChange={(value) => setFormStore('startsAt', value)}
+            />
+            <FormInputField
+              required
+              classList="w-full"
+              labelText="Work end time"
+              placeholder="18:00"
+              value={formStore.endsAt}
+              onChange={(value) => setFormStore('endsAt', value)}
+            />
           </div>
-          <button class="btn-primary btn-small mt-8 lg:mt-4 mb-2" onClick={UpdateSettings}>Update user settings</button>
+          <p>
+            <button class="btn-primary btn-small" onClick={UpdateSettings}>Update user settings</button>
+          </p>
         </div>
-      </Dropdown>
+      </div>
       <Flash />
     </>
-  )
-};
+  );
+}
 
