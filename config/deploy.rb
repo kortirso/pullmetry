@@ -30,7 +30,7 @@ append :linked_files, 'config/master.key'
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/log', 'public/system', 'vendor'
 
 # Default value for default_env is {}
-set :default_env, { path: '/home/deploy/.rvm/bin:$PATH' }
+# set :default_env, { path: '/home/deploy/.rvm/bin:$PATH' }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
@@ -113,8 +113,8 @@ namespace :deploy do
       run_locally do
         precompile_env = fetch(:precompile_env) || fetch(:rails_env) || 'production'
         with rails_env: precompile_env do
-          execute 'rake', 'assets:clean'
-          execute 'rake', 'assets:precompile'
+          execute 'bundle exec rake assets:clean'
+          execute 'bundle exec rake assets:precompile'
         end
       end
     end
