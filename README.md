@@ -72,11 +72,19 @@ $ rails rswag:specs:swaggerize
 ## Application layers
 
 commands - persisters layer with validations and persisting
+
 deliveries, notifiers - delivery layer with different providers
+
 queries - separated database queries
+
 services - business logic layer
+
 policies - authorization logic
 
 ## License
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Please see the [LICENSE](./LICENSE.md) file in our repository for the full text.
+
+## Sponsors
+
+[<img width="200" src="https://evrone.com/logo/evrone-sponsored-logo.png">](https://evrone.com/?utm_source=pullkeeper)
