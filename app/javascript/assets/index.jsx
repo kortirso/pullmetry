@@ -8,3 +8,4 @@ export * from './Gitlab';
 export * from './Key';
 export * from './Close';
 export * from './Feedback';
+export * from './Security';

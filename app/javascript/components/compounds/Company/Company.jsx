@@ -2,7 +2,7 @@ import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { DeveloperInsights, AccessTokenNewModal } from '../../../components';
-import { InsightsChevron, Delete, Edit } from '../../../assets';
+import { InsightsChevron, Delete, Edit, Security } from '../../../assets';
 import { csrfToken } from '../../../helpers';
 
 import { fetchInsightsRequest } from './requests/fetchInsightsRequest';
@@ -103,6 +103,11 @@ export const Company = (props) => {
       >
         <div class="pr-4">
           <div class="flex">
+            <Show when={props.isPrivate}>
+              <span class="mr-1 flex items-center" title="Repository is private">
+                <Security />
+              </span>
+            </Show>
             <h2>{props.title}</h2>
             <Show when={props.repositoriesCount > 0}>
               <a
@@ -116,11 +121,6 @@ export const Company = (props) => {
             </Show>
           </div>
           <div class="sm:flex sm:flex-row sm:items-center">
-            <Show when={props.isPrivate}>
-              <span class="badge mr-2" title="Repository is private">
-                Private
-              </span>
-            </Show>
             <Show when={props.unaccessable}>
               <span class="badge mr-2">
                 Company has repositories with access error

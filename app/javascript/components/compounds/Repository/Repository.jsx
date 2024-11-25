@@ -115,7 +115,7 @@ export const Repository = (props) => {
               rel="noopener noreferrer"
               area-label="Visit repository page"
               onClick={(event) => event.stopPropagation()}
-              class="mr-4 flex items-center"
+              class="mr-2 flex items-center"
             >
               <Show
                 when={props.avatarUrl !== null}
@@ -130,7 +130,7 @@ export const Repository = (props) => {
                 <img
                   src={props.avatarUrl}
                   alt="repository owner avatar"
-                  class="w-8 h-8 rounded-sm mr-2"
+                  class="w-8 h-8 rounded-sm"
                 />
               </Show>
             </a>
