@@ -12,7 +12,7 @@ module Web
         find_invites
         find_notifications
         find_webhooks
-        # find_excludes_groups
+        find_excludes_groups
       end
 
       private
@@ -40,26 +40,26 @@ module Web
         @webhooks = @company.webhooks.hashable_pluck(:uuid, :source, :url)
       end
 
-      # def find_excludes_groups
-      #   @excludes_groups =
-      #     JSON.parse(
-      #       Panko::ArraySerializer.new(
-      #         @company.excludes_groups.order(id: :desc),
-      #         each_serializer: Excludes::GroupSerializer,
-      #         context: {
-      #           rules: excludes_rules
-      #         }
-      #       ).to_json
-      #     )
-      # end
+      def find_excludes_groups
+        @excludes_groups =
+          JSON.parse(
+            Panko::ArraySerializer.new(
+              @company.excludes_groups.order(id: :desc),
+              each_serializer: Excludes::GroupSerializer,
+              context: {
+                rules: excludes_rules
+              }
+            ).to_json
+          )
+      end
 
-      # def excludes_rules
-      #   Excludes::Rule
-      #     .joins(:excludes_group)
-      #     .where(excludes_groups: { insightable: @company })
-      #     .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
-      #     .group_by { |rule| rule[:excludes_groups_uuid] }
-      # end
+      def excludes_rules
+        Excludes::Rule
+          .joins(:excludes_group)
+          .where(excludes_groups: { insightable: @company })
+          .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
+          .group_by { |rule| rule[:excludes_groups_uuid] }
+      end
     end
   end
 end

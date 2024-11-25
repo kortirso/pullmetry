@@ -128,11 +128,11 @@ export const CompanyEditNotifications = (props) => {
   return (
     <>
       <div class="box mb-4 p-8">
-        <h2 class="mb-2">Notifications</h2>
+        <h2 class="mb-6">Notifications</h2>
         <p class="mb-4 light-color">For getting Slack webhook url you need to create Slack application and enabled incoming webhooks, all details you can find by url <a href="https://api.slack.com/messaging/webhooks" class="simple-link">Slack incoming webhooks</a>.</p>
         <p class="mb-4 light-color">For getting Discord webhook url you need to change settings of any channel in Discord. After selecting channel settings visit Integration / Webhooks, create webhook and copy its url.</p>
         <p class="mb-4 light-color">For getting Telegram chat id you need to find <span class="font-medium">@pullkeeper_bot</span> user in Telegram, add it to your group, and by using chat command <span class="font-medium">/get_chat_id</span> you will get chat id for using as Telegram webhook. Such id is always negative number for groups and positive for users.</p>
-        <p class="mb-6 light-color">If notification is enabled for at least one source then it will be send to url of notification's webhook or if not present to company's webhook. So you can send different notifications to one channel or to different channels.</p>
+        <p class="mt-10 mb-6 light-color">If notification is enabled for at least one source then it will be send to url of notification's webhook or if not present to company's webhook. So you can send different notifications to one channel or to different channels.</p>
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <Show
             when={pageState.webhooks.length > 0}

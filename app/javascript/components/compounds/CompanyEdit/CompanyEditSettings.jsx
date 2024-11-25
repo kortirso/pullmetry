@@ -35,7 +35,7 @@ export const CompanyEditSettings = (props) => {
   return (
     <>
       <div class="box mb-4 p-8">
-        <h2 class="mb-2">Company settings</h2>
+        <h2 class="mb-6">Company settings</h2>
         <p class="mb-6 light-color">You can select working time of your company. This allows better calculations of average review time, because it will not count not-working time and weekends.</p>
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <div class="lg:w-3/4 grid md:grid-cols-3 md:gap-4 lg:gap-8 mb-6 lg:mb-0">

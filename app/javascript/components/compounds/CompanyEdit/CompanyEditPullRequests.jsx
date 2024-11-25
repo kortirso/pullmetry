@@ -7,13 +7,29 @@ import { objectKeysToCamelCase } from '../../../helpers';
 import { updateCompanyConfigurationRequest } from './requests/updateCompanyConfigurationRequest';
 import { createIgnoreRequest } from './requests/createIgnoreRequest';
 import { removeIgnoreRequest } from './requests/removeIgnoreRequest';
+import { removeExcludeGroupRequest } from './requests/removeExcludeGroupRequest';
+
+const TARGETS = {
+  'title': 'Title',
+  'description': 'Description',
+  'branch_name': 'Branch name',
+  'destination_branch_name': 'Destination branch name'
+}
+
+const CONDITIONS = {
+  'equal': 'is equal',
+  'not_equal': 'is not equal',
+  'contain': 'contains',
+  'not_contain': 'does not contain'
+}
 
 export const CompanyEditPullRequests = (props) => {
   /* eslint-disable solid/reactivity */
   const [pageState, setPageState] = createStore({
     defaultFetchPeriod: props.fetchPeriod,
     fetchPeriod: props.fetchPeriod,
-    ignores: props.ignores
+    ignores: props.ignores,
+    excludesGroups: props.excludesGroups
   });
   /* eslint-enable solid/reactivity */
 
@@ -53,10 +69,17 @@ export const CompanyEditPullRequests = (props) => {
     else setPageState({ ...pageState, ignores: pageState.ignores.filter((item) => item.uuid !== uuid) });
   }
 
+  const onExcludeGroupRemove = async (uuid) => {
+    const result = await removeExcludeGroupRequest(uuid);
+
+    if (result.errors) renderErrors(result.errors);
+    else setPageState({ ...pageState, excludesGroups: pageState.excludesGroups.filter((item) => item.uuid !== uuid) });
+  }
+
   return (
     <>
       <div class="box mb-4 p-8">
-        <h2 class="mb-2">Fetching pull requests</h2>
+        <h2 class="mb-6">Fetching pull requests</h2>
         <p class="mb-6 light-color">You can set fetch period for collecting data of pull requests. For regular accounts - maximum 30 days, for premium - 90 days. By default fetch period is 30 days. So if 30 is enough for you - you can skip this attribute.</p>
         <FormInputField
           confirmable
@@ -69,7 +92,50 @@ export const CompanyEditPullRequests = (props) => {
           onConfirm={updateFetchPeriod}
           onCancel={resetFetchPeriod}
         />
-        <p class="my-6 light-color">In this block you can specify ignoring developers/bots while fetching pull requests data.</p>
+        <p class="mt-10 mb-2 light-color">In this block you can specify ignoring pull requests while fetching by some condition.</p>
+        <p class="mb-6 light-color">Pull request will be excluded from processing if all rules in any group match.</p>
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
+          <Show
+            when={pageState.excludesGroups.length > 0}
+            fallback={<p>There are no exclude rules yet.</p>}
+          >
+            <div class="table-wrapper w-fit">
+              <table class="table">
+                <tbody>
+                  <For each={pageState.excludesGroups}>
+                    {(excludeGroup) =>
+                      <tr>
+                        <td>
+                          <For each={excludeGroup.excludesRules}>
+                            {(excludesRule) =>
+                              <p>
+                                <span class="mr-4">{TARGETS[excludesRule.target]}</span>
+                                <span class="mr-4">{CONDITIONS[excludesRule.condition]}</span>
+                                <span>{excludesRule.value}</span>
+                              </p>
+                            }
+                          </For>
+                        </td>
+                        <td class="!min-w-0">
+                          <p
+                            class="btn-danger btn-xs"
+                            onClick={() => onExcludeGroupRemove(excludeGroup.uuid)}
+                          >X</p>
+                        </td>
+                      </tr>
+                    }
+                  </For>
+                </tbody>
+              </table>
+            </div>
+          </Show>
+          <p class="flex lg:justify-center mt-6 lg:mt-0">
+            <button
+              class="btn-primary btn-small"
+            >Add exclude rules</button>
+          </p>
+        </div>
+        <p class="mt-10 mb-6 light-color">In this block you can specify ignoring developers/bots while fetching pull requests data.</p>
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <Show
             when={pageState.ignores.length > 0}

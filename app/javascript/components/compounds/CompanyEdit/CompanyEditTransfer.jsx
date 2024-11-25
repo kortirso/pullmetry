@@ -21,7 +21,7 @@ export const CompanyEditTransfer = (props) => {
   return (
     <>
       <div class="box p-8">
-        <h2 class="mb-2">Transfer</h2>
+        <h2 class="mb-6">Transfer</h2>
         <p class="mb-6 light-color">You can transfer company's ownership to another user. If such user is allowed to create new companies then ownership will be transfered. You just need to specify another user's uuid. This action is not revertable.</p>
         <div>
           <FormInputField

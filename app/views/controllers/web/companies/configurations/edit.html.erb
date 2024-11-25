@@ -19,7 +19,8 @@
       js_component 'CompanyEditPullRequests',
         company_uuid: @company.uuid,
         fetch_period: @current_config.fetch_period,
-        ignores: @ignores
+        ignores: @ignores,
+        excludes_groups: @excludes_groups
     %>
     <%=
       js_component 'CompanyEditInsights',

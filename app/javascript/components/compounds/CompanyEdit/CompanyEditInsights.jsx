@@ -87,7 +87,7 @@ export const CompanyEditInsights = (props) => {
   return (
     <>
       <div class="box mb-4 p-8">
-        <h2 class="mb-2">Insights</h2>
+        <h2 class="mb-6">Insights</h2>
         <p class="mb-6 light-color">If this configuration is enabled then you can select specific insight attributes to calculate and render such information at insight tables.</p>
         <div class="flex flex-wrap">
           <For each={Object.entries(ATTRIBUTE_NAMES)}>
@@ -104,7 +104,7 @@ export const CompanyEditInsights = (props) => {
             }
           </For>
         </div>
-        <p class="my-6 light-color">By configuring main insight attribute you can set default sorting order for insights table.</p>
+        <p class="mt-10 mb-6 light-color">By configuring main insight attribute you can set default sorting order for insights table.</p>
         <Select
           classList="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           labelText="Main attribute for sorting insights"
@@ -112,7 +112,7 @@ export const CompanyEditInsights = (props) => {
           selectedValue={pageState.mainAttribute}
           onSelect={(value) => updateMainAttribute(value)}
         />
-        <p class="my-6 light-color">You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
+        <p class="mt-10 mb-6 light-color">You can select what type of average calculation to use: arithmetic mean, geometric mean, median, etc.</p>
         <Select
           classList="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4"
           labelText="Average type"
@@ -120,15 +120,10 @@ export const CompanyEditInsights = (props) => {
           selectedValue={pageState.averageType}
           onSelect={(value) => updateAverageType(value)}
         />
-        <p class="my-6 light-color">If this configuration is enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
+        <p class="mt-10 mb-6 light-color">When insights ratio configuration is enabled then each insight data will have comparison with similar data for previous period. This allows to see dynamic of changes, not only absolute values.</p>
         <Show
           when={props.isPremium}
-          fallback={
-            <>
-              <h3 class="text-xl">Insight ratios</h3>
-              <p>This configuration is available for premium accounts.</p>
-            </>
-          }
+          fallback={<p class="light-color">This configuration is available for premium accounts.</p>}
         >
           <Checkbox
             right

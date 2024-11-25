@@ -68,7 +68,7 @@ export const CompanyEditPrivacy = (props) => {
   return (
     <>
       <div class="box mb-4 p-8">
-        <h2 class="mb-2">Privacy</h2>
+        <h2 class="mb-6">Privacy</h2>
         <p class="mb-6 light-color">If this configuration enabled then company's developers can't have access to insights. If disabled - developers will see insights immediately after login. Access permissions will be changed after the next synchronization.</p>
         <Checkbox
           left
@@ -76,7 +76,7 @@ export const CompanyEditPrivacy = (props) => {
           value={pageState.private}
           onToggle={togglePrivate}
         />
-        <p class="my-6 light-color">In this block you can specify coworkers from company that don't have insights but it requires for them to see statistics.</p>
+        <p class="mt-10 mb-6 light-color">In this block you can specify coworkers from company that don't have insights but it requires for them to see statistics.</p>
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end">
           <div>
             <Show when={pageState.acceptedInvites.length > 0}>
