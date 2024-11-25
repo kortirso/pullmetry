@@ -1,7 +1,7 @@
 import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { DeveloperInsights, AccessTokenForm } from '../../../components';
+import { DeveloperInsights, AccessTokenNewModal } from '../../../components';
 import { InsightsChevron, Delete, Edit } from '../../../assets';
 import { csrfToken } from '../../../helpers';
 
@@ -51,7 +51,7 @@ export const Company = (props) => {
 
     return (
       <div class="flex items-center">
-        <AccessTokenForm tokenable="companies" uuid={props.uuid} required={props.editLinks.needAccessToken} />
+        <AccessTokenNewModal tokenable="companies" uuid={props.uuid} required={props.editLinks.needAccessToken} />
         <Show when={props.editLinks.configuration}>
           <a
             href={props.editLinks.configuration}

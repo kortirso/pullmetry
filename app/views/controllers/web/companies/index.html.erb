@@ -2,11 +2,20 @@
   <section class="min-h-full p-8 lg:p-12 relative">
     <div class="flex justify-between items-center mb-8">
       <h1 class="m-0">Companies</h1>
-      <%=
-        js_component 'CompanyForm',
-          accounts_for_companies: @accounts_for_companies,
-          account_uuid: current_user.uuid
-      %>
+      <% if @companies.any? { |company| company.user_id == current_user.id } %>
+        <%=
+          js_component 'CompanyNewModal',
+            accounts_for_companies: @accounts_for_companies,
+            account_uuid: current_user.uuid
+        %>
+      <% else %>
+        <%=
+          js_component 'Wizard',
+            accounts_for_companies: @accounts_for_companies,
+            account_uuid: current_user.uuid,
+            providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
+        %>
+      <% end %>
     </div>
     <% if @companies.any? { |company| company.user_id == current_user.id && !company.accessable } %>
       <div class="badge mb-4 p-4">

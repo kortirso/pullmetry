@@ -2,7 +2,7 @@ import { render } from 'solid-js/web';
 
 import {
   Company,
-  CompanyForm,
+  CompanyNewModal,
   CompanyEditPrivacy,
   CompanyEditPullRequests,
   CompanyEditInsights,
@@ -11,17 +11,18 @@ import {
   CompanyEditSettings,
   FeedbackForm,
   Repository,
-  RepositoryForm,
+  RepositoryNewModal,
   ProfilePrivacy,
   ProfileDelete,
   ProfileVacations,
   ProfileSettings,
-  WebFlash
+  WebFlash,
+  Wizard
 } from './components';
 
 const components = {
   Company,
-  CompanyForm,
+  CompanyNewModal,
   CompanyEditPrivacy,
   CompanyEditPullRequests,
   CompanyEditInsights,
@@ -30,13 +31,14 @@ const components = {
   CompanyEditSettings,
   FeedbackForm,
   Repository,
-  RepositoryForm,
+  RepositoryNewModal,
   ProfilePrivacy,
   ProfileDelete,
   ProfileVacations,
   ProfileSettings,
-  WebFlash
-};
+  WebFlash,
+  Wizard
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const mountPoints = document.querySelectorAll('[data-js-component]');
@@ -63,6 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenuButton.addEventListener('click', () => {
       document.querySelector('.navigation-menu').classList.toggle('hidden');
     });
-  };
+  }
 });
 
