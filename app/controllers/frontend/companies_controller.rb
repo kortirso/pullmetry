@@ -8,11 +8,18 @@ module Frontend
       # commento: companies.title, companies.user_id
       case add_company.call(company_params.merge(user: user))
       in { errors: errors } then render json: { errors: errors }, status: :ok
-      else render json: { redirect_path: companies_path }, status: :ok
+      in { result: result }
+        render json: Panko::Response.create { |response| json_response(response, result) }, status: :ok
       end
     end
 
     private
+
+    def json_response(response, result)
+      {
+        result: response.serializer(result, CompanySerializer, only: %i[uuid])
+      }
+    end
 
     def user
       return current_user if current_user.uuid == account_uuid || account_uuid.nil?

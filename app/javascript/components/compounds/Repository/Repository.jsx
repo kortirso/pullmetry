@@ -1,7 +1,7 @@
 import { createEffect, createMemo, Show, Switch, Match } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
-import { DeveloperInsights, RepositoryInsights, AccessTokenForm } from '../../../components';
+import { DeveloperInsights, RepositoryInsights, AccessTokenNewModal } from '../../../components';
 import { InsightsChevron, Delete, Github, Gitlab } from '../../../assets';
 import { convertDate, convertTime, csrfToken } from '../../../helpers';
 
@@ -67,7 +67,7 @@ export const Repository = (props) => {
 
     return (
       <div class="flex items-center">
-        <AccessTokenForm tokenable="repositories" uuid={props.uuid} required={props.accessTokenStatus === 'empty'} />
+        <AccessTokenNewModal tokenable="repositories" uuid={props.uuid} required={props.accessTokenStatus === 'empty'} />
         <Show when={props.editLinks.destroy}>
           <form
             ref={deleteForm}

@@ -4,7 +4,7 @@
       <h1 class="m-0">Repositories</h1>
       <% if allowed_to?(:create_repository?, current_user) %>
         <%=
-          js_component 'RepositoryForm',
+          js_component 'RepositoryNewModal',
             company_uuid: @company&.uuid,
             companies: @available_companies,
             providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h

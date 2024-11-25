@@ -18,6 +18,7 @@ class AddCompanyCommand < BaseCommand
       input[:user].invites.accepted.each do |invite|
         attach_user_to_company.call({ company: result, invite: invite })
       end
+      result
     end
 
     { result: company }
