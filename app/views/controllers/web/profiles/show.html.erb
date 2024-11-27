@@ -1,4 +1,4 @@
-<%= render PageWrappers::UserComponent.new(current_user: current_user) do %>
+<%= render PageWrappers::UserComponent.new(current_user: current_user, meta_title: 'PullKeeper | Profile') do %>
   <section class="p-8 lg:p-12">
     <h1 class="mb-2">Profile</h1>
     <p class="mb-7 light-color text-lg"><%= current_user.uuid %></p>
@@ -38,7 +38,11 @@
                 data-request-access="write">
               </script>
             <% else %>
-              <%= link_to image_tag("#{provider}.svg", width: 20, height: 20, alt: provider, title: "Login with #{provider.capitalize}"), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
+              <%= link_to omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' do %>
+                <svg width="20" height="20" title="Login with <%= provider.capitalize %>")>
+                  <use xlink:href="/assets/icon_sprite.svg#<%= provider %>"></use>
+                </svg>
+              <% end %>
             <% end %>
           <% end %>
         </p>

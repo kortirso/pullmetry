@@ -1,3 +1,5 @@
+<% content_for :meta_title, 'PullKeeper | Open source pull requests analysis & insights' %>
+<% content_for :meta_description, 'Add repository and monitor pull requests. Track review time, number of reviews, merging speed. Get company-wide statistics to track with the rest of your peers. Discuss with teammates the data linked to pull requests' %>
 <div class="flex flex-col flex-1 h-screen overflow-x-hidden bg-white">
   <nav class="py-4 border-b border-gainsboro">
     <div class="mx-auto w-full max-w-6xl flex flex-col md:flex-row justify-between items-center px-4 lg:px-0">
@@ -10,6 +12,9 @@
         <span class="text-black">pull<span class="text-yellow-orange">keeper</span></span>
       </p>
       <div class="w-72 hidden md:flex justify-end">
+        <% if current_user %>
+          <%= link_to 'Logout', logout_path, class: 'btn-primary btn-small' %>
+        <% end %>
       </div>
     </div>
   </nav>
@@ -18,19 +23,19 @@
       <div id="welcome-block">
         <h1 class="mb-4 font-semibold text-6xl text-center lg:text-left">Get the PR statistics you always needed</h1>
         <p class="lg:pr-24 leading-8 text-center lg:text-left">Monitor pull requests for your repositories and get relevant statistics for reviewing and commenting on pull requests. Inspire developers to self-optimize and highlight their achievements and successes.</p>
-        <% if current_user %>
-          <%= link_to 'Get started', companies_path, class: 'inline-block btn-primary btn-big text-center mt-8' %>
-        <% else %>
-          <div class="flex flex-row justify-center lg:justify-start items-end mt-8">
+        <div class="flex flex-row justify-center lg:justify-start items-end mt-8">
+          <% if current_user %>
+            <%= link_to 'Get started', companies_path, class: 'inline-block btn-primary btn-big text-center' %>
+          <% else %>
             <%= link_to 'Login with Github', omniauth_link(:github), class: 'inline-block btn-primary btn-small text-center mr-4' %>
             <%= link_to 'Login with Gitlab', omniauth_link(:gitlab), class: 'inline-block btn-primary btn-small text-center mr-4' %>
-            <%= link_to 'Login with Google', omniauth_link(:google), class: 'inline-block btn-primary btn-small text-center ' %>
-          </div>
-        <% end %>
+            <%= link_to 'Login with Google', omniauth_link(:google), class: 'inline-block btn-primary btn-small text-center' %>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="flex-1 hidden lg:flex items-center relative py-20">
-      <div id="welcome-image-background" />
+      <div id="welcome-image-background"></div>
       <div id="welcome-image-box">
         <%= image_tag 'screenshot.webp', class: 'rounded-lg', width: 920, height: 480, alt: 'interface-example' %>
       </div>
@@ -41,56 +46,72 @@
       <h2 class="text-center text-5xl leading-snug mb-12 font-semibold">Pull<span class="text-yellow-orange">Keeper</span> features</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-x-7 gap-y-16">
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/statistic.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#statistic"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Statistic</h3>
           <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/security.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#security"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Privacy</h3>
           <p class="text-center">Application requires read-only access to pull requests in your repositories and does not use your code. Your developers can (or can't) have access to their statistics</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/calculate.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#calculate"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Customizable calculations</h3>
           <p class="text-center">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/rule.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#rule"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Exclude rules</h3>
           <p class="text-center">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, use exclude rules for pull requests to avoid double code counting</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/database.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#database"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Comparing data</h3>
           <p class="text-center">Compareable data with previous periods for better understanding development improvements and progress/regress of coding</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/notifications.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#notifications"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Messenger notifications</h3>
           <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
         </div>
         <div class="flex flex-col items-center md:col-start-2 col-span-2">
-          <%= image_tag 'icons/welcome/git.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#git"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Github/Gitlab API</h3>
           <p class="text-center">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <%= image_tag 'icons/welcome/trophy.svg', class: 'mb-6 w-10 h-10' %>
+          <svg width="40" height="40" class="mb-6 w-10 h-10">
+            <use xlink:href="/assets/icon_sprite.svg#trophy"></use>
+          </svg>
           <h3 class="text-center text-2xl mb-2">Achievements system</h3>
           <p class="text-center">PullKeeper has achievements system for representing and comparing developer success</p>
         </div>
       </div>
     </div>
   </section>
-  <section class="flex flex-col sm:flex-row">
+  <div class="flex flex-col sm:flex-row">
     <div class="flex-1 bg-iceberg flex justify-center items-center py-20 sm:py-0">
       <p class="text-5xl text-white font-semibold">Open Source</p>
     </div>
     <div class="flex-1 bg-blue py-8">
       <div class="bg-white px-10 py-12 sm:py-32 max-w-xl">
         <p>
-          <!-- <iframe
+          <iframe
             src="https://ghbtns.com/github-btn.html?user=kortirso&repo=pullmetry&type=star&count=true&size=large"
             frameborder="0"
             scrolling="0"
@@ -98,7 +119,7 @@
             height="30"
             title="GitHub"
             class="mx-auto pl-10"
-          ></iframe> -->
+          ></iframe>
         </p>
         <p class="text-lg leading-8">PullKeeper is 100% open source. You can check source code of application at <a href="https://github.com/kortirso/pullmetry" target="_blank" rel="noopener noreferrer" class="simple-link">Github repository</a>.</p>
         <p class="text-lg leading-8">If you have any suggestions then you can create issue at <a href="https://github.com/kortirso/pullmetry/issues" target="_blank" rel="noopener noreferrer" class="simple-link">Github issues</a>.</p>
@@ -106,7 +127,7 @@
         <p class="text-lg leading-8">PullKeeper is now actively used by <span class="simple-link no-underline"><%= @active_counters[:companies] %></span> companies or developers that have <span class="simple-link no-underline"><%= @active_counters[:repositories] %></span> repositories with active synchronizations.</p>
       </div>
     </div>
-  </section>
+  </div>
   <section id="how-it-works" class="py-16 px-8 xl:px-0">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-5xl leading-snug mb-10">How it works</h2>
@@ -116,7 +137,9 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">1</p>
             </div>
-            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator' %>
+            <svg width="128" height="38" class="line-indicator">
+              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
+            </svg>
           </div>
           <h3 class="mb-1 font-semibold">Add company</h3>
           <p>First of all you need to create Company, it is just abstraction for group of repositories with similar configuration and the same access token.</p>
@@ -126,7 +149,9 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">2</p>
             </div>
-            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator reverse' %>
+            <svg width="128" height="38" class="line-indicator reverse">
+              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
+            </svg>
           </div>
           <h3 class="mb-1 font-semibold">Add repository</h3>
           <p>For any company you need to create Repository, and here real link for your repository at Github or Gitlab is required (repository can be private).</p>
@@ -136,7 +161,9 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">3</p>
             </div>
-            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator' %>
+            <svg width="128" height="38" class="line-indicator">
+              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
+            </svg>
           </div>
           <h3 class="mb-1 font-semibold">Add access token</h3>
           <p>You need to add access token for Company or Repository with read-only permissions for fetching pull requests and/or issues data from Github or Gitlab.</p>
@@ -146,7 +173,9 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">4</p>
             </div>
-            <%= image_tag 'icons/line_indicator.svg', class: 'line-indicator reverse' %>
+            <svg width="128" height="38" class="line-indicator reverse">
+              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
+            </svg>
           </div>
           <h3 class="mb-1 font-semibold">Enjoy your insights</h3>
           <p>With that completed, you're all set and geared up for having developers statistics.</p>
@@ -208,7 +237,7 @@
       </div>
     </div>
   </section>
-  <section id="pricing" class="py-16 px-8 xl:px-0">
+  <section class="py-16 px-8 xl:px-0">
     <div class="mx-auto max-w-6xl">
       <h2 class="text-center text-5xl leading-snug mb-10">Used by</h2>
       <div class="flex flex-row items-center justify-center flex-wrap w-full gap-16">
@@ -242,7 +271,11 @@
       </div>
       <div class="flex">
         <span class="mr-2 text-sm">Sponsored by</span>
-        <%= link_to image_tag('icons/evrone.svg', alt: 'evrone'), 'https://evrone.com/' %>
+        <%= link_to 'https://evrone.com/?utm_source=pullkeeper' do %>
+          <svg width="100" height="20">
+            <use xlink:href="/assets/icon_sprite.svg#evrone"></use>
+          </svg>
+        <% end %>
       </div>
     </div>
   </footer>

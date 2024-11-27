@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="m-0 p-0 min-h-screen">
   <head>
-    <title>PullKeeper | Open source pull requests analysis & insights</title>
+    <title><%= yield(:meta_title) %></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="Keywords" content="pull requests, insights, metrics, review, comments, average review time, repository, github, gitlab, statistics, analyzer, analysis, open source">
-    <meta name="Description" content="Add repository and monitor pull requests. Track review time, number of reviews, merging speed. Get company-wide statistics to track with the rest of your peers. Discuss with teammates the data linked to pull requests">
+    <meta name="Description" content="<%= yield(:meta_description) %>">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <%= csrf_meta_tags %>
