@@ -46,58 +46,42 @@
       <h2 class="text-center text-5xl leading-snug mb-12 font-semibold">Pull<span class="text-yellow-orange">Keeper</span> features</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-x-7 gap-y-16">
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#statistic"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'statistic', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Statistic</h3>
           <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#security"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'security', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Privacy</h3>
           <p class="text-center">Application requires read-only access to pull requests in your repositories and does not use your code. Your developers can (or can't) have access to their statistics</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#calculate"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'calculate', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Customizable calculations</h3>
           <p class="text-center">Customizable calculations of review time: there are several configurations for calculating the average time for more accurate and believable results</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#rule"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'rule', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Exclude rules</h3>
           <p class="text-center">Considering vacation time of developers and working time of companies for better calculating average time of reviews and merges, use exclude rules for pull requests to avoid double code counting</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#database"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'database', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Comparing data</h3>
           <p class="text-center">Compareable data with previous periods for better understanding development improvements and progress/regress of coding</p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#notifications"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'notifications', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Messenger notifications</h3>
           <p class="text-center">Calculated the up-to-date (data is collected each hour) reviewer statistics (reviews, comments, average review time and <%= link_to 'more metrics with description', metrics_path, class: 'simple-link' %>) separately for each repository and for the whole company, and repository statistics</p>
         </div>
         <div class="flex flex-col items-center md:col-start-2 col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#git"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'git', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Github/Gitlab API</h3>
           <p class="text-center">Pull requests, reviewers, and comments data are collected with <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28" target="_blank" rel="noopener noreferrer" class="simple-link">Github</a> and <a href="https://docs.gitlab.com/ee/api/rest/" target="_blank" rel="noopener noreferrer" class="simple-link">Gitlab API</a></p>
         </div>
         <div class="flex flex-col items-center col-span-2">
-          <svg width="40" height="40" class="mb-6 w-10 h-10">
-            <use xlink:href="/assets/icon_sprite.svg#trophy"></use>
-          </svg>
+          <%= embedded_svg_symbol('icon_sprite.svg', 'trophy', class: 'mb-6') %>
           <h3 class="text-center text-2xl mb-2">Achievements system</h3>
           <p class="text-center">PullKeeper has achievements system for representing and comparing developer success</p>
         </div>
@@ -271,11 +255,7 @@
       </div>
       <div class="flex">
         <span class="mr-2 text-sm">Sponsored by</span>
-        <%= link_to 'https://evrone.com/?utm_source=pullkeeper' do %>
-          <svg width="100" height="20">
-            <use xlink:href="/assets/icon_sprite.svg#evrone"></use>
-          </svg>
-        <% end %>
+        <%= link_to embedded_svg_symbol('icon_sprite.svg', 'evrone'), 'https://evrone.com/?utm_source=pullkeeper' %>
       </div>
     </div>
   </footer>

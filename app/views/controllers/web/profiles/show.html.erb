@@ -38,11 +38,7 @@
                 data-request-access="write">
               </script>
             <% else %>
-              <%= link_to omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' do %>
-                <svg width="20" height="20" title="Login with <%= provider.capitalize %>")>
-                  <use xlink:href="/assets/icon_sprite.svg#<%= provider %>"></use>
-                </svg>
-              <% end %>
+              <%= link_to embedded_svg_symbol('icon_sprite.svg', provider), omniauth_link(provider.to_sym), 'aria-label': "Login with #{provider.capitalize}", class: 'auth-icon mr-4' %>
             <% end %>
           <% end %>
         </p>
