@@ -121,9 +121,7 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">1</p>
             </div>
-            <svg width="128" height="38" class="line-indicator">
-              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
-            </svg>
+            <%= embedded_svg_symbol('icon_sprite.svg', 'line-indicator', class: 'line-indicator') %>
           </div>
           <h3 class="mb-1 font-semibold">Add company</h3>
           <p>First of all you need to create Company, it is just abstraction for group of repositories with similar configuration and the same access token.</p>
@@ -133,9 +131,7 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">2</p>
             </div>
-            <svg width="128" height="38" class="line-indicator reverse">
-              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
-            </svg>
+            <%= embedded_svg_symbol('icon_sprite.svg', 'line-indicator', class: 'line-indicator reverse') %>
           </div>
           <h3 class="mb-1 font-semibold">Add repository</h3>
           <p>For any company you need to create Repository, and here real link for your repository at Github or Gitlab is required (repository can be private).</p>
@@ -145,9 +141,7 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">3</p>
             </div>
-            <svg width="128" height="38" class="line-indicator">
-              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
-            </svg>
+            <%= embedded_svg_symbol('icon_sprite.svg', 'line-indicator', class: 'line-indicator') %>
           </div>
           <h3 class="mb-1 font-semibold">Add access token</h3>
           <p>You need to add access token for Company or Repository with read-only permissions for fetching pull requests and/or issues data from Github or Gitlab.</p>
@@ -157,9 +151,7 @@
             <div class="w-16 h-16 rounded-full bg-cultured flex justify-center items-center mr-4">
               <p class="text-4xl text-yellow-orange font-semibold">4</p>
             </div>
-            <svg width="128" height="38" class="line-indicator reverse">
-              <use xlink:href="/assets/icon_sprite.svg#line-indicator"></use>
-            </svg>
+            <%= embedded_svg_symbol('icon_sprite.svg', 'line-indicator', class: 'line-indicator reverse') %>
           </div>
           <h3 class="mb-1 font-semibold">Enjoy your insights</h3>
           <p>With that completed, you're all set and geared up for having developers statistics.</p>
