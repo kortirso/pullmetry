@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/flyerhzm/bullet
-  revision: 7f52ed2d795f9a2cf70b9079c38cee5d70edadb7
+  revision: a769a0831f2819b501eba6b388bde88b469bd357
   branch: main
   specs:
-    bullet (7.2.0)
+    bullet (8.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
 
 GIT
   remote: https://github.com/redis-store/redis-rack
-  revision: d2cb7cb512687d81e817a44f8498b1e39f727261
+  revision: 90a862b42c9715393f5a40627dea5882be6a6dcb
   branch: master
   specs:
     redis-rack (3.0.0)
@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/redis-store/redis-rails
-  revision: e5ca10851c83d7e7c594deac50f80881d699ca6c
+  revision: b6a9c2bf4e31eabdde294e912200d05a2dcd4dda
   branch: master
   specs:
     redis-rails (5.0.2)
@@ -34,7 +34,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    action_policy (0.7.1)
+    action_policy (0.7.2)
       ruby-next-core (>= 1.0)
     actioncable (7.2.2)
       actionpack (= 7.2.2)
@@ -228,7 +228,7 @@ GEM
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
     json (2.8.2)
-    json-schema (5.0.1)
+    json-schema (5.1.0)
       addressable (~> 2.8)
     json_spec (1.1.5)
       multi_json (~> 1.0)
@@ -256,7 +256,7 @@ GEM
     matrix (0.4.2)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     msgpack (1.7.5)
     multi_json (1.15.0)
     net-http (0.5.0)
@@ -307,7 +307,7 @@ GEM
     psych (5.2.0)
       stringio
     public_suffix (6.0.1)
-    puma (6.3.0)
+    puma (6.5.0)
       nio4r (~> 2.0)
     que (2.4.1)
     que-view (0.4.1)
@@ -359,9 +359,9 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
-    recaptcha (5.17.0)
+    recaptcha (5.17.1)
     redis (5.3.0)
       redis-client (>= 0.22.0)
     redis-actionpack (5.5.0)
@@ -410,16 +410,16 @@ GEM
     rswag-ui (2.16.0)
       actionpack (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
-    rubocop (1.68.0)
+    rubocop (1.69.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.4, < 3.0)
-      rubocop-ast (>= 1.32.2, < 2.0)
+      rubocop-ast (>= 1.36.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
+      unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.36.1)
       parser (>= 3.3.1.0)
     rubocop-factory_bot (2.26.1)
