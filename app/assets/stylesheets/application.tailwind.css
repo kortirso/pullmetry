@@ -145,7 +145,7 @@ p.light-color {
 }
 
 .simple-link {
-  @apply text-yellow-orange font-medium underline;
+  @apply text-spanish-orange font-medium underline;
 }
 
 .badge {
