@@ -40,6 +40,7 @@ export const Repository = (props) => {
 
   const developerInsights = createMemo(() => {
     if (pageState.entities === undefined) return <></>;
+    if (pageState.insightTypes.length === 0) return <></>;
 
     return (
       <DeveloperInsights
