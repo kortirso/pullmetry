@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="m-0 p-0 min-h-screen">
+<html lang="en" class="m-0 p-0 min-h-screen" prefix="og: https://ogp.me/ns#">
   <head>
     <title><%= yield(:meta_title) %></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="Keywords" content="pull requests, insights, metrics, review, comments, average review time, repository, github, gitlab, statistics, analyzer, analysis, open source">
     <meta name="Description" content="<%= yield(:meta_description) %>">
+    <meta property="og:title" content="Monitor pull requests and get relevant statistics for reviewing and commenting on pull requests." />
+    <meta property="og:description" content="Track review time, number of reviews, merging speed. Get company-wide statistics to track with the rest of your peers. Discuss with teammates the data linked to pull requests." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pullkeeper.dev" />
+    <meta property="og:image" content="<%= image_url 'screenshot.webp' %>" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="530" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <%= csrf_meta_tags %>
