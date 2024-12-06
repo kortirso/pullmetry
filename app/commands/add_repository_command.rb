@@ -17,7 +17,8 @@ class AddRepositoryCommand < BaseCommand
     end
 
     rule(:provider, :link) do
-      unless values[:link].starts_with?(Repository::LINK_FORMAT_BY_PROVIDER[values[:provider]])
+      if values[:provider] == Providerable::GITHUB &&
+        !values[:link].starts_with?(Repository::LINK_FORMAT_BY_PROVIDER[values[:provider]])
         key(:link).failure(:invalid_host)
       end
     end
