@@ -4,8 +4,6 @@ module Excludes
   class Group < ApplicationRecord
     self.table_name = :excludes_groups
 
-    include Uuidable
-
     FREE_GROUPS_AMOUNT = 2
 
     belongs_to :insightable, polymorphic: true

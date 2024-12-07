@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include Uuidable
   include Kudos::Achievementable
   include Notifyable
   include Inviteable

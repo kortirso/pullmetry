@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Issue < ApplicationRecord
-  include Uuidable
-
   belongs_to :repository
 
   has_many :comments, class_name: 'Issue::Comment', dependent: :destroy

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Notification < ApplicationRecord
-  include Uuidable
-
   NOTIFYABLE_TYPES = %w[
     Company
     Repository

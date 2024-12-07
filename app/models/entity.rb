@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Entity < ApplicationRecord
-  include Uuidable
   include Providerable
 
   EMPTY_PAYLOAD = {

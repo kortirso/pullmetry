@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Company < ApplicationRecord
-  include Uuidable
   include Tokenable
   include Insightable
   include Configurable

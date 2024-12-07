@@ -4,8 +4,6 @@ module Companies
   class User < ApplicationRecord
     self.table_name = :companies_users
 
-    include Uuidable
-
     READ = 'read'
     WRITE = 'write'
 
