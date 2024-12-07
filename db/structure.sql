@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
+
+
+--
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -254,7 +268,7 @@ $$;
 
 CREATE TABLE public.access_tokens (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     tokenable_id bigint NOT NULL,
     tokenable_type character varying NOT NULL,
     value text NOT NULL,
@@ -293,7 +307,7 @@ CREATE TABLE public.api_access_tokens (
     value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid NOT NULL
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -334,7 +348,7 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.companies (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id bigint NOT NULL,
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -372,7 +386,7 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 CREATE TABLE public.companies_users (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     company_id bigint NOT NULL,
     user_id bigint NOT NULL,
     invite_id bigint NOT NULL,
@@ -445,7 +459,7 @@ ALTER SEQUENCE public.emailbutler_messages_id_seq OWNED BY public.emailbutler_me
 
 CREATE TABLE public.entities (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     external_id character varying NOT NULL,
     provider integer DEFAULT 0 NOT NULL,
     login character varying,
@@ -548,7 +562,7 @@ ALTER SEQUENCE public.event_store_events_in_streams_id_seq OWNED BY public.event
 
 CREATE TABLE public.excludes_groups (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     insightable_id bigint NOT NULL,
     insightable_type character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -581,7 +595,7 @@ ALTER SEQUENCE public.excludes_groups_id_seq OWNED BY public.excludes_groups.id;
 
 CREATE TABLE public.excludes_rules (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     excludes_group_id bigint NOT NULL,
     target integer NOT NULL,
     condition integer NOT NULL,
@@ -643,7 +657,8 @@ CREATE TABLE public.feedbacks (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email text,
-    answerable boolean DEFAULT false NOT NULL
+    answerable boolean DEFAULT false NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -678,7 +693,8 @@ CREATE TABLE public.identities (
     email text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    login character varying
+    login character varying,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -707,7 +723,7 @@ ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 
 CREATE TABLE public.ignores (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     insightable_id bigint NOT NULL,
     insightable_type character varying NOT NULL,
     entity_value character varying NOT NULL,
@@ -762,7 +778,8 @@ CREATE TABLE public.insights (
     hidden boolean DEFAULT false NOT NULL,
     bad_reviews_count integer DEFAULT 0 NOT NULL,
     conventional_comments_count integer DEFAULT 0,
-    time_since_last_open_pull_seconds integer DEFAULT 0
+    time_since_last_open_pull_seconds integer DEFAULT 0,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -805,7 +822,7 @@ ALTER SEQUENCE public.insights_id_seq OWNED BY public.insights.id;
 
 CREATE TABLE public.invites (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     inviteable_id bigint NOT NULL,
     inviteable_type character varying NOT NULL,
     receiver_id bigint,
@@ -842,7 +859,7 @@ ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
 
 CREATE TABLE public.issue_comments (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     issue_id bigint NOT NULL,
     external_id character varying NOT NULL,
     comment_created_at timestamp(6) without time zone,
@@ -890,7 +907,7 @@ ALTER SEQUENCE public.issue_comments_id_seq OWNED BY public.issue_comments.id;
 
 CREATE TABLE public.issues (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     repository_id bigint NOT NULL,
     opened_at timestamp(6) without time zone,
     closed_at timestamp(6) without time zone,
@@ -925,7 +942,7 @@ ALTER SEQUENCE public.issues_id_seq OWNED BY public.issues.id;
 
 CREATE TABLE public.kudos_achievement_groups (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     parent_id bigint,
     "position" integer DEFAULT 0 NOT NULL,
     name jsonb DEFAULT '{}'::jsonb NOT NULL,
@@ -959,7 +976,7 @@ ALTER SEQUENCE public.kudos_achievement_groups_id_seq OWNED BY public.kudos_achi
 
 CREATE TABLE public.kudos_achievements (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     award_name character varying NOT NULL,
     rank integer,
     points integer,
@@ -1038,7 +1055,7 @@ CREATE TABLE public.notifications (
     notification_type integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     webhook_id bigint NOT NULL
 );
 
@@ -1068,7 +1085,7 @@ ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 
 CREATE TABLE public.pull_requests (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     repository_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1102,7 +1119,8 @@ CREATE TABLE public.pull_requests_comments (
     updated_at timestamp(6) without time zone NOT NULL,
     pull_request_id bigint NOT NULL,
     entity_id bigint NOT NULL,
-    parsed_body jsonb
+    parsed_body jsonb,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1158,7 +1176,8 @@ CREATE TABLE public.pull_requests_reviews (
     entity_id bigint NOT NULL,
     required boolean DEFAULT false NOT NULL,
     state integer DEFAULT 0 NOT NULL,
-    commit_external_id character varying
+    commit_external_id character varying,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1236,7 +1255,7 @@ WITH (fillfactor='90');
 
 CREATE TABLE public.repositories (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     company_id bigint NOT NULL,
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1295,7 +1314,8 @@ CREATE TABLE public.repositories_insights (
     open_issues_count integer DEFAULT 0 NOT NULL,
     closed_issues_count integer DEFAULT 0 NOT NULL,
     average_issue_comment_time integer DEFAULT 0 NOT NULL,
-    average_issue_close_time integer DEFAULT 0 NOT NULL
+    average_issue_close_time integer DEFAULT 0 NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1365,7 +1385,8 @@ CREATE TABLE public.subscribers (
     unsubscribe_token character varying,
     unsubscribed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1399,7 +1420,8 @@ CREATE TABLE public.subscriptions (
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    external_invoice_id character varying
+    external_invoice_id character varying,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1435,7 +1457,7 @@ ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
 
 CREATE TABLE public.users (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     email text DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1474,7 +1496,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 CREATE TABLE public.users_sessions (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -1510,7 +1532,8 @@ CREATE TABLE public.vacations (
     start_time timestamp(6) without time zone NOT NULL,
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -1539,7 +1562,7 @@ ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
 
 CREATE TABLE public.webhooks (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     source integer DEFAULT 0 NOT NULL,
     url character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1579,7 +1602,8 @@ CREATE TABLE public.work_times (
     ends_at character varying NOT NULL,
     timezone character varying DEFAULT '0'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -2341,6 +2365,13 @@ CREATE INDEX index_feedbacks_on_user_id ON public.feedbacks USING btree (user_id
 
 
 --
+-- Name: index_feedbacks_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_feedbacks_on_uuid ON public.feedbacks USING btree (uuid);
+
+
+--
 -- Name: index_identities_on_uid_and_provider; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2352,6 +2383,13 @@ CREATE UNIQUE INDEX index_identities_on_uid_and_provider ON public.identities US
 --
 
 CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
+
+
+--
+-- Name: index_identities_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_identities_on_uuid ON public.identities USING btree (uuid);
 
 
 --
@@ -2373,6 +2411,13 @@ CREATE INDEX index_insights_on_entity_id ON public.insights USING btree (entity_
 --
 
 CREATE INDEX index_insights_on_insightable_id_and_insightable_type ON public.insights USING btree (insightable_id, insightable_type);
+
+
+--
+-- Name: index_insights_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_insights_on_uuid ON public.insights USING btree (uuid);
 
 
 --
@@ -2481,6 +2526,13 @@ CREATE INDEX index_pull_requests_comments_on_external_id ON public.pull_requests
 
 
 --
+-- Name: index_pull_requests_comments_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pull_requests_comments_on_uuid ON public.pull_requests_comments USING btree (uuid);
+
+
+--
 -- Name: index_pull_requests_on_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2509,10 +2561,24 @@ CREATE INDEX index_pull_requests_reviews_on_external_id ON public.pull_requests_
 
 
 --
+-- Name: index_pull_requests_reviews_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pull_requests_reviews_on_uuid ON public.pull_requests_reviews USING btree (uuid);
+
+
+--
 -- Name: index_repositories_insights_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_repositories_insights_on_repository_id ON public.repositories_insights USING btree (repository_id);
+
+
+--
+-- Name: index_repositories_insights_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_repositories_insights_on_uuid ON public.repositories_insights USING btree (uuid);
 
 
 --
@@ -2537,10 +2603,24 @@ CREATE UNIQUE INDEX index_subscribers_on_email ON public.subscribers USING btree
 
 
 --
+-- Name: index_subscribers_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscribers_on_uuid ON public.subscribers USING btree (uuid);
+
+
+--
 -- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_uuid ON public.subscriptions USING btree (uuid);
 
 
 --
@@ -2579,6 +2659,13 @@ CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id
 
 
 --
+-- Name: index_vacations_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vacations_on_uuid ON public.vacations USING btree (uuid);
+
+
+--
 -- Name: index_webhooks_on_company_id_and_source_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2590,6 +2677,13 @@ CREATE UNIQUE INDEX index_webhooks_on_company_id_and_source_and_url ON public.we
 --
 
 CREATE UNIQUE INDEX index_webhooks_on_uuid ON public.webhooks USING btree (uuid);
+
+
+--
+-- Name: index_work_times_on_uuid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_work_times_on_uuid ON public.work_times USING btree (uuid);
 
 
 --
@@ -2679,6 +2773,8 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241207174751'),
+('20241207174615'),
 ('20241021055406'),
 ('20241018121510'),
 ('20241018094904'),
