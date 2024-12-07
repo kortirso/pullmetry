@@ -929,7 +929,7 @@ ALTER SEQUENCE public.issues_id_seq OWNED BY public.issues.id;
 
 CREATE TABLE public.kudos_achievement_groups (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     parent_id bigint,
     "position" integer DEFAULT 0 NOT NULL,
     name jsonb DEFAULT '{}'::jsonb NOT NULL,
@@ -963,7 +963,7 @@ ALTER SEQUENCE public.kudos_achievement_groups_id_seq OWNED BY public.kudos_achi
 
 CREATE TABLE public.kudos_achievements (
     id bigint NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
     award_name character varying NOT NULL,
     rank integer,
     points integer,
@@ -2760,6 +2760,7 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241207105036'),
 ('20241207105035'),
 ('20241207103004'),
 ('20241021055406'),

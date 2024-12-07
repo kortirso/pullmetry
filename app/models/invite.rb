@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Invite < ApplicationRecord
-  include Uuidable
-
   INVITEABLE_TYPES = %w[
     User
     Company

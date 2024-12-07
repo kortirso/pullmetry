@@ -4,8 +4,6 @@ module Kudos
   class AchievementGroup < ApplicationRecord
     self.table_name = :kudos_achievement_groups
 
-    include Uuidable
-
     belongs_to :parent,
                class_name: 'Kudos::AchievementGroup',
                foreign_key: :parent_id,

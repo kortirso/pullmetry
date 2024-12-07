@@ -5,7 +5,6 @@ module Kudos
     self.table_name = :kudos_achievements
 
     include Kudos
-    include Uuidable
 
     belongs_to :kudos_achievement_group, class_name: 'Kudos::AchievementGroup'
 

@@ -4,8 +4,6 @@ module Excludes
   class Rule < ApplicationRecord
     self.table_name = :excludes_rules
 
-    include Uuidable
-
     FREE_RULES_AMOUNT = 3
 
     TITLE_TARGET = 'title'
