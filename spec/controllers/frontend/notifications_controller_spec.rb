@@ -13,7 +13,7 @@ describe Frontend::NotificationsController do
       context 'for invalid company' do
         let(:request) {
           post :create, params: {
-            company_id: company.uuid,
+            company_id: company.id,
             webhook_id: 'unexisting',
             notification: { notification_type: '' },
             pullmetry_access_token: access_token
@@ -33,7 +33,7 @@ describe Frontend::NotificationsController do
         context 'for unexisting webhook' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid,
+              company_id: company.id,
               webhook_id: 'unexisting',
               notification: { notification_type: '' },
               pullmetry_access_token: access_token
@@ -50,8 +50,8 @@ describe Frontend::NotificationsController do
         context 'for invalid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid,
-              webhook_id: webhook.uuid,
+              company_id: company.id,
+              webhook_id: webhook.id,
               notification: { notification_type: '' },
               pullmetry_access_token: access_token
             }
@@ -67,8 +67,8 @@ describe Frontend::NotificationsController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid,
-              webhook_id: webhook.uuid,
+              company_id: company.id,
+              webhook_id: webhook.id,
               notification: { notification_type: 'insights_data' },
               pullmetry_access_token: access_token
             }
@@ -101,7 +101,7 @@ describe Frontend::NotificationsController do
 
     context 'for logged users' do
       let!(:notification) { create :notification, notifyable: company }
-      let(:request) { delete :destroy, params: { id: notification.uuid, pullmetry_access_token: access_token } }
+      let(:request) { delete :destroy, params: { id: notification.id, pullmetry_access_token: access_token } }
 
       context 'for not existing notification' do
         let(:request) { delete :destroy, params: { id: 'unexisting', pullmetry_access_token: access_token } }

@@ -52,14 +52,14 @@ describe Web::CompaniesController do
 
       context 'for not existing user company' do
         it 'renders 404 page' do
-          delete :destroy, params: { id: company.uuid, locale: 'en' }
+          delete :destroy, params: { id: company.id, locale: 'en' }
 
           expect(response).to render_template 'shared/404'
         end
       end
 
       context 'for existing user company' do
-        let(:request) { delete :destroy, params: { id: company.uuid, locale: 'en' } }
+        let(:request) { delete :destroy, params: { id: company.id, locale: 'en' } }
 
         before { company.update!(user: @current_user) }
 

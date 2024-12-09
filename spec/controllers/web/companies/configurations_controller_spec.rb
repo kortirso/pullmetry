@@ -26,7 +26,7 @@ describe Web::Companies::ConfigurationsController do
 
       context 'for not existing user company' do
         it 'renders access page' do
-          get :edit, params: { company_id: company.uuid, locale: 'en' }
+          get :edit, params: { company_id: company.id, locale: 'en' }
 
           expect(response).to render_template 'shared/access'
         end
@@ -40,7 +40,7 @@ describe Web::Companies::ConfigurationsController do
         end
 
         it 'renders access page' do
-          get :edit, params: { company_id: company.uuid, locale: 'en' }
+          get :edit, params: { company_id: company.id, locale: 'en' }
 
           expect(response).to render_template 'shared/access'
         end
@@ -50,7 +50,7 @@ describe Web::Companies::ConfigurationsController do
         before { company.update!(user: @current_user) }
 
         it 'renders new template' do
-          get :edit, params: { company_id: company.uuid, locale: 'en' }
+          get :edit, params: { company_id: company.id, locale: 'en' }
 
           expect(response).to render_template :edit
         end

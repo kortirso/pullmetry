@@ -39,7 +39,7 @@ export const CompanyEditNotifications = (props) => {
 
   const [notificationFormStore, setNotificationFormStore] = createStore({
     notificationType: 'insights_data',
-    notificationWebhookUuid: props.webhooks.length > 0 ? props.webhooks[0].uuid : null,
+    notificationWebhookId: props.webhooks.length > 0 ? props.webhooks[0].id : null,
   });
   /* eslint-enable solid/reactivity */
 
@@ -54,7 +54,7 @@ export const CompanyEditNotifications = (props) => {
 
   const webhooksForSelect = createMemo(() => {
     return pageState.webhooks.reduce((result, webhook) => {
-      result[webhook.uuid] = `${webhook.source}: ${webhook.url}`
+      result[webhook.id] = `${webhook.source}: ${webhook.url}`
       return result;
     }, {});
   });
@@ -67,30 +67,30 @@ export const CompanyEditNotifications = (props) => {
   }
 
   const saveWebhook = async () => {
-    const result = await createWebhookRequest({ webhook: webhookFormStore, companyId: props.companyUuid });
+    const result = await createWebhookRequest({ webhook: webhookFormStore, companyId: props.companyId });
 
     if (result.errors) renderErrors(result.errors);
     else {
       batch(() => {
         const webhooks = pageState.webhooks.concat(result.result);
-        const notificationWebhookUuid = webhooks.length === 1 ? webhooks[0].uuid : notificationFormStore.notificationWebhookUuid;
+        const notificationWebhookId = webhooks.length === 1 ? webhooks[0].id : notificationFormStore.notificationWebhookId;
 
         setPageState({ ...pageState, webhooks: webhooks, webhookModalIsOpen: false });
         setWebhookFormStore({ source: 'slack', url: '' });
-        setNotificationFormStore({ ...notificationFormStore, notificationWebhookUuid: notificationWebhookUuid });
+        setNotificationFormStore({ ...notificationFormStore, notificationWebhookId: notificationWebhookId });
         closeModal();
       });
     }
   }
 
-  const removeWebhook = async (uuid) => {
-    const result = await removeWebhookRequest(uuid);
+  const removeWebhook = async (id) => {
+    const result = await removeWebhookRequest(id);
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({
       ...pageState,
-      webhooks: pageState.webhooks.filter((item) => item.uuid !== uuid),
-      notifications: pageState.notifications.filter((item) => item.webhooksUuid !== uuid)
+      webhooks: pageState.webhooks.filter((item) => item.id !== id),
+      notifications: pageState.notifications.filter((item) => item.webhook_id !== id)
     });
   }
 
@@ -104,8 +104,8 @@ export const CompanyEditNotifications = (props) => {
   const saveNotification = async () => {
     const result = await createNotificationRequest({
       notification: { notificationType: notificationFormStore.notificationType },
-      webhookId: notificationFormStore.notificationWebhookUuid,
-      companyId: props.companyUuid
+      webhookId: notificationFormStore.notificationWebhookId,
+      companyId: props.companyId
     });
 
     if (result.errors) renderErrors(result.errors);
@@ -118,11 +118,11 @@ export const CompanyEditNotifications = (props) => {
     }
   }
 
-  const removeNotification = async (uuid) => {
-    const result = await removeNotificationRequest(uuid);
+  const removeNotification = async (id) => {
+    const result = await removeNotificationRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, notifications: pageState.notifications.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, notifications: pageState.notifications.filter((item) => item.id !== id) });
   }
 
   return (
@@ -149,7 +149,7 @@ export const CompanyEditNotifications = (props) => {
                         <td class="!min-w-0">
                           <p
                             class="btn-danger btn-xs"
-                            onClick={() => removeWebhook(webhook.uuid)}
+                            onClick={() => removeWebhook(webhook.id)}
                           >X</p>
                         </td>
                       </tr>
@@ -184,7 +184,7 @@ export const CompanyEditNotifications = (props) => {
                 <tbody>
                   <For each={pageState.notifications}>
                     {(notification) => {
-                      const webhook = pageState.webhooks.find((item) => item.uuid === notification.webhooksUuid);
+                      const webhook = pageState.webhooks.find((item) => item.id === notification.webhook_id);
 
                       return (
                         <tr>
@@ -194,7 +194,7 @@ export const CompanyEditNotifications = (props) => {
                           <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => removeNotification(notification.uuid)}
+                              onClick={() => removeNotification(notification.id)}
                             >X</p>
                           </td>
                         </tr>
@@ -260,8 +260,8 @@ export const CompanyEditNotifications = (props) => {
                     classList="w-full"
                     labelText="Webhook"
                     items={webhooksForSelect()}
-                    selectedValue={notificationFormStore.notificationWebhookUuid}
-                    onSelect={(value) => setNotificationFormStore('notificationWebhookUuid', value)}
+                    selectedValue={notificationFormStore.notificationWebhookId}
+                    onSelect={(value) => setNotificationFormStore('notificationWebhookId', value)}
                   />
                   <div class="flex">
                     <button class="btn-primary mt-8 mx-auto" onClick={saveNotification}>Save</button>

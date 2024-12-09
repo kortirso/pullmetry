@@ -21,14 +21,14 @@ module Frontend
     def find_company
       return unless params[:company_id]
 
-      @tokenable = Company.find_by!(uuid: params[:company_id])
+      @tokenable = Company.find(params[:company_id])
     end
 
     def find_repository
       return if @tokenable
       return unless params[:repository_id]
 
-      @tokenable = current_user.repositories.find_by!(uuid: params[:repository_id])
+      @tokenable = current_user.repositories.find(params[:repository_id])
     end
 
     def access_token_params

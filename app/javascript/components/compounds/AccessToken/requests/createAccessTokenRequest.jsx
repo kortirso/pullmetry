@@ -2,7 +2,7 @@ import { apiRequest, csrfToken, objectKeysToSnakeCase } from '../../../../helper
 
 export const createAccessTokenRequest = async (payload) => {
   return await apiRequest({
-    url: `/frontend/${payload.tokenable}/${payload.uuid}/access_tokens`,
+    url: `/frontend/${payload.tokenable}/${payload.id}/access_tokens`,
     options: {
       method: 'POST',
       headers: {

@@ -31,11 +31,11 @@ module Frontend
       end
 
       def find_company
-        @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])
+        @company = current_user.available_write_companies.find(params[:company_id])
       end
 
       def find_entity_ignore
-        @entity_ignore = Entity::Ignore.find_by!(uuid: params[:id])
+        @entity_ignore = Entity::Ignore.find(params[:id])
       end
 
       def entity_ignore_params

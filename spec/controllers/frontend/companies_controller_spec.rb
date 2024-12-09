@@ -30,7 +30,7 @@ describe Frontend::CompaniesController do
         context 'for external account' do
           let(:request) {
             post :create, params: {
-              company: { title: 'Title', user_uuid: another_user.uuid }, pullmetry_access_token: access_token
+              company: { title: 'Title', user_id: another_user.id }, pullmetry_access_token: access_token
             }
           }
 

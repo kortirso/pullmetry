@@ -17,20 +17,20 @@ module Frontend
 
     def json_response(response, result)
       {
-        result: response.serializer(result, CompanySerializer, only: %i[uuid])
+        result: response.serializer(result, CompanySerializer, only: %i[id])
       }
     end
 
     def user
-      return current_user if current_user.uuid == account_uuid || account_uuid.nil?
+      return current_user if current_user.id == account_id || account_id.nil?
 
-      account = User.find_by!(uuid: account_uuid)
+      account = User.find(account_id)
       current_user.receive_invites.coowner.accepted.write.find_by!(inviteable_id: account.id)
       account
     end
 
-    def account_uuid
-      params[:company][:user_uuid]
+    def account_id
+      params[:company][:user_id]
     end
 
     def company_params

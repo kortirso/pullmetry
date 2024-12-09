@@ -25,7 +25,7 @@ describe Web::Companies::RepositoriesController do
         end
 
         it 'renders index page' do
-          get :index, params: { company_id: company.uuid, locale: 'en' }
+          get :index, params: { company_id: company.id, locale: 'en' }
 
           expect(response).to render_template 'repositories/index'
         end
@@ -36,7 +36,7 @@ describe Web::Companies::RepositoriesController do
 
         context 'without repositories' do
           it 'renders index page' do
-            get :index, params: { company_id: company.uuid, locale: 'en' }
+            get :index, params: { company_id: company.id, locale: 'en' }
 
             expect(response).to render_template 'repositories/index'
           end
@@ -49,7 +49,7 @@ describe Web::Companies::RepositoriesController do
           end
 
           it 'renders index page' do
-            get :index, params: { company_id: company.uuid, locale: 'en' }
+            get :index, params: { company_id: company.id, locale: 'en' }
 
             expect(response).to render_template 'repositories/index'
           end

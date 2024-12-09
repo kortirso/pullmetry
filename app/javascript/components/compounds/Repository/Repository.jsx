@@ -22,8 +22,8 @@ export const Repository = (props) => {
     if (!pageState.isExpanded) return;
     if (pageState.entities !== undefined) return;
 
-    const fetchInsights = async () => await fetchInsightsRequest(props.uuid);
-    const fetchRepositoryInsights = async () => await fetchRepositoryInsightsRequest(props.uuid);
+    const fetchInsights = async () => await fetchInsightsRequest(props.id);
+    const fetchRepositoryInsights = async () => await fetchRepositoryInsightsRequest(props.id);
 
     Promise.all([fetchInsights(), fetchRepositoryInsights()]).then(
       ([insightsData, repositoryInsightsData]) => {
@@ -68,7 +68,7 @@ export const Repository = (props) => {
 
     return (
       <div class="flex items-center">
-        <AccessTokenNewModal tokenable="repositories" uuid={props.uuid} required={props.accessTokenStatus === 'empty'} />
+        <AccessTokenNewModal tokenable="repositories" id={props.id} required={props.accessTokenStatus === 'empty'} />
         <Show when={props.editLinks.destroy}>
           <form
             ref={deleteForm}
@@ -168,7 +168,7 @@ export const Repository = (props) => {
               <div class="mt-8 flex justify-between items-center">  
                 <a
                   class="btn-primary btn-small"
-                  href={`/api/frontend/repositories/${props.uuid}/insights.pdf`}
+                  href={`/api/frontend/repositories/${props.id}/insights.pdf`}
                   title="Click to download PDF file with insights report"
                 >Download insights PDF</a>
                 {editLinks()}

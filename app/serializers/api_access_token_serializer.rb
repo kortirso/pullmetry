@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class ApiAccessTokenSerializer < ApplicationSerializer
-  attributes :uuid, :value
+  attributes :id, :value
 end

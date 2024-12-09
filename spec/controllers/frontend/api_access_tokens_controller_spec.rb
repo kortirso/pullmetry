@@ -39,7 +39,7 @@ describe Frontend::ApiAccessTokensController do
       end
 
       context 'for not own api access token' do
-        let(:request) { delete :destroy, params: { id: api_access_token.uuid, pullmetry_access_token: access_token } }
+        let(:request) { delete :destroy, params: { id: api_access_token.id, pullmetry_access_token: access_token } }
 
         it 'does not destroy api access token', :aggregate_failures do
           expect { request }.not_to change(ApiAccessToken, :count)
@@ -48,7 +48,7 @@ describe Frontend::ApiAccessTokensController do
       end
 
       context 'for own api access token' do
-        let(:request) { delete :destroy, params: { id: api_access_token.uuid, pullmetry_access_token: access_token } }
+        let(:request) { delete :destroy, params: { id: api_access_token.id, pullmetry_access_token: access_token } }
 
         before { api_access_token.update!(user: user) }
 

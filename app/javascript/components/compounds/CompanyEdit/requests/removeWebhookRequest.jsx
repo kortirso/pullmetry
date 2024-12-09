@@ -1,8 +1,8 @@
 import { apiRequest, csrfToken } from '../../../../helpers';
 
-export const removeWebhookRequest = async (uuid) => {
+export const removeWebhookRequest = async (id) => {
   return await apiRequest({
-    url: `/frontend/webhooks/${uuid}.json`,
+    url: `/frontend/webhooks/${id}.json`,
     options: {
       method: 'DELETE',
       headers: {

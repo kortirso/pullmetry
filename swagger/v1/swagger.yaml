@@ -44,8 +44,9 @@ paths:
                     items:
                       type: object
                       properties:
-                        uuid:
+                        id:
                           type: string
+                          format: uuid
                         title:
                           type: string
                         repositories_count:
@@ -73,7 +74,8 @@ paths:
       parameters:
       - name: id
         in: path
-        description: Company UUID
+        format: uuid
+        description: Company ID
         required: true
         schema:
           type: string
@@ -130,7 +132,8 @@ paths:
       parameters:
       - name: id
         in: path
-        description: Repository UUID
+        format: uuid
+        description: Repository ID
         required: true
         schema:
           type: string

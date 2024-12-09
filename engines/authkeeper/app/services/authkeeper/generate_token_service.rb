@@ -8,7 +8,7 @@ module Authkeeper
       {
         result: jwt_encoder.encode(
           payload: {
-            uuid: user_session.uuid
+            uuid: user_session.id
           }
         )
       }

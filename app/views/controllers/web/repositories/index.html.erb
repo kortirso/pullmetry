@@ -5,7 +5,7 @@
       <% if allowed_to?(:create_repository?, current_user) %>
         <%=
           js_component 'RepositoryNewModal',
-            company_uuid: @company&.uuid,
+            company_id: @company&.id,
             companies: @available_companies,
             providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
         %>
@@ -28,7 +28,7 @@
       <% @repositories.each do |repository| %>
         <%=
           js_component 'Repository',
-            uuid: repository.uuid,
+            id: repository.id,
             avatar_url: repository.owner_avatar_url,
             title: repository.title,
             synced_at: repository.synced_at,
@@ -39,7 +39,7 @@
             accessable: repository.accessable,
             main_attribute: repository.current_config.main_attribute,
             edit_links: allowed_to?(:update?, repository) ? {
-              destroy: repository_path(repository.uuid)
+              destroy: repository_path(repository.id)
             } : nil
         %>
       <% end %>

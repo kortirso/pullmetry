@@ -8,7 +8,7 @@ export const RepositoryForm = (props) => {
 
   /* eslint-disable solid/reactivity */
   const [formStore, setFormStore] = createStore({
-    companyUuid: props.companyUuid || Object.keys(props.companies)[0],
+    companyId: props.companyId || Object.keys(props.companies)[0],
     title: '',
     link: '',
     provider: Object.keys(props.providers)[0],
@@ -40,8 +40,8 @@ export const RepositoryForm = (props) => {
           labelText="Company"
           classList="w-full mb-8"
           items={props.companies}
-          selectedValue={formStore.companyUuid}
-          onSelect={(value) => setFormStore('companyUuid', value)}
+          selectedValue={formStore.companyId}
+          onSelect={(value) => setFormStore('companyId', value)}
         />
       </Show>
       <FormInputField

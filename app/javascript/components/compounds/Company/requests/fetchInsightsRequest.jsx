@@ -1,7 +1,7 @@
 import { apiRequest } from '../../../../helpers';
 
-export const fetchInsightsRequest = async (companyUuid) => {
+export const fetchInsightsRequest = async (companyId) => {
   return await apiRequest({
-    url: `/frontend/companies/${companyUuid}/insights.json`
+    url: `/frontend/companies/${companyId}/insights.json`
   });
 }

@@ -18,7 +18,7 @@ module Web
       private
 
       def find_company
-        @company = authorized_scope(Company.all).find_by!(uuid: params[:company_id])
+        @company = authorized_scope(Company.all).find(params[:company_id])
       end
 
       def find_repositories
@@ -37,7 +37,7 @@ module Web
             .or(
               Company.where(id: current_user.companies_users.write.select(:company_id))
             )
-            .pluck(:uuid, :title)
+            .pluck(:id, :title)
             .to_h
       end
     end

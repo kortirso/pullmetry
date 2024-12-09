@@ -54,14 +54,14 @@ describe Web::RepositoriesController do
 
       context 'for not existing user company' do
         it 'renders 404 page' do
-          delete :destroy, params: { id: repository.uuid, locale: 'en' }
+          delete :destroy, params: { id: repository.id, locale: 'en' }
 
           expect(response).to render_template 'shared/404'
         end
       end
 
       context 'for existing user company' do
-        let(:request) { delete :destroy, params: { id: repository.uuid, locale: 'en' } }
+        let(:request) { delete :destroy, params: { id: repository.id, locale: 'en' } }
 
         before { repository.company.update!(user: @current_user) }
 

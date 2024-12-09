@@ -16,14 +16,14 @@ describe Api::V1::CompaniesController do
 
       it 'returns companies data', :aggregate_failures do
         get :index, params: {
-          api_access_token: api_access_token.value, only_fields: 'uuid,title'
+          api_access_token: api_access_token.value, only_fields: 'id,title'
         }
 
         expect(response).to have_http_status :ok
         expect(response.parsed_body['companies'].size).to eq 1
 
         attributes = response.parsed_body.dig('companies', 0)
-        expect(attributes['uuid']).not_to be_nil
+        expect(attributes['id']).not_to be_nil
         expect(attributes['title']).not_to be_nil
         expect(attributes['repositories_count']).to be_nil
       end

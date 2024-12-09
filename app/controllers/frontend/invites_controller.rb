@@ -37,11 +37,11 @@ module Frontend
     end
 
     def find_invite
-      @invite = Invite.find_by!(uuid: params[:id])
+      @invite = Invite.find(params[:id])
     end
 
     def find_company
-      current_user.available_write_companies.find_by(uuid: params[:company_id])
+      current_user.available_write_companies.find_by(id: params[:company_id])
     end
 
     def find_user

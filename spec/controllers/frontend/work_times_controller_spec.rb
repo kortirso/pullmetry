@@ -63,7 +63,7 @@ describe Frontend::WorkTimesController do
         end
 
         context 'for existing company' do
-          let(:company_id) { company.uuid }
+          let(:company_id) { company.id }
 
           it 'does not create work time', :aggregate_failures do
             expect { request }.to change(WorkTime, :count).by(1)

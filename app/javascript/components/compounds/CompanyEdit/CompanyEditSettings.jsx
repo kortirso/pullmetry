@@ -26,7 +26,7 @@ export const CompanyEditSettings = (props) => {
   const { Flash, renderErrors, renderNotices } = createFlash();
 
   const UpdateSettings = async () => {
-    const result = await updateWorkTimeRequest({ ...formStore, companyId: props.companyUuid });
+    const result = await updateWorkTimeRequest({ ...formStore, companyId: props.companyId });
 
     if (result.errors) renderErrors(result.errors);
     else renderNotices(['Work time is saved']);

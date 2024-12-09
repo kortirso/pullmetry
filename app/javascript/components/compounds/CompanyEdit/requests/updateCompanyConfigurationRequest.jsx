@@ -1,8 +1,8 @@
 import { apiRequest, csrfToken } from '../../../../helpers';
 
-export const updateCompanyConfigurationRequest = async (companyUuid, payload) => {
+export const updateCompanyConfigurationRequest = async (companyId, payload) => {
   return await apiRequest({
-    url: `/frontend/companies/${companyUuid}/configuration.json`,
+    url: `/frontend/companies/${companyId}/configuration.json`,
     options: {
       method: 'PATCH',
       headers: {

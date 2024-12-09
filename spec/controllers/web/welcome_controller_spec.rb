@@ -26,7 +26,7 @@ describe Web::WelcomeController do
             get :index, params: { invite_code: invite.code, invite_email: invite.email }
 
             expect(response).to render_template :index
-            expect(cookies[:pullmetry_invite_uuid]).to eq invite.uuid
+            expect(cookies[:pullmetry_invite_uuid]).to eq invite.id
           end
         end
       end

@@ -38,19 +38,19 @@ module Frontend
       end
 
       def find_company
-        @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])
+        @company = current_user.available_write_companies.find(params[:company_id])
       end
 
       def find_excludes_group
-        @excludes_group = ::Excludes::Group.find_by!(uuid: params[:id])
+        @excludes_group = ::Excludes::Group.find(params[:id])
       end
 
       def excludes_rules(excludes_group_id)
         ::Excludes::Rule
           .where(excludes_group_id: excludes_group_id)
           .joins(:excludes_group)
-          .hashable_pluck(:uuid, :target, :condition, :value, 'excludes_groups.uuid')
-          .group_by { |rule| rule[:excludes_groups_uuid] }
+          .hashable_pluck(:id, :target, :condition, :value, :excludes_group_id)
+          .group_by { |rule| rule[:excludes_group_id] }
       end
 
       def create_excludes_rules_params

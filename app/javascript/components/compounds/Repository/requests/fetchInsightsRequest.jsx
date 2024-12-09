@@ -1,7 +1,7 @@
 import { apiRequest } from '../../../../helpers';
 
-export const fetchInsightsRequest = async (repositoryUuid) => {
+export const fetchInsightsRequest = async (id) => {
   return await apiRequest({
-    url: `/frontend/repositories/${repositoryUuid}/insights.json`
+    url: `/frontend/repositories/${id}/insights.json`
   });
 }

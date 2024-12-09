@@ -267,34 +267,16 @@ $$;
 --
 
 CREATE TABLE public.access_tokens (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    tokenable_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_tokenable_id bigint,
     tokenable_type character varying NOT NULL,
     value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    expired_at timestamp(6) without time zone
+    expired_at timestamp(6) without time zone,
+    tokenable_id uuid NOT NULL
 );
-
-
---
--- Name: access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.access_tokens_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
 
 
 --
@@ -302,32 +284,14 @@ ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
 --
 
 CREATE TABLE public.api_access_tokens (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_user_id bigint,
     value text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: api_access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.api_access_tokens_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: api_access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.api_access_tokens_id_seq OWNED BY public.api_access_tokens.id;
 
 
 --
@@ -347,9 +311,9 @@ CREATE TABLE public.ar_internal_metadata (
 --
 
 CREATE TABLE public.companies (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_user_id bigint,
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -357,27 +321,9 @@ CREATE TABLE public.companies (
     configuration jsonb DEFAULT '{}'::jsonb NOT NULL,
     accessable boolean DEFAULT true NOT NULL,
     not_accessable_ticks integer DEFAULT 0 NOT NULL,
-    config jsonb DEFAULT '{}'::jsonb NOT NULL
+    config jsonb DEFAULT '{}'::jsonb NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.companies_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
@@ -385,34 +331,18 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 --
 
 CREATE TABLE public.companies_users (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    company_id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    invite_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_company_id bigint,
+    numeric_user_id bigint,
+    numeric_invite_id bigint,
     access integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid NOT NULL,
+    company_id uuid NOT NULL,
+    invite_id uuid NOT NULL
 );
-
-
---
--- Name: companies_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.companies_users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: companies_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.companies_users_id_seq OWNED BY public.companies_users.id;
 
 
 --
@@ -458,36 +388,18 @@ ALTER SEQUENCE public.emailbutler_messages_id_seq OWNED BY public.emailbutler_me
 --
 
 CREATE TABLE public.entities (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     external_id character varying NOT NULL,
     provider integer DEFAULT 0 NOT NULL,
     login character varying,
     avatar_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    identity_id bigint,
-    html_url character varying
+    numeric_identity_id bigint,
+    html_url character varying,
+    identity_id uuid
 );
-
-
---
--- Name: entities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.entities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: entities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.entities_id_seq OWNED BY public.entities.id;
 
 
 --
@@ -561,32 +473,14 @@ ALTER SEQUENCE public.event_store_events_in_streams_id_seq OWNED BY public.event
 --
 
 CREATE TABLE public.excludes_groups (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    insightable_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_insightable_id bigint,
     insightable_type character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    insightable_id uuid NOT NULL
 );
-
-
---
--- Name: excludes_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.excludes_groups_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: excludes_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.excludes_groups_id_seq OWNED BY public.excludes_groups.id;
 
 
 --
@@ -594,14 +488,15 @@ ALTER SEQUENCE public.excludes_groups_id_seq OWNED BY public.excludes_groups.id;
 --
 
 CREATE TABLE public.excludes_rules (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    excludes_group_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_excludes_group_id bigint,
     target integer NOT NULL,
     condition integer NOT NULL,
     value character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    excludes_group_id uuid NOT NULL
 );
 
 
@@ -627,58 +522,21 @@ COMMENT ON COLUMN public.excludes_rules.value IS 'Value for comparison';
 
 
 --
--- Name: excludes_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.excludes_rules_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: excludes_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.excludes_rules_id_seq OWNED BY public.excludes_rules.id;
-
-
---
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.feedbacks (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_user_id bigint,
     title character varying,
     description text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email text,
     answerable boolean DEFAULT false NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.feedbacks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
 
 
 --
@@ -686,35 +544,17 @@ ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
 --
 
 CREATE TABLE public.identities (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_user_id bigint,
     uid character varying NOT NULL,
     provider integer DEFAULT 0 NOT NULL,
     email text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     login character varying,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.identities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 
 
 --
@@ -722,33 +562,15 @@ ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 --
 
 CREATE TABLE public.ignores (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    insightable_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_insightable_id bigint,
     insightable_type character varying NOT NULL,
     entity_value character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    insightable_id uuid NOT NULL
 );
-
-
---
--- Name: ignores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.ignores_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ignores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.ignores_id_seq OWNED BY public.ignores.id;
 
 
 --
@@ -756,10 +578,10 @@ ALTER SEQUENCE public.ignores_id_seq OWNED BY public.ignores.id;
 --
 
 CREATE TABLE public.insights (
-    id bigint NOT NULL,
-    insightable_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_insightable_id bigint,
     insightable_type character varying NOT NULL,
-    entity_id bigint NOT NULL,
+    numeric_entity_id bigint,
     comments_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -779,7 +601,9 @@ CREATE TABLE public.insights (
     bad_reviews_count integer DEFAULT 0 NOT NULL,
     conventional_comments_count integer DEFAULT 0,
     time_since_last_open_pull_seconds integer DEFAULT 0,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    insightable_id uuid NOT NULL,
+    entity_id uuid NOT NULL
 );
 
 
@@ -798,59 +622,23 @@ COMMENT ON COLUMN public.insights.time_since_last_open_pull_seconds IS 'Time sin
 
 
 --
--- Name: insights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.insights_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: insights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.insights_id_seq OWNED BY public.insights.id;
-
-
---
 -- Name: invites; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.invites (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    inviteable_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_inviteable_id bigint,
     inviteable_type character varying NOT NULL,
-    receiver_id bigint,
+    numeric_receiver_id bigint,
     email text,
     code character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    access integer DEFAULT 0 NOT NULL
+    access integer DEFAULT 0 NOT NULL,
+    inviteable_id uuid NOT NULL,
+    receiver_id uuid
 );
-
-
---
--- Name: invites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.invites_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: invites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
 
 
 --
@@ -858,13 +646,14 @@ ALTER SEQUENCE public.invites_id_seq OWNED BY public.invites.id;
 --
 
 CREATE TABLE public.issue_comments (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    issue_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_issue_id bigint,
     external_id character varying NOT NULL,
     comment_created_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    issue_id uuid NOT NULL
 );
 
 
@@ -883,57 +672,20 @@ COMMENT ON COLUMN public.issue_comments.comment_created_at IS 'Time of creating 
 
 
 --
--- Name: issue_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.issue_comments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: issue_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.issue_comments_id_seq OWNED BY public.issue_comments.id;
-
-
---
 -- Name: issues; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.issues (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    repository_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_repository_id bigint,
     opened_at timestamp(6) without time zone,
     closed_at timestamp(6) without time zone,
     issue_number integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    repository_id uuid NOT NULL
 );
-
-
---
--- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.issues_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.issues_id_seq OWNED BY public.issues.id;
 
 
 --
@@ -1013,7 +765,7 @@ ALTER SEQUENCE public.kudos_achievements_id_seq OWNED BY public.kudos_achievemen
 
 CREATE TABLE public.kudos_users_achievements (
     id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_user_id bigint,
     kudos_achievement_id bigint NOT NULL,
     notified boolean DEFAULT false NOT NULL,
     rank integer,
@@ -1021,7 +773,8 @@ CREATE TABLE public.kudos_users_achievements (
     title jsonb DEFAULT '{}'::jsonb NOT NULL,
     description jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid NOT NULL
 );
 
 
@@ -1049,34 +802,17 @@ ALTER SEQUENCE public.kudos_users_achievements_id_seq OWNED BY public.kudos_user
 --
 
 CREATE TABLE public.notifications (
-    id bigint NOT NULL,
-    notifyable_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_notifyable_id bigint,
     notifyable_type character varying NOT NULL,
     notification_type integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    webhook_id bigint NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_webhook_id bigint,
+    notifyable_id uuid NOT NULL,
+    webhook_id uuid NOT NULL
 );
-
-
---
--- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.notifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 
 
 --
@@ -1084,19 +820,21 @@ ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 --
 
 CREATE TABLE public.pull_requests (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    repository_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_repository_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     pull_number integer NOT NULL,
     pull_created_at timestamp(6) without time zone,
     pull_closed_at timestamp(6) without time zone,
     pull_merged_at timestamp(6) without time zone,
-    entity_id bigint NOT NULL,
+    numeric_entity_id bigint,
     pull_requests_comments_count integer DEFAULT 0 NOT NULL,
     changed_loc integer DEFAULT 0 NOT NULL,
-    last_commit_external_id character varying
+    last_commit_external_id character varying,
+    repository_id uuid NOT NULL,
+    entity_id uuid NOT NULL
 );
 
 
@@ -1112,54 +850,18 @@ COMMENT ON COLUMN public.pull_requests.changed_loc IS 'Lines Of Code changed in 
 --
 
 CREATE TABLE public.pull_requests_comments (
-    id bigint NOT NULL,
+    numeric_id bigint,
     external_id character varying NOT NULL,
     comment_created_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    pull_request_id bigint NOT NULL,
-    entity_id bigint NOT NULL,
+    numeric_pull_request_id bigint,
+    numeric_entity_id bigint,
     parsed_body jsonb,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    pull_request_id uuid NOT NULL,
+    entity_id uuid NOT NULL
 );
-
-
---
--- Name: pull_requests_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.pull_requests_comments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pull_requests_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.pull_requests_comments_id_seq OWNED BY public.pull_requests_comments.id;
-
-
---
--- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.pull_requests_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 
 
 --
@@ -1167,37 +869,20 @@ ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 --
 
 CREATE TABLE public.pull_requests_reviews (
-    id bigint NOT NULL,
+    numeric_id bigint,
     external_id character varying,
     review_created_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    pull_request_id bigint NOT NULL,
-    entity_id bigint NOT NULL,
+    numeric_pull_request_id bigint,
+    numeric_entity_id bigint,
     required boolean DEFAULT false NOT NULL,
     state integer DEFAULT 0 NOT NULL,
     commit_external_id character varying,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    pull_request_id uuid NOT NULL,
+    entity_id uuid NOT NULL
 );
-
-
---
--- Name: pull_requests_reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.pull_requests_reviews_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pull_requests_reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.pull_requests_reviews_id_seq OWNED BY public.pull_requests_reviews.id;
 
 
 --
@@ -1254,9 +939,9 @@ WITH (fillfactor='90');
 --
 
 CREATE TABLE public.repositories (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    company_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_company_id bigint,
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1266,27 +951,9 @@ CREATE TABLE public.repositories (
     external_id character varying,
     synced_at timestamp(6) without time zone,
     accessable boolean DEFAULT true NOT NULL,
-    owner_avatar_url character varying
+    owner_avatar_url character varying,
+    company_id uuid NOT NULL
 );
-
-
---
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.repositories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 
 
 --
@@ -1294,8 +961,8 @@ ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 --
 
 CREATE TABLE public.repositories_insights (
-    id bigint NOT NULL,
-    repository_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_repository_id bigint,
     previous_date character varying,
     open_pull_requests_count integer DEFAULT 0 NOT NULL,
     commented_pull_requests_count integer DEFAULT 0 NOT NULL,
@@ -1315,7 +982,8 @@ CREATE TABLE public.repositories_insights (
     closed_issues_count integer DEFAULT 0 NOT NULL,
     average_issue_comment_time integer DEFAULT 0 NOT NULL,
     average_issue_close_time integer DEFAULT 0 NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    repository_id uuid NOT NULL
 );
 
 
@@ -1348,25 +1016,6 @@ COMMENT ON COLUMN public.repositories_insights.average_issue_close_time IS 'Aver
 
 
 --
--- Name: repositories_insights_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.repositories_insights_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: repositories_insights_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.repositories_insights_id_seq OWNED BY public.repositories_insights.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1380,33 +1029,14 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.subscribers (
-    id bigint NOT NULL,
+    numeric_id bigint,
     email text NOT NULL,
     unsubscribe_token character varying,
     unsubscribed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL
 );
-
-
---
--- Name: subscribers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.subscribers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: subscribers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.subscribers_id_seq OWNED BY public.subscribers.id;
 
 
 --
@@ -1414,14 +1044,15 @@ ALTER SEQUENCE public.subscribers_id_seq OWNED BY public.subscribers.id;
 --
 
 CREATE TABLE public.subscriptions (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_user_id bigint,
     start_time timestamp(6) without time zone NOT NULL,
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     external_invoice_id character varying,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL
 );
 
 
@@ -1433,31 +1064,12 @@ COMMENT ON COLUMN public.subscriptions.external_invoice_id IS 'Invoice ID from e
 
 
 --
--- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.subscriptions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     email text DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1472,54 +1084,17 @@ CREATE TABLE public.users (
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
 -- Name: users_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users_sessions (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_user_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: users_sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.users_sessions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.users_sessions_id_seq OWNED BY public.users_sessions.id;
 
 
 --
@@ -1527,33 +1102,15 @@ ALTER SEQUENCE public.users_sessions_id_seq OWNED BY public.users_sessions.id;
 --
 
 CREATE TABLE public.vacations (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_user_id bigint,
     start_time timestamp(6) without time zone NOT NULL,
     end_time timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL
 );
-
-
---
--- Name: vacations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.vacations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: vacations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
 
 
 --
@@ -1561,33 +1118,15 @@ ALTER SEQUENCE public.vacations_id_seq OWNED BY public.vacations.id;
 --
 
 CREATE TABLE public.webhooks (
-    id bigint NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL,
+    numeric_id bigint,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     source integer DEFAULT 0 NOT NULL,
     url character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    company_id bigint NOT NULL
+    numeric_company_id bigint,
+    company_id uuid NOT NULL
 );
-
-
---
--- Name: webhooks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.webhooks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: webhooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.webhooks_id_seq OWNED BY public.webhooks.id;
 
 
 --
@@ -1595,63 +1134,17 @@ ALTER SEQUENCE public.webhooks_id_seq OWNED BY public.webhooks.id;
 --
 
 CREATE TABLE public.work_times (
-    id bigint NOT NULL,
-    worktimeable_id bigint NOT NULL,
+    numeric_id bigint,
+    numeric_worktimeable_id bigint,
     worktimeable_type character varying NOT NULL,
     starts_at character varying NOT NULL,
     ends_at character varying NOT NULL,
     timezone character varying DEFAULT '0'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    uuid uuid DEFAULT gen_random_uuid() NOT NULL
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    worktimeable_id uuid NOT NULL
 );
-
-
---
--- Name: work_times_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.work_times_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: work_times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.work_times_id_seq OWNED BY public.work_times.id;
-
-
---
--- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('public.access_tokens_id_seq'::regclass);
-
-
---
--- Name: api_access_tokens id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.api_access_tokens ALTER COLUMN id SET DEFAULT nextval('public.api_access_tokens_id_seq'::regclass);
-
-
---
--- Name: companies id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
-
-
---
--- Name: companies_users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.companies_users ALTER COLUMN id SET DEFAULT nextval('public.companies_users_id_seq'::regclass);
 
 
 --
@@ -1659,13 +1152,6 @@ ALTER TABLE ONLY public.companies_users ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.emailbutler_messages ALTER COLUMN id SET DEFAULT nextval('public.emailbutler_messages_id_seq'::regclass);
-
-
---
--- Name: entities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.entities ALTER COLUMN id SET DEFAULT nextval('public.entities_id_seq'::regclass);
 
 
 --
@@ -1680,69 +1166,6 @@ ALTER TABLE ONLY public.event_store_events ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.event_store_events_in_streams ALTER COLUMN id SET DEFAULT nextval('public.event_store_events_in_streams_id_seq'::regclass);
-
-
---
--- Name: excludes_groups id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.excludes_groups ALTER COLUMN id SET DEFAULT nextval('public.excludes_groups_id_seq'::regclass);
-
-
---
--- Name: excludes_rules id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.excludes_rules ALTER COLUMN id SET DEFAULT nextval('public.excludes_rules_id_seq'::regclass);
-
-
---
--- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
-
-
---
--- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
-
-
---
--- Name: ignores id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ignores ALTER COLUMN id SET DEFAULT nextval('public.ignores_id_seq'::regclass);
-
-
---
--- Name: insights id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.insights ALTER COLUMN id SET DEFAULT nextval('public.insights_id_seq'::regclass);
-
-
---
--- Name: invites id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.invites ALTER COLUMN id SET DEFAULT nextval('public.invites_id_seq'::regclass);
-
-
---
--- Name: issue_comments id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.issue_comments ALTER COLUMN id SET DEFAULT nextval('public.issue_comments_id_seq'::regclass);
-
-
---
--- Name: issues id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.issues ALTER COLUMN id SET DEFAULT nextval('public.issues_id_seq'::regclass);
 
 
 --
@@ -1767,101 +1190,10 @@ ALTER TABLE ONLY public.kudos_users_achievements ALTER COLUMN id SET DEFAULT nex
 
 
 --
--- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
-
-
---
--- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_id_seq'::regclass);
-
-
---
--- Name: pull_requests_comments id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pull_requests_comments ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_comments_id_seq'::regclass);
-
-
---
--- Name: pull_requests_reviews id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pull_requests_reviews ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_reviews_id_seq'::regclass);
-
-
---
 -- Name: que_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.que_jobs ALTER COLUMN id SET DEFAULT nextval('public.que_jobs_id_seq'::regclass);
-
-
---
--- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
-
-
---
--- Name: repositories_insights id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.repositories_insights ALTER COLUMN id SET DEFAULT nextval('public.repositories_insights_id_seq'::regclass);
-
-
---
--- Name: subscribers id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.subscribers ALTER COLUMN id SET DEFAULT nextval('public.subscribers_id_seq'::regclass);
-
-
---
--- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
-
-
---
--- Name: users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
-
---
--- Name: users_sessions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users_sessions ALTER COLUMN id SET DEFAULT nextval('public.users_sessions_id_seq'::regclass);
-
-
---
--- Name: vacations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.vacations ALTER COLUMN id SET DEFAULT nextval('public.vacations_id_seq'::regclass);
-
-
---
--- Name: webhooks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.webhooks ALTER COLUMN id SET DEFAULT nextval('public.webhooks_id_seq'::regclass);
-
-
---
--- Name: work_times id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.work_times ALTER COLUMN id SET DEFAULT nextval('public.work_times_id_seq'::regclass);
 
 
 --
@@ -2183,6 +1515,69 @@ CREATE INDEX idx_on_inviteable_id_inviteable_type_receiver_id_700d475c99 ON publ
 
 
 --
+-- Name: idx_on_numeric_company_id_numeric_user_id_7ddb80d90a; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_numeric_company_id_numeric_user_id_7ddb80d90a ON public.companies_users USING btree (numeric_company_id, numeric_user_id);
+
+
+--
+-- Name: idx_on_numeric_insightable_id_insightable_type_58195392fb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_numeric_insightable_id_insightable_type_58195392fb ON public.excludes_groups USING btree (numeric_insightable_id, insightable_type);
+
+
+--
+-- Name: idx_on_numeric_insightable_id_insightable_type_enti_b01b1b20a5; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_numeric_insightable_id_insightable_type_enti_b01b1b20a5 ON public.ignores USING btree (numeric_insightable_id, insightable_type, entity_value);
+
+
+--
+-- Name: idx_on_numeric_inviteable_id_inviteable_type_numeri_d4079f4003; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_numeric_inviteable_id_inviteable_type_numeri_d4079f4003 ON public.invites USING btree (numeric_inviteable_id, inviteable_type, numeric_receiver_id);
+
+
+--
+-- Name: idx_on_numeric_notifyable_id_notifyable_type_3479f2327d; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_numeric_notifyable_id_notifyable_type_3479f2327d ON public.notifications USING btree (numeric_notifyable_id, notifyable_type);
+
+
+--
+-- Name: idx_on_numeric_webhook_id_notification_type_3de333d1a8; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_numeric_webhook_id_notification_type_3de333d1a8 ON public.notifications USING btree (numeric_webhook_id, notification_type);
+
+
+--
+-- Name: idx_on_numeric_worktimeable_id_worktimeable_type_a086a988c8; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_numeric_worktimeable_id_worktimeable_type_a086a988c8 ON public.work_times USING btree (numeric_worktimeable_id, worktimeable_type);
+
+
+--
+-- Name: index_access_tokens_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_access_tokens_on_id ON public.access_tokens USING btree (id);
+
+
+--
+-- Name: index_access_tokens_on_numeric_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_access_tokens_on_numeric_tokenable_id_and_tokenable_type ON public.access_tokens USING btree (numeric_tokenable_id, tokenable_type);
+
+
+--
 -- Name: index_access_tokens_on_tokenable_id_and_tokenable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2190,10 +1585,17 @@ CREATE UNIQUE INDEX index_access_tokens_on_tokenable_id_and_tokenable_type ON pu
 
 
 --
--- Name: index_access_tokens_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_api_access_tokens_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_access_tokens_on_uuid ON public.access_tokens USING btree (uuid);
+CREATE INDEX index_api_access_tokens_on_id ON public.api_access_tokens USING btree (id);
+
+
+--
+-- Name: index_api_access_tokens_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_access_tokens_on_numeric_user_id ON public.api_access_tokens USING btree (numeric_user_id);
 
 
 --
@@ -2204,17 +1606,24 @@ CREATE INDEX index_api_access_tokens_on_user_id ON public.api_access_tokens USIN
 
 
 --
--- Name: index_api_access_tokens_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_api_access_tokens_on_uuid ON public.api_access_tokens USING btree (uuid);
-
-
---
 -- Name: index_api_access_tokens_on_value; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_api_access_tokens_on_value ON public.api_access_tokens USING btree (value);
+
+
+--
+-- Name: index_companies_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_companies_on_id ON public.companies USING btree (id);
+
+
+--
+-- Name: index_companies_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_companies_on_numeric_user_id ON public.companies USING btree (numeric_user_id);
 
 
 --
@@ -2225,17 +1634,17 @@ CREATE INDEX index_companies_on_user_id ON public.companies USING btree (user_id
 
 
 --
--- Name: index_companies_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_companies_on_uuid ON public.companies USING btree (uuid);
-
-
---
 -- Name: index_companies_users_on_company_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_companies_users_on_company_id_and_user_id ON public.companies_users USING btree (company_id, user_id);
+
+
+--
+-- Name: index_companies_users_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_companies_users_on_id ON public.companies_users USING btree (id);
 
 
 --
@@ -2246,10 +1655,10 @@ CREATE INDEX index_companies_users_on_invite_id ON public.companies_users USING 
 
 
 --
--- Name: index_companies_users_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_companies_users_on_numeric_invite_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_companies_users_on_uuid ON public.companies_users USING btree (uuid);
+CREATE INDEX index_companies_users_on_numeric_invite_id ON public.companies_users USING btree (numeric_invite_id);
 
 
 --
@@ -2260,6 +1669,13 @@ CREATE UNIQUE INDEX index_emailbutler_messages_on_uuid ON public.emailbutler_mes
 
 
 --
+-- Name: index_entities_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_entities_on_id ON public.entities USING btree (id);
+
+
+--
 -- Name: index_entities_on_identity_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2267,17 +1683,17 @@ CREATE INDEX index_entities_on_identity_id ON public.entities USING btree (ident
 
 
 --
+-- Name: index_entities_on_numeric_identity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_entities_on_numeric_identity_id ON public.entities USING btree (numeric_identity_id);
+
+
+--
 -- Name: index_entities_on_provider_and_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_entities_on_provider_and_external_id ON public.entities USING btree (provider, external_id);
-
-
---
--- Name: index_entities_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_entities_on_uuid ON public.entities USING btree (uuid);
 
 
 --
@@ -2330,17 +1746,17 @@ CREATE INDEX index_event_store_events_on_valid_at ON public.event_store_events U
 
 
 --
+-- Name: index_excludes_groups_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_excludes_groups_on_id ON public.excludes_groups USING btree (id);
+
+
+--
 -- Name: index_excludes_groups_on_insightable_id_and_insightable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_excludes_groups_on_insightable_id_and_insightable_type ON public.excludes_groups USING btree (insightable_id, insightable_type);
-
-
---
--- Name: index_excludes_groups_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_excludes_groups_on_uuid ON public.excludes_groups USING btree (uuid);
 
 
 --
@@ -2351,10 +1767,31 @@ CREATE INDEX index_excludes_rules_on_excludes_group_id ON public.excludes_rules 
 
 
 --
--- Name: index_excludes_rules_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_excludes_rules_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_excludes_rules_on_uuid ON public.excludes_rules USING btree (uuid);
+CREATE UNIQUE INDEX index_excludes_rules_on_id ON public.excludes_rules USING btree (id);
+
+
+--
+-- Name: index_excludes_rules_on_numeric_excludes_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_excludes_rules_on_numeric_excludes_group_id ON public.excludes_rules USING btree (numeric_excludes_group_id);
+
+
+--
+-- Name: index_feedbacks_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_feedbacks_on_id ON public.feedbacks USING btree (id);
+
+
+--
+-- Name: index_feedbacks_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_feedbacks_on_numeric_user_id ON public.feedbacks USING btree (numeric_user_id);
 
 
 --
@@ -2365,10 +1802,17 @@ CREATE INDEX index_feedbacks_on_user_id ON public.feedbacks USING btree (user_id
 
 
 --
--- Name: index_feedbacks_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_identities_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_feedbacks_on_uuid ON public.feedbacks USING btree (uuid);
+CREATE UNIQUE INDEX index_identities_on_id ON public.identities USING btree (id);
+
+
+--
+-- Name: index_identities_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_numeric_user_id ON public.identities USING btree (numeric_user_id);
 
 
 --
@@ -2386,17 +1830,10 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 
 
 --
--- Name: index_identities_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ignores_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_identities_on_uuid ON public.identities USING btree (uuid);
-
-
---
--- Name: index_ignores_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_ignores_on_uuid ON public.ignores USING btree (uuid);
+CREATE UNIQUE INDEX index_ignores_on_id ON public.ignores USING btree (id);
 
 
 --
@@ -2407,6 +1844,13 @@ CREATE INDEX index_insights_on_entity_id ON public.insights USING btree (entity_
 
 
 --
+-- Name: index_insights_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_insights_on_id ON public.insights USING btree (id);
+
+
+--
 -- Name: index_insights_on_insightable_id_and_insightable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2414,17 +1858,31 @@ CREATE INDEX index_insights_on_insightable_id_and_insightable_type ON public.ins
 
 
 --
--- Name: index_insights_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_insights_on_numeric_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_insights_on_uuid ON public.insights USING btree (uuid);
+CREATE INDEX index_insights_on_numeric_entity_id ON public.insights USING btree (numeric_entity_id);
 
 
 --
--- Name: index_invites_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_insights_on_numeric_insightable_id_and_insightable_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_invites_on_uuid ON public.invites USING btree (uuid);
+CREATE INDEX index_insights_on_numeric_insightable_id_and_insightable_type ON public.insights USING btree (numeric_insightable_id, insightable_type);
+
+
+--
+-- Name: index_invites_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_invites_on_id ON public.invites USING btree (id);
+
+
+--
+-- Name: index_issue_comments_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_issue_comments_on_id ON public.issue_comments USING btree (id);
 
 
 --
@@ -2435,10 +1893,24 @@ CREATE INDEX index_issue_comments_on_issue_id ON public.issue_comments USING btr
 
 
 --
--- Name: index_issue_comments_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_issue_comments_on_numeric_issue_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_issue_comments_on_uuid ON public.issue_comments USING btree (uuid);
+CREATE INDEX index_issue_comments_on_numeric_issue_id ON public.issue_comments USING btree (numeric_issue_id);
+
+
+--
+-- Name: index_issues_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_issues_on_id ON public.issues USING btree (id);
+
+
+--
+-- Name: index_issues_on_numeric_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_issues_on_numeric_repository_id ON public.issues USING btree (numeric_repository_id);
 
 
 --
@@ -2446,13 +1918,6 @@ CREATE UNIQUE INDEX index_issue_comments_on_uuid ON public.issue_comments USING 
 --
 
 CREATE INDEX index_issues_on_repository_id ON public.issues USING btree (repository_id);
-
-
---
--- Name: index_issues_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_issues_on_uuid ON public.issues USING btree (uuid);
 
 
 --
@@ -2498,17 +1963,24 @@ CREATE INDEX index_kudos_users_achievements_on_kudos_achievement_id ON public.ku
 
 
 --
+-- Name: index_kudos_users_achievements_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_kudos_users_achievements_on_user_id ON public.kudos_users_achievements USING btree (user_id);
+
+
+--
+-- Name: index_notifications_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_id ON public.notifications USING btree (id);
+
+
+--
 -- Name: index_notifications_on_notifyable_id_and_notifyable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_notifications_on_notifyable_id_and_notifyable_type ON public.notifications USING btree (notifyable_id, notifyable_type);
-
-
---
--- Name: index_notifications_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_uuid ON public.notifications USING btree (uuid);
 
 
 --
@@ -2519,6 +1991,13 @@ CREATE UNIQUE INDEX index_notifications_on_webhook_id_and_notification_type ON p
 
 
 --
+-- Name: index_pull_requests_comments_on_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_comments_on_entity_id ON public.pull_requests_comments USING btree (entity_id);
+
+
+--
 -- Name: index_pull_requests_comments_on_external_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2526,10 +2005,17 @@ CREATE INDEX index_pull_requests_comments_on_external_id ON public.pull_requests
 
 
 --
--- Name: index_pull_requests_comments_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_comments_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_pull_requests_comments_on_uuid ON public.pull_requests_comments USING btree (uuid);
+CREATE UNIQUE INDEX index_pull_requests_comments_on_id ON public.pull_requests_comments USING btree (id);
+
+
+--
+-- Name: index_pull_requests_comments_on_pull_request_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_comments_on_pull_request_id ON public.pull_requests_comments USING btree (pull_request_id);
 
 
 --
@@ -2540,6 +2026,27 @@ CREATE INDEX index_pull_requests_on_entity_id ON public.pull_requests USING btre
 
 
 --
+-- Name: index_pull_requests_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pull_requests_on_id ON public.pull_requests USING btree (id);
+
+
+--
+-- Name: index_pull_requests_on_numeric_entity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_on_numeric_entity_id ON public.pull_requests USING btree (numeric_entity_id);
+
+
+--
+-- Name: index_pull_requests_on_numeric_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_on_numeric_repository_id ON public.pull_requests USING btree (numeric_repository_id);
+
+
+--
 -- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2547,10 +2054,10 @@ CREATE INDEX index_pull_requests_on_repository_id ON public.pull_requests USING 
 
 
 --
--- Name: index_pull_requests_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_reviews_on_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_pull_requests_on_uuid ON public.pull_requests USING btree (uuid);
+CREATE INDEX index_pull_requests_reviews_on_entity_id ON public.pull_requests_reviews USING btree (entity_id);
 
 
 --
@@ -2561,10 +2068,31 @@ CREATE INDEX index_pull_requests_reviews_on_external_id ON public.pull_requests_
 
 
 --
--- Name: index_pull_requests_reviews_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_reviews_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_pull_requests_reviews_on_uuid ON public.pull_requests_reviews USING btree (uuid);
+CREATE UNIQUE INDEX index_pull_requests_reviews_on_id ON public.pull_requests_reviews USING btree (id);
+
+
+--
+-- Name: index_pull_requests_reviews_on_pull_request_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pull_requests_reviews_on_pull_request_id ON public.pull_requests_reviews USING btree (pull_request_id);
+
+
+--
+-- Name: index_repositories_insights_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_repositories_insights_on_id ON public.repositories_insights USING btree (id);
+
+
+--
+-- Name: index_repositories_insights_on_numeric_repository_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_insights_on_numeric_repository_id ON public.repositories_insights USING btree (numeric_repository_id);
 
 
 --
@@ -2575,13 +2103,6 @@ CREATE INDEX index_repositories_insights_on_repository_id ON public.repositories
 
 
 --
--- Name: index_repositories_insights_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_repositories_insights_on_uuid ON public.repositories_insights USING btree (uuid);
-
-
---
 -- Name: index_repositories_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2589,10 +2110,17 @@ CREATE INDEX index_repositories_on_company_id ON public.repositories USING btree
 
 
 --
--- Name: index_repositories_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_repositories_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_repositories_on_uuid ON public.repositories USING btree (uuid);
+CREATE UNIQUE INDEX index_repositories_on_id ON public.repositories USING btree (id);
+
+
+--
+-- Name: index_repositories_on_numeric_company_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_repositories_on_numeric_company_id ON public.repositories USING btree (numeric_company_id);
 
 
 --
@@ -2603,10 +2131,24 @@ CREATE UNIQUE INDEX index_subscribers_on_email ON public.subscribers USING btree
 
 
 --
--- Name: index_subscribers_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_subscribers_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_subscribers_on_uuid ON public.subscribers USING btree (uuid);
+CREATE UNIQUE INDEX index_subscribers_on_id ON public.subscribers USING btree (id);
+
+
+--
+-- Name: index_subscriptions_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_id ON public.subscriptions USING btree (id);
+
+
+--
+-- Name: index_subscriptions_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_numeric_user_id ON public.subscriptions USING btree (numeric_user_id);
 
 
 --
@@ -2617,13 +2159,6 @@ CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree 
 
 
 --
--- Name: index_subscriptions_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_subscriptions_on_uuid ON public.subscriptions USING btree (uuid);
-
-
---
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2631,10 +2166,24 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_on_uuid ON public.users USING btree (uuid);
+CREATE UNIQUE INDEX index_users_on_id ON public.users USING btree (id);
+
+
+--
+-- Name: index_users_sessions_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_sessions_on_id ON public.users_sessions USING btree (id);
+
+
+--
+-- Name: index_users_sessions_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_sessions_on_numeric_user_id ON public.users_sessions USING btree (numeric_user_id);
 
 
 --
@@ -2645,10 +2194,17 @@ CREATE INDEX index_users_sessions_on_user_id ON public.users_sessions USING btre
 
 
 --
--- Name: index_users_sessions_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_vacations_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_sessions_on_uuid ON public.users_sessions USING btree (uuid);
+CREATE UNIQUE INDEX index_vacations_on_id ON public.vacations USING btree (id);
+
+
+--
+-- Name: index_vacations_on_numeric_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vacations_on_numeric_user_id ON public.vacations USING btree (numeric_user_id);
 
 
 --
@@ -2659,13 +2215,6 @@ CREATE INDEX index_vacations_on_user_id ON public.vacations USING btree (user_id
 
 
 --
--- Name: index_vacations_on_uuid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_vacations_on_uuid ON public.vacations USING btree (uuid);
-
-
---
 -- Name: index_webhooks_on_company_id_and_source_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2673,17 +2222,24 @@ CREATE UNIQUE INDEX index_webhooks_on_company_id_and_source_and_url ON public.we
 
 
 --
--- Name: index_webhooks_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_webhooks_on_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_webhooks_on_uuid ON public.webhooks USING btree (uuid);
+CREATE UNIQUE INDEX index_webhooks_on_id ON public.webhooks USING btree (id);
 
 
 --
--- Name: index_work_times_on_uuid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_webhooks_on_numeric_company_id_and_source_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_work_times_on_uuid ON public.work_times USING btree (uuid);
+CREATE UNIQUE INDEX index_webhooks_on_numeric_company_id_and_source_and_url ON public.webhooks USING btree (numeric_company_id, source, url);
+
+
+--
+-- Name: index_work_times_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_work_times_on_id ON public.work_times USING btree (id);
 
 
 --
@@ -2697,7 +2253,7 @@ CREATE UNIQUE INDEX index_work_times_on_worktimeable_id_and_worktimeable_type ON
 -- Name: kudos_users_achievements_unique_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX kudos_users_achievements_unique_index ON public.kudos_users_achievements USING btree (user_id, kudos_achievement_id);
+CREATE UNIQUE INDEX kudos_users_achievements_unique_index ON public.kudos_users_achievements USING btree (numeric_user_id, kudos_achievement_id);
 
 
 --
@@ -2743,14 +2299,6 @@ CREATE TRIGGER que_state_notify AFTER INSERT OR DELETE OR UPDATE ON public.que_j
 
 
 --
--- Name: kudos_users_achievements fk_rails_4621adbc67; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.kudos_users_achievements
-    ADD CONSTRAINT fk_rails_4621adbc67 FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
 -- Name: kudos_users_achievements fk_rails_db98df5998; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2773,6 +2321,8 @@ ALTER TABLE ONLY public.kudos_achievements
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241207182227'),
+('20241207181125'),
 ('20241207174751'),
 ('20241207174615'),
 ('20241021055406'),
