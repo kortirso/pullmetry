@@ -21,7 +21,7 @@ module Frontend
     end
 
     def find_company
-      current_user.available_write_companies.find_by!(uuid: params[:company_id])
+      current_user.available_write_companies.find(params[:company_id])
     end
 
     def work_time_params

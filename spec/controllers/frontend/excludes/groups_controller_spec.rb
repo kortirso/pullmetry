@@ -13,7 +13,7 @@ describe Frontend::Excludes::GroupsController do
       context 'for invalid company' do
         let(:request) {
           post :create, params: {
-            company_id: company.uuid, pullmetry_access_token: access_token
+            company_id: company.id, pullmetry_access_token: access_token
           }
         }
 
@@ -30,7 +30,7 @@ describe Frontend::Excludes::GroupsController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid,
+              company_id: company.id,
               excludes_rules: [{ target: 'title', condition: 'equal', value: 'value' }],
               pullmetry_access_token: access_token
             }
@@ -51,7 +51,7 @@ describe Frontend::Excludes::GroupsController do
 
     context 'for logged users' do
       let!(:excludes_group) { create :excludes_group }
-      let(:request) { delete :destroy, params: { id: excludes_group.uuid, pullmetry_access_token: access_token } }
+      let(:request) { delete :destroy, params: { id: excludes_group.id, pullmetry_access_token: access_token } }
 
       context 'for not user excludes_group' do
         it 'does not destroy excludes_group', :aggregate_failures do

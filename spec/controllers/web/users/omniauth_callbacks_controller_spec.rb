@@ -121,12 +121,12 @@ describe Web::Users::OmniauthCallbacksController do
                 end
               end
 
-              context 'with invite uuid in session' do
+              context 'with invite id in session' do
                 let!(:invite) { create :invite }
 
                 before do
                   cookies[:pullmetry_invite_uuid] = {
-                    value: invite.uuid,
+                    value: invite.id,
                     expires: 1.week.from_now
                   }
                 end

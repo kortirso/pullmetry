@@ -20,7 +20,7 @@ describe Frontend::Companies::TransfersController do
 
       context 'for not existing user company' do
         it 'returns not found response' do
-          post :create, params: { company_id: company.uuid, user_uuid: 'unexisting', pullmetry_access_token: access_token }
+          post :create, params: { company_id: company.id, user_id: 'unexisting', pullmetry_access_token: access_token }
 
           expect(response).to have_http_status :not_found
         end
@@ -33,7 +33,7 @@ describe Frontend::Companies::TransfersController do
 
         context 'for user by self' do
           it 'returns not found response', :aggregate_failures do
-            post :create, params: { company_id: company.uuid, user_uuid: user.uuid, pullmetry_access_token: access_token }
+            post :create, params: { company_id: company.id, user_id: user.id, pullmetry_access_token: access_token }
 
             expect(response).to have_http_status :not_found
             expect(company.reload.user_id).to eq user.id
@@ -42,7 +42,7 @@ describe Frontend::Companies::TransfersController do
 
         context 'for another target user' do
           it 'updates company', :aggregate_failures do
-            post :create, params: { company_id: company.uuid, user_uuid: another_user.uuid, pullmetry_access_token: access_token }
+            post :create, params: { company_id: company.id, user_id: another_user.id, pullmetry_access_token: access_token }
 
             expect(response).to have_http_status :ok
             expect(company.reload.user_id).to eq another_user.id
@@ -53,7 +53,7 @@ describe Frontend::Companies::TransfersController do
 
             it 'does not update company', :aggregate_failures do
               post :create, params: {
-                company_id: company.uuid, user_uuid: another_user.uuid, pullmetry_access_token: access_token
+                company_id: company.id, user_id: another_user.id, pullmetry_access_token: access_token
               }
 
               expect(response).to have_http_status :ok
@@ -65,7 +65,7 @@ describe Frontend::Companies::TransfersController do
     end
 
     def do_request(access_token=nil)
-      post :create, params: { company_id: 'unexisting', user_uuid: 'unexisting', pullmetry_access_token: access_token }
+      post :create, params: { company_id: 'unexisting', user_id: 'unexisting', pullmetry_access_token: access_token }
     end
   end
 end

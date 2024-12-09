@@ -15,7 +15,7 @@ module Frontend
       private
 
       def find_companies_user
-        @companies_user = ::Companies::User.find_by!(uuid: params[:id])
+        @companies_user = ::Companies::User.find(params[:id])
       end
     end
   end

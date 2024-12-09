@@ -25,7 +25,7 @@ module Frontend
     end
 
     def find_company
-      @company = current_user.companies.find_by!(uuid: params[:repository][:company_uuid])
+      @company = current_user.companies.find(params[:repository][:company_id])
     end
 
     def repository_params

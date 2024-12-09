@@ -13,7 +13,7 @@ export const Wizard = (props) => {
     companyModalIsOpen: true,
     repositoryModalIsOpen: false,
     accessTokenModalIsOpen: false,
-    companyUuid: null
+    companyId: null
   });
 
   const { Modal, openModal } = createModal();
@@ -25,14 +25,14 @@ export const Wizard = (props) => {
       return;
     }
 
-    const result = await createCompanyRequest({ ...formStore, userUuid: props.accountUuid });
+    const result = await createCompanyRequest({ ...formStore, userId: props.accountId });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({
       ...pageState,
       companyModalIsOpen: false,
       repositoryModalIsOpen: true,
-      companyUuid: result.result.uuid
+      companyId: result.result.id
     });
   }
 
@@ -58,7 +58,7 @@ export const Wizard = (props) => {
       return;
     }
 
-    const result = await createAccessTokenRequest({ payload: formStore, uuid: pageState.companyUuid, tokenable: 'companies' });
+    const result = await createAccessTokenRequest({ payload: formStore, id: pageState.companyId, tokenable: 'companies' });
 
     if (result.errors) renderErrors(result.errors);
     else window.location.reload();
@@ -82,7 +82,7 @@ export const Wizard = (props) => {
               <h1 class="mb-2">New Repository</h1>
               <p class="mb-8 text-center">Repository is just abstraction of your real repository. Link must be real, title - anything you want.</p>
               <RepositoryForm
-                companyUuid={pageState.companyUuid}
+                companyId={pageState.companyId}
                 companies={[]}
                 providers={props.providers}
                 submitText="Next"

@@ -13,7 +13,7 @@ describe Frontend::Entities::IgnoresController do
       context 'for invalid company' do
         let(:request) {
           post :create, params: {
-            company_id: company.uuid, entity_ignore: { entity_value: '' }, pullmetry_access_token: access_token
+            company_id: company.id, entity_ignore: { entity_value: '' }, pullmetry_access_token: access_token
           }
         }
 
@@ -30,7 +30,7 @@ describe Frontend::Entities::IgnoresController do
         context 'for invalid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, entity_ignore: { entity_value: '' }, pullmetry_access_token: access_token
+              company_id: company.id, entity_ignore: { entity_value: '' }, pullmetry_access_token: access_token
             }
           }
 
@@ -44,7 +44,7 @@ describe Frontend::Entities::IgnoresController do
         context 'for valid params' do
           let(:request) {
             post :create, params: {
-              company_id: company.uuid, entity_ignore: { entity_value: 'value' }, pullmetry_access_token: access_token
+              company_id: company.id, entity_ignore: { entity_value: 'value' }, pullmetry_access_token: access_token
             }
           }
 
@@ -63,7 +63,7 @@ describe Frontend::Entities::IgnoresController do
 
     context 'for logged users' do
       let!(:ignore) { create :ignore }
-      let(:request) { delete :destroy, params: { id: ignore.uuid, pullmetry_access_token: access_token } }
+      let(:request) { delete :destroy, params: { id: ignore.id, pullmetry_access_token: access_token } }
 
       context 'for not user ignore' do
         it 'does not destroy ignore', :aggregate_failures do

@@ -1,8 +1,8 @@
 import { apiRequest, csrfToken } from '../../../../helpers';
 
-export const removeInviteRequest = async (uuid) => {
+export const removeInviteRequest = async (id) => {
   return await apiRequest({
-    url: `/frontend/invites/${uuid}.json`,
+    url: `/frontend/invites/${id}.json`,
     options: {
       method: 'DELETE',
       headers: {

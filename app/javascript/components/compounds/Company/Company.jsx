@@ -21,7 +21,7 @@ export const Company = (props) => {
     if (!pageState.isExpanded) return;
     if (pageState.entities !== undefined) return;
 
-    const fetchInsights = async () => await fetchInsightsRequest(props.uuid);
+    const fetchInsights = async () => await fetchInsightsRequest(props.id);
 
     Promise.all([fetchInsights()]).then(([insightsData]) => {
       setPageState({
@@ -51,7 +51,7 @@ export const Company = (props) => {
 
     return (
       <div class="flex items-center">
-        <AccessTokenNewModal tokenable="companies" uuid={props.uuid} required={props.editLinks.needAccessToken} />
+        <AccessTokenNewModal tokenable="companies" id={props.id} required={props.editLinks.needAccessToken} />
         <Show when={props.editLinks.configuration}>
           <a
             href={props.editLinks.configuration}
@@ -157,7 +157,7 @@ export const Company = (props) => {
               <div class="mt-8 flex justify-between items-center">  
                 <a
                   class="btn-primary btn-small"
-                  href={`/api/frontend/companies/${props.uuid}/insights.pdf`}
+                  href={`/api/frontend/companies/${props.id}/insights.pdf`}
                   title="Click to download PDF file with insights report"
                 >Download insights PDF</a>
                 {editLinks()}

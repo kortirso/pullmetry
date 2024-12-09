@@ -1,8 +1,8 @@
 import { apiRequest, csrfToken } from '../../../../helpers';
 
-export const removeExcludeGroupRequest = async (uuid) => {
+export const removeExcludeGroupRequest = async (id) => {
   return await apiRequest({
-    url: `/frontend/excludes/groups/${uuid}.json`,
+    url: `/frontend/excludes/groups/${id}.json`,
     options: {
       method: 'DELETE',
       headers: {

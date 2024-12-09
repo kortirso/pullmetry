@@ -11,7 +11,7 @@ describe Frontend::Companies::UsersController do
     context 'for logged users' do
       let!(:company) { create :company }
       let!(:companies_user) { create :companies_user }
-      let(:request) { delete :destroy, params: { id: companies_user.uuid, pullmetry_access_token: access_token } }
+      let(:request) { delete :destroy, params: { id: companies_user.id, pullmetry_access_token: access_token } }
 
       context 'for company invite' do
         before { companies_user.invite.update!(inviteable: company) }

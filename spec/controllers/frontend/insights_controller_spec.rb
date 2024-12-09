@@ -20,7 +20,7 @@ describe Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
+            get :index, params: { company_id: company.id, pullmetry_access_token: access_token, format: :json }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -45,7 +45,7 @@ describe Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
+              get :index, params: { company_id: company.id, pullmetry_access_token: access_token, format: :json }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -62,7 +62,7 @@ describe Frontend::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :json }
+              get :index, params: { company_id: company.id, pullmetry_access_token: access_token, format: :json }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -74,7 +74,7 @@ describe Frontend::InsightsController do
 
           context 'for pdf request' do
             it 'returns data' do
-              get :index, params: { company_id: company.uuid, pullmetry_access_token: access_token, format: :pdf }
+              get :index, params: { company_id: company.id, pullmetry_access_token: access_token, format: :pdf }
 
               expect(response).to have_http_status :ok
             end
@@ -91,7 +91,7 @@ describe Frontend::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { repository_id: repository.uuid, pullmetry_access_token: access_token, format: :json }
+            get :index, params: { repository_id: repository.id, pullmetry_access_token: access_token, format: :json }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 

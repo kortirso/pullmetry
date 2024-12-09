@@ -28,7 +28,7 @@ module Frontend
     end
 
     def find_api_access_token
-      @api_access_token = current_user.api_access_tokens.find_by!(uuid: params[:id])
+      @api_access_token = current_user.api_access_tokens.find(params[:id])
     end
   end
 end

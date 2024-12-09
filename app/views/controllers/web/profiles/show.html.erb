@@ -1,7 +1,7 @@
 <%= render PageWrappers::UserComponent.new(current_user: current_user, meta_title: 'PullKeeper | Profile') do %>
   <section class="p-8 lg:p-12">
     <h1 class="mb-2">Profile</h1>
-    <p class="mb-7 light-color text-lg"><%= current_user.uuid %></p>
+    <p class="mb-7 light-color text-lg"><%= current_user.id %></p>
     <div class="box mb-4 p-8">
       <h2 class="mb-2">Identities</h2>
       <p class="mb-6 light-color">Here you can see your connected identities. You can add more or delete existing. Telegram identity is required to receive personal notifications from PullKeeper</p>

@@ -54,11 +54,11 @@ module Frontend
     end
 
     def find_company
-      @insightable = authorized_scope(Company.order(id: :desc)).find_by(uuid: params[:company_id])
+      @insightable = authorized_scope(Company.order(id: :desc)).find_by(id: params[:company_id])
     end
 
     def find_repository
-      @insightable = authorized_scope(Repository.order(id: :desc)).find_by(uuid: params[:repository_id])
+      @insightable = authorized_scope(Repository.order(id: :desc)).find_by(id: params[:repository_id])
     end
 
     def visible_insights

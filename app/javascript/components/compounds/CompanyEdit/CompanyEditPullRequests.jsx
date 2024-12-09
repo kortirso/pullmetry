@@ -41,7 +41,7 @@ export const CompanyEditPullRequests = (props) => {
   const { Flash, renderErrors } = createFlash();
 
   const updateFetchPeriod = async () => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { fetch_period: parseInt(pageState.fetchPeriod) });
+    const result = await updateCompanyConfigurationRequest(props.companyId, { fetch_period: parseInt(pageState.fetchPeriod) });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, defaultFetchPeriod: pageState.fetchPeriod });
@@ -50,7 +50,7 @@ export const CompanyEditPullRequests = (props) => {
   const resetFetchPeriod = () => setPageState({ ...pageState, fetchPeriod: pageState.defaultFetchPeriod });
 
   const onIgnoreCreate = async () => {
-    const result = await createIgnoreRequest({ entityIgnore: ignoreFormStore, companyId: props.companyUuid });
+    const result = await createIgnoreRequest({ entityIgnore: ignoreFormStore, companyId: props.companyId });
 
     if (result.errors) renderErrors(result.errors);
     else {
@@ -62,18 +62,18 @@ export const CompanyEditPullRequests = (props) => {
     }
   }
 
-  const onIgnoreRemove = async (uuid) => {
-    const result = await removeIgnoreRequest(uuid);
+  const onIgnoreRemove = async (id) => {
+    const result = await removeIgnoreRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, ignores: pageState.ignores.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, ignores: pageState.ignores.filter((item) => item.id !== id) });
   }
 
-  const onExcludeGroupRemove = async (uuid) => {
-    const result = await removeExcludeGroupRequest(uuid);
+  const onExcludeGroupRemove = async (id) => {
+    const result = await removeExcludeGroupRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, excludesGroups: pageState.excludesGroups.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, excludesGroups: pageState.excludesGroups.filter((item) => item.id !== id) });
   }
 
   return (
@@ -119,7 +119,7 @@ export const CompanyEditPullRequests = (props) => {
                         <td class="!min-w-0">
                           <p
                             class="btn-danger btn-xs"
-                            onClick={() => onExcludeGroupRemove(excludeGroup.uuid)}
+                            onClick={() => onExcludeGroupRemove(excludeGroup.id)}
                           >X</p>
                         </td>
                       </tr>
@@ -151,7 +151,7 @@ export const CompanyEditPullRequests = (props) => {
                         <td class="!min-w-0">
                           <p
                             class="btn-danger btn-xs"
-                            onClick={() => onIgnoreRemove(ignore.uuid)}
+                            onClick={() => onIgnoreRemove(ignore.id)}
                           >X</p>
                         </td>
                       </tr>

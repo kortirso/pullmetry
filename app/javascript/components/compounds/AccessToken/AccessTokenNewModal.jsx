@@ -14,7 +14,7 @@ export const AccessTokenNewModal = (props) => {
       return;
     }
 
-    const result = await createAccessTokenRequest({ payload: formStore, uuid: props.uuid, tokenable: props.tokenable });
+    const result = await createAccessTokenRequest({ payload: formStore, id: props.id, tokenable: props.tokenable });
 
     if (result.errors) renderErrors(result.errors);
     else window.location.reload();

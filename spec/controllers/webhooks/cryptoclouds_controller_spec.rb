@@ -29,7 +29,7 @@ describe Webhooks::CryptocloudsController do
 
       context 'when user is found' do
         let!(:user) { create :user }
-        let(:order_id) { JwtEncoder.new.encode(payload: { uuid: user.uuid, days_period: 30 }) }
+        let(:order_id) { JwtEncoder.new.encode(payload: { uuid: user.id, days_period: 30 }) }
 
         context 'when order id is invalid' do
           let(:request) { post :create, params: { status: 'success', order_id: '123' } }
@@ -75,7 +75,7 @@ describe Webhooks::CryptocloudsController do
 
             before do
               allow(Pullmetry::Container.resolve('jwt_encoder')).to(
-                receive(:decode).with(token: order_id).and_return({ 'uuid' => user.uuid, 'days_period' => 30 })
+                receive(:decode).with(token: order_id).and_return({ 'uuid' => user.id, 'days_period' => 30 })
               )
 
               allow(Pullmetry::Container.resolve('jwt_encoder')).to(

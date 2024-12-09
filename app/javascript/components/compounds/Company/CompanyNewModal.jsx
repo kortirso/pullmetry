@@ -13,7 +13,7 @@ export const CompanyNewModal = (props) => {
       return;
     }
 
-    const result = await createCompanyRequest({ ...formStore, userUuid: props.accountUuid });
+    const result = await createCompanyRequest({ ...formStore, userId: props.accountId });
 
     if (result.errors) renderErrors(result.errors);
     else window.location = '/companies';

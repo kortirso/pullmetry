@@ -30,7 +30,7 @@ describe Api::V1::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
+            get :index, params: { company_id: company.id, api_access_token: api_access_token.value }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -55,7 +55,7 @@ describe Api::V1::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
+              get :index, params: { company_id: company.id, api_access_token: api_access_token.value }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -72,7 +72,7 @@ describe Api::V1::InsightsController do
             end
 
             it 'returns data', :aggregate_failures do
-              get :index, params: { company_id: company.uuid, api_access_token: api_access_token.value }
+              get :index, params: { company_id: company.id, api_access_token: api_access_token.value }
 
               response_values = response.parsed_body.dig('insights', 0, 'values')
 
@@ -93,7 +93,7 @@ describe Api::V1::InsightsController do
           before { company.update!(user: user) }
 
           it 'returns data', :aggregate_failures do
-            get :index, params: { repository_id: repository.uuid, api_access_token: api_access_token.value }
+            get :index, params: { repository_id: repository.id, api_access_token: api_access_token.value }
 
             response_values = response.parsed_body.dig('insights', 0, 'values')
 

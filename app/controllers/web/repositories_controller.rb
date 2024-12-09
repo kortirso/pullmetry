@@ -31,7 +31,7 @@ module Web
     end
 
     def find_repository
-      @repository = current_user.repositories.find_by!(uuid: params[:id])
+      @repository = current_user.repositories.find(params[:id])
     end
 
     def find_available_companies
@@ -40,7 +40,7 @@ module Web
           .or(
             Company.where(id: current_user.companies_users.write.select(:company_id))
           )
-          .pluck(:uuid, :title)
+          .pluck(:id, :title)
           .to_h
     end
   end

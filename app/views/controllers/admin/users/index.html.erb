@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>UUID</th>
       <th>email</th>
       <th>Work start time</th>
       <th>Work end time</th>
@@ -14,7 +13,6 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.id %></td>
-        <td><%= user.uuid %></td>
         <td><%= user.email %></td>
         <td><%= user.work_time&.starts_at %></td>
         <td><%= user.work_time&.ends_at %></td>
