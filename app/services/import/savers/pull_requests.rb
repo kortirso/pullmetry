@@ -41,6 +41,7 @@ module Import
       def destroy_old_pull_requests(data)
         @repository
           .pull_requests
+          .includes(:comments, :reviews)
           .where.not(pull_number: data.pluck(:pull_number))
           .destroy_all
       end
