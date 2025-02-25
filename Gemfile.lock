@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/flyerhzm/bullet
-  revision: b34f34e10d8cdcb685b8ebc9a716afffaede1d15
-  branch: main
-  specs:
-    bullet (8.0.1)
-      activesupport (>= 3.0.0)
-      uniform_notifier (~> 1.11)
-
-GIT
   remote: https://github.com/redis-store/redis-rack
   revision: 90a862b42c9715393f5a40627dea5882be6a6dcb
   branch: master
@@ -127,6 +118,9 @@ GEM
     bugsnag (6.27.1)
       concurrent-ruby (~> 1.0)
     builder (3.3.0)
+    bullet (8.0.1)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     capistrano (3.19.2)
       airbrussh (>= 1.0.0)
       i18n
@@ -513,7 +507,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   brakeman
   bugsnag
-  bullet!
+  bullet
   capistrano (~> 3.17)
   capistrano-bundler
   capistrano-rails (~> 1.6)
