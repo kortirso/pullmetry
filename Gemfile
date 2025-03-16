@@ -3,14 +3,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.0'
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rack', '~> 3.0'
 gem 'rack-brotli'
 gem 'rack-session', '~> 2.0'
 gem 'rackup', '~> 2.1'
-gem 'rails', '7.2.2'
+gem 'rails', '< 8.0'
 
 # cache store
 gem 'redis', '~> 5.0'
@@ -29,7 +27,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Js and css
 gem 'jsbundling-rails', '~> 1.0'
 gem 'sprockets-rails'
-gem 'tailwindcss-rails'
+gem 'tailwindcss-rails', '< 4.0'
 
 # A framework for building view components
 gem 'view_component', '~> 3.0', require: 'view_component/engine'

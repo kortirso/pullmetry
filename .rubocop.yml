@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-rails
@@ -11,6 +11,7 @@ AllCops:
     - 'db/**/*'
     - 'node_modules/**/*'
   NewCops: enable
+  TargetRubyVersion: 3.4
 
 # Commonly used screens these days easily fit more than 80 characters.
 Layout/LineLength:
