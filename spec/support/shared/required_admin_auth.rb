@@ -7,7 +7,7 @@ shared_examples_for 'required admin auth' do
     it 'render shared error' do
       do_request
 
-      expect(response).to render_template 'web/errors/forbidden'
+      expect(response).to redirect_to forbidden_path
     end
   end
 end

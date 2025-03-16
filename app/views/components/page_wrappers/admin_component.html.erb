@@ -1,9 +1,7 @@
 <div class="flex flex-col lg:flex-row flex-1 max-h-screen">
   <div class="w-full lg:w-64 bg-zinc-800 flex flex-col justify-between p-4 lg:p-0">
     <div class="flex flex-col">
-      <%= link_to root_path, class: 'user-navigation-link admin lg:my-4 text-xl' do %>
-        <span>PullKeeper</span>
-      <% end %>
+      <%= link_to 'PullKeeper', root_path, class: 'user-navigation-link admin lg:my-4 text-xl' %>
       <div class="flex flex-row lg:flex-col flex-wrap lg:flex-nowrap">
         <%= link_to 'Companies', admin_companies_path, class: 'user-navigation-link admin' %>
       </div>

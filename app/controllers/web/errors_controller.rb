@@ -5,5 +5,7 @@ module Web
     skip_before_action :authenticate
 
     def internal; end
+
+    def forbidden; end
   end
 end
