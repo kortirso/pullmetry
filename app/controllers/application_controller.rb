@@ -27,10 +27,10 @@ class ApplicationController < ActionController::Base
   private
 
   def page_not_found
-    render template: 'web/shared/404', status: :not_found, formats: [:html]
+    render template: 'web/errors/not_found', status: :not_found, formats: [:html]
   end
 
   def access_denied
-    render template: 'web/shared/access', status: :forbidden, formats: [:html]
+    render template: 'web/errors/forbidden', status: :forbidden, formats: [:html]
   end
 end

@@ -46,7 +46,7 @@ describe Web::CompaniesController do
         it 'renders 404 page' do
           do_request
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'errors/not_found'
         end
       end
 
@@ -54,7 +54,7 @@ describe Web::CompaniesController do
         it 'renders 404 page' do
           delete :destroy, params: { id: company.id, locale: 'en' }
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'errors/not_found'
         end
       end
 

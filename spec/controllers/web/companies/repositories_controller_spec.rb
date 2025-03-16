@@ -13,7 +13,7 @@ describe Web::Companies::RepositoriesController do
         it 'renders access denied' do
           do_request
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'errors/not_found'
         end
       end
 
