@@ -106,5 +106,7 @@ Rails.application.routes.draw do
     get 'access_tokens', to: 'welcome#access_tokens'
   end
 
+  get '/500', to: 'web/errors#internal'
+
   root 'web/welcome#index'
 end

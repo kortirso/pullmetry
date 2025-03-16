@@ -20,7 +20,7 @@ describe Web::Companies::ConfigurationsController do
         it 'renders 404 page' do
           do_request
 
-          expect(response).to render_template 'shared/404'
+          expect(response).to render_template 'errors/not_found'
         end
       end
 
@@ -28,7 +28,7 @@ describe Web::Companies::ConfigurationsController do
         it 'renders access page' do
           get :edit, params: { company_id: company.id, locale: 'en' }
 
-          expect(response).to render_template 'shared/access'
+          expect(response).to render_template 'errors/forbidden'
         end
       end
 
@@ -42,7 +42,7 @@ describe Web::Companies::ConfigurationsController do
         it 'renders access page' do
           get :edit, params: { company_id: company.id, locale: 'en' }
 
-          expect(response).to render_template 'shared/access'
+          expect(response).to render_template 'errors/forbidden'
         end
       end
 
