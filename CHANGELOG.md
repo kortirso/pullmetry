@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Modified
 - migrate primary and foreign keys from ID to UUID
 
+### Fixed
+- pagy overflow bug
+
 ## [2.0.2] - 2024-12-06
 ### Added
 - open graph tags
