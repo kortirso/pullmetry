@@ -18,7 +18,7 @@ module Api
       private
 
       def companies
-        current_user.available_companies.order(id: :desc)
+        current_user.available_companies.order(created_at: :desc)
       end
     end
   end

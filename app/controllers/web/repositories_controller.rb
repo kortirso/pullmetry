@@ -24,7 +24,7 @@ module Web
       @pagy, @repositories =
         pagy(
           authorized_scope(
-            Repository.order(id: :desc)
+            Repository.order(created_at: :desc)
           ).includes(:access_token, company: %i[access_token user]),
           limit: PER_PAGE
         )

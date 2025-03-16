@@ -21,7 +21,7 @@ module Admin
     def find_repositories
       @pagy, @repositories =
         pagy(
-          Repository.order(id: :desc).includes(:access_token, company: %i[access_token]),
+          Repository.order(created_at: :desc).includes(:access_token, company: %i[access_token]),
           limit: PER_PAGE
         )
     end

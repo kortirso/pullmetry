@@ -77,8 +77,11 @@ class BackfillData < ActiveRecord::Migration[7.2]
     end
 
     Insight.find_each do |item|
+      insightable = item.insightable_type.constantize.find_by(numeric_id: item.numeric_insightable_id)
+      next if insightable.nil?
+
       item.update!(
-        insightable_id: item.insightable_type.constantize.find_by(numeric_id: item.numeric_insightable_id).id,
+        insightable_id: insightable.id,
         entity_id: Entity.find_by(numeric_id: item.numeric_entity_id).id
       )
     end
@@ -135,6 +138,8 @@ class BackfillData < ActiveRecord::Migration[7.2]
     Kudos::Users::Achievement.find_each do |item|
       item.update!(user_id: User.find_by(numeric_id: item.numeric_user_id).id)
     end
+
+    Insight.where(insightable_id: nil).destroy_all
 
     safety_assured do
       change_column_null :vacations, :user_id, false
@@ -202,6 +207,10 @@ class BackfillData < ActiveRecord::Migration[7.2]
       change_column_null :pull_requests_reviews, :numeric_pull_request_id, true
       change_column_null :pull_requests_reviews, :numeric_entity_id, true
       change_column_null :kudos_users_achievements, :numeric_user_id, true
+    end
+
+    Company.find_each do |company|
+      Company.reset_counters company.id, :repositories_count
     end
   end
 

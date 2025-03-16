@@ -43,7 +43,7 @@ module Web
         @excludes_groups =
           JSON.parse(
             Panko::ArraySerializer.new(
-              @company.excludes_groups.order(id: :desc),
+              @company.excludes_groups.order(created_at: :desc),
               each_serializer: Excludes::GroupSerializer,
               context: {
                 rules: excludes_rules

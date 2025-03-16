@@ -22,7 +22,7 @@ module Web
 
     def find_companies
       @pagy, @companies =
-        pagy(authorized_scope(Company.order(id: :desc).includes(:user)), limit: PER_PAGE)
+        pagy(authorized_scope(Company.order(created_at: :desc).includes(:user)), limit: PER_PAGE)
     end
 
     def find_accounts_for_companies
