@@ -3,28 +3,28 @@
     <h1 class="mb-7">Edit configuration</h1>
     <%=
       js_component 'CompanyEditPrivacy',
-        company_uuid: @company.uuid,
+        company_id: @company.id,
         private: @current_config.private,
         accepted_invites: @accepted_invites,
         invites: @invites
     %>
     <%=
       js_component 'CompanyEditSettings',
-        company_uuid: @company.uuid,
+        company_id: @company.id,
         starts_at: @company.work_time&.starts_at,
         ends_at: @company.work_time&.ends_at,
         timezone: @company.work_time&.timezone || '0'
     %>
     <%=
       js_component 'CompanyEditPullRequests',
-        company_uuid: @company.uuid,
+        company_id: @company.id,
         fetch_period: @current_config.fetch_period,
         ignores: @ignores,
         excludes_groups: @excludes_groups
     %>
     <%=
       js_component 'CompanyEditInsights',
-        company_uuid: @company.uuid,
+        company_id: @company.id,
         is_premium: @company.premium?,
         insight_fields: @current_config.selected_insight_fields,
         main_attribute: @current_config.main_attribute,
@@ -34,13 +34,13 @@
     %>
     <%=
       js_component 'CompanyEditNotifications',
-        company_uuid: @company.uuid,
+        company_id: @company.id,
         webhooks: @webhooks,
         notifications: @notifications
     %>
     <%=
       js_component 'CompanyEditTransfer',
-        company_uuid: @company.uuid
+        company_id: @company.id
     %>
   </section>
 <% end %>

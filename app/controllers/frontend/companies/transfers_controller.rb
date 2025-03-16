@@ -19,11 +19,11 @@ module Frontend
       private
 
       def find_company
-        @company = current_user.companies.find_by!(uuid: params[:company_id])
+        @company = current_user.companies.find(params[:company_id])
       end
 
       def find_target_user
-        @user = ::User.where.not(id: current_user.id).find_by!(uuid: params[:user_uuid])
+        @user = ::User.where.not(id: current_user.id).find(params[:user_id])
       end
     end
   end

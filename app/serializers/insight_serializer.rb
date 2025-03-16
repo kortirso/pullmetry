@@ -3,8 +3,6 @@
 class InsightSerializer < ApplicationSerializer
   attributes :id, :values, :entity
 
-  def id = SecureRandom.hex
-
   def values
     context[:insight_fields].index_with do |insight_field|
       {

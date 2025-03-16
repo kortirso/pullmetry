@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_notifications
-      @pagy, @notifications = pagy(Notification.order(id: :desc), limit: PER_PAGE)
+      @pagy, @notifications = pagy(Notification.order(created_at: :desc), limit: PER_PAGE)
     end
   end
 end

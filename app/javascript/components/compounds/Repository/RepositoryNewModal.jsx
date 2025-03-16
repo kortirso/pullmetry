@@ -28,7 +28,7 @@ export const RepositoryNewModal = (props) => {
           <h1 class="mb-2">New Repository</h1>
           <p class="mb-8 text-center">Repository is just abstraction of your real repository. Link must be real, title - anything you want.</p>
           <RepositoryForm
-            companyUuid={props.companyUuid}
+            companyId={props.companyId}
             companies={props.companies}
             providers={props.providers}
             onSubmit={onSubmit}

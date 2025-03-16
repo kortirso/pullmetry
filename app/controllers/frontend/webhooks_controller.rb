@@ -31,11 +31,11 @@ module Frontend
     end
 
     def find_company
-      @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])
+      @company = current_user.available_write_companies.find(params[:company_id])
     end
 
     def find_webhook
-      @webhook = Webhook.find_by!(uuid: params[:id])
+      @webhook = Webhook.find(params[:id])
     end
 
     def webhook_params

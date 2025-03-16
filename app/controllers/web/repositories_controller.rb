@@ -24,14 +24,14 @@ module Web
       @pagy, @repositories =
         pagy(
           authorized_scope(
-            Repository.order(id: :desc)
+            Repository.order(created_at: :desc)
           ).includes(:access_token, company: %i[access_token user]),
           limit: PER_PAGE
         )
     end
 
     def find_repository
-      @repository = current_user.repositories.find_by!(uuid: params[:id])
+      @repository = current_user.repositories.find(params[:id])
     end
 
     def find_available_companies
@@ -40,7 +40,7 @@ module Web
           .or(
             Company.where(id: current_user.companies_users.write.select(:company_id))
           )
-          .pluck(:uuid, :title)
+          .pluck(:id, :title)
           .to_h
     end
   end

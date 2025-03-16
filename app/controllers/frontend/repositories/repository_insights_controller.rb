@@ -33,7 +33,7 @@ module Frontend
       end
 
       def find_repository
-        @repository = authorized_scope(Repository.order(id: :desc)).find_by!(uuid: params[:repository_id])
+        @repository = authorized_scope(Repository.order(created_at: :desc)).find(params[:repository_id])
       end
 
       def visible_insights

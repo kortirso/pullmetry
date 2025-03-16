@@ -11,15 +11,15 @@ module Invitationable
     invite = Invite.find_by(code: params[:invite_code], email: params[:invite_email])
     return if invite.blank?
 
-    current_user ? accept_invite(current_user, invite.uuid) : save_invite_cookies(invite)
+    current_user ? accept_invite(current_user, invite.id) : save_invite_cookies(invite)
   end
 
   # rubocop: disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-  def accept_invite(user, invite_uuid=nil)
-    invite_uuid ||= cookies[:pullmetry_invite_uuid]
-    return unless invite_uuid
+  def accept_invite(user, invite_id=nil)
+    invite_id ||= cookies[:pullmetry_invite_uuid]
+    return unless invite_id
 
-    invite = Invite.find_by(uuid: invite_uuid)
+    invite = Invite.find_by(id: invite_id)
     return clear_invite_cookies if invite.nil?
     # skip self invites
     return clear_invite_cookies if invite.coowner? && invite.inviteable_id == user.id
@@ -36,7 +36,7 @@ module Invitationable
 
   def save_invite_cookies(invite)
     cookies[:pullmetry_invite_uuid] = {
-      value: invite.uuid,
+      value: invite.id,
       expires: 1.week.from_now
     }
   end

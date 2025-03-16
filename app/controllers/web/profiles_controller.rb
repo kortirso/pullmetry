@@ -28,12 +28,12 @@ module Web
     private
 
     def find_api_access_tokens
-      @api_access_tokens = current_user.api_access_tokens.hashable_pluck(:uuid, :value)
+      @api_access_tokens = current_user.api_access_tokens.hashable_pluck(:id, :value)
     end
 
     def find_invites
-      @accepted_invites = current_user.invites.accepted.hashable_pluck(:uuid, :email, :access)
-      @invites = current_user.invites.waiting.hashable_pluck(:uuid, :email, :access)
+      @accepted_invites = current_user.invites.accepted.hashable_pluck(:id, :email, :access)
+      @invites = current_user.invites.waiting.hashable_pluck(:id, :email, :access)
     end
 
     def find_used_trial_subscription
@@ -64,10 +64,10 @@ module Web
         Rails.cache.fetch('profile_cryptocloud_order_ids_v2') do
           {
             regular30: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, days_period: 30 }
+              payload: { uuid: current_user.id, days_period: 30 }
             ),
             regular365: jwt_encoder.encode(
-              payload: { uuid: current_user.uuid, days_period: 365 }
+              payload: { uuid: current_user.id, days_period: 365 }
             )
           }
         end

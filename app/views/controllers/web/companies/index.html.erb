@@ -6,13 +6,13 @@
         <%=
           js_component 'CompanyNewModal',
             accounts_for_companies: @accounts_for_companies,
-            account_uuid: current_user.uuid
+            account_id: current_user.id
         %>
       <% else %>
         <%=
           js_component 'Wizard',
             accounts_for_companies: @accounts_for_companies,
-            account_uuid: current_user.uuid,
+            account_id: current_user.id,
             providers: Repository::LINK_FORMAT_BY_PROVIDER.keys.map { |key, _| [key, key.capitalize] }.to_h
         %>
       <% end %>
@@ -34,17 +34,17 @@
       <% @companies.each do |company| %>
         <%=
           js_component 'Company',
-            uuid: company.uuid,
+            id: company.id,
             title: company.title,
             repositories_count: company.repositories.size,
-            repositories_url: company_repositories_path(company_id: company.uuid),
+            repositories_url: company_repositories_path(company_id: company.id),
             unaccessable: !company.accessable,
             is_private: !!company.current_config.private,
             main_attribute: company.current_config.main_attribute,
             edit_links: allowed_to?(:update?, company) ? {
               need_access_token: !company.all_access_tokens.exists?,
-              configuration: edit_company_configuration_path(company.uuid),
-              destroy: company_path(company.uuid)
+              configuration: edit_company_configuration_path(company.id),
+              destroy: company_path(company.id)
             } : nil
         %>
       <% end %>

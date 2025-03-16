@@ -13,7 +13,7 @@ describe 'api/v1/repositories' do
       produces 'application/json'
       consumes 'application/json'
 
-      parameter name: :id, in: :path, type: :string, description: 'Repository UUID', required: true
+      parameter name: :id, in: :path, type: :string, format: :uuid, description: 'Repository ID', required: true
       parameter name: :api_access_token, in: :query, type: :string, description: 'API access token', required: true
 
       response(200, 'successful') do
@@ -21,7 +21,7 @@ describe 'api/v1/repositories' do
         let(:api_access_token) { create(:api_access_token, user: user).value }
         let(:company) { create :company, user: user }
         let(:repository) { create :repository, company: company }
-        let(:id) { repository.uuid }
+        let(:id) { repository.id }
         let(:insight) { create :insight, insightable: repository }
 
         after do |example|

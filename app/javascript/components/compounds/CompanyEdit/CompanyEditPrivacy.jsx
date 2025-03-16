@@ -32,14 +32,14 @@ export const CompanyEditPrivacy = (props) => {
   const { Flash, renderErrors } = createFlash();
 
   const togglePrivate = async () => {
-    const result = await updateCompanyConfigurationRequest(props.companyUuid, { private: !pageState.private });
+    const result = await updateCompanyConfigurationRequest(props.companyId, { private: !pageState.private });
 
     if (result.errors) renderErrors(result.errors);
     else setPageState({ ...pageState, private: !pageState.private });
   }
 
   const onInviteCreate = async () => {
-    const result = await createInviteRequest({ invite: formStore, companyId: props.companyUuid });
+    const result = await createInviteRequest({ invite: formStore, companyId: props.companyId });
 
     if (result.errors) renderErrors(result.errors);
     else {
@@ -51,18 +51,18 @@ export const CompanyEditPrivacy = (props) => {
     }
   }
 
-  const onInviteRemove = async (uuid) => {
-    const result = await removeInviteRequest(uuid);
+  const onInviteRemove = async (id) => {
+    const result = await removeInviteRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.id !== id) });
   }
 
-  const onAcceptedInviteRemove = async (uuid) => {
-    const result = await removeAcceptedInviteRequest(uuid);
+  const onAcceptedInviteRemove = async (id) => {
+    const result = await removeAcceptedInviteRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.id !== id) });
   }
 
   return (
@@ -92,7 +92,7 @@ export const CompanyEditPrivacy = (props) => {
                           <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => onAcceptedInviteRemove(invite.uuid)}
+                              onClick={() => onAcceptedInviteRemove(invite.id)}
                             >X</p>
                           </td>
                         </tr>
@@ -118,7 +118,7 @@ export const CompanyEditPrivacy = (props) => {
                           <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => onInviteRemove(invite.uuid)}
+                              onClick={() => onInviteRemove(invite.id)}
                             >X</p>
                           </td>
                         </tr>

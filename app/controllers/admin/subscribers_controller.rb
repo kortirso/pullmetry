@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_subscribers
-      @pagy, @subscribers = pagy(Subscriber.order(id: :desc), limit: PER_PAGE)
+      @pagy, @subscribers = pagy(Subscriber.order(created_at: :desc), limit: PER_PAGE)
     end
   end
 end

@@ -44,7 +44,7 @@ module Webhooks
     end
 
     def find_user
-      @user = User.find_by!(uuid: user_uuid)
+      @user = User.find(user_id)
     end
 
     def find_invoice_payload
@@ -54,7 +54,7 @@ module Webhooks
       head :ok
     end
 
-    def user_uuid
+    def user_id
       order_id_payload['uuid']
     end
 

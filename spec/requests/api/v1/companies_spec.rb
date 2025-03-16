@@ -42,7 +42,7 @@ describe 'api/v1/companies' do
             items: {
               type: :object,
               properties: {
-                uuid: { type: :string },
+                id: { type: :string, format: :uuid },
                 title: { type: :string },
                 repositories_count: { type: :integer, nullable: true },
                 accessable: { type: :boolean }
@@ -86,14 +86,14 @@ describe 'api/v1/companies' do
       produces 'application/json'
       consumes 'application/json'
 
-      parameter name: :id, in: :path, type: :string, description: 'Company UUID', required: true
+      parameter name: :id, in: :path, type: :string, format: :uuid, description: 'Company ID', required: true
       parameter name: :api_access_token, in: :query, type: :string, description: 'API access token', required: true
 
       response(200, 'successful') do
         let(:user) { create :user }
         let(:api_access_token) { create(:api_access_token, user: user).value }
         let(:company) { create(:company, user: user) }
-        let(:id) { company.uuid }
+        let(:id) { company.id }
         let(:insight) { create :insight, insightable: company }
 
         after do |example|

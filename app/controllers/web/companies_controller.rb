@@ -22,23 +22,23 @@ module Web
 
     def find_companies
       @pagy, @companies =
-        pagy(authorized_scope(Company.order(id: :desc).includes(:user)), limit: PER_PAGE)
+        pagy(authorized_scope(Company.order(created_at: :desc).includes(:user)), limit: PER_PAGE)
     end
 
     def find_accounts_for_companies
       @accounts_for_companies =
         {
-          current_user.uuid => 'Own account'
+          current_user.id => 'Own account'
         }.merge(
           User
             .where(id: current_user.receive_invites.coowner.accepted.write.select(:inviteable_id))
-            .pluck(:uuid, :email)
+            .pluck(:id, :email)
             .to_h
         )
     end
 
     def find_company
-      @company = current_user.companies.find_by!(uuid: params[:id])
+      @company = current_user.companies.find(params[:id])
     end
   end
 end

@@ -19,7 +19,7 @@ describe Frontend::Repositories::RepositoryInsightsController do
         before { company.update!(user: user) }
 
         it 'returns data', :aggregate_failures do
-          get :index, params: { repository_id: repository.uuid, pullmetry_access_token: access_token }
+          get :index, params: { repository_id: repository.id, pullmetry_access_token: access_token }
 
           response_values = response.parsed_body.dig('insight', 'values')
 

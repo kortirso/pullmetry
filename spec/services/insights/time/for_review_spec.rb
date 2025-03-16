@@ -29,7 +29,8 @@ describe Insights::Time::ForReview, type: :service do
     let(:insightable) { repository }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call[:result]).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
+      expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 43_200)
+      expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
       expect(service_call[:errors]).to be_blank
     end
 
@@ -56,7 +57,8 @@ describe Insights::Time::ForReview, type: :service do
     let(:insightable) { repository.company }
 
     it 'generates average time and succeeds', :aggregate_failures do
-      expect(service_call[:result]).to eq({ entity1.id => [43_200, 7_200], entity2.id => [3_600] })
+      expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 43_200)
+      expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
       expect(service_call[:errors]).to be_blank
     end
   end
@@ -68,7 +70,8 @@ describe Insights::Time::ForReview, type: :service do
       let(:insightable) { repository }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call[:result]).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
+        expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 18_000)
+        expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
         expect(service_call[:errors]).to be_blank
       end
     end
@@ -77,7 +80,8 @@ describe Insights::Time::ForReview, type: :service do
       let(:insightable) { repository.company }
 
       it 'generates average time and succeeds', :aggregate_failures do
-        expect(service_call[:result]).to eq({ entity1.id => [18_000, 7_200], entity2.id => [3_600] })
+        expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 18_000)
+        expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
         expect(service_call[:errors]).to be_blank
       end
     end
@@ -89,7 +93,8 @@ describe Insights::Time::ForReview, type: :service do
         let(:insightable) { repository }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
+          expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+          expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
           expect(service_call[:errors]).to be_blank
         end
       end
@@ -98,7 +103,8 @@ describe Insights::Time::ForReview, type: :service do
         let(:insightable) { repository.company }
 
         it 'generates average time and succeeds', :aggregate_failures do
-          expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [3_600] })
+          expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+          expect(service_call[:result][entity2.id]).to contain_exactly(3_600)
           expect(service_call[:errors]).to be_blank
         end
       end
@@ -110,7 +116,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(14_400)
             expect(service_call[:errors]).to be_blank
           end
         end
@@ -119,7 +126,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [14_400] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(14_400)
             expect(service_call[:errors]).to be_blank
           end
         end
@@ -132,7 +140,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(32_400)
             expect(service_call[:errors]).to be_blank
           end
         end
@@ -141,7 +150,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [32_400] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(32_400)
             expect(service_call[:errors]).to be_blank
           end
         end
@@ -157,7 +167,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(0)
             expect(service_call[:errors]).to be_blank
           end
         end
@@ -166,7 +177,8 @@ describe Insights::Time::ForReview, type: :service do
           let(:insightable) { repository.company }
 
           it 'generates average time and succeeds', :aggregate_failures do
-            expect(service_call[:result]).to eq({ entity1.id => [50_400, 7_200], entity2.id => [0] })
+            expect(service_call[:result][entity1.id]).to contain_exactly(7_200, 50_400)
+            expect(service_call[:result][entity2.id]).to contain_exactly(0)
             expect(service_call[:errors]).to be_blank
           end
         end

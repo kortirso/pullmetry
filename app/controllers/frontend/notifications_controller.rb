@@ -32,15 +32,15 @@ module Frontend
     end
 
     def find_company
-      @company = current_user.available_write_companies.find_by!(uuid: params[:company_id])
+      @company = current_user.available_write_companies.find(params[:company_id])
     end
 
     def find_webhook
-      @webhook = @company.webhooks.find_by!(uuid: params[:webhook_id])
+      @webhook = @company.webhooks.find(params[:webhook_id])
     end
 
     def find_notification
-      @notification = Notification.find_by!(uuid: params[:id])
+      @notification = Notification.find(params[:id])
     end
 
     def notification_params

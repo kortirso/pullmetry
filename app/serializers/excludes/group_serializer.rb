@@ -2,10 +2,10 @@
 
 module Excludes
   class GroupSerializer < ApplicationSerializer
-    attributes :uuid, :excludes_rules
+    attributes :id, :excludes_rules
 
     def excludes_rules
-      context[:rules][object.uuid].presence || []
+      context[:rules][object.id].presence || []
     end
   end
 end

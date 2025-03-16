@@ -26,7 +26,7 @@ describe Frontend::AccessTokensController do
 
         context 'for existing company' do
           let(:request) do
-            post :create, params: { company_id: company.uuid, access_token: { value: '' }, pullmetry_access_token: access_token }
+            post :create, params: { company_id: company.id, access_token: { value: '' }, pullmetry_access_token: access_token }
           end
 
           before { company.update!(user: user) }
@@ -42,7 +42,7 @@ describe Frontend::AccessTokensController do
           context 'for valid params' do
             let(:request) {
               post :create, params: {
-                company_id: company.uuid,
+                company_id: company.id,
                 access_token: {
                   value: 'github_pat_*****_******',
                   expired_at: '2024-01-31 13:45'
@@ -80,7 +80,7 @@ describe Frontend::AccessTokensController do
         context 'for existing repository' do
           let(:request) do
             post :create, params: {
-              repository_id: repository.uuid, access_token: { value: '' }, pullmetry_access_token: access_token
+              repository_id: repository.id, access_token: { value: '' }, pullmetry_access_token: access_token
             }
           end
 
@@ -97,7 +97,7 @@ describe Frontend::AccessTokensController do
           context 'for valid params' do
             let(:request) {
               post :create, params: {
-                repository_id: repository.uuid,
+                repository_id: repository.id,
                 access_token: {
                   value: 'github_pat_*****_******',
                   expired_at: '2024-01-31 13:45'

@@ -10,7 +10,7 @@ describe Frontend::RepositoriesController do
       context 'for invalid params' do
         let(:request) {
           post :create, params: {
-            repository: { company_uuid: 'unexisting', title: '', link: '' },
+            repository: { company_id: 'unexisting', title: '', link: '' },
             pullmetry_access_token: access_token
           }
         }
@@ -28,7 +28,7 @@ describe Frontend::RepositoriesController do
         context 'for not existing company' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: 'unexisting', title: '', link: '' }, pullmetry_access_token: access_token
+              repository: { company_id: 'unexisting', title: '', link: '' }, pullmetry_access_token: access_token
             }
           }
 
@@ -42,7 +42,7 @@ describe Frontend::RepositoriesController do
         context 'for existing not user company' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', link: 'nam' }, pullmetry_access_token: access_token
+              repository: { company_id: company.id, title: 'Title', link: 'nam' }, pullmetry_access_token: access_token
             }
           }
 
@@ -56,7 +56,7 @@ describe Frontend::RepositoriesController do
         context 'for invalid params' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: '', link: '' }, pullmetry_access_token: access_token
+              repository: { company_id: company.id, title: '', link: '' }, pullmetry_access_token: access_token
             }
           }
 
@@ -72,7 +72,7 @@ describe Frontend::RepositoriesController do
         context 'for invalid external_id' do
           let(:request) {
             post :create, params: {
-              repository: { company_uuid: company.uuid, title: 'Title', link: 'link', provider: 'gitlab' },
+              repository: { company_id: company.id, title: 'Title', link: 'link', provider: 'gitlab' },
               pullmetry_access_token: access_token
             }
           }
@@ -90,7 +90,7 @@ describe Frontend::RepositoriesController do
           let(:request) {
             post :create, params: {
               repository: {
-                company_uuid: company.uuid,
+                company_id: company.id,
                 title: 'Title',
                 link: 'https://gitlab.com',
                 provider: 'gitlab',
@@ -112,7 +112,7 @@ describe Frontend::RepositoriesController do
           let(:request) {
             post :create, params: {
               repository: {
-                company_uuid: company.uuid, title: 'Title', link: 'https://github.com', provider: 'github'
+                company_id: company.id, title: 'Title', link: 'https://github.com', provider: 'github'
               },
               pullmetry_access_token: access_token
             }

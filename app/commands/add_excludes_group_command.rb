@@ -50,7 +50,7 @@ class AddExcludesGroupCommand < BaseCommand
       errors = validate(excludes_rule.to_h)
       next if errors.any?
 
-      excludes_rule.merge(uuid: SecureRandom.uuid)
+      excludes_rule
     end
   end
 

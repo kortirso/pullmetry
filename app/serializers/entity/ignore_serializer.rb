@@ -2,6 +2,6 @@
 
 class Entity
   class IgnoreSerializer < ApplicationSerializer
-    attributes :uuid, :entity_value
+    attributes :id, :entity_value
   end
 end

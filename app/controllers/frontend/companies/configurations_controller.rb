@@ -19,7 +19,7 @@ module Frontend
       private
 
       def find_company
-        @company = Company.find_by!(uuid: params[:company_id])
+        @company = Company.find(params[:company_id])
       end
 
       def configuration_params

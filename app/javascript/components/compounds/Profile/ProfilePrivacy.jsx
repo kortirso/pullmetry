@@ -44,18 +44,18 @@ export const ProfilePrivacy = (props) => {
     }
   }
 
-  const onInviteRemove = async (uuid) => {
-    const result = await removeInviteRequest(uuid);
+  const onInviteRemove = async (id) => {
+    const result = await removeInviteRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, invites: pageState.invites.filter((item) => item.id !== id) });
   }
 
-  const onAcceptedInviteRemove = async (uuid) => {
-    const result = await removeAcceptedInviteRequest(uuid);
+  const onAcceptedInviteRemove = async (id) => {
+    const result = await removeAcceptedInviteRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.uuid !== uuid) });
+    else setPageState({ ...pageState, acceptedInvites: pageState.acceptedInvites.filter((item) => item.id !== id) });
   }
 
   const onApiAccessTokenCreate = async () => {
@@ -69,7 +69,7 @@ export const ProfilePrivacy = (props) => {
     const result = await removeApiAccessTokenRequest(id);
 
     if (result.errors) renderErrors(result.errors);
-    else setPageState({ ...pageState, apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.uuid !== id) })
+    else setPageState({ ...pageState, apiAccessTokens: pageState.apiAccessTokens.filter((item) => item.id !== id) })
   }
 
   return (
@@ -92,7 +92,7 @@ export const ProfilePrivacy = (props) => {
                         <td class="!min-w-0">
                           <p
                             class="btn-danger btn-xs"
-                            onClick={() => onApiAccessTokenRemove(apiAccessToken.uuid)}
+                            onClick={() => onApiAccessTokenRemove(apiAccessToken.id)}
                           >X</p>
                         </td>
                       </tr>
@@ -125,7 +125,7 @@ export const ProfilePrivacy = (props) => {
                           <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => onAcceptedInviteRemove(invite.uuid)}
+                              onClick={() => onAcceptedInviteRemove(invite.id)}
                             >X</p>
                           </td>
                         </tr>
@@ -151,7 +151,7 @@ export const ProfilePrivacy = (props) => {
                           <td class="!min-w-0">
                             <p
                               class="btn-danger btn-xs"
-                              onClick={() => onInviteRemove(invite.uuid)}
+                              onClick={() => onInviteRemove(invite.id)}
                             >X</p>
                           </td>
                         </tr>

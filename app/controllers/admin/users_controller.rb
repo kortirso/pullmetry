@@ -13,7 +13,7 @@ module Admin
     private
 
     def find_users
-      @pagy, @users = pagy(User.order(id: :desc), limit: PER_PAGE)
+      @pagy, @users = pagy(User.order(created_at: :desc), limit: PER_PAGE)
     end
   end
 end

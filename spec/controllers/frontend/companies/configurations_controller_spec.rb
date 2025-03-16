@@ -21,7 +21,7 @@ describe Frontend::Companies::ConfigurationsController do
       context 'for not existing user company' do
         it 'returns forbidden error' do
           patch :update, params: {
-            company_id: company.uuid, configuration: { average_type: 'median' }, pullmetry_access_token: access_token
+            company_id: company.id, configuration: { average_type: 'median' }, pullmetry_access_token: access_token
           }
 
           expect(response).to have_http_status :forbidden
@@ -34,7 +34,7 @@ describe Frontend::Companies::ConfigurationsController do
         context 'for invalid params' do
           it 'does not update configuration and redirects', :aggregate_failures do
             patch :update, params: {
-              company_id: company.uuid, configuration: { average_type: '123' }, pullmetry_access_token: access_token
+              company_id: company.id, configuration: { average_type: '123' }, pullmetry_access_token: access_token
             }
 
             config = company.reload.config
@@ -47,7 +47,7 @@ describe Frontend::Companies::ConfigurationsController do
         context 'for valid params' do
           it 'updates regular configuration and redirects', :aggregate_failures do
             patch :update, params: {
-              company_id: company.uuid, configuration: { average_type: 'median' }, pullmetry_access_token: access_token
+              company_id: company.id, configuration: { average_type: 'median' }, pullmetry_access_token: access_token
             }
 
             config = company.reload.config

@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>UUID</th>
       <th>Title</th>
       <th>Repos</th>
       <th>Users</th>
@@ -14,7 +13,6 @@
     <% @companies.each do |company| %>
       <tr>
         <td><%= company.id %></td>
-        <td><%= company.uuid %></td>
         <td><%= company.title %></td>
         <td><%= link_to company.repositories.size, admin_company_repositories_path(company_id: company.id), class: 'simple-link' %></td>
         <td><%= company.user_ids.count %></td>

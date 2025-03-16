@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>UUID</th>
       <th>Title</th>
       <th>URL</th>
       <th>Access token</th>
@@ -15,7 +14,6 @@
     <% @repositories.each do |repository| %>
       <tr>
         <td><%= repository.id %></td>
-        <td><%= repository.uuid %></td>
         <td><%= repository.title %></td>
         <td><%= repository.link %></td>
         <td><%= repository.fetch_access_token ? "#{repository.fetch_access_token.value.first(16)}-****" : '' %></td>

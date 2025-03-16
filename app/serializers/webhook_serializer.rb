@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class WebhookSerializer < ApplicationSerializer
-  attributes :uuid, :source, :url
+  attributes :id, :source, :url
 end
