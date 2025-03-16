@@ -111,7 +111,7 @@ gem 'prawn-table'
 gem 'authkeeper', path: 'engines/authkeeper'
 
 group :development, :test do
-  gem 'bullet', git: 'https://github.com/flyerhzm/bullet', branch: 'main'
+  gem 'bullet'
   gem 'cypress-on-rails', '~> 1.0'
   gem 'rswag-specs'
   gem 'rubocop', '~> 1.35', require: false

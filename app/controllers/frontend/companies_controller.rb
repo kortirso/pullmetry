@@ -2,7 +2,10 @@
 
 module Frontend
   class CompaniesController < Frontend::BaseController
-    include Deps[add_company: 'commands.add_company']
+    include Deps[
+      add_company: 'commands.add_company',
+      monitoring: 'monitoring.client'
+    ]
 
     def create
       # commento: companies.title, companies.user_id
@@ -22,6 +25,7 @@ module Frontend
     end
 
     def user
+      monitoring_company_creation
       return current_user if current_user.id == account_id || account_id.nil?
 
       account = User.find(account_id)
@@ -31,6 +35,20 @@ module Frontend
 
     def account_id
       params[:company][:user_id]
+    end
+
+    def monitoring_company_creation
+      access_token = cookies[:pullmetry_access_token].presence || params[:pullmetry_access_token]
+      monitoring.notify(
+        exception: 'Creating company',
+        metadata: {
+          access_token: access_token,
+          current_user: current_user.id,
+          account_uuid: account_id,
+          company_params: company_params
+        },
+        severity: :info
+      )
     end
 
     def company_params
