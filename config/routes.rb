@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   mount PgHero::Engine, at: 'pghero'
   mount Emailbutler::Engine => '/emailbutler'
   mount Que::View::Engine => '/que_view'
-
   mount Authkeeper::Engine => '/authkeeper'
 
   namespace :admin do
@@ -107,6 +106,7 @@ Rails.application.routes.draw do
   end
 
   get '/500', to: 'web/errors#internal'
+  get 'forbidden', to: 'web/errors#forbidden'
 
   root 'web/welcome#index'
 end

@@ -12,7 +12,7 @@ module Admin
     def authorize_admin
       return if current_user.admin?
 
-      access_denied
+      redirect_to forbidden_path
     end
   end
 end
