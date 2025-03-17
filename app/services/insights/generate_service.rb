@@ -111,7 +111,7 @@ module Insights
         @review_involving[key] =
           entity_ids.each_with_object({}) do |entity_id, acc|
             other_user_pulls = open_pull_requests_count(date_from, date_to).except(entity_id).values.sum
-            return 0 if other_user_pulls.zero?
+            next acc[entity_id] = 0 if other_user_pulls.zero?
 
             commented_pulls_ids = Array(pulls_with_user_comments(date_from, date_to)[entity_id])
             reviewed_pulls_ids = Array(pulls_with_user_reviews(date_from, date_to)[entity_id])

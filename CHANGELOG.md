@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - pagy overflow bug
 - styles for admin pages
+- bug with review_involving insight calculation
 
 ## [2.0.2] - 2024-12-06
 ### Added
