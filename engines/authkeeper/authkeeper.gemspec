@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Authentication engine for Ruby on Rails projects.'
   spec.license     = 'MIT'
 
-  spec.required_ruby_version = '>= 3.4'
+  spec.required_ruby_version = '>= 3.2' # rubocop: disable Gemspec/RequiredRubyVersion
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
