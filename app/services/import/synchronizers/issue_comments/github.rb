@@ -6,7 +6,7 @@ module Import
       class Github < Import::Synchronizers::IssuesDataService
         include Deps[
           fetch_service: 'services.import.fetchers.github.issue_comments',
-          represent_service: 'services.import.representers.github.issue_comments',
+          represent_service: 'services.import.representers.github.issue_comments'
         ]
 
         private

@@ -18,7 +18,7 @@ module Payloads
       custom_insights: 'reports.company.custom.insights',
       custom_repository_insights: 'reports.company.custom.repository_insights',
       custom_long_time_review: 'reports.company.custom.long_time_review',
-      custom_no_new_pulls: 'reports.company.custom.no_new_pulls',
+      custom_no_new_pulls: 'reports.company.custom.no_new_pulls'
     ]
 
     def call(notification_name:, notification:)

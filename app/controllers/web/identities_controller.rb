@@ -18,7 +18,7 @@ module Web
     end
 
     def check_identity_count
-      return if current_user.identities.count > 1
+      return if current_user.identities.many?
 
       redirect_to profile_path, alert: 'At least 1 identity must exist'
     end
