@@ -157,7 +157,7 @@ export const Company = (props) => {
               <div class="mt-8 flex justify-between items-center">  
                 <a
                   class="btn-primary btn-small"
-                  href={`/api/frontend/companies/${props.id}/insights.pdf`}
+                  href={`/frontend/companies/${props.id}/insights.pdf`}
                   title="Click to download PDF file with insights report"
                 >Download insights PDF</a>
                 {editLinks()}

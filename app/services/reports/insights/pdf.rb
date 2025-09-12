@@ -38,7 +38,7 @@ module Reports
       end
 
       def render_headers_data(insight_fields)
-        insight_fields.map { |insight_field| Insight::SHORT_ATTRIBUTE_NAMES[insight_field] }
+        insight_fields.map { |insight_field| Insight::SHORT_ATTRIBUTE_NAMES[insight_field.to_sym] }
       end
 
       def render_insight(insight, insight_fields)
@@ -50,7 +50,7 @@ module Reports
 
       def render_insight_values(values, insight_fields)
         insight_fields.map do |insight_field|
-          value = values.dig(insight_field, 'value')
+          value = values.dig(insight_field.to_sym, 'value')
           next "#{value}%" if Insight::PERCENTILE_ATTRIBUTES.include?(insight_field)
           next time_representer.call(value: value.to_i) if Insight::TIME_ATTRIBUTES.include?(insight_field)
 

@@ -168,7 +168,7 @@ export const Repository = (props) => {
               <div class="mt-8 flex justify-between items-center">  
                 <a
                   class="btn-primary btn-small"
-                  href={`/api/frontend/repositories/${props.id}/insights.pdf`}
+                  href={`/frontend/repositories/${props.id}/insights.pdf`}
                   title="Click to download PDF file with insights report"
                 >Download insights PDF</a>
                 {editLinks()}
