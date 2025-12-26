@@ -137,10 +137,7 @@ export const Repository = (props) => {
             </a>
             <h2>{props.title}</h2>
           </div>
-          <Show
-            when={props.syncedAt}
-            fallback={<span>Next synchronization at {convertTime(props.nextSyncedAt)}</span>}
-          >
+          <Show when={props.syncedAt}>
             <span>Last synced {convertDate(props.syncedAt)} at {convertTime(props.syncedAt)}</span>
           </Show>
           <div class="sm:flex sm:flex-row sm:items-center">

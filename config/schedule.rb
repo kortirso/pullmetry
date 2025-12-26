@@ -8,7 +8,7 @@ every '15 * * * 1-5' do
   runner 'Users::RefreshAchievementsJob.perform_later'
 end
 
-every 1.hour do
+every 4.hours do
   # Synchronize companies
   runner 'Import::SyncCompaniesJob.perform_later'
 end
