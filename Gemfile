@@ -58,9 +58,6 @@ gem 'pghero'
 # http client
 gem 'faraday', '~> 2.0'
 
-# performance metrics
-gem 'skylight'
-
 # bugs tracking
 gem 'bugsnag'
 
