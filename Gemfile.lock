@@ -465,8 +465,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
-    skylight (6.0.4)
-      activesupport (>= 5.2.0)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
       logger
@@ -585,7 +583,6 @@ DEPENDENCIES
   rubocop-rspec_rails (~> 2.0)
   shoulda-matchers (~> 6.0)
   simplecov
-  skylight
   sprockets-rails
   store_model
   strong_migrations (~> 2.0)
